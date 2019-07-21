@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="240" id="Mfb-5o-u6a" customClass="PodcastEpisodeCell" customModule="ExCast" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="154"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mfb-5o-u6a" id="Y6t-jl-Fqg">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="153.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="861-n8-4od" userLabel="Episode Title">
+                        <rect key="frame" x="15" y="31.5" width="384" height="19.5"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JzD-0S-LXL" userLabel="Episode Description">
+                        <rect key="frame" x="15" y="55" width="384" height="61"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BXP-IG-lXM" userLabel="Episode PubDate">
+                        <rect key="frame" x="15" y="15" width="384" height="14.5"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwc-tW-QWL" userLabel="Episode Length">
+                        <rect key="frame" x="15" y="124" width="384" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="BXP-IG-lXM" firstAttribute="top" secondItem="Y6t-jl-Fqg" secondAttribute="top" constant="15" id="0mG-bB-hhk"/>
+                    <constraint firstAttribute="trailing" secondItem="JzD-0S-LXL" secondAttribute="trailing" constant="15" id="6r1-5O-DRX"/>
+                    <constraint firstAttribute="trailing" secondItem="BXP-IG-lXM" secondAttribute="trailing" constant="15" id="7Hr-kQ-Ldg"/>
+                    <constraint firstAttribute="trailing" secondItem="rwc-tW-QWL" secondAttribute="trailing" constant="15" id="7oF-t1-7aF"/>
+                    <constraint firstItem="861-n8-4od" firstAttribute="top" secondItem="BXP-IG-lXM" secondAttribute="bottom" constant="2" id="E8p-XY-Mc4"/>
+                    <constraint firstItem="JzD-0S-LXL" firstAttribute="top" secondItem="861-n8-4od" secondAttribute="bottom" constant="4" id="Ly7-7C-gOt"/>
+                    <constraint firstItem="JzD-0S-LXL" firstAttribute="leading" secondItem="Y6t-jl-Fqg" secondAttribute="leading" constant="15" id="QZ2-Qq-70F"/>
+                    <constraint firstItem="BXP-IG-lXM" firstAttribute="leading" secondItem="Y6t-jl-Fqg" secondAttribute="leading" constant="15" id="W3H-if-Z6u"/>
+                    <constraint firstItem="861-n8-4od" firstAttribute="leading" secondItem="Y6t-jl-Fqg" secondAttribute="leading" constant="15" id="ghv-Py-BhZ"/>
+                    <constraint firstItem="rwc-tW-QWL" firstAttribute="leading" secondItem="Y6t-jl-Fqg" secondAttribute="leading" constant="15" id="hLD-pV-tGL"/>
+                    <constraint firstItem="rwc-tW-QWL" firstAttribute="top" secondItem="JzD-0S-LXL" secondAttribute="bottom" constant="8" id="iBK-Zi-lYE"/>
+                    <constraint firstAttribute="trailing" secondItem="861-n8-4od" secondAttribute="trailing" constant="15" id="o7S-nU-lk6"/>
+                    <constraint firstAttribute="bottom" secondItem="rwc-tW-QWL" secondAttribute="bottom" constant="15" id="zGl-zE-ghM"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="episodeDescription" destination="JzD-0S-LXL" id="bc2-kQ-874"/>
+                <outlet property="length" destination="rwc-tW-QWL" id="3Ea-dT-d80"/>
+                <outlet property="pubDate" destination="BXP-IG-lXM" id="9xZ-sS-5Ag"/>
+                <outlet property="title" destination="861-n8-4od" id="hLu-dG-RuZ"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="186.83035714285714"/>
+        </tableViewCell>
+    </objects>
+</document>

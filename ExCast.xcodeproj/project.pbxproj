@@ -7,39 +7,321 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C122DE922CA619E00011558 /* PodcastShowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DE822CA619E00011558 /* PodcastShowListViewController.swift */; };
+		2C122DEB22CA6BB300011558 /* PodcastShowListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C122DEA22CA6BB300011558 /* PodcastShowListViewController.xib */; };
+		2C122DED22CBAD4D00011558 /* PodcastShowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C122DEC22CBAD4D00011558 /* PodcastShowCell.xib */; };
+		2C122DEF22CBAFC300011558 /* PodcastShowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DEE22CBAFC300011558 /* PodcastShowCell.swift */; };
+		2C122DF322CBB42700011558 /* PodcastShowListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DF222CBB42700011558 /* PodcastShowListView.swift */; };
+		2C122DF522CCFBA100011558 /* parseRfc822DateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DF422CCFBA100011558 /* parseRfc822DateString.swift */; };
+		2C6391C222E1995000B5EBE0 /* parseRfc822DateStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */; };
+		2C6391D122E1BEE000B5EBE0 /* PodcastGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D022E1BEE000B5EBE0 /* PodcastGateway.swift */; };
+		2C6391D422E1C16900B5EBE0 /* ShowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D322E1C16900B5EBE0 /* ShowListViewModel.swift */; };
+		2C6391D722E1D91B00B5EBE0 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D622E1D91B00B5EBE0 /* Bond.swift */; };
+		2C6391DA22E1DCAD00B5EBE0 /* FeedUrlInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D922E1DCAD00B5EBE0 /* FeedUrlInputViewModel.swift */; };
+		2C6391DD22E1EB8300B5EBE0 /* PodcastFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391DC22E1EB8300B5EBE0 /* PodcastFactory.swift */; };
+		2C6391E022E2128700B5EBE0 /* XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391DF22E2128600B5EBE0 /* XML.swift */; };
+		2C6391E322E2137F00B5EBE0 /* XmlNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391E222E2137F00B5EBE0 /* XmlNode.swift */; };
+		2C6391E722E217BC00B5EBE0 /* XMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391E622E217BC00B5EBE0 /* XMLTests.swift */; };
+		2C6391E922E230E000B5EBE0 /* LocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391E822E230E000B5EBE0 /* LocalRepository.swift */; };
+		2C6391F022E2BB0300B5EBE0 /* PodcastEpisodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C6391EF22E2BB0300B5EBE0 /* PodcastEpisodeCell.xib */; };
+		2C6391F222E2BE2600B5EBE0 /* PodcastEpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391F122E2BE2600B5EBE0 /* PodcastEpisodeCell.swift */; };
+		2C6391F422E2C04F00B5EBE0 /* PodcastEpisodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391F322E2C04F00B5EBE0 /* PodcastEpisodeListView.swift */; };
+		2C6391F722E2C28400B5EBE0 /* PodcastEpisodeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391F622E2C28400B5EBE0 /* PodcastEpisodeListViewController.swift */; };
+		2C6391FA22E2C30F00B5EBE0 /* EpisodeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391F922E2C30F00B5EBE0 /* EpisodeListViewModel.swift */; };
+		2C6391FC22E2C56300B5EBE0 /* PodcastEpisodeListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C6391FB22E2C56300B5EBE0 /* PodcastEpisodeListViewController.xib */; };
+		2C63920522E3FBC500B5EBE0 /* UIKit+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C63920422E3FBC500B5EBE0 /* UIKit+Bond.swift */; };
+		2C63920A22E4017200B5EBE0 /* Bondable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C63920922E4017200B5EBE0 /* Bondable.swift */; };
+		2C63920D22E4045A00B5EBE0 /* ArrayBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C63920C22E4045A00B5EBE0 /* ArrayBond.swift */; };
 		2CA13C5A22C8D7D700CC6072 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C5922C8D7D700CC6072 /* AppDelegate.swift */; };
-		2CA13C5C22C8D7D700CC6072 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C5B22C8D7D700CC6072 /* ViewController.swift */; };
-		2CA13C5F22C8D7D700CC6072 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CA13C5D22C8D7D700CC6072 /* Main.storyboard */; };
+		2CA13C5C22C8D7D700CC6072 /* FeedUrlInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C5B22C8D7D700CC6072 /* FeedUrlInputViewController.swift */; };
 		2CA13C6122C8D7D800CC6072 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CA13C6022C8D7D800CC6072 /* Assets.xcassets */; };
 		2CA13C6422C8D7D800CC6072 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CA13C6222C8D7D800CC6072 /* LaunchScreen.storyboard */; };
+		2CA13C7122C8D86100CC6072 /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C7022C8D86100CC6072 /* Podcast.swift */; };
+		2CA13C7322C8E3CF00CC6072 /* Enclosure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C7222C8E3CF00CC6072 /* Enclosure.swift */; };
+		2CA13C7522C8E3F100CC6072 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C7422C8E3F100CC6072 /* Language.swift */; };
+		2CA13C7A22C8EA9000CC6072 /* PodcastRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C7922C8EA9000CC6072 /* PodcastRepository.swift */; };
+		2CA13C8922C8FE7200CC6072 /* FeedUrlInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CA13C8822C8FE7200CC6072 /* FeedUrlInputViewController.xib */; };
+		2CA13C8D22C9100100CC6072 /* FeedUrlInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CA13C8C22C9100100CC6072 /* FeedUrlInputView.xib */; };
+		2CA13C8F22C9100B00CC6072 /* FeedUrlInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C8E22C9100B00CC6072 /* FeedUrlInputView.swift */; };
+		2CA13C9122CA5AF500CC6072 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C9022CA5AF400CC6072 /* RootTabBarController.swift */; };
+		37BD17194A869B0BE93BE7D1 /* Pods_ExCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A77DC886F1A54345DB1D66F /* Pods_ExCast.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		2C6391C422E1995000B5EBE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2CA13C4E22C8D7D600CC6072 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2CA13C5522C8D7D700CC6072;
+			remoteInfo = ExCast;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		2A77DC886F1A54345DB1D66F /* Pods_ExCast.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExCast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C122DE822CA619E00011558 /* PodcastShowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowListViewController.swift; sourceTree = "<group>"; };
+		2C122DEA22CA6BB300011558 /* PodcastShowListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastShowListViewController.xib; sourceTree = "<group>"; };
+		2C122DEC22CBAD4D00011558 /* PodcastShowCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastShowCell.xib; sourceTree = "<group>"; };
+		2C122DEE22CBAFC300011558 /* PodcastShowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowCell.swift; sourceTree = "<group>"; };
+		2C122DF222CBB42700011558 /* PodcastShowListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowListView.swift; sourceTree = "<group>"; };
+		2C122DF422CCFBA100011558 /* parseRfc822DateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parseRfc822DateString.swift; sourceTree = "<group>"; };
+		2C6391BF22E1995000B5EBE0 /* ExCastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExCastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parseRfc822DateStringTests.swift; sourceTree = "<group>"; };
+		2C6391C322E1995000B5EBE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2C6391D022E1BEE000B5EBE0 /* PodcastGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastGateway.swift; sourceTree = "<group>"; };
+		2C6391D322E1C16900B5EBE0 /* ShowListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowListViewModel.swift; sourceTree = "<group>"; };
+		2C6391D622E1D91B00B5EBE0 /* Bond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bond.swift; sourceTree = "<group>"; };
+		2C6391D922E1DCAD00B5EBE0 /* FeedUrlInputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUrlInputViewModel.swift; sourceTree = "<group>"; };
+		2C6391DC22E1EB8300B5EBE0 /* PodcastFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastFactory.swift; sourceTree = "<group>"; };
+		2C6391DF22E2128600B5EBE0 /* XML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XML.swift; sourceTree = "<group>"; };
+		2C6391E222E2137F00B5EBE0 /* XmlNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmlNode.swift; sourceTree = "<group>"; };
+		2C6391E622E217BC00B5EBE0 /* XMLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLTests.swift; sourceTree = "<group>"; };
+		2C6391E822E230E000B5EBE0 /* LocalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRepository.swift; sourceTree = "<group>"; };
+		2C6391EF22E2BB0300B5EBE0 /* PodcastEpisodeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastEpisodeCell.xib; sourceTree = "<group>"; };
+		2C6391F122E2BE2600B5EBE0 /* PodcastEpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastEpisodeCell.swift; sourceTree = "<group>"; };
+		2C6391F322E2C04F00B5EBE0 /* PodcastEpisodeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastEpisodeListView.swift; sourceTree = "<group>"; };
+		2C6391F622E2C28400B5EBE0 /* PodcastEpisodeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastEpisodeListViewController.swift; sourceTree = "<group>"; };
+		2C6391F922E2C30F00B5EBE0 /* EpisodeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeListViewModel.swift; sourceTree = "<group>"; };
+		2C6391FB22E2C56300B5EBE0 /* PodcastEpisodeListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastEpisodeListViewController.xib; sourceTree = "<group>"; };
+		2C63920422E3FBC500B5EBE0 /* UIKit+Bond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Bond.swift"; sourceTree = "<group>"; };
+		2C63920922E4017200B5EBE0 /* Bondable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bondable.swift; sourceTree = "<group>"; };
+		2C63920C22E4045A00B5EBE0 /* ArrayBond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayBond.swift; sourceTree = "<group>"; };
 		2CA13C5622C8D7D700CC6072 /* ExCast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExCast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CA13C5922C8D7D700CC6072 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2CA13C5B22C8D7D700CC6072 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		2CA13C5E22C8D7D700CC6072 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2CA13C5B22C8D7D700CC6072 /* FeedUrlInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUrlInputViewController.swift; sourceTree = "<group>"; };
 		2CA13C6022C8D7D800CC6072 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2CA13C6322C8D7D800CC6072 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2CA13C6522C8D7D800CC6072 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2CA13C7022C8D86100CC6072 /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
+		2CA13C7222C8E3CF00CC6072 /* Enclosure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enclosure.swift; sourceTree = "<group>"; };
+		2CA13C7422C8E3F100CC6072 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
+		2CA13C7922C8EA9000CC6072 /* PodcastRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastRepository.swift; sourceTree = "<group>"; };
+		2CA13C8822C8FE7200CC6072 /* FeedUrlInputViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedUrlInputViewController.xib; sourceTree = "<group>"; };
+		2CA13C8C22C9100100CC6072 /* FeedUrlInputView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedUrlInputView.xib; sourceTree = "<group>"; };
+		2CA13C8E22C9100B00CC6072 /* FeedUrlInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUrlInputView.swift; sourceTree = "<group>"; };
+		2CA13C9022CA5AF400CC6072 /* RootTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
+		468059232EDB8A89A02BD943 /* Pods-ExCast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExCast.release.xcconfig"; path = "Target Support Files/Pods-ExCast/Pods-ExCast.release.xcconfig"; sourceTree = "<group>"; };
+		66394F62A7189D3149187C80 /* Pods-ExCast.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExCast.debug.xcconfig"; path = "Target Support Files/Pods-ExCast/Pods-ExCast.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		2CA13C5322C8D7D700CC6072 /* Frameworks */ = {
+		2C6391BC22E1995000B5EBE0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2CA13C5322C8D7D700CC6072 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37BD17194A869B0BE93BE7D1 /* Pods_ExCast.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C122DE722CA60D600011558 /* ShowList */ = {
+			isa = PBXGroup;
+			children = (
+				2C122DEC22CBAD4D00011558 /* PodcastShowCell.xib */,
+				2C122DEE22CBAFC300011558 /* PodcastShowCell.swift */,
+				2C122DF222CBB42700011558 /* PodcastShowListView.swift */,
+			);
+			path = ShowList;
+			sourceTree = "<group>";
+		};
+		2C6391C022E1995000B5EBE0 /* ExCastTests */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391C922E1996100B5EBE0 /* src */,
+				2C6391C322E1995000B5EBE0 /* Info.plist */,
+			);
+			path = ExCastTests;
+			sourceTree = "<group>";
+		};
+		2C6391C922E1996100B5EBE0 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391CA22E1996700B5EBE0 /* Domain */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		2C6391CA22E1996700B5EBE0 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391CB22E1997000B5EBE0 /* Service */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		2C6391CB22E1997000B5EBE0 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391E522E217B000B5EBE0 /* XmlParser */,
+				2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		2C6391CC22E1BD2400B5EBE0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391F522E2C25C00B5EBE0 /* EpisodeList */,
+				2C6391CD22E1BD4900B5EBE0 /* ShowList */,
+				2C6391CE22E1BD5800B5EBE0 /* FeedUrlInput */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2C6391CD22E1BD4900B5EBE0 /* ShowList */ = {
+			isa = PBXGroup;
+			children = (
+				2C122DE822CA619E00011558 /* PodcastShowListViewController.swift */,
+				2C122DEA22CA6BB300011558 /* PodcastShowListViewController.xib */,
+			);
+			path = ShowList;
+			sourceTree = "<group>";
+		};
+		2C6391CE22E1BD5800B5EBE0 /* FeedUrlInput */ = {
+			isa = PBXGroup;
+			children = (
+				2CA13C5B22C8D7D700CC6072 /* FeedUrlInputViewController.swift */,
+				2CA13C8822C8FE7200CC6072 /* FeedUrlInputViewController.xib */,
+			);
+			path = FeedUrlInput;
+			sourceTree = "<group>";
+		};
+		2C6391CF22E1BECC00B5EBE0 /* Gateway */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391D022E1BEE000B5EBE0 /* PodcastGateway.swift */,
+			);
+			path = Gateway;
+			sourceTree = "<group>";
+		};
+		2C6391D222E1C14800B5EBE0 /* ShowList */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391D322E1C16900B5EBE0 /* ShowListViewModel.swift */,
+			);
+			path = ShowList;
+			sourceTree = "<group>";
+		};
+		2C6391D522E1D8FF00B5EBE0 /* Bond */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391D622E1D91B00B5EBE0 /* Bond.swift */,
+				2C63920922E4017200B5EBE0 /* Bondable.swift */,
+				2C63920C22E4045A00B5EBE0 /* ArrayBond.swift */,
+			);
+			path = Bond;
+			sourceTree = "<group>";
+		};
+		2C6391D822E1DC9C00B5EBE0 /* FeedUrlInput */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391D922E1DCAD00B5EBE0 /* FeedUrlInputViewModel.swift */,
+			);
+			path = FeedUrlInput;
+			sourceTree = "<group>";
+		};
+		2C6391DB22E1EB7600B5EBE0 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391DC22E1EB8300B5EBE0 /* PodcastFactory.swift */,
+			);
+			path = Factory;
+			sourceTree = "<group>";
+		};
+		2C6391DE22E2127700B5EBE0 /* XmlParser */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391E122E2137000B5EBE0 /* ValueObject */,
+				2C6391DF22E2128600B5EBE0 /* XML.swift */,
+			);
+			path = XmlParser;
+			sourceTree = "<group>";
+		};
+		2C6391E122E2137000B5EBE0 /* ValueObject */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391E222E2137F00B5EBE0 /* XmlNode.swift */,
+			);
+			path = ValueObject;
+			sourceTree = "<group>";
+		};
+		2C6391E522E217B000B5EBE0 /* XmlParser */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391E622E217BC00B5EBE0 /* XMLTests.swift */,
+			);
+			path = XmlParser;
+			sourceTree = "<group>";
+		};
+		2C6391ED22E2BA6A00B5EBE0 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391E822E230E000B5EBE0 /* LocalRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		2C6391EE22E2BAE200B5EBE0 /* EpisodeList */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391EF22E2BB0300B5EBE0 /* PodcastEpisodeCell.xib */,
+				2C6391F122E2BE2600B5EBE0 /* PodcastEpisodeCell.swift */,
+				2C6391F322E2C04F00B5EBE0 /* PodcastEpisodeListView.swift */,
+			);
+			path = EpisodeList;
+			sourceTree = "<group>";
+		};
+		2C6391F522E2C25C00B5EBE0 /* EpisodeList */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391F622E2C28400B5EBE0 /* PodcastEpisodeListViewController.swift */,
+				2C6391FB22E2C56300B5EBE0 /* PodcastEpisodeListViewController.xib */,
+			);
+			path = EpisodeList;
+			sourceTree = "<group>";
+		};
+		2C6391F822E2C30000B5EBE0 /* EpisodeList */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391F922E2C30F00B5EBE0 /* EpisodeListViewModel.swift */,
+			);
+			path = EpisodeList;
+			sourceTree = "<group>";
+		};
+		2C63920622E3FE6600B5EBE0 /* Bond */ = {
+			isa = PBXGroup;
+			children = (
+				2C63920422E3FBC500B5EBE0 /* UIKit+Bond.swift */,
+			);
+			path = Bond;
+			sourceTree = "<group>";
+		};
+		2C63920B22E401C000B5EBE0 /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391DE22E2127700B5EBE0 /* XmlParser */,
+				2C122DF422CCFBA100011558 /* parseRfc822DateString.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
 		2CA13C4D22C8D7D600CC6072 = {
 			isa = PBXGroup;
 			children = (
 				2CA13C5822C8D7D700CC6072 /* ExCast */,
+				2C6391C022E1995000B5EBE0 /* ExCastTests */,
 				2CA13C5722C8D7D700CC6072 /* Products */,
+				6A9FB54038ECE8B396B4476A /* Pods */,
+				490B0DF8FD02A7DD13AE2ACB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -47,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				2CA13C5622C8D7D700CC6072 /* ExCast.app */,
+				2C6391BF22E1995000B5EBE0 /* ExCastTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -54,23 +337,172 @@
 		2CA13C5822C8D7D700CC6072 /* ExCast */ = {
 			isa = PBXGroup;
 			children = (
-				2CA13C5922C8D7D700CC6072 /* AppDelegate.swift */,
-				2CA13C5B22C8D7D700CC6072 /* ViewController.swift */,
-				2CA13C5D22C8D7D700CC6072 /* Main.storyboard */,
-				2CA13C6022C8D7D800CC6072 /* Assets.xcassets */,
-				2CA13C6222C8D7D800CC6072 /* LaunchScreen.storyboard */,
-				2CA13C6522C8D7D800CC6072 /* Info.plist */,
+				2CA13C6D22C8D7FF00CC6072 /* resources */,
+				2CA13C6B22C8D7DC00CC6072 /* src */,
 			);
 			path = ExCast;
+			sourceTree = "<group>";
+		};
+		2CA13C6B22C8D7DC00CC6072 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				2CA13C5922C8D7D700CC6072 /* AppDelegate.swift */,
+				2CA13C6C22C8D7F000CC6072 /* Interface */,
+				2CA13C6F22C8D83300CC6072 /* Domain */,
+				2CA13C7622C8E77B00CC6072 /* Infrastructure */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		2CA13C6C22C8D7F000CC6072 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				2CA13C7C22C8F1A500CC6072 /* View */,
+				2C6391CC22E1BD2400B5EBE0 /* Controller */,
+				2CA13C7D22C8F1D500CC6072 /* ViewModel */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		2CA13C6D22C8D7FF00CC6072 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				2CA13C6022C8D7D800CC6072 /* Assets.xcassets */,
+				2CA13C6522C8D7D800CC6072 /* Info.plist */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		2CA13C6F22C8D83300CC6072 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391DB22E1EB7600B5EBE0 /* Factory */,
+				2CA13C7822C8E8EC00CC6072 /* Repository */,
+				2CA13C7722C8E79F00CC6072 /* Entity */,
+				2CA13C7B22C8EE4500CC6072 /* Service */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		2CA13C7622C8E77B00CC6072 /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391ED22E2BA6A00B5EBE0 /* Repository */,
+				2C6391CF22E1BECC00B5EBE0 /* Gateway */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		2CA13C7722C8E79F00CC6072 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				2CA13C7022C8D86100CC6072 /* Podcast.swift */,
+				2CA13C7222C8E3CF00CC6072 /* Enclosure.swift */,
+				2CA13C7422C8E3F100CC6072 /* Language.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		2CA13C7822C8E8EC00CC6072 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				2CA13C7922C8EA9000CC6072 /* PodcastRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		2CA13C7B22C8EE4500CC6072 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				2C63920B22E401C000B5EBE0 /* Parser */,
+				2C6391D522E1D8FF00B5EBE0 /* Bond */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		2CA13C7C22C8F1A500CC6072 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2CA13C6222C8D7D800CC6072 /* LaunchScreen.storyboard */,
+				2CA13C7E22C8F1EC00CC6072 /* Root */,
+				2C122DE722CA60D600011558 /* ShowList */,
+				2C6391EE22E2BAE200B5EBE0 /* EpisodeList */,
+				2CA13C9222CA5CA100CC6072 /* FeedUrlInput */,
+				2C63920622E3FE6600B5EBE0 /* Bond */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2CA13C7D22C8F1D500CC6072 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C6391F822E2C30000B5EBE0 /* EpisodeList */,
+				2C6391D222E1C14800B5EBE0 /* ShowList */,
+				2C6391D822E1DC9C00B5EBE0 /* FeedUrlInput */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2CA13C7E22C8F1EC00CC6072 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				2CA13C9022CA5AF400CC6072 /* RootTabBarController.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		2CA13C9222CA5CA100CC6072 /* FeedUrlInput */ = {
+			isa = PBXGroup;
+			children = (
+				2CA13C8C22C9100100CC6072 /* FeedUrlInputView.xib */,
+				2CA13C8E22C9100B00CC6072 /* FeedUrlInputView.swift */,
+			);
+			path = FeedUrlInput;
+			sourceTree = "<group>";
+		};
+		490B0DF8FD02A7DD13AE2ACB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A77DC886F1A54345DB1D66F /* Pods_ExCast.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6A9FB54038ECE8B396B4476A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				66394F62A7189D3149187C80 /* Pods-ExCast.debug.xcconfig */,
+				468059232EDB8A89A02BD943 /* Pods-ExCast.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2C6391BE22E1995000B5EBE0 /* ExCastTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C6391C622E1995000B5EBE0 /* Build configuration list for PBXNativeTarget "ExCastTests" */;
+			buildPhases = (
+				2C6391BB22E1995000B5EBE0 /* Sources */,
+				2C6391BC22E1995000B5EBE0 /* Frameworks */,
+				2C6391BD22E1995000B5EBE0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2C6391C522E1995000B5EBE0 /* PBXTargetDependency */,
+			);
+			name = ExCastTests;
+			productName = ExCastTests;
+			productReference = 2C6391BF22E1995000B5EBE0 /* ExCastTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		2CA13C5522C8D7D700CC6072 /* ExCast */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2CA13C6822C8D7D800CC6072 /* Build configuration list for PBXNativeTarget "ExCast" */;
 			buildPhases = (
+				E58AA746EFB8A9A4BC1D3AD2 /* [CP] Check Pods Manifest.lock */,
 				2CA13C5222C8D7D700CC6072 /* Sources */,
 				2CA13C5322C8D7D700CC6072 /* Frameworks */,
 				2CA13C5422C8D7D700CC6072 /* Resources */,
@@ -94,6 +526,10 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Tasuku Tozawa";
 				TargetAttributes = {
+					2C6391BE22E1995000B5EBE0 = {
+						CreatedOnToolsVersion = 10.2.1;
+						TestTargetID = 2CA13C5522C8D7D700CC6072;
+					};
 					2CA13C5522C8D7D700CC6072 = {
 						CreatedOnToolsVersion = 10.2.1;
 					};
@@ -113,44 +549,116 @@
 			projectRoot = "";
 			targets = (
 				2CA13C5522C8D7D700CC6072 /* ExCast */,
+				2C6391BE22E1995000B5EBE0 /* ExCastTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2C6391BD22E1995000B5EBE0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2CA13C5422C8D7D700CC6072 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA13C8D22C9100100CC6072 /* FeedUrlInputView.xib in Resources */,
 				2CA13C6422C8D7D800CC6072 /* LaunchScreen.storyboard in Resources */,
 				2CA13C6122C8D7D800CC6072 /* Assets.xcassets in Resources */,
-				2CA13C5F22C8D7D700CC6072 /* Main.storyboard in Resources */,
+				2CA13C8922C8FE7200CC6072 /* FeedUrlInputViewController.xib in Resources */,
+				2C122DEB22CA6BB300011558 /* PodcastShowListViewController.xib in Resources */,
+				2C6391F022E2BB0300B5EBE0 /* PodcastEpisodeCell.xib in Resources */,
+				2C122DED22CBAD4D00011558 /* PodcastShowCell.xib in Resources */,
+				2C6391FC22E2C56300B5EBE0 /* PodcastEpisodeListViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		E58AA746EFB8A9A4BC1D3AD2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ExCast-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		2C6391BB22E1995000B5EBE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C6391C222E1995000B5EBE0 /* parseRfc822DateStringTests.swift in Sources */,
+				2C6391E722E217BC00B5EBE0 /* XMLTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2CA13C5222C8D7D700CC6072 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CA13C5C22C8D7D700CC6072 /* ViewController.swift in Sources */,
+				2CA13C8F22C9100B00CC6072 /* FeedUrlInputView.swift in Sources */,
+				2C63920522E3FBC500B5EBE0 /* UIKit+Bond.swift in Sources */,
+				2C6391F722E2C28400B5EBE0 /* PodcastEpisodeListViewController.swift in Sources */,
+				2CA13C9122CA5AF500CC6072 /* RootTabBarController.swift in Sources */,
+				2CA13C5C22C8D7D700CC6072 /* FeedUrlInputViewController.swift in Sources */,
+				2C122DE922CA619E00011558 /* PodcastShowListViewController.swift in Sources */,
+				2C6391E022E2128700B5EBE0 /* XML.swift in Sources */,
+				2C6391FA22E2C30F00B5EBE0 /* EpisodeListViewModel.swift in Sources */,
+				2C6391F222E2BE2600B5EBE0 /* PodcastEpisodeCell.swift in Sources */,
+				2C6391E322E2137F00B5EBE0 /* XmlNode.swift in Sources */,
+				2C6391D422E1C16900B5EBE0 /* ShowListViewModel.swift in Sources */,
+				2CA13C7522C8E3F100CC6072 /* Language.swift in Sources */,
+				2C122DF522CCFBA100011558 /* parseRfc822DateString.swift in Sources */,
+				2C6391DD22E1EB8300B5EBE0 /* PodcastFactory.swift in Sources */,
+				2C6391DA22E1DCAD00B5EBE0 /* FeedUrlInputViewModel.swift in Sources */,
+				2C122DF322CBB42700011558 /* PodcastShowListView.swift in Sources */,
+				2C6391D722E1D91B00B5EBE0 /* Bond.swift in Sources */,
+				2C6391D122E1BEE000B5EBE0 /* PodcastGateway.swift in Sources */,
+				2C63920A22E4017200B5EBE0 /* Bondable.swift in Sources */,
+				2CA13C7A22C8EA9000CC6072 /* PodcastRepository.swift in Sources */,
 				2CA13C5A22C8D7D700CC6072 /* AppDelegate.swift in Sources */,
+				2C6391F422E2C04F00B5EBE0 /* PodcastEpisodeListView.swift in Sources */,
+				2CA13C7322C8E3CF00CC6072 /* Enclosure.swift in Sources */,
+				2C6391E922E230E000B5EBE0 /* LocalRepository.swift in Sources */,
+				2C63920D22E4045A00B5EBE0 /* ArrayBond.swift in Sources */,
+				2CA13C7122C8D86100CC6072 /* Podcast.swift in Sources */,
+				2C122DEF22CBAFC300011558 /* PodcastShowCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		2CA13C5D22C8D7D700CC6072 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2CA13C5E22C8D7D700CC6072 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
+/* Begin PBXTargetDependency section */
+		2C6391C522E1995000B5EBE0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2CA13C5522C8D7D700CC6072 /* ExCast */;
+			targetProxy = 2C6391C422E1995000B5EBE0 /* PBXContainerItemProxy */;
 		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
 		2CA13C6222C8D7D800CC6072 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -162,6 +670,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2C6391C722E1995000B5EBE0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = ExCastTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCastTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExCast.app/ExCast";
+			};
+			name = Debug;
+		};
+		2C6391C822E1995000B5EBE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = ExCastTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCastTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExCast.app/ExCast";
+			};
+			name = Release;
+		};
 		2CA13C6622C8D7D800CC6072 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -280,11 +826,12 @@
 		};
 		2CA13C6922C8D7D800CC6072 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66394F62A7189D3149187C80 /* Pods-ExCast.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RY2377PP7S;
-				INFOPLIST_FILE = ExCast/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ExCast/resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -292,17 +839,18 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		2CA13C6A22C8D7D800CC6072 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 468059232EDB8A89A02BD943 /* Pods-ExCast.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RY2377PP7S;
-				INFOPLIST_FILE = ExCast/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ExCast/resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -310,13 +858,22 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2C6391C622E1995000B5EBE0 /* Build configuration list for PBXNativeTarget "ExCastTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C6391C722E1995000B5EBE0 /* Debug */,
+				2C6391C822E1995000B5EBE0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2CA13C5122C8D7D600CC6072 /* Build configuration list for PBXProject "ExCast" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
