@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MaterialComponents
 
 protocol EpisodePlayerControllerDelegate {
     func didTapPlaybackButton()
@@ -18,14 +19,14 @@ class EpisodePlayerController: UIView {
     
     @IBOutlet var baseView: UIView!
 
-    @IBOutlet weak var playbackButton: UIButton!
+    @IBOutlet weak var playbackButton: MDCFloatingButton!
 
-    @IBOutlet weak var forwardSkipButton: UIButton!
+    @IBOutlet weak var forwardSkipButton: MDCFloatingButton!
 
-    @IBOutlet weak var backwardSkipButton: UIButton!
+    @IBOutlet weak var backwardSkipButton: MDCFloatingButton!
 
     @IBOutlet weak var currentTimeLabel: UILabel!
-    
+
     @IBAction func didTapPlaybackButton(_ sender: Any) {
         self.delegate?.didTapPlaybackButton()
     }
@@ -45,11 +46,13 @@ class EpisodePlayerController: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.loadFromNib()
+        self.setupAppearences()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.loadFromNib()
+        self.setupAppearences()
     }
 
     // MARK: - Methods
@@ -61,6 +64,20 @@ class EpisodePlayerController: UIView {
 
         self.baseView.frame = self.bounds
         addSubview(baseView)
+    }
+
+    private func setupAppearences() {
+        self.playbackButton.setTitle("▶︎", for: .normal)
+        self.playbackButton.setTitleColor(.white, for: .normal)
+        self.playbackButton.setBackgroundColor(.black)
+
+        self.forwardSkipButton.setTitle("↪︎", for: .normal)
+        self.forwardSkipButton.setTitleColor(.white, for: .normal)
+        self.forwardSkipButton.setBackgroundColor(.black)
+        
+        self.backwardSkipButton.setTitle("↩︎", for: .normal)
+        self.backwardSkipButton.setTitleColor(.white, for: .normal)
+        self.backwardSkipButton.setBackgroundColor(.black)
     }
 
 }
