@@ -6,6 +6,7 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import MaterialComponents
 import UIKit
 
 protocol FeedUrlInputViewDelegate {
@@ -18,13 +19,13 @@ class FeedUrlInputView: UIView {
 
     @IBOutlet var baseView: UIView!
 
-    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var textField: MDCTextField!
     
     @IBAction func didChangeFeedUrl(_ sender: Any) {
         self.delegate?.didChange(feedUrl: self.textField.text)
     }
     
-    @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var button: MDCFloatingButton!
     
     @IBAction func didTapButton(_ sender: Any) {
         self.delegate?.didTapSend()
@@ -35,11 +36,13 @@ class FeedUrlInputView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.loadFromNib()
+        self.setupAppearances()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.loadFromNib()
+        self.setupAppearances()
     }
 
     // MARK: - Methods
@@ -51,6 +54,19 @@ class FeedUrlInputView: UIView {
 
         self.baseView.frame = self.bounds
         addSubview(baseView)
+    }
+
+    private func setupAppearances() {
+        self.button.translatesAutoresizingMaskIntoConstraints = false
+        self.button.setBackgroundColor(.black)
+        self.button.setTitle("FETCH", for: .normal)
+        self.button.setTitleColor(.white, for: .normal)
+        self.button.setTitle("FETCH", for: .disabled)
+
+        self.textField.translatesAutoresizingMaskIntoConstraints = false
+        self.textField.clearButtonMode = .unlessEditing
+        self.textField.backgroundColor = .white
+        self.textField.placeholder = "Feed URL"
     }
 
 }

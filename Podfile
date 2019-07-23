@@ -6,5 +6,6 @@ target 'ExCast' do
   use_frameworks!
 
   # Pods for ExCast
+  pod 'MaterialComponents'
 
 end
