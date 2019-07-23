@@ -46,7 +46,10 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
     // MARK: - PodcastEpisodeListViewDelegate
 
     func podcastEpisodeListView(didSelect episode: Podcast.Episode, at index: Int) {
-        Swift.print(episode.title)
+        let controller = AudioPlayer(episode.enclosure.url)
+        let viewModel = EpisodePlayerViewModel(controller: controller, episode: episode)
+        guard let navC = self.navigationController else { return }
+        navC.pushViewController(EpisodePlayerViewController(viewModel: viewModel), animated: true)
     }
 
 }

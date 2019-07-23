@@ -48,8 +48,6 @@ class DynamicArray<T> {
         let target = self.value[index]
         self.value.remove(at: index)
 
-        Swift.print(self.bonds)
-
         self.bonds.forEach { ($0.bond as? ArrayBond<T>)?.removeListener?([(index, target)]) }
     }
 

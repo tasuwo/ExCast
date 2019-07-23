@@ -85,7 +85,6 @@ extension BondableTableView where Self: UITableView {
         }
 
         let bond = ArrayBond<ContentType>(insert: { [unowned self] tuples in
-            Swift.print("inserted to TableView: \(tuples.map { $0.0 } )")
             DispatchQueue.main.async { [unowned self] in
                 tuples.forEach { [unowned self] tuple in
                     self.contents.insert(tuple.1, at: tuple.0)
@@ -101,7 +100,6 @@ extension BondableTableView where Self: UITableView {
                 self.reloadData()
             }
         }, remove: { [unowned self] tuples in
-            Swift.print("removed from TableView: \(tuples.map { $0.0 } )")
             DispatchQueue.main.async { [unowned self] in
                 tuples.forEach { [unowned self] tuple in self.contents.remove(at: tuple.0) }
                 let indexPathes = tuples.map { IndexPath(item: $0.0, section: 0) }
@@ -113,7 +111,6 @@ extension BondableTableView where Self: UITableView {
                 }
             }
         }, update: { [unowned self] tuples in
-            Swift.print("updated TableView: \(tuples.map { $0.0 } )")
             DispatchQueue.main.async { [unowned self] in
                 tuples.forEach { [unowned self] tuple in self.contents[tuple.0] = tuple.1 }
                 self.reloadData()

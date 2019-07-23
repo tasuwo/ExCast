@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EpisodePlayerController" customModule="ExCast" customModuleProvider="target">
+            <connections>
+                <outlet property="backwardSkipButton" destination="jsN-Bu-A8T" id="pQi-2z-kzn"/>
+                <outlet property="baseView" destination="QAb-YX-DwI" id="OBO-DD-aqZ"/>
+                <outlet property="currentTimeLabel" destination="szn-ki-oiZ" id="mL3-RP-ZZV"/>
+                <outlet property="forwardSkipButton" destination="eLE-mK-CwI" id="P42-dz-Jdj"/>
+                <outlet property="playbackButton" destination="Txv-iE-0Ca" id="0FY-ZN-Llj"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="QAb-YX-DwI">
+            <rect key="frame" x="0.0" y="0.0" width="400" height="150"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Txv-iE-0Ca">
+                    <rect key="frame" x="185" y="65" width="30" height="30"/>
+                    <state key="normal" title="Play"/>
+                    <connections>
+                        <action selector="didTapPlaybackButton:" destination="-1" eventType="touchUpInside" id="Zrz-5n-l5v"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eLE-mK-CwI">
+                    <rect key="frame" x="239" y="65" width="30" height="30"/>
+                    <state key="normal" title="Skip"/>
+                    <connections>
+                        <action selector="didTapSkipForwardButton:" destination="-1" eventType="touchUpInside" id="jHg-9y-fT9"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsN-Bu-A8T">
+                    <rect key="frame" x="131" y="65" width="30" height="30"/>
+                    <state key="normal" title="Skip"/>
+                    <connections>
+                        <action selector="didTapSkipBackwardButton:" destination="-1" eventType="touchUpInside" id="CYi-tJ-L0z"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="szn-ki-oiZ">
+                    <rect key="frame" x="187" y="45" width="27" height="12"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Txv-iE-0Ca" firstAttribute="centerX" secondItem="SL5-wA-IuN" secondAttribute="centerX" id="BDi-zq-GSx"/>
+                <constraint firstItem="Txv-iE-0Ca" firstAttribute="leading" secondItem="jsN-Bu-A8T" secondAttribute="trailing" constant="24" id="Bb5-Ib-AoU"/>
+                <constraint firstItem="eLE-mK-CwI" firstAttribute="leading" secondItem="Txv-iE-0Ca" secondAttribute="trailing" constant="24" id="CsE-f9-lVa"/>
+                <constraint firstItem="Txv-iE-0Ca" firstAttribute="centerY" secondItem="SL5-wA-IuN" secondAttribute="centerY" id="Jfy-vL-C9X"/>
+                <constraint firstItem="jsN-Bu-A8T" firstAttribute="centerY" secondItem="Txv-iE-0Ca" secondAttribute="centerY" id="Lim-6X-UUN"/>
+                <constraint firstItem="eLE-mK-CwI" firstAttribute="centerY" secondItem="Txv-iE-0Ca" secondAttribute="centerY" id="OSx-Jv-i2h"/>
+                <constraint firstItem="Txv-iE-0Ca" firstAttribute="top" secondItem="szn-ki-oiZ" secondAttribute="bottom" constant="8" id="TbG-1e-WRm"/>
+                <constraint firstItem="szn-ki-oiZ" firstAttribute="centerX" secondItem="SL5-wA-IuN" secondAttribute="centerX" id="vZO-J5-xEE"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="SL5-wA-IuN"/>
+            <point key="canvasLocation" x="-157.97101449275362" y="-123.88392857142857"/>
+        </view>
+    </objects>
+</document>

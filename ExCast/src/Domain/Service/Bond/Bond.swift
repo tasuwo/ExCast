@@ -40,8 +40,22 @@ class Dynamic<T> {
     }
 
     var bonds: [BondBox<T>] = []
+    private var bond: Bond<T>! = nil
+    private var dynamics: [Dynamic<String>] = []
 
     init(_ v: T) {
         value = v
+    }
+
+    func map(_ f: @escaping (T) -> String) -> Dynamic<String> {
+        let dynamic = Dynamic<String>(f(self.value))
+
+        self.dynamics.append(dynamic)
+        self.bond = Bond<T>() { v in
+            dynamic.value = f(v)
+        }
+        self.bonds.append(BondBox(bond))
+
+        return dynamic
     }
 }
