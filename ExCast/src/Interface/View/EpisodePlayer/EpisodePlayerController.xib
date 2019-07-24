@@ -17,6 +17,7 @@
                 <outlet property="currentTimeLabel" destination="szn-ki-oiZ" id="mL3-RP-ZZV"/>
                 <outlet property="forwardSkipButton" destination="eLE-mK-CwI" id="P42-dz-Jdj"/>
                 <outlet property="playbackButton" destination="Txv-iE-0Ca" id="0FY-ZN-Llj"/>
+                <outlet property="playbackSlidebar" destination="UiQ-hw-Q4m" id="Xtw-B2-hfe"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -25,47 +26,58 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Txv-iE-0Ca" customClass="MDCFloatingButton">
-                    <rect key="frame" x="185" y="65" width="30" height="30"/>
+                    <rect key="frame" x="185" y="95" width="30" height="30"/>
                     <state key="normal" title="Play"/>
                     <connections>
                         <action selector="didTapPlaybackButton:" destination="-1" eventType="touchUpInside" id="Zrz-5n-l5v"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eLE-mK-CwI" customClass="MDCFloatingButton">
-                    <rect key="frame" x="239" y="65" width="30" height="30"/>
+                    <rect key="frame" x="241" y="95" width="30" height="30"/>
                     <state key="normal" title="Skip"/>
                     <connections>
                         <action selector="didTapSkipForwardButton:" destination="-1" eventType="touchUpInside" id="jHg-9y-fT9"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsN-Bu-A8T" customClass="MDCFloatingButton">
-                    <rect key="frame" x="131" y="65" width="30" height="30"/>
+                    <rect key="frame" x="131" y="95" width="30" height="30"/>
                     <state key="normal" title="Skip"/>
                     <connections>
                         <action selector="didTapSkipBackwardButton:" destination="-1" eventType="touchUpInside" id="CYi-tJ-L0z"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="szn-ki-oiZ">
-                    <rect key="frame" x="186.5" y="45" width="27" height="12"/>
+                    <rect key="frame" x="353" y="70" width="27" height="12"/>
                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="UiQ-hw-Q4m">
+                    <rect key="frame" x="18" y="32" width="364" height="31"/>
+                    <connections>
+                        <action selector="onPlaybackTimeDidChage:forEvent:" destination="-1" eventType="valueChanged" id="s4C-QI-bCN"/>
+                    </connections>
+                </slider>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="Txv-iE-0Ca" firstAttribute="centerX" secondItem="SL5-wA-IuN" secondAttribute="centerX" id="BDi-zq-GSx"/>
-                <constraint firstItem="Txv-iE-0Ca" firstAttribute="leading" secondItem="jsN-Bu-A8T" secondAttribute="trailing" constant="24" id="Bb5-Ib-AoU"/>
-                <constraint firstItem="eLE-mK-CwI" firstAttribute="leading" secondItem="Txv-iE-0Ca" secondAttribute="trailing" constant="24" id="CsE-f9-lVa"/>
-                <constraint firstItem="Txv-iE-0Ca" firstAttribute="centerY" secondItem="SL5-wA-IuN" secondAttribute="centerY" id="Jfy-vL-C9X"/>
-                <constraint firstItem="jsN-Bu-A8T" firstAttribute="centerY" secondItem="Txv-iE-0Ca" secondAttribute="centerY" id="Lim-6X-UUN"/>
-                <constraint firstItem="eLE-mK-CwI" firstAttribute="centerY" secondItem="Txv-iE-0Ca" secondAttribute="centerY" id="OSx-Jv-i2h"/>
-                <constraint firstItem="Txv-iE-0Ca" firstAttribute="top" secondItem="szn-ki-oiZ" secondAttribute="bottom" constant="8" id="TbG-1e-WRm"/>
-                <constraint firstItem="szn-ki-oiZ" firstAttribute="centerX" secondItem="SL5-wA-IuN" secondAttribute="centerX" id="vZO-J5-xEE"/>
+                <constraint firstItem="UiQ-hw-Q4m" firstAttribute="leading" secondItem="SL5-wA-IuN" secondAttribute="leading" constant="20" id="AqE-xr-5Jn"/>
+                <constraint firstItem="Txv-iE-0Ca" firstAttribute="centerX" secondItem="SL5-wA-IuN" secondAttribute="centerX" id="CNZ-EH-kEa"/>
+                <constraint firstItem="szn-ki-oiZ" firstAttribute="trailing" secondItem="UiQ-hw-Q4m" secondAttribute="trailing" id="IjZ-dK-bPh"/>
+                <constraint firstItem="eLE-mK-CwI" firstAttribute="centerY" secondItem="Txv-iE-0Ca" secondAttribute="centerY" id="Osr-Lb-Xeu"/>
+                <constraint firstItem="SL5-wA-IuN" firstAttribute="top" secondItem="UiQ-hw-Q4m" secondAttribute="top" constant="12" id="PfM-AD-8xz"/>
+                <constraint firstItem="jsN-Bu-A8T" firstAttribute="centerY" secondItem="Txv-iE-0Ca" secondAttribute="centerY" id="Uk8-a3-Kbr"/>
+                <constraint firstItem="Txv-iE-0Ca" firstAttribute="bottom" secondItem="SL5-wA-IuN" secondAttribute="bottom" constant="9" id="ZzK-IF-bZQ"/>
+                <constraint firstItem="eLE-mK-CwI" firstAttribute="leading" secondItem="Txv-iE-0Ca" secondAttribute="trailing" constant="26" id="dNF-Z6-Ijr"/>
+                <constraint firstItem="SL5-wA-IuN" firstAttribute="bottom" secondItem="szn-ki-oiZ" secondAttribute="bottom" constant="34" id="etW-jI-8yX"/>
+                <constraint firstItem="SL5-wA-IuN" firstAttribute="trailing" secondItem="UiQ-hw-Q4m" secondAttribute="trailing" constant="20" id="gL3-kl-84r"/>
+                <constraint firstItem="UiQ-hw-Q4m" firstAttribute="centerX" secondItem="SL5-wA-IuN" secondAttribute="centerX" id="gxW-6C-xdr"/>
+                <constraint firstItem="Txv-iE-0Ca" firstAttribute="leading" secondItem="jsN-Bu-A8T" secondAttribute="trailing" constant="24" id="wjE-oH-ewo"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
             <viewLayoutGuide key="safeArea" id="SL5-wA-IuN"/>
             <point key="canvasLocation" x="-157.97101449275362" y="-123.88392857142857"/>
         </view>

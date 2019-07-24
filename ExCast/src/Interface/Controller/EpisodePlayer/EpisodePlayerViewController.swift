@@ -31,10 +31,14 @@ class EpisodePlayerViewController: UIViewController {
 
         self.playerController.delegate = self
         
+        // TODO:
+        self.playerController.playbackSlidebar.maximumValue = Float(self.viewModel.episode.duration!)
+
         self.viewModel.isPrepared ->> self.playerController.playbackButton
         self.viewModel.isPrepared ->> self.playerController.forwardSkipButton
         self.viewModel.isPrepared ->> self.playerController.backwardSkipButton
-        self.viewModel.currentTime.map { String($0) } ->> self.playerController.currentTimeLabel
+        self.viewModel.displayCurrentTime.map { String($0) } ->> self.playerController.currentTimeLabel
+        self.viewModel.displayCurrentTime.map { Float($0) } ->> self.playerController.playbackSlidebar
 
         self.viewModel.setup()
     }
@@ -55,6 +59,18 @@ extension EpisodePlayerViewController: EpisodePlayerControllerDelegate {
 
     func didTapSkipBackwardButton() {
         self.viewModel.skipBackward()
+    }
+
+    func didGrabbedPlaybackSlider() {
+        self.viewModel.isSliderGrabbed.value = true
+    }
+
+    func didReleasedPlaybackSlider() {
+        self.viewModel.isSliderGrabbed.value = false
+    }
+
+    func didChangePlaybackSliderValue(to time: TimeInterval) {
+        self.viewModel.displayCurrentTime.value = time
     }
 
 }

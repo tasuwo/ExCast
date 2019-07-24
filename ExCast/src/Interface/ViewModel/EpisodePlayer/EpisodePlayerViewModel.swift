@@ -9,7 +9,7 @@
 import Foundation
 
 struct EpisodePlayerViewModel {
-    private let episode: Podcast.Episode
+    let episode: Podcast.Episode
     private var commands: AudioPlayerControlCommands
 
     private let forwardSkipDuration: Double = 10
@@ -18,7 +18,11 @@ struct EpisodePlayerViewModel {
     var isPlaying: Dynamic<Bool>
     var isPrepared: Dynamic<Bool>
     var currentTime: Dynamic<Double>
-    // 表示中の時刻とプレーヤーの時刻は別に作った方が良さそう
+    var displayCurrentTime: Dynamic<Double> = Dynamic(0)
+    var isSliderGrabbed: Dynamic<Bool>
+
+    private var currentTimeBond: Bond<Double>!
+    private var isSliderGrabbedBond: Bond<Bool>!
 
     init(controller: AudioPlayerControlCommands, episode: Podcast.Episode) {
         self.commands = controller
@@ -27,6 +31,7 @@ struct EpisodePlayerViewModel {
         self.isPlaying = Dynamic(false)
         self.isPrepared = Dynamic(false)
         self.currentTime = Dynamic(0)
+        self.isSliderGrabbed = Dynamic(false)
     }
 
     // MARK: - Methods
@@ -39,6 +44,23 @@ struct EpisodePlayerViewModel {
 
         self.commands.delegate = self
         self.commands.prepareToPlay()
+
+        // Bind
+        self.currentTimeBond = Bond() { [self] currentTime in
+            self.displayCurrentTime.value = currentTime
+        }
+        self.currentTimeBond.bind(self.currentTime)
+
+        self.isSliderGrabbedBond = Bond() { [self] isGrabbed in
+            if isGrabbed {
+                self.currentTimeBond.release(self.currentTime)
+            } else {
+                // TODO: シーク完了を待ってからバインドすべき
+                self.commands.seek(to: self.displayCurrentTime.value)
+                self.currentTimeBond.bind(self.currentTime)
+            }
+        }
+        self.isSliderGrabbedBond.bind(self.isSliderGrabbed)
     }
 
     func playback() {

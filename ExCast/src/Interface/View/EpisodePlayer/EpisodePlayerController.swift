@@ -13,11 +13,18 @@ protocol EpisodePlayerControllerDelegate {
     func didTapPlaybackButton()
     func didTapSkipForwardButton()
     func didTapSkipBackwardButton()
+
+    func didGrabbedPlaybackSlider()
+    func didReleasedPlaybackSlider()
+
+    func didChangePlaybackSliderValue(to time: TimeInterval)
 }
 
 class EpisodePlayerController: UIView {
     
     @IBOutlet var baseView: UIView!
+
+    @IBOutlet weak var playbackSlidebar: UISlider!
 
     @IBOutlet weak var playbackButton: MDCFloatingButton!
 
@@ -37,6 +44,26 @@ class EpisodePlayerController: UIView {
 
     @IBAction func didTapSkipBackwardButton(_ sender: Any) {
         self.delegate?.didTapSkipBackwardButton()
+    }
+
+    @IBAction func onPlaybackTimeDidChage(_ sender: Any, forEvent event: UIEvent) {
+        guard let slider = sender as? UISlider else { return }
+        guard let touches = event.allTouches else { return }
+
+        for touch in touches {
+            switch (touch.phase) {
+            case .began:
+                self.delegate.didGrabbedPlaybackSlider()
+            case .moved:
+                self.delegate.didChangePlaybackSliderValue(to: TimeInterval(slider.value))
+                break
+            case .ended:
+                self.delegate.didReleasedPlaybackSlider()
+            default:
+                break
+            }
+
+        }
     }
 
     var delegate: EpisodePlayerControllerDelegate!
@@ -74,7 +101,7 @@ class EpisodePlayerController: UIView {
         self.forwardSkipButton.setTitle("↪︎", for: .normal)
         self.forwardSkipButton.setTitleColor(.white, for: .normal)
         self.forwardSkipButton.setBackgroundColor(.black)
-        
+
         self.backwardSkipButton.setTitle("↩︎", for: .normal)
         self.backwardSkipButton.setTitleColor(.white, for: .normal)
         self.backwardSkipButton.setBackgroundColor(.black)
