@@ -87,10 +87,27 @@ class PodcastFactory: NSObject {
         let description = (node |> "description")?.value
         let linkStr = (node |> "link")?.value
         let link = linkStr != nil ? URL(string: linkStr!) : nil
-        let duration = (node |> "itunes:duration")?.value
+        let duration = parseDuration((node |> "itunes:duration")?.value)
         
         // TODO: duration, artwork
 
         return Podcast.Episode(title: title, enclosure: enclosure, pubDate: pubDate, description: description, duration: duration, link: link, artwork: nil)
+    }
+
+    // TODO: duration の表現は他にもあるので対応したい
+    private func parseDuration(_ str: String?) -> Int? {
+        guard let durationStr = str else { return nil }
+
+        // TODO: 数値変換に失敗した際の処理
+        let parts = durationStr.split(separator: ":").reversed().map { Int($0)! }
+
+        let duration = parts.enumerated().reduce(0) { prev, val in
+            if val.offset == 0 {
+                return prev + val.element
+            } else {
+                return prev + val.element * val.offset * 60
+            }
+        }
+        return duration
     }
 }
