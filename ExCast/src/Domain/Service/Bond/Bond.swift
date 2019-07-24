@@ -23,6 +23,10 @@ class Bond<T> {
     func bind(_ dynamic: Dynamic<T>) {
         dynamic.bonds.append(BondBox(self))
     }
+
+    func release(_ dynamic: Dynamic<T>) {
+        dynamic.bonds.removeAll(where: { [unowned self] box in box.bond === self })
+    }
 }
 
 // Dynamic に Bond を強参照させないためのラッパー
@@ -40,20 +44,21 @@ class Dynamic<T> {
     }
 
     var bonds: [BondBox<T>] = []
-    private var bond: Bond<T>! = nil
-    private var dynamics: [Dynamic<String>] = []
+    private var nestedBonds: [Bond<T>] = []
+    private var dynamics: [Any] = []
 
     init(_ v: T) {
         value = v
     }
 
-    func map(_ f: @escaping (T) -> String) -> Dynamic<String> {
-        let dynamic = Dynamic<String>(f(self.value))
+    func map<U>(_ transform: @escaping (T) -> U) -> Dynamic<U> {
+        let dynamic = Dynamic<U>(transform(self.value))
 
         self.dynamics.append(dynamic)
-        self.bond = Bond<T>() { v in
-            dynamic.value = f(v)
+        let bond = Bond<T>() { v in
+            dynamic.value = transform(v)
         }
+        self.nestedBonds.append(bond)
         self.bonds.append(BondBox(bond))
 
         return dynamic
