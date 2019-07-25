@@ -18,7 +18,7 @@ protocol AudioPlayerControlCommands {
 
     func stop()
 
-    func seek(to time: TimeInterval)
+    func seek(to time: TimeInterval, _ completion: @escaping (Bool) -> Void)
 
     func skip(direction: AudioPlayer.SkipDirection, duration seconds: TimeInterval)
 
@@ -167,9 +167,9 @@ extension AudioPlayer: AudioPlayerControlCommands {
         // TODO:
     }
 
-    func seek(to seconds: TimeInterval) {
+    func seek(to seconds: TimeInterval, _ completion: @escaping (Bool) -> Void) {
         let time = CMTimeMakeWithSeconds(Float64(seconds), preferredTimescale: 100)
-        self.player.seek(to: time)
+        self.player.seek(to: time, completionHandler: completion)
     }
 
     func skip(direction: SkipDirection, duration seconds: TimeInterval) {

@@ -55,9 +55,13 @@ struct EpisodePlayerViewModel {
             if isGrabbed {
                 self.currentTimeBond.release(self.currentTime)
             } else {
-                // TODO: シーク完了を待ってからバインドすべき
-                self.commands.seek(to: self.displayCurrentTime.value)
-                self.currentTimeBond.bind(self.currentTime)
+                self.commands.seek(to: self.displayCurrentTime.value) { [self] result in
+                    if result == false {
+                        // TODO: Error handling
+                    }
+
+                    self.currentTimeBond.bind(self.currentTime)
+                }
             }
         }
         self.isSliderGrabbedBond.bind(self.isSliderGrabbed)
