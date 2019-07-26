@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RootTabBarController: UITabBarController {
+class AppRootTabBarController: UITabBarController {
 
     // MARK: - Lifecycle
 
