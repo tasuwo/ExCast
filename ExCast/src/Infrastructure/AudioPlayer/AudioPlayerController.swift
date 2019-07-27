@@ -135,24 +135,25 @@ extension AudioPlayer: AudioPlayerControlCommands {
     func prepareToPlay() {
         DispatchQueue.global(qos: .background).async {
             let asset = AVAsset(url: self.contentUrl)
+            let playerItem = AVPlayerItem(asset: asset)
+            self.playerItem = playerItem
 
             asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.isPlayable)], completionHandler: { [weak self] in
                 guard let self = self else { return }
 
                 var error: NSError? = nil
                 let status = asset.statusOfValue(forKey: #keyPath(AVAsset.isPlayable), error: &error)
-                let playerItem = AVPlayerItem(asset: asset)
 
                 switch status {
                 case .loaded:
                     DispatchQueue.main.async {
                         self.player = AVPlayer(playerItem: playerItem)
+                        self.player.automaticallyWaitsToMinimizeStalling = false
                         self.addPeriodicTimeObserver()
                         playerItem.addObserver(self,
-                                                    forKeyPath: #keyPath(AVPlayerItem.status),
-                                                    options: [.old, .new],
-                                                    context: &kAudioPlayerContext)
-                        self.playerItem = playerItem
+                                               forKeyPath: #keyPath(AVPlayerItem.status),
+                                               options: [.old, .new],
+                                               context: &kAudioPlayerContext)
                     }
                 case .failed:
                     // TODO:
