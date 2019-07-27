@@ -10,12 +10,15 @@ import UIKit
 
 class EpisodePlayerViewController: UIViewController {
 
-    @IBOutlet weak var playerController: EpisodePlayerController!
+    @IBOutlet weak var modalView: EpisodePlayerModalView!
+
+    private unowned var modalViewDelegate: EpisodePlayerModalViewDelegate
     private var viewModel: EpisodePlayerViewModel
 
     // MARK: - Initializer
 
-    init(viewModel: EpisodePlayerViewModel) {
+    init(modalViewDelegate: EpisodePlayerModalViewDelegate, viewModel: EpisodePlayerViewModel) {
+        self.modalViewDelegate = modalViewDelegate
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -29,16 +32,17 @@ class EpisodePlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.playerController.delegate = self
-        
-        // TODO:
-        self.playerController.playbackSlidebar.maximumValue = Float(self.viewModel.episode.duration!)
+        self.modalView.delegate = self.modalViewDelegate
+        self.modalView.controller.delegate = self
 
-        self.viewModel.isPrepared ->> self.playerController.playbackButton
-        self.viewModel.isPrepared ->> self.playerController.forwardSkipButton
-        self.viewModel.isPrepared ->> self.playerController.backwardSkipButton
-        self.viewModel.displayCurrentTime.map { String($0) } ->> self.playerController.currentTimeLabel
-        self.viewModel.displayCurrentTime.map { Float($0) } ->> self.playerController.playbackSlidebar
+        // TODO:
+        self.modalView.controller.playbackSlidebar.maximumValue = Float(self.viewModel.episode.duration!)
+
+        self.viewModel.isPrepared ->> self.modalView.controller.playbackButton
+        self.viewModel.isPrepared ->> self.modalView.controller.forwardSkipButton
+        self.viewModel.isPrepared ->> self.modalView.controller.backwardSkipButton
+        self.viewModel.displayCurrentTime.map { String($0) } ->> self.modalView.controller.currentTimeLabel
+        self.viewModel.displayCurrentTime.map { Float($0) } ->> self.modalView.controller.playbackSlidebar
 
         self.viewModel.setup()
     }

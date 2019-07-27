@@ -11,11 +11,14 @@ import UIKit
 class PodcastShowListViewController: UIViewController {
 
     @IBOutlet weak var showListView: PodcastShowListView!
-    private let viewModel: ShowListViewModel!
+
+    private unowned let modalViewDelegate: EpisodePlayerModalViewDelegate
+    private let viewModel: ShowListViewModel
 
     // MARK: - Initializer
 
-    init(viewModel: ShowListViewModel) {
+    init(modalViewDelegate: EpisodePlayerModalViewDelegate, viewModel: ShowListViewModel) {
+        self.modalViewDelegate = modalViewDelegate
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -62,7 +65,7 @@ extension PodcastShowListViewController: PodcastShowListViewDelegate {
     
     func podcastShowListView(didSelect podcast: Podcast, at index: Int) {
         guard let navC = self.navigationController else { return }
-        navC.pushViewController(PodcastEpisodeListViewController(podcast: podcast), animated: true)
+        navC.pushViewController(PodcastEpisodeListViewController(modalViewDelegate: self.modalViewDelegate, podcast: podcast), animated: true)
     }
 
     func podcastShowListView(didDelete podcast: Podcast, at index: Int) {

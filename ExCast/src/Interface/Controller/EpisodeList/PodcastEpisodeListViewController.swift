@@ -10,11 +10,14 @@ import UIKit
 class PodcastEpisodeListViewController: UIViewController {
 
     @IBOutlet weak var episodeListView: PodcastEpisodeListView!
-    private var viewModel: EpisodeListViewModel!
+
+    private unowned let modalViewDelegate: EpisodePlayerModalViewDelegate
+    private var viewModel: EpisodeListViewModel
 
     // MARK: - Initializer
 
-    init(podcast: Podcast) {
+    init(modalViewDelegate: EpisodePlayerModalViewDelegate, podcast: Podcast) {
+        self.modalViewDelegate = modalViewDelegate
         // TODO: DI
         self.viewModel = EpisodeListViewModel(podcast: podcast, repository: PodcastGateway(session: URLSession.shared, factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
 
@@ -46,10 +49,7 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
     // MARK: - PodcastEpisodeListViewDelegate
 
     func podcastEpisodeListView(didSelect episode: Podcast.Episode, at index: Int) {
-        let controller = AudioPlayer(episode.enclosure.url)
-        let viewModel = EpisodePlayerViewModel(controller: controller, episode: episode)
-        guard let navC = self.navigationController else { return }
-        navC.pushViewController(EpisodePlayerViewController(viewModel: viewModel), animated: true)
+        modalViewDelegate.show(episode: episode)
     }
 
 }

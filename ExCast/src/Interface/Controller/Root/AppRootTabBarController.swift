@@ -10,13 +10,26 @@ import UIKit
 
 class AppRootTabBarController: UITabBarController {
 
+    private unowned let modalViewDelegate: EpisodePlayerModalViewDelegate
+
+    // MARK: - Initializer
+
+    init(modalViewDelegate: EpisodePlayerModalViewDelegate) {
+        self.modalViewDelegate = modalViewDelegate
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         // TODO: DI
         let viewModel = ShowListViewModel(repository: PodcastGateway(session: URLSession.shared, factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
 
-        let showListVC = PodcastShowListViewController(viewModel: viewModel)
+        let showListVC = PodcastShowListViewController(modalViewDelegate: self.modalViewDelegate, viewModel: viewModel)
         showListVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
         let showListNVC = UINavigationController(rootViewController: showListVC)
 
