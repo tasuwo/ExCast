@@ -51,8 +51,10 @@ protocol EpisodePlayerModalLaytoutController: AnyObject {
 extension AppRootViewController: EpisodePlayerModalLaytoutController {
 
     func show(episode: Podcast.Episode) {
-        if let _ = self.playerModalView {
-            self.dismiss()
+        if let view = self.playerModalView {
+            let player = AudioPlayer(episode.enclosure.url)
+            view.reload(by: EpisodePlayerViewModel(controller: player, episode: episode))
+            return
         }
 
         let player = AudioPlayer(episode.enclosure.url)

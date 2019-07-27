@@ -42,6 +42,19 @@ class EpisodePlayerViewController: UIViewController {
         // TODO: modal 関連処理は分離したい
         self.modalViewModel.state ->> self.modalView.layoutBond
 
+        self.bindCurrentPlayerViewModelToView()
+    }
+
+    // MARK: - Methods
+
+    func reload(by model: EpisodePlayerViewModel) {
+        self.playerViewModel = nil
+        self.playerViewModel = model
+
+        self.bindCurrentPlayerViewModelToView()
+    }
+
+    private func bindCurrentPlayerViewModelToView() {
         // TODO:
         self.modalView.controller.playbackSlidebar.maximumValue = Float(self.playerViewModel.episode.duration!)
 
