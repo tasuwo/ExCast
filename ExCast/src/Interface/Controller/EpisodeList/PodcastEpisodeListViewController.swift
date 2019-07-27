@@ -50,7 +50,7 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
     // MARK: - PodcastEpisodeListViewDelegate
 
     func podcastEpisodeListView(didSelect episode: Podcast.Episode, at index: Int) {
-        layoutController.show(episode: episode)
+        layoutController.show(show: self.viewModel.show.value, episode: episode)
     }
 
 }

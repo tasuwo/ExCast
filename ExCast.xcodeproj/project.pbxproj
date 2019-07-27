@@ -36,6 +36,7 @@
 		2C8D688022EB6B2E00CE9660 /* EpisodePlayerModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8D687F22EB6B2E00CE9660 /* EpisodePlayerModalView.swift */; };
 		2C8D688222EB6B3D00CE9660 /* EpisodePlayerModalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C8D688122EB6B3D00CE9660 /* EpisodePlayerModalView.xib */; };
 		2C8D688722EC0BF900CE9660 /* EpisodePlayerModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8D688622EC0BF900CE9660 /* EpisodePlayerModalViewModel.swift */; };
+		2C8D688922EC778700CE9660 /* RemoteCommandHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8D688822EC778700CE9660 /* RemoteCommandHandler.swift */; };
 		2CA13C5A22C8D7D700CC6072 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C5922C8D7D700CC6072 /* AppDelegate.swift */; };
 		2CA13C5C22C8D7D700CC6072 /* FeedUrlInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C5B22C8D7D700CC6072 /* FeedUrlInputViewController.swift */; };
 		2CA13C6122C8D7D800CC6072 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CA13C6022C8D7D800CC6072 /* Assets.xcassets */; };
@@ -100,6 +101,7 @@
 		2C8D687F22EB6B2E00CE9660 /* EpisodePlayerModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerModalView.swift; sourceTree = "<group>"; };
 		2C8D688122EB6B3D00CE9660 /* EpisodePlayerModalView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodePlayerModalView.xib; sourceTree = "<group>"; };
 		2C8D688622EC0BF900CE9660 /* EpisodePlayerModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerModalViewModel.swift; sourceTree = "<group>"; };
+		2C8D688822EC778700CE9660 /* RemoteCommandHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCommandHandler.swift; sourceTree = "<group>"; };
 		2CA13C5622C8D7D700CC6072 /* ExCast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExCast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CA13C5922C8D7D700CC6072 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CA13C5B22C8D7D700CC6072 /* FeedUrlInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUrlInputViewController.swift; sourceTree = "<group>"; };
@@ -362,6 +364,14 @@
 			path = Root;
 			sourceTree = "<group>";
 		};
+		2C8D688A22EC830000CE9660 /* RemoteCommand */ = {
+			isa = PBXGroup;
+			children = (
+				2C8D688822EC778700CE9660 /* RemoteCommandHandler.swift */,
+			);
+			path = RemoteCommand;
+			sourceTree = "<group>";
+		};
 		2CA13C4D22C8D7D600CC6072 = {
 			isa = PBXGroup;
 			children = (
@@ -435,6 +445,7 @@
 		2CA13C7622C8E77B00CC6072 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				2C8D688A22EC830000CE9660 /* RemoteCommand */,
 				2CCEC3CD22E47A990055D27A /* AudioPlayer */,
 				2C6391ED22E2BA6A00B5EBE0 /* Repository */,
 				2C6391CF22E1BECC00B5EBE0 /* Gateway */,
@@ -756,6 +767,7 @@
 				2C63920D22E4045A00B5EBE0 /* ArrayBond.swift in Sources */,
 				2CA13C7122C8D86100CC6072 /* Podcast.swift in Sources */,
 				2C122DEF22CBAFC300011558 /* PodcastShowCell.swift in Sources */,
+				2C8D688922EC778700CE9660 /* RemoteCommandHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

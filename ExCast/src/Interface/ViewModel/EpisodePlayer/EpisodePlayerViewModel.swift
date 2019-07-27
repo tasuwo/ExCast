@@ -7,10 +7,13 @@
 //
 
 import Foundation
+import MediaPlayer
 
 class EpisodePlayerViewModel {
+    let show: Podcast.Show
     let episode: Podcast.Episode
-    private var commands: AudioPlayerControlCommands
+    private let commands: AudioPlayerControlCommands
+    private let commandCenter: RemoteCommandHandler
 
     private let forwardSkipDuration: Double = 10
     private let backwardSkipDuration: Double = 10
@@ -24,9 +27,18 @@ class EpisodePlayerViewModel {
     private var currentTimeBond: Bond<Double>!
     private var isSliderGrabbedBond: Bond<Bool>!
 
-    init(controller: AudioPlayerControlCommands, episode: Podcast.Episode) {
-        self.commands = controller
+    init(show: Podcast.Show, episode: Podcast.Episode, controller: AudioPlayerControlCommands) {
+        self.show = show
         self.episode = episode
+        self.commands = controller
+        // TODO: DI
+        self.commandCenter = RemoteCommandHandler(
+            show: self.show,
+            episode: self.episode,
+            commandCenter: MPRemoteCommandCenter.shared(),
+            player: self.commands,
+            infoCenter: MPNowPlayingInfoCenter.default()
+        )
 
         self.isPlaying = Dynamic(false)
         self.isPrepared = Dynamic(false)
@@ -42,7 +54,8 @@ class EpisodePlayerViewModel {
         self.isPrepared.value = false
         self.currentTime.value = 0
 
-        self.commands.delegate = self
+        self.commands.add(delegate: self)
+        self.commands.add(delegate: self.commandCenter)
         self.commands.prepareToPlay()
 
         // Bind
@@ -76,11 +89,11 @@ class EpisodePlayerViewModel {
     }
 
     func skipForward() {
-        self.commands.skip(direction: .forward, duration: self.forwardSkipDuration)
+        self.commands.skip(direction: .forward, duration: self.forwardSkipDuration) { _ in }
     }
 
     func skipBackward() {
-        self.commands.skip(direction: .backward, duration: self.backwardSkipDuration)
+        self.commands.skip(direction: .backward, duration: self.backwardSkipDuration) { _ in }
     }
 
 }

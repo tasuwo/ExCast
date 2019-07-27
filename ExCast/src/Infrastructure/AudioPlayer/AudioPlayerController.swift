@@ -8,7 +8,7 @@
 
 import AVFoundation
 
-protocol AudioPlayerControlCommands {
+protocol AudioPlayerControlCommands: AnyObject {
     func prepareToPlay()
 
     func play()
@@ -19,9 +19,9 @@ protocol AudioPlayerControlCommands {
 
     func seek(to time: TimeInterval, _ completion: @escaping (Bool) -> Void)
 
-    func skip(direction: AudioPlayer.SkipDirection, duration seconds: TimeInterval)
+    func skip(direction: AudioPlayer.SkipDirection, duration seconds: TimeInterval, _ completion: @escaping (Bool) -> Void)
 
-    var delegate: AudioPlayerDelegate? { get set }
+    func add(delegate: AudioPlayerDelegate)
 }
 
 protocol AudioPlayerDelegate: AnyObject {
@@ -34,13 +34,18 @@ protocol AudioPlayerDelegate: AnyObject {
 
 private var kAudioPlayerContext: UInt8 = 0
 
+fileprivate class DelegateWrapper {
+    weak var delegate: AudioPlayerDelegate?
+    init(_ d: AudioPlayerDelegate) { delegate = d }
+}
+
 class AudioPlayer: NSObject {
     private let contentUrl: URL
     private weak var playerItem: AVPlayerItem!
     private var player: AVPlayer!
     private var timeObserverToken: Any?
 
-    weak var delegate: AudioPlayerDelegate?
+    fileprivate var delegates: [DelegateWrapper] = []
 
     enum PlayingState {
         case playing
@@ -92,7 +97,7 @@ class AudioPlayer: NSObject {
 
             switch status {
             case .readyToPlay:
-                self.delegate?.didFinishPrepare()
+                self.delegates.forEach { $0.delegate?.didFinishPrepare() }
             case .failed:
                 // TODO:
                 break
@@ -106,10 +111,11 @@ class AudioPlayer: NSObject {
 
     private func addPeriodicTimeObserver() {
         let timeScale = CMTimeScale(NSEC_PER_SEC)
-        let time = CMTime(seconds: 0.5, preferredTimescale: timeScale)
+        let time = CMTime(seconds: 0.1, preferredTimescale: timeScale)
 
         self.timeObserverToken = player.addPeriodicTimeObserver(forInterval: time, queue: .main) { [weak self] time in
-            self?.delegate?.didChangePlaybackTime(to: CMTimeGetSeconds(time))
+            guard let self = self else { return }
+            self.delegates.forEach { $0.delegate?.didChangePlaybackTime(to: time.seconds) }
         }
     }
 
@@ -121,6 +127,7 @@ class AudioPlayer: NSObject {
     }
 }
 
+// TODO: player.rate を見て失敗を通知する
 extension AudioPlayer: AudioPlayerControlCommands {
 
     // MARK: - AudioPlayerControlCommands
@@ -163,12 +170,12 @@ extension AudioPlayer: AudioPlayerControlCommands {
 
     func play() {
         self.player.play()
-        self.delegate?.didChangePlayingState(to: .playing)
+        self.delegates.forEach { $0.delegate?.didChangePlayingState(to: .playing) }
     }
 
     func pause() {
         self.player.pause()
-        self.delegate?.didChangePlayingState(to: .pause)
+        self.delegates.forEach { $0.delegate?.didChangePlayingState(to: .pause) }
     }
 
     func stop() {
@@ -180,7 +187,7 @@ extension AudioPlayer: AudioPlayerControlCommands {
         self.player.seek(to: time, completionHandler: completion)
     }
 
-    func skip(direction: SkipDirection, duration seconds: TimeInterval) {
+    func skip(direction: SkipDirection, duration seconds: TimeInterval, _ completion: @escaping (Bool) -> Void) {
         let duration = CMTimeMakeWithSeconds(Float64(seconds), preferredTimescale: 100)
 
         let time: CMTime
@@ -192,9 +199,13 @@ extension AudioPlayer: AudioPlayerControlCommands {
             let tmp = player.currentTime() + duration
             time = tmp > playerItem.duration ? playerItem.duration : tmp
         }
-        player.seek(to: time)
+        self.player.seek(to: time, completionHandler: completion)
 
-        self.delegate?.didChangePlaybackTime(to: CMTimeGetSeconds(player.currentTime()))
+        self.delegates.forEach { $0.delegate?.didChangePlaybackTime(to: CMTimeGetSeconds(player.currentTime())) }
+    }
+
+    func add(delegate: AudioPlayerDelegate) {
+        self.delegates.append(DelegateWrapper(delegate))
     }
 
 }

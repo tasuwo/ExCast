@@ -38,7 +38,7 @@ class AppRootViewController: UIViewController {
 
 protocol EpisodePlayerModalLaytoutController: AnyObject {
 
-    func show(episode: Podcast.Episode)
+    func show(show: Podcast.Show, episode: Podcast.Episode)
 
     func dismiss()
 
@@ -50,17 +50,17 @@ protocol EpisodePlayerModalLaytoutController: AnyObject {
 
 extension AppRootViewController: EpisodePlayerModalLaytoutController {
 
-    func show(episode: Podcast.Episode) {
+    func show(show: Podcast.Show, episode: Podcast.Episode) {
         if let view = self.playerModalView {
             let player = AudioPlayer(episode.enclosure.url)
-            view.reload(by: EpisodePlayerViewModel(controller: player, episode: episode))
+            view.reload(by: EpisodePlayerViewModel(show: show, episode: episode, controller: player))
             return
         }
 
         let player = AudioPlayer(episode.enclosure.url)
         self.playerModalView = EpisodePlayerViewController(
             layoutController: self,
-            playerViewModel: EpisodePlayerViewModel(controller: player, episode: episode),
+            playerViewModel: EpisodePlayerViewModel(show: show, episode: episode, controller: player),
             modalViewModel: EpisodePlayerModalViewModel()
         )
         self.playerModalView.modalPresentationStyle = .formSheet
