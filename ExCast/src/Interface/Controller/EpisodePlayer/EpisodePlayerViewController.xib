@@ -21,13 +21,18 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NVC-LH-s9P" customClass="EpisodePlayerModalView" customModule="ExCast" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NVC-LH-s9P" customClass="EpisodePlayerModalView" customModule="ExCast" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="5" width="414" height="896"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="NVC-LH-s9P" firstAttribute="centerX" secondItem="b9h-uR-UvA" secondAttribute="centerX" id="7Tv-v5-ajR"/>
+                <constraint firstItem="NVC-LH-s9P" firstAttribute="width" secondItem="GCt-xA-bge" secondAttribute="width" id="7c3-yM-8bk"/>
+                <constraint firstItem="NVC-LH-s9P" firstAttribute="height" secondItem="GCt-xA-bge" secondAttribute="height" id="MOF-MZ-tnG"/>
+                <constraint firstItem="NVC-LH-s9P" firstAttribute="centerY" secondItem="b9h-uR-UvA" secondAttribute="centerY" id="bFK-6l-Eg3"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="b9h-uR-UvA"/>
             <point key="canvasLocation" x="131.8840579710145" y="105.80357142857143"/>
         </view>

@@ -30,10 +30,10 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqi-iY-iNm" customClass="EpisodePlayerController" customModule="ExCast" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="388" width="414" height="130"/>
+                    <rect key="frame" x="0.0" y="363" width="414" height="180"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="130" id="hkg-cp-che"/>
+                        <constraint firstAttribute="height" constant="180" id="hkg-cp-che"/>
                     </constraints>
                 </view>
             </subviews>
@@ -41,10 +41,10 @@
             <constraints>
                 <constraint firstItem="KVV-fQ-hbi" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="5vj-SV-FU3"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="DLX-RN-cHZ"/>
-                <constraint firstItem="fqi-iY-iNm" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="TiG-nB-2xB"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="WGj-sv-Prk"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fqi-iY-iNm" secondAttribute="trailing" id="bvu-mM-TZd"/>
                 <constraint firstItem="KVV-fQ-hbi" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="dMv-H5-u5J"/>
+                <constraint firstItem="fqi-iY-iNm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="hIN-aW-K0I"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="34.782608695652179" y="34.821428571428569"/>

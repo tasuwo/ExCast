@@ -21,13 +21,18 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bHF-TA-o27" customClass="PodcastShowListView" customModule="ExCast" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bHF-TA-o27" customClass="PodcastShowListView" customModule="ExCast" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="5" width="414" height="896"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="bHF-TA-o27" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="7tK-Pa-ubM"/>
+                <constraint firstItem="bHF-TA-o27" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="9Tc-nL-kxb"/>
+                <constraint firstItem="bHF-TA-o27" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="Qr0-Vi-aZF"/>
+                <constraint firstItem="bHF-TA-o27" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="iqP-c3-1SI"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="112" y="143"/>
         </view>
