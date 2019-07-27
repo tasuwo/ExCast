@@ -142,3 +142,31 @@ extension UISlider: Bondable {
         return self.valueBond
     }
 }
+
+// MARK: EpisodePlayerModalView
+
+private var episodePlayerModalLyaoutHandles: UInt8 = 0;
+
+extension EpisodePlayerModalView {
+    var layoutBond: Bond<EpisodePlayerModalViewModel.State> {
+        if let bond = objc_getAssociatedObject(self, &episodePlayerModalLyaoutHandles) {
+            return bond as! Bond<EpisodePlayerModalViewModel.State>
+        } else {
+            let bond = Bond<EpisodePlayerModalViewModel.State>() { [weak self] state in
+                guard let self = self else { return }
+
+                switch state {
+                case .fullscreen:
+                    self.expand()
+                case .mini:
+                    self.minimize()
+                case .hide:
+                    self.delegate?.shouldDismiss()
+                }
+            }
+
+            objc_setAssociatedObject(self, &episodePlayerModalLyaoutHandles, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return bond
+        }
+    }
+}

@@ -13,17 +13,17 @@ class EpisodePlayerViewController: UIViewController {
     @IBOutlet weak var modalView: EpisodePlayerModalView!
 
     private unowned var layoutController: EpisodePlayerModalLaytoutController
-    private unowned var modalViewDelegate: EpisodePlayerModalViewDelegate
-    private var viewModel: EpisodePlayerViewModel!
+    private var modalViewModel: EpisodePlayerModalViewModel!
+    private var playerViewModel: EpisodePlayerViewModel!
 
     // MARK: - Initializer
 
     init(layoutController: EpisodePlayerModalLaytoutController,
-         modalViewDelegate: EpisodePlayerModalViewDelegate,
-         viewModel: EpisodePlayerViewModel) {
+         playerViewModel: EpisodePlayerViewModel,
+         modalViewModel: EpisodePlayerModalViewModel) {
         self.layoutController = layoutController
-        self.modalViewDelegate = modalViewDelegate
-        self.viewModel = viewModel
+        self.playerViewModel = playerViewModel
+        self.modalViewModel = modalViewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -36,19 +36,22 @@ class EpisodePlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.modalView.delegate = self.modalViewDelegate
+        self.modalView.delegate = self
         self.modalView.controller.delegate = self
 
+        // TODO: modal 関連処理は分離したい
+        self.modalViewModel.state ->> self.modalView.layoutBond
+
         // TODO:
-        self.modalView.controller.playbackSlidebar.maximumValue = Float(self.viewModel.episode.duration!)
+        self.modalView.controller.playbackSlidebar.maximumValue = Float(self.playerViewModel.episode.duration!)
 
-        self.viewModel.isPrepared ->> self.modalView.controller.playbackButton
-        self.viewModel.isPrepared ->> self.modalView.controller.forwardSkipButton
-        self.viewModel.isPrepared ->> self.modalView.controller.backwardSkipButton
-        self.viewModel.displayCurrentTime.map { String($0) } ->> self.modalView.controller.currentTimeLabel
-        self.viewModel.displayCurrentTime.map { Float($0) } ->> self.modalView.controller.playbackSlidebar
+        self.playerViewModel.isPrepared ->> self.modalView.controller.playbackButton
+        self.playerViewModel.isPrepared ->> self.modalView.controller.forwardSkipButton
+        self.playerViewModel.isPrepared ->> self.modalView.controller.backwardSkipButton
+        self.playerViewModel.displayCurrentTime.map { String($0) } ->> self.modalView.controller.currentTimeLabel
+        self.playerViewModel.displayCurrentTime.map { Float($0) } ->> self.modalView.controller.playbackSlidebar
 
-        self.viewModel.setup()
+        self.playerViewModel.setup()
     }
 
 }
@@ -58,27 +61,50 @@ extension EpisodePlayerViewController: EpisodePlayerControllerDelegate {
     // MARK: EpisodePlayerControllerDelegate
 
     func didTapPlaybackButton() {
-        self.viewModel.playback()
+        self.playerViewModel.playback()
     }
 
     func didTapSkipForwardButton() {
-        self.viewModel.skipForward()
+        self.playerViewModel.skipForward()
     }
 
     func didTapSkipBackwardButton() {
-        self.viewModel.skipBackward()
+        self.playerViewModel.skipBackward()
     }
 
     func didGrabbedPlaybackSlider() {
-        self.viewModel.isSliderGrabbed.value = true
+        self.playerViewModel.isSliderGrabbed.value = true
     }
 
     func didReleasedPlaybackSlider() {
-        self.viewModel.isSliderGrabbed.value = false
+        self.playerViewModel.isSliderGrabbed.value = false
     }
 
     func didChangePlaybackSliderValue(to time: TimeInterval) {
-        self.viewModel.displayCurrentTime.value = time
+        self.playerViewModel.displayCurrentTime.value = time
+    }
+
+}
+
+// TODO: Modal 関連処理は分離したい
+extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
+
+    // MARK: - EpisodePlayerModalViewDelegate
+
+    func didTapToggleButton() {
+        self.modalViewModel.toggle()
+    }
+
+    func shouldDismiss() {
+        self.layoutController.dismiss()
+    }
+
+    func shouldMinimize() {
+        self.layoutController.minimize()
+    }
+
+    func shouldExpand() {
+        self.layoutController.expand()
     }
 
 }

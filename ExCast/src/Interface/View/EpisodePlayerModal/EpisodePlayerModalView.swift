@@ -12,7 +12,11 @@ protocol EpisodePlayerModalViewDelegate: AnyObject {
 
     func didTapToggleButton()
 
-    func didTapView()
+    func shouldDismiss()
+
+    func shouldMinimize()
+
+    func shouldExpand()
 
 }
 
@@ -28,9 +32,12 @@ class EpisodePlayerModalView: UIView {
         self.delegate?.didTapToggleButton()
     }
 
-    @IBAction func didTapView(_ sender: Any) {
-        self.delegate?.didTapView()
+    @IBAction func didTapDismissButton(_ sender: Any) {
+        self.delegate?.shouldDismiss()
     }
+
+    @IBOutlet var toggleButtonTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var playerHeightConstraint: NSLayoutConstraint!
 
     weak var delegate: EpisodePlayerModalViewDelegate?
 
@@ -55,6 +62,22 @@ class EpisodePlayerModalView: UIView {
 
         self.baseView.frame = self.bounds
         addSubview(baseView)
+    }
+
+    func minimize() {
+        self.controller.minimize()
+        self.playerHeightConstraint.constant = 50
+        self.toggleButtonTopConstraint.isActive = false
+        self.baseView.backgroundColor = .lightGray
+        self.delegate?.shouldMinimize()
+    }
+
+    func expand() {
+        self.controller.expand()
+        self.playerHeightConstraint.constant = 180
+        self.toggleButtonTopConstraint.isActive = true
+        self.baseView.backgroundColor = .white
+        self.delegate?.shouldExpand()
     }
 
 }

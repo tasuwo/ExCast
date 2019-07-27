@@ -16,11 +16,23 @@ class AppRootViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
-        self.rootTabBarController = AppRootTabBarController(layoutController: self, modalViewDelegate: self)
+        self.rootTabBarController = AppRootTabBarController(layoutController: self)
+        self.displayContentController(self.rootTabBarController)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        self.show(self.rootTabBarController, sender: self)
+    // MARK: - Methods
+
+    func displayContentController(_ content: UIViewController) {
+        self.addChild(content)
+        content.view.frame = self.view.bounds
+        self.view.addSubview(content.view)
+        content.didMove(toParent: self)
+    }
+
+    func hideContentController(_ content: UIViewController) {
+        content.willMove(toParent: nil)
+        content.view.removeFromSuperview()
+        content.removeFromParent()
     }
 }
 
@@ -28,34 +40,44 @@ protocol EpisodePlayerModalLaytoutController: AnyObject {
 
     func show(episode: Podcast.Episode)
 
+    func dismiss()
+
+    func minimize()
+
+    func expand()
+
 }
 
 extension AppRootViewController: EpisodePlayerModalLaytoutController {
 
     func show(episode: Podcast.Episode) {
-        let controller = AudioPlayer(episode.enclosure.url)
-        let viewModel = EpisodePlayerViewModel(controller: controller, episode: episode)
+        let player = AudioPlayer(episode.enclosure.url)
 
-        self.playerModalView = EpisodePlayerViewController(layoutController: self, modalViewDelegate: self, viewModel: viewModel)
+        self.playerModalView = EpisodePlayerViewController(
+            layoutController: self,
+            playerViewModel: EpisodePlayerViewModel(controller: player, episode: episode),
+            modalViewModel: EpisodePlayerModalViewModel()
+        )
         self.playerModalView.modalPresentationStyle = .formSheet
         self.playerModalView.modalTransitionStyle = .coverVertical
 
-        self.rootTabBarController.show(self.playerModalView, sender: nil)
+        self.displayContentController(self.playerModalView)
     }
 
-}
-
-extension AppRootViewController: EpisodePlayerModalViewDelegate {
-
-    // MARK: - EpisodePlayerModalViewDelegate
-
-    func didTapToggleButton() {
-        self.playerModalView.dismiss(animated: true, completion: nil)
+    func dismiss() {
+        self.hideContentController(self.playerModalView)
         self.playerModalView = nil
     }
 
-    func didTapView() {
-        // NOP:
+    func minimize() {
+        let tabBarInsets = self.rootTabBarController.tabBar.frame.height
+        let bottom = self.view.frame.height - tabBarInsets
+
+        self.playerModalView.view.frame = CGRect(x: 0, y: bottom - 60, width: self.view.frame.width, height: 60)
+    }
+
+    func expand() {
+        self.playerModalView.view.frame = self.view.frame
     }
 
 }

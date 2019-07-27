@@ -65,6 +65,10 @@ class EpisodePlayerController: UIView {
 
         }
     }
+    
+    @IBOutlet var playbackButtonBottomConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var controlButtonSizeConstraint: NSLayoutConstraint!
 
     weak var delegate: EpisodePlayerControllerDelegate!
 
@@ -94,6 +98,9 @@ class EpisodePlayerController: UIView {
     }
 
     private func setupAppearences() {
+        self.backgroundColor = .clear
+        self.baseView.backgroundColor = .clear
+
         self.playbackButton.setTitle("▶︎", for: .normal)
         self.playbackButton.setTitleColor(.white, for: .normal)
         self.playbackButton.setBackgroundColor(.black)
@@ -105,6 +112,20 @@ class EpisodePlayerController: UIView {
         self.backwardSkipButton.setTitle("↩︎", for: .normal)
         self.backwardSkipButton.setTitleColor(.white, for: .normal)
         self.backwardSkipButton.setBackgroundColor(.black)
+    }
+
+    func minimize() {
+        self.playbackSlidebar.isHidden = true
+        self.currentTimeLabel.isHidden = true
+        self.playbackButtonBottomConstraint.isActive = false
+        self.controlButtonSizeConstraint.constant = 30
+    }
+
+    func expand() {
+        self.playbackSlidebar.isHidden = false
+        self.currentTimeLabel.isHidden = false
+        self.playbackButtonBottomConstraint.isActive = true
+        self.controlButtonSizeConstraint.constant = 60
     }
 
 }
