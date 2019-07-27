@@ -9,8 +9,11 @@
 import UIKit
 
 protocol EpisodePlayerModalViewDelegate: AnyObject {
-    func show(episode: Podcast.Episode)
-    func hide()
+
+    func didTapToggleButton()
+
+    func didTapView()
+
 }
 
 class EpisodePlayerModalView: UIView {
@@ -22,7 +25,11 @@ class EpisodePlayerModalView: UIView {
     @IBOutlet weak var toggleButton: UIButton!
 
     @IBAction func didTapToggleButton(_ sender: Any) {
-        self.delegate?.hide()
+        self.delegate?.didTapToggleButton()
+    }
+
+    @IBAction func didTapView(_ sender: Any) {
+        self.delegate?.didTapView()
     }
 
     weak var delegate: EpisodePlayerModalViewDelegate?

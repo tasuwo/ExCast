@@ -49,5 +49,10 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="34.782608695652179" y="34.821428571428569"/>
         </view>
+        <tapGestureRecognizer id="Usc-Yh-c4d">
+            <connections>
+                <action selector="didTapView:" destination="-1" id="IKf-ui-Ohh"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>

@@ -16,7 +16,7 @@ class AppRootViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
-        self.rootTabBarController = AppRootTabBarController(modalViewDelegate: self)
+        self.rootTabBarController = AppRootTabBarController(layoutController: self, modalViewDelegate: self)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -24,24 +24,38 @@ class AppRootViewController: UIViewController {
     }
 }
 
-extension AppRootViewController: EpisodePlayerModalViewDelegate {
+protocol EpisodePlayerModalLaytoutController: AnyObject {
 
-    // MARK: - AnonymousProtocol
+    func show(episode: Podcast.Episode)
+
+}
+
+extension AppRootViewController: EpisodePlayerModalLaytoutController {
 
     func show(episode: Podcast.Episode) {
         let controller = AudioPlayer(episode.enclosure.url)
         let viewModel = EpisodePlayerViewModel(controller: controller, episode: episode)
 
-        self.playerModalView = EpisodePlayerViewController(modalViewDelegate: self, viewModel: viewModel)
+        self.playerModalView = EpisodePlayerViewController(layoutController: self, modalViewDelegate: self, viewModel: viewModel)
         self.playerModalView.modalPresentationStyle = .formSheet
         self.playerModalView.modalTransitionStyle = .coverVertical
 
         self.rootTabBarController.show(self.playerModalView, sender: nil)
     }
 
-    func hide() {
+}
+
+extension AppRootViewController: EpisodePlayerModalViewDelegate {
+
+    // MARK: - EpisodePlayerModalViewDelegate
+
+    func didTapToggleButton() {
         self.playerModalView.dismiss(animated: true, completion: nil)
         self.playerModalView = nil
+    }
+
+    func didTapView() {
+        // NOP:
     }
 
 }

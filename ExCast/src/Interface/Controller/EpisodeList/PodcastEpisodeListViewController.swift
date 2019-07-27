@@ -11,12 +11,16 @@ class PodcastEpisodeListViewController: UIViewController {
 
     @IBOutlet weak var episodeListView: PodcastEpisodeListView!
 
+    private unowned let layoutController: EpisodePlayerModalLaytoutController
     private unowned let modalViewDelegate: EpisodePlayerModalViewDelegate
     private var viewModel: EpisodeListViewModel
 
     // MARK: - Initializer
 
-    init(modalViewDelegate: EpisodePlayerModalViewDelegate, podcast: Podcast) {
+    init(layoutController: EpisodePlayerModalLaytoutController,
+         modalViewDelegate: EpisodePlayerModalViewDelegate,
+         podcast: Podcast) {
+        self.layoutController = layoutController
         self.modalViewDelegate = modalViewDelegate
         // TODO: DI
         self.viewModel = EpisodeListViewModel(podcast: podcast, repository: PodcastGateway(session: URLSession.shared, factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
@@ -49,7 +53,7 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
     // MARK: - PodcastEpisodeListViewDelegate
 
     func podcastEpisodeListView(didSelect episode: Podcast.Episode, at index: Int) {
-        modalViewDelegate.show(episode: episode)
+        layoutController.show(episode: episode)
     }
 
 }

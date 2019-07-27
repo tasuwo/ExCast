@@ -10,11 +10,14 @@ import UIKit
 
 class AppRootTabBarController: UITabBarController {
 
+    private unowned let layoutController: EpisodePlayerModalLaytoutController
     private unowned let modalViewDelegate: EpisodePlayerModalViewDelegate
 
     // MARK: - Initializer
 
-    init(modalViewDelegate: EpisodePlayerModalViewDelegate) {
+    init(layoutController: EpisodePlayerModalLaytoutController,
+         modalViewDelegate: EpisodePlayerModalViewDelegate) {
+        self.layoutController = layoutController
         self.modalViewDelegate = modalViewDelegate
         super.init(nibName: nil, bundle: nil)
     }
@@ -29,7 +32,7 @@ class AppRootTabBarController: UITabBarController {
         // TODO: DI
         let viewModel = ShowListViewModel(repository: PodcastGateway(session: URLSession.shared, factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
 
-        let showListVC = PodcastShowListViewController(modalViewDelegate: self.modalViewDelegate, viewModel: viewModel)
+        let showListVC = PodcastShowListViewController(layoutController: self.layoutController, modalViewDelegate: self.modalViewDelegate, viewModel: viewModel)
         showListVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
         let showListNVC = UINavigationController(rootViewController: showListVC)
 

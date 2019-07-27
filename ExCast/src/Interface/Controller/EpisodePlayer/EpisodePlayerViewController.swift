@@ -12,12 +12,16 @@ class EpisodePlayerViewController: UIViewController {
 
     @IBOutlet weak var modalView: EpisodePlayerModalView!
 
+    private unowned var layoutController: EpisodePlayerModalLaytoutController
     private unowned var modalViewDelegate: EpisodePlayerModalViewDelegate
     private var viewModel: EpisodePlayerViewModel!
 
     // MARK: - Initializer
 
-    init(modalViewDelegate: EpisodePlayerModalViewDelegate, viewModel: EpisodePlayerViewModel) {
+    init(layoutController: EpisodePlayerModalLaytoutController,
+         modalViewDelegate: EpisodePlayerModalViewDelegate,
+         viewModel: EpisodePlayerViewModel) {
+        self.layoutController = layoutController
         self.modalViewDelegate = modalViewDelegate
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
