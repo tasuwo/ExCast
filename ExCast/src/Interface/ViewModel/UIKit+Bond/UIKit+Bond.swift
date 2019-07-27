@@ -143,6 +143,31 @@ extension UISlider: Bondable {
     }
 }
 
+// MARK: EpisodePlayerController
+
+private var playerPlaybackButtonHandles: UInt8 = 0;
+
+extension EpisodePlayerController {
+    var playbackButtonBond: Bond<Bool> {
+        if let bond = objc_getAssociatedObject(self, &playerPlaybackButtonHandles) {
+            return bond as! Bond<Bool>
+        } else {
+            let bond = Bond<Bool>() { [weak self] isPlaying in
+                guard let self = self else { return }
+
+                if isPlaying {
+                    self.playbackButton.setTitle("||", for: .normal)
+                } else {
+                    self.playbackButton.setTitle("▶︎", for: .normal)
+                }
+            }
+
+            objc_setAssociatedObject(self, &playerPlaybackButtonHandles, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return bond
+        }
+    }
+}
+
 // MARK: EpisodePlayerModalView
 
 private var episodePlayerModalLyaoutHandles: UInt8 = 0;
@@ -157,8 +182,10 @@ extension EpisodePlayerModalView {
 
                 switch state {
                 case .fullscreen:
+                    self.toggleButton.setTitle("Hide", for: .normal)
                     self.expand()
                 case .mini:
+                    self.toggleButton.setTitle("Expand", for: .normal)
                     self.minimize()
                 case .hide:
                     self.delegate?.shouldDismiss()

@@ -48,6 +48,7 @@ class EpisodePlayerViewController: UIViewController {
         self.playerViewModel.isPrepared ->> self.modalView.controller.playbackButton
         self.playerViewModel.isPrepared ->> self.modalView.controller.forwardSkipButton
         self.playerViewModel.isPrepared ->> self.modalView.controller.backwardSkipButton
+        self.playerViewModel.isPlaying ->> self.modalView.controller.playbackButtonBond
         self.playerViewModel.displayCurrentTime.map { String($0) } ->> self.modalView.controller.currentTimeLabel
         self.playerViewModel.displayCurrentTime.map { Float($0) } ->> self.modalView.controller.playbackSlidebar
 

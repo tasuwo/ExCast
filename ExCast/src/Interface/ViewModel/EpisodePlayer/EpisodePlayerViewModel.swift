@@ -91,6 +91,7 @@ extension EpisodePlayerViewModel: AudioPlayerDelegate {
 
     func didFinishPrepare() {
         self.isPrepared.value = true
+        self.commands.play()
     }
 
     func didChangePlayingState(to state: AudioPlayer.PlayingState) {
