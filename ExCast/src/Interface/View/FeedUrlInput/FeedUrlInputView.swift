@@ -9,13 +9,13 @@
 import MaterialComponents
 import UIKit
 
-protocol FeedUrlInputViewDelegate {
+protocol FeedUrlInputViewDelegate: AnyObject {
     func didChange(feedUrl: String?)
     func didTapSend()
 }
 
 class FeedUrlInputView: UIView {
-    var delegate: FeedUrlInputViewDelegate?
+    weak var delegate: FeedUrlInputViewDelegate?
 
     @IBOutlet var baseView: UIView!
 

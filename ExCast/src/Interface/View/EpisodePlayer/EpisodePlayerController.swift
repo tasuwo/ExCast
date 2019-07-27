@@ -9,7 +9,7 @@
 import UIKit
 import MaterialComponents
 
-protocol EpisodePlayerControllerDelegate {
+protocol EpisodePlayerControllerDelegate: AnyObject {
     func didTapPlaybackButton()
     func didTapSkipForwardButton()
     func didTapSkipBackwardButton()
@@ -66,7 +66,7 @@ class EpisodePlayerController: UIView {
         }
     }
 
-    var delegate: EpisodePlayerControllerDelegate!
+    weak var delegate: EpisodePlayerControllerDelegate!
 
     // MARK: - Initializers
 

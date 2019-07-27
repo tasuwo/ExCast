@@ -13,7 +13,7 @@ class EpisodePlayerViewController: UIViewController {
     @IBOutlet weak var modalView: EpisodePlayerModalView!
 
     private unowned var modalViewDelegate: EpisodePlayerModalViewDelegate
-    private var viewModel: EpisodePlayerViewModel
+    private var viewModel: EpisodePlayerViewModel!
 
     // MARK: - Initializer
 

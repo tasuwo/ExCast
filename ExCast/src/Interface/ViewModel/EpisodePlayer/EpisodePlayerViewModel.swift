@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct EpisodePlayerViewModel {
+class EpisodePlayerViewModel {
     let episode: Podcast.Episode
     private var commands: AudioPlayerControlCommands
 
@@ -36,7 +36,7 @@ struct EpisodePlayerViewModel {
 
     // MARK: - Methods
 
-    mutating func setup() {
+    func setup() {
         // TODO: 初回の同期を綺麗にする
         self.isPlaying.value = false
         self.isPrepared.value = false
@@ -46,16 +46,16 @@ struct EpisodePlayerViewModel {
         self.commands.prepareToPlay()
 
         // Bind
-        self.currentTimeBond = Bond() { [self] currentTime in
+        self.currentTimeBond = Bond() { [unowned self] currentTime in
             self.displayCurrentTime.value = currentTime
         }
         self.currentTimeBond.bind(self.currentTime)
 
-        self.isSliderGrabbedBond = Bond() { [self] isGrabbed in
+        self.isSliderGrabbedBond = Bond() { [unowned self] isGrabbed in
             if isGrabbed {
                 self.currentTimeBond.release(self.currentTime)
             } else {
-                self.commands.seek(to: self.displayCurrentTime.value) { [self] result in
+                self.commands.seek(to: self.displayCurrentTime.value) { [unowned self] result in
                     if result == false {
                         // TODO: Error handling
                     }
