@@ -70,7 +70,7 @@ struct Podcast: Codable, Equatable {
         let link: URL?
         
         /// The episode artwork.
-        let artwork: String?
+        let artwork: URL?
     }
 
     let show: Show

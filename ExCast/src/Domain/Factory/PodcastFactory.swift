@@ -102,12 +102,8 @@ class PodcastFactory: NSObject {
         let parts = durationStr.split(separator: ":").reversed().map { Int($0)! }
 
         let duration = parts.enumerated().reduce(0) { prev, val in
-            if val.offset == 0 {
-                return prev + val.element
-            } else {
-                return prev + val.element * val.offset * 60
-            }
+            return prev + Double(val.element) * NSDecimalNumber(decimal: pow(60, val.offset)).doubleValue
         }
-        return duration
+        return Int(duration)
     }
 }
