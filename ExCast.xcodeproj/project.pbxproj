@@ -611,6 +611,11 @@
 					};
 					2CA13C5522C8D7D700CC6072 = {
 						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
