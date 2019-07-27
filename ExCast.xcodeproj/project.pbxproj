@@ -317,12 +317,12 @@
 			path = EpisodeList;
 			sourceTree = "<group>";
 		};
-		2C63920622E3FE6600B5EBE0 /* Bond */ = {
+		2C63920622E3FE6600B5EBE0 /* UIKit+Bond */ = {
 			isa = PBXGroup;
 			children = (
 				2C63920422E3FBC500B5EBE0 /* UIKit+Bond.swift */,
 			);
-			path = Bond;
+			path = "UIKit+Bond";
 			sourceTree = "<group>";
 		};
 		2C63920B22E401C000B5EBE0 /* Parser */ = {
@@ -425,6 +425,7 @@
 		2CA13C7622C8E77B00CC6072 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				2CCEC3CD22E47A990055D27A /* AudioPlayer */,
 				2C6391ED22E2BA6A00B5EBE0 /* Repository */,
 				2C6391CF22E1BECC00B5EBE0 /* Gateway */,
 			);
@@ -461,14 +462,12 @@
 		2CA13C7C22C8F1A500CC6072 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				2CCEC3CD22E47A990055D27A /* AudioPlayer */,
 				2CA13C6222C8D7D800CC6072 /* LaunchScreen.storyboard */,
 				2C122DE722CA60D600011558 /* ShowList */,
 				2CCEC3D022E47CFA0055D27A /* EpisodePlayer */,
 				2C8D687E22EB6B1600CE9660 /* EpisodePlayerModal */,
 				2C6391EE22E2BAE200B5EBE0 /* EpisodeList */,
 				2CA13C9222CA5CA100CC6072 /* FeedUrlInput */,
-				2C63920622E3FE6600B5EBE0 /* Bond */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -480,6 +479,7 @@
 				2C6391F822E2C30000B5EBE0 /* EpisodeList */,
 				2C6391D222E1C14800B5EBE0 /* ShowList */,
 				2C6391D822E1DC9C00B5EBE0 /* FeedUrlInput */,
+				2C63920622E3FE6600B5EBE0 /* UIKit+Bond */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
