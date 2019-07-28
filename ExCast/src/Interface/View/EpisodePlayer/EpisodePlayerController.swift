@@ -21,6 +21,8 @@ protocol EpisodePlayerControllerDelegate: AnyObject {
 }
 
 class EpisodePlayerController: UIView {
+
+    weak var delegate: EpisodePlayerControllerDelegate!
     
     @IBOutlet var baseView: UIView!
 
@@ -33,6 +35,12 @@ class EpisodePlayerController: UIView {
     @IBOutlet weak var backwardSkipButton: MDCFloatingButton!
 
     @IBOutlet weak var currentTimeLabel: UILabel!
+
+    @IBOutlet weak var remainingTimeLabel: UILabel!
+
+    @IBOutlet var playbackButtonBottomConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var controlButtonSizeConstraint: NSLayoutConstraint!
 
     @IBAction func didTapPlaybackButton(_ sender: Any) {
         self.delegate?.didTapPlaybackButton()
@@ -65,12 +73,6 @@ class EpisodePlayerController: UIView {
 
         }
     }
-    
-    @IBOutlet var playbackButtonBottomConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var controlButtonSizeConstraint: NSLayoutConstraint!
-
-    weak var delegate: EpisodePlayerControllerDelegate!
 
     // MARK: - Initializers
 
@@ -100,6 +102,9 @@ class EpisodePlayerController: UIView {
     private func setupAppearences() {
         self.backgroundColor = .clear
         self.baseView.backgroundColor = .clear
+
+        self.currentTimeLabel.text = "00:00"
+        self.remainingTimeLabel.text = "-00:00"
 
         self.playbackButton.setTitle("▶︎", for: .normal)
         self.playbackButton.setTitleColor(.white, for: .normal)

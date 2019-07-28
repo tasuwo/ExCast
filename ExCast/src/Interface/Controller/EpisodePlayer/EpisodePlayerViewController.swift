@@ -58,13 +58,15 @@ class EpisodePlayerViewController: UIViewController {
 
     private func bindCurrentPlayerViewModelToView() {
         // TODO:
-        self.modalView.controller.playbackSlidebar.maximumValue = Float(self.playerViewModel.episode.duration!)
+        let duration = Double(self.playerViewModel.episode.duration!)
+        self.modalView.controller.playbackSlidebar.maximumValue = Float(duration)
 
         self.playerViewModel.isPrepared ->> self.modalView.controller.playbackButton
         self.playerViewModel.isPrepared ->> self.modalView.controller.forwardSkipButton
         self.playerViewModel.isPrepared ->> self.modalView.controller.backwardSkipButton
         self.playerViewModel.isPlaying ->> self.modalView.controller.playbackButtonBond
-        self.playerViewModel.displayCurrentTime.map { String($0) } ->> self.modalView.controller.currentTimeLabel
+        self.playerViewModel.displayCurrentTime.map { $0.asTimeString() ?? "" } ->> self.modalView.controller.currentTimeLabel
+        self.playerViewModel.displayCurrentTime.map { ($0 - duration).asTimeString() ?? "" } ->> self.modalView.controller.remainingTimeLabel
         self.playerViewModel.displayCurrentTime.map { Float($0) } ->> self.modalView.controller.playbackSlidebar
 
         self.playerViewModel.setup()

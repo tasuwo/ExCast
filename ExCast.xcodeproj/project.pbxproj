@@ -55,6 +55,7 @@
 		2CCEC3D722E484670055D27A /* EpisodePlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D622E484670055D27A /* EpisodePlayerViewModel.swift */; };
 		2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D922E4847F0055D27A /* EpisodePlayerViewController.swift */; };
 		2CCEC3DC22E485720055D27A /* EpisodePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CCEC3DB22E485720055D27A /* EpisodePlayerViewController.xib */; };
+		2CDF07A422ED7F83002F8F5C /* Double+asTimeString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDF07A322ED7F83002F8F5C /* Double+asTimeString.swift */; };
 		37BD17194A869B0BE93BE7D1 /* Pods_ExCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A77DC886F1A54345DB1D66F /* Pods_ExCast.framework */; };
 /* End PBXBuildFile section */
 
@@ -122,6 +123,7 @@
 		2CCEC3D622E484670055D27A /* EpisodePlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerViewModel.swift; sourceTree = "<group>"; };
 		2CCEC3D922E4847F0055D27A /* EpisodePlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerViewController.swift; sourceTree = "<group>"; };
 		2CCEC3DB22E485720055D27A /* EpisodePlayerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodePlayerViewController.xib; sourceTree = "<group>"; };
+		2CDF07A322ED7F83002F8F5C /* Double+asTimeString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+asTimeString.swift"; sourceTree = "<group>"; };
 		468059232EDB8A89A02BD943 /* Pods-ExCast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExCast.release.xcconfig"; path = "Target Support Files/Pods-ExCast/Pods-ExCast.release.xcconfig"; sourceTree = "<group>"; };
 		66394F62A7189D3149187C80 /* Pods-ExCast.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExCast.debug.xcconfig"; path = "Target Support Files/Pods-ExCast/Pods-ExCast.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -489,6 +491,7 @@
 				2C8D687E22EB6B1600CE9660 /* EpisodePlayerModal */,
 				2C6391EE22E2BAE200B5EBE0 /* EpisodeList */,
 				2CA13C9222CA5CA100CC6072 /* FeedUrlInput */,
+				2CDF07A222ED7F5E002F8F5C /* Util */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -547,6 +550,14 @@
 				2CCEC3DB22E485720055D27A /* EpisodePlayerViewController.xib */,
 			);
 			path = EpisodePlayer;
+			sourceTree = "<group>";
+		};
+		2CDF07A222ED7F5E002F8F5C /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				2CDF07A322ED7F83002F8F5C /* Double+asTimeString.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		490B0DF8FD02A7DD13AE2ACB /* Frameworks */ = {
@@ -768,6 +779,7 @@
 				2CA13C7122C8D86100CC6072 /* Podcast.swift in Sources */,
 				2C122DEF22CBAFC300011558 /* PodcastShowCell.swift in Sources */,
 				2C8D688922EC778700CE9660 /* RemoteCommandHandler.swift in Sources */,
+				2CDF07A422ED7F83002F8F5C /* Double+asTimeString.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
