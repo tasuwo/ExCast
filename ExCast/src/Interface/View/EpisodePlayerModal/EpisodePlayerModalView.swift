@@ -40,11 +40,14 @@ class EpisodePlayerModalView: UIView {
 
     @IBOutlet weak var dismissButton: UIButton!
 
+    @IBOutlet weak var hidableMark: UILabel!
+
     @IBOutlet var playerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var playerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var thumbnailTopConstraint: NSLayoutConstraint!
-    @IBOutlet var thumbnailRightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var thumbnailLeftConstraint: NSLayoutConstraint!
+    @IBOutlet var thumbnailLeftConstraint: NSLayoutConstraint!
+    @IBOutlet var thumbnailXConstraint: NSLayoutConstraint!
+    @IBOutlet var controllerTopConstraint: NSLayoutConstraint!
 
     @IBAction func didTapDismissButton(_ sender: Any) {
         self.delegate?.shouldDismiss()

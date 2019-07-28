@@ -238,15 +238,17 @@ extension EpisodePlayerModalView {
             self.controller.controlButtonSizeConstraint.constant = 30
             self.controller.layoutIfNeeded()
 
+            self.hidableMark.isHidden = true
             self.dismissButton.isHidden = false
             self.showTitleLabel.isHidden = true
             self.episodeTitleLabel.isHidden = true
             self.thumbnailImageView.layer.cornerRadius = 0
             self.thumbnailTopConstraint.constant = 0
-            self.thumbnailRightConstraint.isActive = false
-            self.thumbnailLeftConstraint.constant = 0
+            self.thumbnailLeftConstraint.isActive = false
+            self.thumbnailXConstraint.isActive = false
             self.playerHeightConstraint.constant = 50
             self.playerBottomConstraint.isActive = false
+            self.controllerTopConstraint.isActive = false
             self.layoutIfNeeded()
 
             self.baseView.layer.borderWidth = 1
@@ -268,11 +270,11 @@ extension EpisodePlayerModalView {
             self.dismissButton.isHidden = true
             self.thumbnailImageView.layer.cornerRadius = 20
             self.thumbnailTopConstraint.constant = 100
-            self.thumbnailRightConstraint.isActive = true
-            self.thumbnailLeftConstraint.constant = 20
+            self.thumbnailLeftConstraint.isActive = true
+            self.thumbnailXConstraint.isActive = true
             self.playerHeightConstraint.constant = 180
             self.playerBottomConstraint.isActive = true
-            self.baseView.backgroundColor = .white
+            self.controllerTopConstraint.isActive = true
             self.layoutIfNeeded()
 
             self.delegate?.shouldExpand()
@@ -282,6 +284,7 @@ extension EpisodePlayerModalView {
             self.controller.remainingTimeLabel.isHidden = false
             self.controller.layoutIfNeeded()
 
+            self.hidableMark.isHidden = false
             self.showTitleLabel.isHidden = false
             self.episodeTitleLabel.isHidden = false
             self.layoutIfNeeded()
