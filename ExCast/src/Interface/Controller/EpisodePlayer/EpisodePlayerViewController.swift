@@ -40,9 +40,11 @@ class EpisodePlayerViewController: UIViewController {
         self.modalView.controller.delegate = self
 
         // TODO: modal 関連処理は分離したい
-        self.modalViewModel.state ->> self.modalView.layoutBond
+        self.modalViewModel.modalState ->> self.modalView.layoutBond
 
         self.bindCurrentPlayerViewModelToView()
+
+        self.modalViewModel.setup()
     }
 
     // MARK: - Methods
@@ -105,10 +107,6 @@ extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
 
     // MARK: - EpisodePlayerModalViewDelegate
 
-    func didTapToggleButton() {
-        self.modalViewModel.toggle()
-    }
-
     func shouldDismiss() {
         self.layoutController.dismiss()
     }
@@ -119,6 +117,19 @@ extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
 
     func shouldExpand() {
         self.layoutController.expand()
+    }
+
+    func didTap() {
+        self.modalViewModel.didTap()
+    }
+
+    func didPanned(distance: Float, velocity: Float) {
+        self.modalViewModel.panState.value = .changed(lentgh: distance, velocity: velocity)
+    }
+
+    func didEndPanned(distance: Float, velocity: Float) {
+        self.modalViewModel.panState.value = .ended(length: distance, velocity: velocity)
+        self.modalViewModel.panState.value = .none
     }
 
 }

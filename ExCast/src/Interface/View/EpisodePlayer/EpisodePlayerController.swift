@@ -114,18 +114,4 @@ class EpisodePlayerController: UIView {
         self.backwardSkipButton.setBackgroundColor(.black)
     }
 
-    func minimize() {
-        self.playbackSlidebar.isHidden = true
-        self.currentTimeLabel.isHidden = true
-        self.playbackButtonBottomConstraint.isActive = false
-        self.controlButtonSizeConstraint.constant = 30
-    }
-
-    func expand() {
-        self.playbackSlidebar.isHidden = false
-        self.currentTimeLabel.isHidden = false
-        self.playbackButtonBottomConstraint.isActive = true
-        self.controlButtonSizeConstraint.constant = 60
-    }
-
 }

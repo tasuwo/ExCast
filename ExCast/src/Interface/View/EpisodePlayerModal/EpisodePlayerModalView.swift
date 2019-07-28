@@ -10,13 +10,17 @@ import UIKit
 
 protocol EpisodePlayerModalViewDelegate: AnyObject {
 
-    func didTapToggleButton()
-
     func shouldDismiss()
 
     func shouldMinimize()
 
     func shouldExpand()
+
+    func didTap()
+
+    func didPanned(distance: Float, velocity: Float)
+
+    func didEndPanned(distance: Float, velocity: Float)
 
 }
 
@@ -26,17 +30,48 @@ class EpisodePlayerModalView: UIView {
 
     @IBOutlet weak var controller: EpisodePlayerController!
 
-    @IBOutlet weak var toggleButton: UIButton!
-
-    @IBAction func didTapToggleButton(_ sender: Any) {
-        self.delegate?.didTapToggleButton()
-    }
-
     @IBAction func didTapDismissButton(_ sender: Any) {
         self.delegate?.shouldDismiss()
     }
 
-    @IBOutlet var toggleButtonTopConstraint: NSLayoutConstraint!
+    var lastYLocation: CGFloat = 0
+    var distance: CGFloat = 0
+    @IBAction func didPan(_ gestureRecognizer: UIPanGestureRecognizer) {
+        guard let view = gestureRecognizer.view else { return }
+
+        let translation = gestureRecognizer.translation(in: view.superview)
+        let velocity = gestureRecognizer.velocity(in: view.superview)
+
+        switch gestureRecognizer.state {
+        case .began:
+            self.distance = 0
+            self.delegate?.didPanned(distance: Float(self.distance), velocity: Float(velocity.y))
+            self.lastYLocation = 0
+        case .changed:
+            self.distance += translation.y - self.lastYLocation
+            self.delegate?.didPanned(distance: Float(self.distance), velocity: Float(velocity.y))
+            self.lastYLocation = translation.y
+        case .ended:
+            self.distance += translation.y - self.lastYLocation
+            self.delegate?.didEndPanned(distance: Float(self.distance), velocity: Float(velocity.y))
+            self.lastYLocation = 0
+        case .possible, .cancelled, .failed:
+            break
+        @unknown default:
+            break
+        }
+    }
+
+    @IBAction func didTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        switch gestureRecognizer.state {
+        case .ended:
+            self.delegate?.didTap()
+        default:
+            break
+        }
+    }
+
+    @IBOutlet var dismissButtonTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var playerHeightConstraint: NSLayoutConstraint!
 
     weak var delegate: EpisodePlayerModalViewDelegate?
@@ -62,22 +97,6 @@ class EpisodePlayerModalView: UIView {
 
         self.baseView.frame = self.bounds
         addSubview(baseView)
-    }
-
-    func minimize() {
-        self.controller.minimize()
-        self.playerHeightConstraint.constant = 50
-        self.toggleButtonTopConstraint.isActive = false
-        self.baseView.backgroundColor = .lightGray
-        self.delegate?.shouldMinimize()
-    }
-
-    func expand() {
-        self.controller.expand()
-        self.playerHeightConstraint.constant = 180
-        self.toggleButtonTopConstraint.isActive = true
-        self.baseView.backgroundColor = .white
-        self.delegate?.shouldExpand()
     }
 
 }

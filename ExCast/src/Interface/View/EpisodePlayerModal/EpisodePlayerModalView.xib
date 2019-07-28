@@ -14,9 +14,8 @@
             <connections>
                 <outlet property="baseView" destination="iN0-l3-epB" id="WWx-Lz-QIB"/>
                 <outlet property="controller" destination="fqi-iY-iNm" id="O8x-AW-x8g"/>
+                <outlet property="dismissButtonTopConstraint" destination="t7Z-Lz-f4a" id="IyR-TG-FvH"/>
                 <outlet property="playerHeightConstraint" destination="hkg-cp-che" id="MaB-Md-rxn"/>
-                <outlet property="toggleButton" destination="KVV-fQ-hbi" id="ypL-sN-tCf"/>
-                <outlet property="toggleButtonTopConstraint" destination="dNc-Cl-Od6" id="Lfx-km-XXe"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -31,20 +30,10 @@
                         <constraint firstAttribute="height" constant="180" id="hkg-cp-che"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KVV-fQ-hbi">
-                    <rect key="frame" x="20" y="64" width="60" height="60"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="KVV-fQ-hbi" secondAttribute="height" multiplier="1:1" id="lj7-6m-8yB"/>
-                        <constraint firstAttribute="width" constant="60" id="nZ4-tm-ZMO"/>
-                    </constraints>
-                    <state key="normal" title="Hide"/>
-                    <connections>
-                        <action selector="didTapToggleButton:" destination="-1" eventType="touchUpInside" id="c1Q-a7-PW4"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuW-DK-eiK">
                     <rect key="frame" x="334" y="64" width="60" height="60"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="60" id="Idj-Tn-CC6"/>
                         <constraint firstAttribute="width" secondItem="nuW-DK-eiK" secondAttribute="height" multiplier="1:1" id="ZsZ-hW-K25"/>
                     </constraints>
                     <state key="normal" title="×"/>
@@ -54,19 +43,31 @@
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="KVV-fQ-hbi" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="5vj-SV-FU3"/>
-                <constraint firstItem="KVV-fQ-hbi" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" priority="999" id="B5i-yl-KoM"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="DLX-RN-cHZ"/>
-                <constraint firstItem="nuW-DK-eiK" firstAttribute="centerY" secondItem="KVV-fQ-hbi" secondAttribute="centerY" id="Vt9-Kz-GQH"/>
+                <constraint firstItem="nuW-DK-eiK" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" priority="999" id="Vbr-zU-daH"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="WGj-sv-Prk"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="nuW-DK-eiK" secondAttribute="trailing" constant="20" id="X6W-mu-Qnc"/>
-                <constraint firstItem="KVV-fQ-hbi" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="dNc-Cl-Od6"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="hIN-aW-K0I"/>
-                <constraint firstItem="nuW-DK-eiK" firstAttribute="width" secondItem="KVV-fQ-hbi" secondAttribute="width" id="r8K-aA-ml3"/>
+                <constraint firstItem="nuW-DK-eiK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="t7Z-Lz-f4a"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="8QE-FE-RM4" appends="YES" id="uXm-Xz-C3W"/>
+                <outletCollection property="gestureRecognizers" destination="QAv-XK-D2j" appends="YES" id="0x0-3Y-Q5f"/>
+            </connections>
             <point key="canvasLocation" x="34.782608695652179" y="34.821428571428569"/>
         </view>
+        <panGestureRecognizer minimumNumberOfTouches="1" id="8QE-FE-RM4">
+            <connections>
+                <action selector="didPan:" destination="-1" id="9A4-kt-gHb"/>
+            </connections>
+        </panGestureRecognizer>
+        <tapGestureRecognizer id="QAv-XK-D2j">
+            <connections>
+                <action selector="didTap:" destination="-1" id="Ecd-Dt-ZzE"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>
