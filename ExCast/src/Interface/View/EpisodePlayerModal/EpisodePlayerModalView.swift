@@ -40,7 +40,7 @@ class EpisodePlayerModalView: UIView {
 
     @IBOutlet weak var dismissButton: UIButton!
 
-    @IBOutlet weak var hidableMark: UILabel!
+    @IBOutlet weak var hidableMark: UIImageView!
 
     @IBOutlet var playerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var playerBottomConstraint: NSLayoutConstraint!
@@ -116,6 +116,7 @@ class EpisodePlayerModalView: UIView {
     }
 
     private func setupAppearences() {
+        self.hidableMark.image = UIImage(named: "down_arrow")
         self.dismissButton.isHidden = true
         self.thumbnailImageView.layer.cornerRadius = 20
     }

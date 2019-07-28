@@ -39,7 +39,8 @@ class EpisodePlayerController: UIView {
     @IBOutlet weak var remainingTimeLabel: UILabel!
 
     @IBOutlet var playbackButtonBottomConstraint: NSLayoutConstraint!
-
+    @IBOutlet weak var forwardSkipButtonSizeConstraint: NSLayoutConstraint!
+    @IBOutlet weak var backwardSkipButtonSizeConstraint: NSLayoutConstraint!
     @IBOutlet weak var controlButtonSizeConstraint: NSLayoutConstraint!
 
     @IBAction func didTapPlaybackButton(_ sender: Any) {
@@ -106,16 +107,16 @@ class EpisodePlayerController: UIView {
         self.currentTimeLabel.text = "00:00"
         self.remainingTimeLabel.text = "-00:00"
 
-        self.playbackButton.setTitle("▶︎", for: .normal)
-        self.playbackButton.setTitleColor(.white, for: .normal)
+        self.playbackButton.setImage(UIImage(named: "player_playback_white")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        self.playbackButton.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
         self.playbackButton.setBackgroundColor(.black)
 
-        self.forwardSkipButton.setTitle("↪︎", for: .normal)
-        self.forwardSkipButton.setTitleColor(.white, for: .normal)
+        self.forwardSkipButton.setImage(UIImage(named: "player_skip_forward_15_white"), for: .normal)
+        self.forwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         self.forwardSkipButton.setBackgroundColor(.black)
 
-        self.backwardSkipButton.setTitle("↩︎", for: .normal)
-        self.backwardSkipButton.setTitleColor(.white, for: .normal)
+        self.backwardSkipButton.setImage(UIImage(named: "player_skip_backward_15_white"), for: .normal)
+        self.backwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         self.backwardSkipButton.setBackgroundColor(.black)
     }
 

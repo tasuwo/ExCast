@@ -186,9 +186,9 @@ extension EpisodePlayerController {
                 guard let self = self else { return }
 
                 if isPlaying {
-                    self.playbackButton.setTitle("||", for: .normal)
+                    self.playbackButton.setImage(UIImage(named: "player_pause_white"), for: .normal)
                 } else {
-                    self.playbackButton.setTitle("▶︎", for: .normal)
+                    self.playbackButton.setImage(UIImage(named: "player_playback_white"), for: .normal)
                 }
             }
 
@@ -235,20 +235,29 @@ extension EpisodePlayerModalView {
 
         UIView.animate(withDuration: 0.2, animations: { [unowned self] in
             self.controller.playbackButtonBottomConstraint.isActive = false
-            self.controller.controlButtonSizeConstraint.constant = 30
+            self.controller.controlButtonSizeConstraint.constant = 40
+            self.controller.playbackButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+            self.controller.forwardSkipButtonSizeConstraint.constant = 40
+            self.controller.forwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+            self.controller.backwardSkipButtonSizeConstraint.constant = 40
+            self.controller.backwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
             self.controller.layoutIfNeeded()
 
             self.hidableMark.isHidden = true
             self.dismissButton.isHidden = false
             self.showTitleLabel.isHidden = true
             self.episodeTitleLabel.isHidden = true
+
             self.thumbnailImageView.layer.cornerRadius = 0
             self.thumbnailTopConstraint.constant = 0
             self.thumbnailLeftConstraint.isActive = false
             self.thumbnailXConstraint.isActive = false
+
             self.playerHeightConstraint.constant = 50
             self.playerBottomConstraint.isActive = false
+
             self.controllerTopConstraint.isActive = false
+
             self.layoutIfNeeded()
 
             self.baseView.layer.borderWidth = 1
@@ -264,7 +273,12 @@ extension EpisodePlayerModalView {
     private func expand() {
         UIView.animate(withDuration: 0.2, animations: { [unowned self] in
             self.controller.playbackButtonBottomConstraint.isActive = true
-            self.controller.controlButtonSizeConstraint.constant = 60
+            self.controller.controlButtonSizeConstraint.constant = 84
+            self.controller.playbackButton.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            self.controller.forwardSkipButtonSizeConstraint.constant = 60
+            self.controller.forwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+            self.controller.backwardSkipButtonSizeConstraint.constant = 60
+            self.controller.backwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
             self.controller.layoutIfNeeded()
 
             self.dismissButton.isHidden = true

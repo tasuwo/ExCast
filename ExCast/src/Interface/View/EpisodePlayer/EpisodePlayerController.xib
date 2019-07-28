@@ -12,10 +12,12 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EpisodePlayerController" customModule="ExCast" customModuleProvider="target">
             <connections>
                 <outlet property="backwardSkipButton" destination="jsN-Bu-A8T" id="pQi-2z-kzn"/>
+                <outlet property="backwardSkipButtonSizeConstraint" destination="uSS-oV-QFY" id="od4-Ux-eSY"/>
                 <outlet property="baseView" destination="QAb-YX-DwI" id="OBO-DD-aqZ"/>
                 <outlet property="controlButtonSizeConstraint" destination="vtF-jR-DXq" id="p3I-aT-FZ4"/>
                 <outlet property="currentTimeLabel" destination="szn-ki-oiZ" id="mL3-RP-ZZV"/>
                 <outlet property="forwardSkipButton" destination="eLE-mK-CwI" id="P42-dz-Jdj"/>
+                <outlet property="forwardSkipButtonSizeConstraint" destination="33b-76-Y1C" id="U5q-XU-J7c"/>
                 <outlet property="playbackButton" destination="Txv-iE-0Ca" id="0FY-ZN-Llj"/>
                 <outlet property="playbackButtonBottomConstraint" destination="SlY-VM-nbG" id="xKB-qP-q7d"/>
                 <outlet property="playbackSlidebar" destination="UiQ-hw-Q4m" id="Xtw-B2-hfe"/>
@@ -27,20 +29,21 @@
             <rect key="frame" x="0.0" y="0.0" width="400" height="150"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Txv-iE-0Ca" customClass="MDCFloatingButton">
-                    <rect key="frame" x="170" y="70" width="60" height="60"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Txv-iE-0Ca" customClass="MDCFloatingButton">
+                    <rect key="frame" x="160" y="50" width="80" height="80"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="Txv-iE-0Ca" secondAttribute="height" multiplier="1:1" id="aQZ-qz-44L"/>
-                        <constraint firstAttribute="width" constant="60" id="vtF-jR-DXq"/>
+                        <constraint firstAttribute="width" constant="80" id="vtF-jR-DXq"/>
                     </constraints>
                     <state key="normal" title="Play"/>
                     <connections>
                         <action selector="didTapPlaybackButton:" destination="-1" eventType="touchUpInside" id="Zrz-5n-l5v"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eLE-mK-CwI" customClass="MDCFloatingButton">
-                    <rect key="frame" x="260" y="70" width="60" height="60"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eLE-mK-CwI" customClass="MDCFloatingButton">
+                    <rect key="frame" x="270" y="60" width="60" height="60"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="60" id="33b-76-Y1C"/>
                         <constraint firstAttribute="width" secondItem="eLE-mK-CwI" secondAttribute="height" multiplier="1:1" id="wZi-Yb-UUA"/>
                     </constraints>
                     <state key="normal" title="Skip"/>
@@ -48,10 +51,11 @@
                         <action selector="didTapSkipForwardButton:" destination="-1" eventType="touchUpInside" id="jHg-9y-fT9"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsN-Bu-A8T" customClass="MDCFloatingButton">
-                    <rect key="frame" x="80" y="70" width="60" height="60"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsN-Bu-A8T" customClass="MDCFloatingButton">
+                    <rect key="frame" x="70" y="60" width="60" height="60"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="jsN-Bu-A8T" secondAttribute="height" multiplier="1:1" id="a1B-uj-gfH"/>
+                        <constraint firstAttribute="width" constant="60" id="uSS-oV-QFY"/>
                     </constraints>
                     <state key="normal" title="Skip"/>
                     <connections>
@@ -94,8 +98,6 @@
                 <constraint firstAttribute="trailing" secondItem="UiQ-hw-Q4m" secondAttribute="trailing" constant="20" id="hRu-EL-Kb0"/>
                 <constraint firstItem="jsN-Bu-A8T" firstAttribute="centerY" secondItem="Txv-iE-0Ca" secondAttribute="centerY" id="hjt-s1-xhs"/>
                 <constraint firstItem="eLE-mK-CwI" firstAttribute="centerY" secondItem="Txv-iE-0Ca" secondAttribute="centerY" id="izi-da-Hy0"/>
-                <constraint firstItem="eLE-mK-CwI" firstAttribute="width" secondItem="Txv-iE-0Ca" secondAttribute="width" id="lCY-OW-fKR"/>
-                <constraint firstItem="jsN-Bu-A8T" firstAttribute="width" secondItem="Txv-iE-0Ca" secondAttribute="width" id="wUI-mP-Wps"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
