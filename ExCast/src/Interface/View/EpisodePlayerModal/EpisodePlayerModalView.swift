@@ -118,6 +118,8 @@ class EpisodePlayerModalView: UIView {
     private func setupAppearences() {
         self.hidableMark.image = UIImage(named: "down_arrow")
         self.dismissButton.isHidden = true
+        self.dismissButton.setImage(UIImage(named: "player_cancel_black"), for: .normal)
+        self.dismissButton.tintColor = .black
         self.thumbnailImageView.layer.cornerRadius = 20
     }
 

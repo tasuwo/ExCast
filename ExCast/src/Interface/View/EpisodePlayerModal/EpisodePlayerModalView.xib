@@ -58,9 +58,9 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuW-DK-eiK">
-                    <rect key="frame" x="364" y="438" width="30" height="30"/>
+                    <rect key="frame" x="370" y="443" width="20" height="20"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="30" id="Idj-Tn-CC6"/>
+                        <constraint firstAttribute="width" constant="20" id="Idj-Tn-CC6"/>
                         <constraint firstAttribute="width" secondItem="nuW-DK-eiK" secondAttribute="height" multiplier="1:1" id="ZsZ-hW-K25"/>
                     </constraints>
                     <state key="normal" title="×"/>
@@ -98,7 +98,7 @@
                 <constraint firstItem="P57-B9-4iI" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="28" id="JyL-A3-zfm" userLabel="Show Title Top Constraint"/>
                 <constraint firstItem="nuW-DK-eiK" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="Vbr-zU-daH" userLabel="Dismiss Button Y Constraint"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" priority="200" id="WGj-sv-Prk" userLabel="Controller X SubConstraint"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="nuW-DK-eiK" secondAttribute="trailing" constant="20" id="X6W-mu-Qnc" userLabel="Dismiss Button Right Constraint"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="nuW-DK-eiK" secondAttribute="trailing" constant="24" id="X6W-mu-Qnc" userLabel="Dismiss Button Right Constraint"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="rPg-Ae-c9U" secondAttribute="bottom" constant="20" id="fc2-9N-9Wu" userLabel="Controller Top Constraint"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="hIN-aW-K0I" userLabel="Controller Width Constraint"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LwN-Nx-GPS" secondAttribute="trailing" priority="997" constant="32" id="hm1-M4-V8S" userLabel="Episode Title Right Constraint"/>
