@@ -26,9 +26,21 @@ protocol EpisodePlayerModalViewDelegate: AnyObject {
 
 class EpisodePlayerModalView: UIView {
 
+    weak var delegate: EpisodePlayerModalViewDelegate?
+
     @IBOutlet var baseView: UIView!
 
     @IBOutlet weak var controller: EpisodePlayerController!
+
+    @IBOutlet weak var thumbnailImageView: UIImageView!
+
+    @IBOutlet var dismissButtonTopConstraint: NSLayoutConstraint!
+
+    @IBOutlet var playerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var playerBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var thumbnailTopConstraint: NSLayoutConstraint!
+    @IBOutlet var thumbnailRightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var thumbnailLeftConstraint: NSLayoutConstraint!
 
     @IBAction func didTapDismissButton(_ sender: Any) {
         self.delegate?.shouldDismiss()
@@ -71,21 +83,18 @@ class EpisodePlayerModalView: UIView {
         }
     }
 
-    @IBOutlet var dismissButtonTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var playerHeightConstraint: NSLayoutConstraint!
-
-    weak var delegate: EpisodePlayerModalViewDelegate?
-
     // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.loadFromNib()
+        self.setupAppearences()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.loadFromNib()
+        self.setupAppearences()
     }
 
     // MARK: - Methods
@@ -97,6 +106,10 @@ class EpisodePlayerModalView: UIView {
 
         self.baseView.frame = self.bounds
         addSubview(baseView)
+    }
+
+    private func setupAppearences() {
+        self.thumbnailImageView.layer.cornerRadius = 20
     }
 
 }

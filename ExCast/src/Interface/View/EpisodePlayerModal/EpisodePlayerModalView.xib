@@ -15,7 +15,12 @@
                 <outlet property="baseView" destination="iN0-l3-epB" id="WWx-Lz-QIB"/>
                 <outlet property="controller" destination="fqi-iY-iNm" id="O8x-AW-x8g"/>
                 <outlet property="dismissButtonTopConstraint" destination="t7Z-Lz-f4a" id="IyR-TG-FvH"/>
+                <outlet property="playerBottomConstraint" destination="vpZ-Ny-IQ8" id="HEh-Y9-ist"/>
                 <outlet property="playerHeightConstraint" destination="hkg-cp-che" id="MaB-Md-rxn"/>
+                <outlet property="thumbnailImageView" destination="rPg-Ae-c9U" id="BSv-QV-1bw"/>
+                <outlet property="thumbnailLeftConstraint" destination="BHN-tO-aho" id="KDh-i3-jbo"/>
+                <outlet property="thumbnailRightConstraint" destination="lz0-Qh-2Gx" id="X9f-zb-HpM"/>
+                <outlet property="thumbnailTopConstraint" destination="9d3-x3-Nge" id="AxE-Qx-xdU"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -24,7 +29,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqi-iY-iNm" customClass="EpisodePlayerController" customModule="ExCast" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="363" width="414" height="180"/>
+                    <rect key="frame" x="0.0" y="622" width="414" height="180"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="180" id="hkg-cp-che"/>
@@ -41,16 +46,27 @@
                         <action selector="didTapDismissButton:" destination="-1" eventType="touchUpInside" id="XPo-mV-K1B"/>
                     </connections>
                 </button>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rPg-Ae-c9U">
+                    <rect key="frame" x="20" y="144" width="374" height="374"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="rPg-Ae-c9U" secondAttribute="height" multiplier="1:1" id="1zW-54-NR0"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="fqi-iY-iNm" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="DLX-RN-cHZ"/>
+                <constraint firstItem="fqi-iY-iNm" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" priority="999" id="0fq-23-GHV"/>
+                <constraint firstItem="rPg-Ae-c9U" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" priority="999" id="7mn-EV-vPs"/>
+                <constraint firstItem="rPg-Ae-c9U" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="100" id="9d3-x3-Nge"/>
+                <constraint firstItem="rPg-Ae-c9U" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="BHN-tO-aho"/>
                 <constraint firstItem="nuW-DK-eiK" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" priority="999" id="Vbr-zU-daH"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="WGj-sv-Prk"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="nuW-DK-eiK" secondAttribute="trailing" constant="20" id="X6W-mu-Qnc"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="hIN-aW-K0I"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rPg-Ae-c9U" secondAttribute="trailing" constant="20" id="lz0-Qh-2Gx"/>
                 <constraint firstItem="nuW-DK-eiK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="t7Z-Lz-f4a"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="fqi-iY-iNm" secondAttribute="bottom" constant="60" id="vpZ-Ny-IQ8"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>

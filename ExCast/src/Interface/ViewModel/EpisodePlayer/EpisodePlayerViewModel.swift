@@ -18,6 +18,9 @@ class EpisodePlayerViewModel {
     private let forwardSkipDuration: Double = 10
     private let backwardSkipDuration: Double = 10
 
+    // 厳密にはプレーヤの一部ではないので、別の場所に置くべきかも
+    var thumbnail: Dynamic<URL?>
+
     var isPlaying: Dynamic<Bool>
     var isPrepared: Dynamic<Bool>
     var currentTime: Dynamic<Double>
@@ -40,6 +43,8 @@ class EpisodePlayerViewModel {
             infoCenter: MPNowPlayingInfoCenter.default()
         )
 
+        let artworkUrl = episode.artwork ?? show.artwork
+        self.thumbnail = Dynamic(artworkUrl)
         self.isPlaying = Dynamic(false)
         self.isPrepared = Dynamic(false)
         self.currentTime = Dynamic(0)
@@ -50,6 +55,8 @@ class EpisodePlayerViewModel {
 
     func setup() {
         // TODO: 初回の同期を綺麗にする
+        let artworkUrl = self.episode.artwork ?? self.show.artwork
+        self.thumbnail.value = artworkUrl
         self.isPlaying.value = false
         self.isPrepared.value = false
         self.currentTime.value = 0

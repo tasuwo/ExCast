@@ -71,6 +71,36 @@ extension UIButton: Bondable {
     }
 }
 
+// MARK: - UIImageView
+
+extension UIImageView {
+    var imageBond: Bond<URL?> {
+        if let bond = objc_getAssociatedObject(self, &handle) {
+            return bond as! Bond<URL?>
+        } else {
+            let bond = Bond<URL?>() { [unowned self] url in
+                guard let url = url else { return }
+
+                DispatchQueue.global(qos: .background).async {
+                    guard let data = try? Data(contentsOf: url),
+                          let image = UIImage(data: data) else { return }
+                    DispatchQueue.main.async {
+                        self.image = image
+                    }
+                }
+            }
+            objc_setAssociatedObject(self, &handle, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return bond
+        }
+    }
+}
+
+extension UIImageView: Bondable {
+    var designatedBond: Bond<URL?> {
+        return self.imageBond
+    }
+}
+
 // MARK: - UITableView
 
 protocol BondableTableView: AnyObject {
@@ -200,22 +230,31 @@ extension EpisodePlayerModalView {
     private func minimize() {
         self.controller.playbackSlidebar.isHidden = true
         self.controller.currentTimeLabel.isHidden = true
+        self.controller.remainingTimeLabel.isHidden = true
+        self.controller.layoutIfNeeded()
 
         UIView.animate(withDuration: 0.2, animations: { [unowned self] in
             self.controller.playbackButtonBottomConstraint.isActive = false
             self.controller.controlButtonSizeConstraint.constant = 30
             self.controller.layoutIfNeeded()
 
+            self.thumbnailImageView.layer.cornerRadius = 0
+            self.thumbnailTopConstraint.constant = 0
+            self.thumbnailRightConstraint.isActive = false
+            self.thumbnailLeftConstraint.constant = 0
             self.playerHeightConstraint.constant = 50
+            self.playerBottomConstraint.isActive = false
             self.dismissButtonTopConstraint.isActive = false
-            self.baseView.backgroundColor = .lightText
+            self.layoutIfNeeded()
+
             self.baseView.layer.borderWidth = 1
             self.baseView.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
+            self.baseView.layer.layoutIfNeeded()
 
             self.delegate?.shouldMinimize()
-
-            self.layoutIfNeeded()
-        })
+        }) { _ in
+            self.baseView.backgroundColor = .lightText
+        }
     }
 
     private func expand() {
@@ -224,18 +263,27 @@ extension EpisodePlayerModalView {
             self.controller.controlButtonSizeConstraint.constant = 60
             self.controller.layoutIfNeeded()
 
+            self.thumbnailImageView.layer.cornerRadius = 20
+            self.thumbnailTopConstraint.constant = 100
+            self.thumbnailRightConstraint.isActive = true
+            self.thumbnailLeftConstraint.constant = 20
             self.playerHeightConstraint.constant = 180
+            self.playerBottomConstraint.isActive = true
             self.dismissButtonTopConstraint.isActive = true
             self.baseView.backgroundColor = .white
-            self.baseView.layer.borderWidth = 0
-            self.baseView.layer.borderColor = nil
+            self.layoutIfNeeded()
 
             self.delegate?.shouldExpand()
-
-            self.layoutIfNeeded()
         }) { _ in
             self.controller.playbackSlidebar.isHidden = false
             self.controller.currentTimeLabel.isHidden = false
+            self.controller.remainingTimeLabel.isHidden = false
+            self.controller.layoutIfNeeded()
+
+            self.baseView.layer.borderWidth = 0
+            self.baseView.layer.borderColor = nil
+            self.baseView.layer.layoutIfNeeded()
+
         }
     }
 }

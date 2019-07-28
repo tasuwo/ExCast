@@ -79,10 +79,12 @@ extension AppRootViewController: EpisodePlayerModalLaytoutController {
         let bottom = self.view.frame.height - tabBarInsets
 
         self.playerModalView.view.frame = CGRect(x: 0, y: bottom - 60, width: self.view.frame.width, height: 60)
+        self.playerModalView.view.layoutIfNeeded()
     }
 
     func expand() {
         self.playerModalView.view.frame = self.view.frame
+        self.playerModalView.view.layoutIfNeeded()
     }
 
 }
