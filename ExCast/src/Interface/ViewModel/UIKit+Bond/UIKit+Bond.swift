@@ -238,13 +238,15 @@ extension EpisodePlayerModalView {
             self.controller.controlButtonSizeConstraint.constant = 30
             self.controller.layoutIfNeeded()
 
+            self.dismissButton.isHidden = false
+            self.showTitleLabel.isHidden = true
+            self.episodeTitleLabel.isHidden = true
             self.thumbnailImageView.layer.cornerRadius = 0
             self.thumbnailTopConstraint.constant = 0
             self.thumbnailRightConstraint.isActive = false
             self.thumbnailLeftConstraint.constant = 0
             self.playerHeightConstraint.constant = 50
             self.playerBottomConstraint.isActive = false
-            self.dismissButtonTopConstraint.isActive = false
             self.layoutIfNeeded()
 
             self.baseView.layer.borderWidth = 1
@@ -263,13 +265,13 @@ extension EpisodePlayerModalView {
             self.controller.controlButtonSizeConstraint.constant = 60
             self.controller.layoutIfNeeded()
 
+            self.dismissButton.isHidden = true
             self.thumbnailImageView.layer.cornerRadius = 20
             self.thumbnailTopConstraint.constant = 100
             self.thumbnailRightConstraint.isActive = true
             self.thumbnailLeftConstraint.constant = 20
             self.playerHeightConstraint.constant = 180
             self.playerBottomConstraint.isActive = true
-            self.dismissButtonTopConstraint.isActive = true
             self.baseView.backgroundColor = .white
             self.layoutIfNeeded()
 
@@ -280,10 +282,13 @@ extension EpisodePlayerModalView {
             self.controller.remainingTimeLabel.isHidden = false
             self.controller.layoutIfNeeded()
 
+            self.showTitleLabel.isHidden = false
+            self.episodeTitleLabel.isHidden = false
+            self.layoutIfNeeded()
+
             self.baseView.layer.borderWidth = 0
             self.baseView.layer.borderColor = nil
             self.baseView.layer.layoutIfNeeded()
-
         }
     }
 }

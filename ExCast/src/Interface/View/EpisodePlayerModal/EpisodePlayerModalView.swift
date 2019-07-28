@@ -30,11 +30,15 @@ class EpisodePlayerModalView: UIView {
 
     @IBOutlet var baseView: UIView!
 
-    @IBOutlet weak var controller: EpisodePlayerController!
+    @IBOutlet weak var showTitleLabel: UILabel!
+
+    @IBOutlet weak var episodeTitleLabel: UILabel!
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
 
-    @IBOutlet var dismissButtonTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var controller: EpisodePlayerController!
+
+    @IBOutlet weak var dismissButton: UIButton!
 
     @IBOutlet var playerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var playerBottomConstraint: NSLayoutConstraint!
@@ -109,6 +113,7 @@ class EpisodePlayerModalView: UIView {
     }
 
     private func setupAppearences() {
+        self.dismissButton.isHidden = true
         self.thumbnailImageView.layer.cornerRadius = 20
     }
 

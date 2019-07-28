@@ -61,6 +61,8 @@ class EpisodePlayerViewController: UIViewController {
         let duration = Double(self.playerViewModel.episode.duration!)
         self.modalView.controller.playbackSlidebar.maximumValue = Float(duration)
 
+        self.playerViewModel.showTitle ->> self.modalView.showTitleLabel
+        self.playerViewModel.episodeTitle ->> self.modalView.episodeTitleLabel
         self.playerViewModel.thumbnail ->> self.modalView.thumbnailImageView
         self.playerViewModel.isPrepared ->> self.modalView.controller.playbackButton
         self.playerViewModel.isPrepared ->> self.modalView.controller.forwardSkipButton
