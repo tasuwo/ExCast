@@ -235,11 +235,13 @@ extension EpisodePlayerModalView {
 
         UIView.animate(withDuration: 0.2, animations: { [unowned self] in
             self.controller.playbackButtonBottomConstraint.isActive = false
-            self.controller.controlButtonSizeConstraint.constant = 40
+            self.controller.leftButtonMarginConstraint.constant = 36
+            self.controller.rightButtonMarginConstraint.constant = 36
+            self.controller.controlButtonSizeConstraint.constant = 42
             self.controller.playbackButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-            self.controller.forwardSkipButtonSizeConstraint.constant = 40
+            self.controller.forwardSkipButtonSizeConstraint.constant = 42
             self.controller.forwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-            self.controller.backwardSkipButtonSizeConstraint.constant = 40
+            self.controller.backwardSkipButtonSizeConstraint.constant = 42
             self.controller.backwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
             self.controller.layoutIfNeeded()
 
@@ -273,7 +275,9 @@ extension EpisodePlayerModalView {
     private func expand() {
         UIView.animate(withDuration: 0.2, animations: { [unowned self] in
             self.controller.playbackButtonBottomConstraint.isActive = true
-            self.controller.controlButtonSizeConstraint.constant = 84
+            self.controller.leftButtonMarginConstraint.constant = 24
+            self.controller.rightButtonMarginConstraint.constant = 24
+            self.controller.controlButtonSizeConstraint.constant = 72
             self.controller.playbackButton.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
             self.controller.forwardSkipButtonSizeConstraint.constant = 60
             self.controller.forwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)

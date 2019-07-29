@@ -42,6 +42,8 @@ class EpisodePlayerController: UIView {
     @IBOutlet weak var forwardSkipButtonSizeConstraint: NSLayoutConstraint!
     @IBOutlet weak var backwardSkipButtonSizeConstraint: NSLayoutConstraint!
     @IBOutlet weak var controlButtonSizeConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leftButtonMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var rightButtonMarginConstraint: NSLayoutConstraint!
 
     @IBAction func didTapPlaybackButton(_ sender: Any) {
         self.delegate?.didTapPlaybackButton()
