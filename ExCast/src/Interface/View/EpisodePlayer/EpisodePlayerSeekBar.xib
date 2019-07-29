@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EpisodePlayerSeekBar" customModule="ExCast" customModuleProvider="target">
+            <connections>
+                <outlet property="baseView" destination="Jia-xI-87s" id="3Oi-GH-Raq"/>
+                <outlet property="currentTimeLabel" destination="oMg-br-NBb" id="6gb-5d-SqG"/>
+                <outlet property="remainingTimeLabel" destination="Efj-Q6-7tR" id="XWC-Nn-d1N"/>
+                <outlet property="scrubBar" destination="3k3-L6-c73" id="yZS-o2-6m6"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Jia-xI-87s">
+            <rect key="frame" x="0.0" y="0.0" width="457" height="71"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AbL-RR-wqS">
+                    <rect key="frame" x="0.0" y="0.0" width="457" height="35.5"/>
+                    <subviews>
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3k3-L6-c73">
+                            <rect key="frame" x="-2" y="5.5" width="461" height="31"/>
+                            <connections>
+                                <action selector="onPlaybackTimeDidChage:forEvent:" destination="-1" eventType="valueChanged" id="SLO-ar-9ce"/>
+                            </connections>
+                        </slider>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="3k3-L6-c73" secondAttribute="bottom" id="PcP-oR-wIR"/>
+                        <constraint firstItem="3k3-L6-c73" firstAttribute="width" secondItem="AbL-RR-wqS" secondAttribute="width" id="dlk-4Q-7M3"/>
+                        <constraint firstItem="3k3-L6-c73" firstAttribute="centerX" secondItem="AbL-RR-wqS" secondAttribute="centerX" id="dxb-Yz-HEh"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gog-Qd-8EC">
+                    <rect key="frame" x="0.0" y="35.5" width="457" height="35.5"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Efj-Q6-7tR">
+                            <rect key="frame" x="423" y="0.0" width="34" height="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oMg-br-NBb">
+                            <rect key="frame" x="0.0" y="0.0" width="29" height="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="Efj-Q6-7tR" firstAttribute="top" secondItem="gog-Qd-8EC" secondAttribute="top" id="2sr-c3-Zfb"/>
+                        <constraint firstItem="oMg-br-NBb" firstAttribute="top" secondItem="gog-Qd-8EC" secondAttribute="top" id="6tb-MF-hie"/>
+                        <constraint firstItem="oMg-br-NBb" firstAttribute="leading" secondItem="gog-Qd-8EC" secondAttribute="leading" id="bdH-6C-Xq3"/>
+                        <constraint firstAttribute="trailing" secondItem="Efj-Q6-7tR" secondAttribute="trailing" id="tzr-KC-GXi"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="gog-Qd-8EC" firstAttribute="height" secondItem="Jia-xI-87s" secondAttribute="height" multiplier="1/2" id="0rL-lA-c7R" userLabel="Down View Heiht"/>
+                <constraint firstItem="gog-Qd-8EC" firstAttribute="centerX" secondItem="Jia-xI-87s" secondAttribute="centerX" id="12P-UM-hSM" userLabel="Down View Center X"/>
+                <constraint firstAttribute="bottom" secondItem="gog-Qd-8EC" secondAttribute="bottom" id="ENl-Kv-UZ7" userLabel="Down View Bottom"/>
+                <constraint firstItem="gog-Qd-8EC" firstAttribute="width" secondItem="Jia-xI-87s" secondAttribute="width" id="KTv-sr-A20" userLabel="Down View Width"/>
+                <constraint firstItem="AbL-RR-wqS" firstAttribute="top" secondItem="Jia-xI-87s" secondAttribute="top" id="WM6-Fi-dr7" userLabel="Up View Top"/>
+                <constraint firstItem="AbL-RR-wqS" firstAttribute="centerX" secondItem="Jia-xI-87s" secondAttribute="centerX" id="eDv-iN-0Jx" userLabel="Up View Center X"/>
+                <constraint firstItem="AbL-RR-wqS" firstAttribute="height" secondItem="Jia-xI-87s" secondAttribute="height" multiplier="1/2" id="na9-PX-dyS" userLabel="Up View Height"/>
+                <constraint firstItem="AbL-RR-wqS" firstAttribute="width" secondItem="Jia-xI-87s" secondAttribute="width" id="sJY-Rv-oxH" userLabel="Up View Width"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="90.579710144927546" y="-112.83482142857142"/>
+        </view>
+    </objects>
+</document>
