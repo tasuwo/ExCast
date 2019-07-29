@@ -13,16 +13,17 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EpisodePlayerModalView" customModule="ExCast" customModuleProvider="target">
             <connections>
                 <outlet property="baseView" destination="iN0-l3-epB" id="WWx-Lz-QIB"/>
-                <outlet property="controller" destination="fqi-iY-iNm" id="O8x-AW-x8g"/>
-                <outlet property="controllerTopConstraint" destination="fc2-9N-9Wu" id="TDx-Qr-WaU"/>
                 <outlet property="dismissButton" destination="nuW-DK-eiK" id="smw-RL-gbM"/>
                 <outlet property="episodeTitleLabel" destination="LwN-Nx-GPS" id="AdI-jV-Qu0"/>
                 <outlet property="hidableMark" destination="Pz0-fO-yUf" id="73M-1y-1ai"/>
-                <outlet property="playerBottomConstraint" destination="vpZ-Ny-IQ8" id="HEh-Y9-ist"/>
-                <outlet property="playerHeightConstraint" destination="hkg-cp-che" id="MaB-Md-rxn"/>
+                <outlet property="playbackButtons" destination="fqi-iY-iNm" id="O8x-AW-x8g"/>
+                <outlet property="playbackButtonsBottomConstraint" destination="vpZ-Ny-IQ8" id="kl6-k9-T1r"/>
+                <outlet property="playbackButtonsHeightConstraint" destination="hkg-cp-che" id="MaB-Md-rxn"/>
+                <outlet property="seekBar" destination="udp-sb-xnI" id="eeI-Ds-kcq"/>
                 <outlet property="showTitleLabel" destination="P57-B9-4iI" id="u59-xj-i85"/>
+                <outlet property="thumbnailBottomConstraint" destination="mld-eT-Uxy" id="5Lv-UU-xZf"/>
                 <outlet property="thumbnailImageView" destination="rPg-Ae-c9U" id="BSv-QV-1bw"/>
-                <outlet property="thumbnailLeftConstraint" destination="xDY-32-UlR" id="ZwU-jt-yI1"/>
+                <outlet property="thumbnailLeftConstraint" destination="Dm0-H9-AWF" id="yVI-9q-LFK"/>
                 <outlet property="thumbnailTopConstraint" destination="9d3-x3-Nge" id="AxE-Qx-xdU"/>
                 <outlet property="thumbnailXConstraint" destination="CfC-kd-yAq" id="udD-rZ-brk"/>
             </connections>
@@ -33,7 +34,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episode Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LwN-Nx-GPS">
-                    <rect key="frame" x="32" y="102" width="132.5" height="28"/>
+                    <rect key="frame" x="32" y="102" width="350" height="28"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="28" id="Tx3-gF-frG"/>
                     </constraints>
@@ -50,11 +51,19 @@
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqi-iY-iNm" customClass="EpisodePlayerController" customModule="ExCast" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="622" width="414" height="180"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udp-sb-xnI" customClass="EpisodePlayerSeekBar" customModule="ExCast" customModuleProvider="target">
+                    <rect key="frame" x="28" y="562" width="358" height="60"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="180" id="hkg-cp-che"/>
+                        <constraint firstAttribute="height" constant="60" id="jHt-T5-jiN"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqi-iY-iNm" userLabel="PlaybackButtons" customClass="EpisodePlayerPlaybackButtons" customModule="ExCast" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="642" width="414" height="160"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="320" id="8cD-Me-buq"/>
+                        <constraint firstAttribute="height" priority="999" constant="160" id="hkg-cp-che"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuW-DK-eiK">
@@ -68,17 +77,17 @@
                         <action selector="didTapDismissButton:" destination="-1" eventType="touchUpInside" id="XPo-mV-K1B"/>
                     </connections>
                 </button>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rPg-Ae-c9U">
-                    <rect key="frame" x="20" y="154" width="374" height="374"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="rPg-Ae-c9U" secondAttribute="height" multiplier="1:1" id="1zW-54-NR0"/>
-                    </constraints>
-                </imageView>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Pz0-fO-yUf">
                     <rect key="frame" x="20" y="58" width="30" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="e2H-LA-Fi3"/>
                         <constraint firstAttribute="width" secondItem="Pz0-fO-yUf" secondAttribute="height" multiplier="1:1" id="hNd-kc-wPg"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rPg-Ae-c9U">
+                    <rect key="frame" x="32" y="176" width="350" height="350"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="rPg-Ae-c9U" secondAttribute="height" multiplier="1:1" id="1zW-54-NR0"/>
                     </constraints>
                 </imageView>
             </subviews>
@@ -88,23 +97,27 @@
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" priority="200" id="0fq-23-GHV" userLabel="Controller Y SubConstraint"/>
                 <constraint firstItem="Pz0-fO-yUf" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="14" id="4XX-vL-8Fs"/>
                 <constraint firstItem="rPg-Ae-c9U" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" priority="999" id="7mn-EV-vPs" userLabel="Thumbnail Height SubConstraint"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rPg-Ae-c9U" secondAttribute="trailing" constant="20" id="8PI-9e-CIr" userLabel="Thumbnail Right Constraint"/>
                 <constraint firstItem="rPg-Ae-c9U" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" priority="750" id="8We-XK-xyt" userLabel="Thumbnail Left SubConstraint"/>
-                <constraint firstItem="rPg-Ae-c9U" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="110" id="9d3-x3-Nge"/>
+                <constraint firstItem="rPg-Ae-c9U" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="132" id="9d3-x3-Nge"/>
                 <constraint firstItem="LwN-Nx-GPS" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="32" id="CYa-Ba-5Fa" userLabel="Episode Title Left Constraint"/>
                 <constraint firstItem="rPg-Ae-c9U" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" priority="900" id="CfC-kd-yAq" userLabel="Thumbnail X SubConstraint"/>
+                <constraint firstItem="rPg-Ae-c9U" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="32" id="Dm0-H9-AWF"/>
                 <constraint firstItem="P57-B9-4iI" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" priority="999" id="GD1-u1-PZV" userLabel="Show Title X Constraint"/>
                 <constraint firstItem="Pz0-fO-yUf" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="Hoh-Jy-hIO"/>
                 <constraint firstItem="P57-B9-4iI" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="28" id="JyL-A3-zfm" userLabel="Show Title Top Constraint"/>
+                <constraint firstItem="udp-sb-xnI" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="28" id="Lol-Zk-It0"/>
                 <constraint firstItem="nuW-DK-eiK" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="Vbr-zU-daH" userLabel="Dismiss Button Y Constraint"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" priority="200" id="WGj-sv-Prk" userLabel="Controller X SubConstraint"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="nuW-DK-eiK" secondAttribute="trailing" constant="24" id="X6W-mu-Qnc" userLabel="Dismiss Button Right Constraint"/>
-                <constraint firstItem="fqi-iY-iNm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="rPg-Ae-c9U" secondAttribute="bottom" constant="20" id="fc2-9N-9Wu" userLabel="Controller Top Constraint"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="udp-sb-xnI" secondAttribute="trailing" constant="28" id="go2-jD-tdB"/>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="hIN-aW-K0I" userLabel="Controller Width Constraint"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LwN-Nx-GPS" secondAttribute="trailing" priority="997" constant="32" id="hm1-M4-V8S" userLabel="Episode Title Right Constraint"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="LwN-Nx-GPS" secondAttribute="trailing" priority="999" constant="32" id="hm1-M4-V8S" userLabel="Episode Title Right Constraint"/>
                 <constraint firstItem="LwN-Nx-GPS" firstAttribute="top" secondItem="P57-B9-4iI" secondAttribute="bottom" constant="14" id="jnY-SE-QGY" userLabel="Episode Title Top Constraint"/>
+                <constraint firstItem="fqi-iY-iNm" firstAttribute="top" secondItem="udp-sb-xnI" secondAttribute="bottom" constant="20" id="kVM-9H-Kra"/>
+                <constraint firstItem="udp-sb-xnI" firstAttribute="top" relation="greaterThanOrEqual" secondItem="rPg-Ae-c9U" secondAttribute="bottom" constant="32" id="mld-eT-Uxy"/>
+                <constraint firstItem="udp-sb-xnI" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="rNW-6D-bJf"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="fqi-iY-iNm" secondAttribute="bottom" constant="60" id="vpZ-Ny-IQ8" userLabel="Controller Bottom Constraint"/>
-                <constraint firstItem="rPg-Ae-c9U" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="xDY-32-UlR" userLabel="Thumbnail Left Constraint"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rPg-Ae-c9U" secondAttribute="trailing" constant="32" id="ygG-sF-Dnv"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>

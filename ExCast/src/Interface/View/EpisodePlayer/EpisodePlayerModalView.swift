@@ -36,18 +36,25 @@ class EpisodePlayerModalView: UIView {
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
 
-    @IBOutlet weak var controller: EpisodePlayerController!
+    @IBOutlet weak var seekBar: EpisodePlayerSeekBar!
+
+    @IBOutlet weak var playbackButtons: EpisodePlayerPlaybackButtons!
 
     @IBOutlet weak var dismissButton: UIButton!
 
     @IBOutlet weak var hidableMark: UIImageView!
 
-    @IBOutlet var playerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var playerBottomConstraint: NSLayoutConstraint!
+    @IBOutlet var playbackButtonsHeightConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var playbackButtonsBottomConstraint: NSLayoutConstraint!
+
     @IBOutlet weak var thumbnailTopConstraint: NSLayoutConstraint!
+
     @IBOutlet var thumbnailLeftConstraint: NSLayoutConstraint!
+
     @IBOutlet var thumbnailXConstraint: NSLayoutConstraint!
-    @IBOutlet var controllerTopConstraint: NSLayoutConstraint!
+
+    @IBOutlet var thumbnailBottomConstraint: NSLayoutConstraint!
 
     @IBAction func didTapDismissButton(_ sender: Any) {
         self.delegate?.shouldDismiss()

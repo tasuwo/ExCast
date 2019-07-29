@@ -37,7 +37,8 @@ class EpisodePlayerViewController: UIViewController {
         super.viewDidLoad()
 
         self.modalView.delegate = self
-        self.modalView.controller.delegate = self
+        self.modalView.seekBar.delegate = self
+        self.modalView.playbackButtons.delegate = self
 
         // TODO: modal 関連処理は分離したい
         self.modalViewModel.modalState ->> self.modalView.layoutBond
@@ -59,27 +60,27 @@ class EpisodePlayerViewController: UIViewController {
     private func bindCurrentPlayerViewModelToView() {
         // TODO:
         let duration = Double(self.playerViewModel.episode.duration!)
-        self.modalView.controller.playbackSlidebar.maximumValue = Float(duration)
+        self.modalView.seekBar.scrubBar.maximumValue = Float(duration)
 
         self.playerViewModel.showTitle ->> self.modalView.showTitleLabel
         self.playerViewModel.episodeTitle ->> self.modalView.episodeTitleLabel
         self.playerViewModel.thumbnail ->> self.modalView.thumbnailImageView
-        self.playerViewModel.isPrepared ->> self.modalView.controller.playbackButton
-        self.playerViewModel.isPrepared ->> self.modalView.controller.forwardSkipButton
-        self.playerViewModel.isPrepared ->> self.modalView.controller.backwardSkipButton
-        self.playerViewModel.isPlaying ->> self.modalView.controller.playbackButtonBond
-        self.playerViewModel.displayCurrentTime.map { $0.asTimeString() ?? "" } ->> self.modalView.controller.currentTimeLabel
-        self.playerViewModel.displayCurrentTime.map { ($0 - duration).asTimeString() ?? "" } ->> self.modalView.controller.remainingTimeLabel
-        self.playerViewModel.displayCurrentTime.map { Float($0) } ->> self.modalView.controller.playbackSlidebar
+        self.playerViewModel.isPrepared ->> self.modalView.playbackButtons.playbackButton
+        self.playerViewModel.isPrepared ->> self.modalView.playbackButtons.forwardSkipButton
+        self.playerViewModel.isPrepared ->> self.modalView.playbackButtons.backwardSkipButton
+        self.playerViewModel.isPlaying ->> self.modalView.playbackButtons.playbackButtonBond
+        self.playerViewModel.displayCurrentTime.map { $0.asTimeString() ?? "" } ->> self.modalView.seekBar.currentTimeLabel
+        self.playerViewModel.displayCurrentTime.map { ($0 - duration).asTimeString() ?? "" } ->> self.modalView.seekBar.remainingTimeLabel
+        self.playerViewModel.displayCurrentTime.map { Float($0) } ->> self.modalView.seekBar.scrubBar
 
         self.playerViewModel.setup()
     }
 
 }
 
-extension EpisodePlayerViewController: EpisodePlayerControllerDelegate {
+extension EpisodePlayerViewController: EpisodePlayerPlaybackButtonsDelegate {
 
-    // MARK: EpisodePlayerControllerDelegate
+    // MARK: EpisodePlayerPlaybackButtonsDelegate
 
     func didTapPlaybackButton() {
         self.playerViewModel.playback()
@@ -92,6 +93,10 @@ extension EpisodePlayerViewController: EpisodePlayerControllerDelegate {
     func didTapSkipBackwardButton() {
         self.playerViewModel.skipBackward()
     }
+
+}
+
+extension EpisodePlayerViewController: EpisodePlayerSeekBarDelegate {
 
     func didGrabbedPlaybackSlider() {
         self.playerViewModel.isSliderGrabbed.value = true
