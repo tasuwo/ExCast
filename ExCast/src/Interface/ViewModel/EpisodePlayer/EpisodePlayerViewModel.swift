@@ -17,6 +17,7 @@ class EpisodePlayerViewModel {
 
     private let forwardSkipDuration: Double = 10
     private let backwardSkipDuration: Double = 10
+    private var playedAfterLoadingOnce: Bool = false
 
     // 厳密にはプレーヤの一部ではないので、別の場所に置くべきかも
     var showTitle: Dynamic<String>
@@ -117,7 +118,11 @@ extension EpisodePlayerViewModel: AudioPlayerDelegate {
 
     func didFinishPrepare() {
         self.isPrepared.value = true
-        self.commands.play()
+
+        if playedAfterLoadingOnce == false {
+            self.commands.play()
+            playedAfterLoadingOnce = true
+        }
     }
 
     func didChangePlayingState(to state: AudioPlayer.PlayingState) {
