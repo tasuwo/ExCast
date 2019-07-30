@@ -247,7 +247,7 @@ extension EpisodePlayerModalView {
             self.playbackButtons.layoutIfNeeded()
 
             // Header
-            self.hidableMark.isHidden = true
+            self.minimizeViewButton.isHidden = true
             self.showTitleLabel.isHidden = true
             self.episodeTitleLabel.isHidden = true
 
@@ -309,7 +309,7 @@ extension EpisodePlayerModalView {
             self.playbackButtons.layoutIfNeeded()
 
             // Header
-            self.hidableMark.isHidden = false
+            self.minimizeViewButton.isHidden = false
             self.showTitleLabel.isHidden = false
             self.episodeTitleLabel.isHidden = false
 

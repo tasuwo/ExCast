@@ -22,6 +22,8 @@ protocol EpisodePlayerModalViewDelegate: AnyObject {
 
     func didEndPanned(distance: Float, velocity: Float)
 
+    func didTapMinimizeButton()
+
 }
 
 class EpisodePlayerModalView: UIView {
@@ -29,6 +31,8 @@ class EpisodePlayerModalView: UIView {
     weak var delegate: EpisodePlayerModalViewDelegate?
 
     @IBOutlet var baseView: UIView!
+
+    @IBOutlet weak var minimizeViewButton: UIButton!
 
     @IBOutlet weak var showTitleLabel: UILabel!
 
@@ -41,8 +45,6 @@ class EpisodePlayerModalView: UIView {
     @IBOutlet weak var playbackButtons: EpisodePlayerPlaybackButtons!
 
     @IBOutlet weak var dismissButton: UIButton!
-
-    @IBOutlet weak var hidableMark: UIImageView!
 
     @IBOutlet var playbackButtonsHeightConstraint: NSLayoutConstraint!
 
@@ -96,6 +98,10 @@ class EpisodePlayerModalView: UIView {
             break
         }
     }
+    
+    @IBAction func didTapMinimizeViewButton(_ sender: Any) {
+        self.delegate?.didTapMinimizeButton()
+    }
 
     // MARK: - Initializers
 
@@ -123,7 +129,8 @@ class EpisodePlayerModalView: UIView {
     }
 
     private func setupAppearences() {
-        self.hidableMark.image = UIImage(named: "down_arrow")
+        self.minimizeViewButton.setImage(UIImage(named: "player_down_arrow"), for: .normal)
+        self.minimizeViewButton.tintColor = .black
         self.dismissButton.isHidden = true
         self.dismissButton.setImage(UIImage(named: "player_cancel_black"), for: .normal)
         self.dismissButton.tintColor = .black

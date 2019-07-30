@@ -523,8 +523,8 @@
 		2CCEC3D022E47CFA0055D27A /* EpisodePlayer */ = {
 			isa = PBXGroup;
 			children = (
-				2C8D688122EB6B3D00CE9660 /* EpisodePlayerModalView.xib */,
 				2C8D687F22EB6B2E00CE9660 /* EpisodePlayerModalView.swift */,
+				2C8D688122EB6B3D00CE9660 /* EpisodePlayerModalView.xib */,
 				2CCEC3D122E47D140055D27A /* EpisodePlayerPlaybackButtons.swift */,
 				2CCEC3D322E47D220055D27A /* EpisodePlayerPlaybackButtons.xib */,
 				2CDF07A822EE86AE002F8F5C /* EpisdoePlayerSeekBar.swift */,

@@ -60,7 +60,7 @@ class EpisodePlayerViewController: UIViewController {
     private func bindCurrentPlayerViewModelToView() {
         // TODO:
         let duration = Double(self.playerViewModel.episode.duration!)
-        self.modalView.seekBar.scrubBar.maximumValue = Float(duration)
+        self.modalView.seekBar.scrubBar.maximumValue = Float(100)
 
         self.playerViewModel.showTitle ->> self.modalView.showTitleLabel
         self.playerViewModel.episodeTitle ->> self.modalView.episodeTitleLabel
@@ -140,6 +140,10 @@ extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
     func didEndPanned(distance: Float, velocity: Float) {
         self.modalViewModel.panState.value = .ended(length: distance, velocity: velocity)
         self.modalViewModel.panState.value = .none
+    }
+
+    func didTapMinimizeButton() {
+        self.modalViewModel.modalState.value = .mini
     }
 
 }
