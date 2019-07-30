@@ -22,23 +22,6 @@
             <rect key="frame" x="0.0" y="0.0" width="457" height="71"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AbL-RR-wqS">
-                    <rect key="frame" x="0.0" y="0.0" width="457" height="35.5"/>
-                    <subviews>
-                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3k3-L6-c73">
-                            <rect key="frame" x="-2" y="5.5" width="461" height="31"/>
-                            <connections>
-                                <action selector="onPlaybackTimeDidChage:forEvent:" destination="-1" eventType="valueChanged" id="SLO-ar-9ce"/>
-                            </connections>
-                        </slider>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="bottom" secondItem="3k3-L6-c73" secondAttribute="bottom" id="PcP-oR-wIR"/>
-                        <constraint firstItem="3k3-L6-c73" firstAttribute="width" secondItem="AbL-RR-wqS" secondAttribute="width" id="dlk-4Q-7M3"/>
-                        <constraint firstItem="3k3-L6-c73" firstAttribute="centerX" secondItem="AbL-RR-wqS" secondAttribute="centerX" id="dxb-Yz-HEh"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gog-Qd-8EC">
                     <rect key="frame" x="0.0" y="35.5" width="457" height="35.5"/>
                     <subviews>
@@ -61,6 +44,23 @@
                         <constraint firstItem="oMg-br-NBb" firstAttribute="top" secondItem="gog-Qd-8EC" secondAttribute="top" id="6tb-MF-hie"/>
                         <constraint firstItem="oMg-br-NBb" firstAttribute="leading" secondItem="gog-Qd-8EC" secondAttribute="leading" id="bdH-6C-Xq3"/>
                         <constraint firstAttribute="trailing" secondItem="Efj-Q6-7tR" secondAttribute="trailing" id="tzr-KC-GXi"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AbL-RR-wqS">
+                    <rect key="frame" x="0.0" y="0.0" width="457" height="35.5"/>
+                    <subviews>
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3k3-L6-c73">
+                            <rect key="frame" x="-2" y="5.5" width="461" height="31"/>
+                            <connections>
+                                <action selector="onPlaybackTimeDidChage:forEvent:" destination="-1" eventType="valueChanged" id="SLO-ar-9ce"/>
+                            </connections>
+                        </slider>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="3k3-L6-c73" secondAttribute="bottom" id="PcP-oR-wIR"/>
+                        <constraint firstItem="3k3-L6-c73" firstAttribute="width" secondItem="AbL-RR-wqS" secondAttribute="width" id="dlk-4Q-7M3"/>
+                        <constraint firstItem="3k3-L6-c73" firstAttribute="centerX" secondItem="AbL-RR-wqS" secondAttribute="centerX" id="dxb-Yz-HEh"/>
                     </constraints>
                 </view>
             </subviews>
