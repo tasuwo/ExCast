@@ -60,7 +60,7 @@ class EpisodePlayerViewController: UIViewController {
     private func bindCurrentPlayerViewModelToView() {
         // TODO:
         let duration = Double(self.playerViewModel.episode.duration!)
-        self.modalView.seekBar.scrubBar.maximumValue = Float(100)
+        self.modalView.seekBar.scrubBar.maximumValue = Float(duration)
 
         self.playerViewModel.showTitle ->> self.modalView.showTitleLabel
         self.playerViewModel.episodeTitle ->> self.modalView.episodeTitleLabel

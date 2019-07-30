@@ -58,6 +58,10 @@ class EpisodePlayerModalView: UIView {
 
     @IBOutlet var thumbnailBottomConstraint: NSLayoutConstraint!
 
+    @IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
+
+    @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
+
     @IBAction func didTapDismissButton(_ sender: Any) {
         self.delegate?.shouldDismiss()
     }
@@ -109,12 +113,18 @@ class EpisodePlayerModalView: UIView {
         super.init(frame: frame)
         self.loadFromNib()
         self.setupAppearences()
+
+        self.panGestureRecognizer.cancelsTouchesInView = false
+        self.tapGestureRecognizer.cancelsTouchesInView = false
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.loadFromNib()
         self.setupAppearences()
+
+        self.panGestureRecognizer.cancelsTouchesInView = false
+        self.tapGestureRecognizer.cancelsTouchesInView = false
     }
 
     // MARK: - Methods

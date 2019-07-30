@@ -16,11 +16,13 @@
                 <outlet property="dismissButton" destination="nuW-DK-eiK" id="smw-RL-gbM"/>
                 <outlet property="episodeTitleLabel" destination="LwN-Nx-GPS" id="AdI-jV-Qu0"/>
                 <outlet property="minimizeViewButton" destination="2ak-Sg-BVA" id="4gm-6r-CCU"/>
+                <outlet property="panGestureRecognizer" destination="8QE-FE-RM4" id="JRT-U9-okh"/>
                 <outlet property="playbackButtons" destination="fqi-iY-iNm" id="O8x-AW-x8g"/>
                 <outlet property="playbackButtonsBottomConstraint" destination="vpZ-Ny-IQ8" id="kl6-k9-T1r"/>
                 <outlet property="playbackButtonsHeightConstraint" destination="hkg-cp-che" id="MaB-Md-rxn"/>
                 <outlet property="seekBar" destination="udp-sb-xnI" id="eeI-Ds-kcq"/>
                 <outlet property="showTitleLabel" destination="P57-B9-4iI" id="u59-xj-i85"/>
+                <outlet property="tapGestureRecognizer" destination="QAv-XK-D2j" id="e5y-xv-48C"/>
                 <outlet property="thumbnailBottomConstraint" destination="mld-eT-Uxy" id="5Lv-UU-xZf"/>
                 <outlet property="thumbnailImageView" destination="rPg-Ae-c9U" id="BSv-QV-1bw"/>
                 <outlet property="thumbnailLeftConstraint" destination="Dm0-H9-AWF" id="yVI-9q-LFK"/>
