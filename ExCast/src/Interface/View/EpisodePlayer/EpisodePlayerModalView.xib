@@ -44,6 +44,15 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P57-B9-4iI">
+                    <rect key="frame" x="177.5" y="72" width="59" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="EIn-UZ-GCe"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udp-sb-xnI" customClass="EpisodePlayerSeekBar" customModule="ExCast" customModuleProvider="target">
                     <rect key="frame" x="28" y="562" width="358" height="60"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -59,17 +68,6 @@
                         <constraint firstAttribute="height" priority="999" constant="160" id="hkg-cp-che"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuW-DK-eiK">
-                    <rect key="frame" x="370" y="443" width="20" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="20" id="Idj-Tn-CC6"/>
-                        <constraint firstAttribute="width" secondItem="nuW-DK-eiK" secondAttribute="height" multiplier="1:1" id="ZsZ-hW-K25"/>
-                    </constraints>
-                    <state key="normal" title="×"/>
-                    <connections>
-                        <action selector="didTapDismissButton:" destination="-1" eventType="touchUpInside" id="XPo-mV-K1B"/>
-                    </connections>
-                </button>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rPg-Ae-c9U">
                     <rect key="frame" x="32" y="176" width="350" height="350"/>
                     <constraints>
@@ -86,15 +84,17 @@
                         <action selector="didTapMinimizeViewButton:" destination="-1" eventType="touchUpInside" id="DOb-V3-mxc"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P57-B9-4iI">
-                    <rect key="frame" x="177.5" y="72" width="59" height="16"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuW-DK-eiK">
+                    <rect key="frame" x="370" y="443" width="20" height="20"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="16" id="EIn-UZ-GCe"/>
+                        <constraint firstAttribute="width" constant="20" id="Idj-Tn-CC6"/>
+                        <constraint firstAttribute="width" secondItem="nuW-DK-eiK" secondAttribute="height" multiplier="1:1" id="ZsZ-hW-K25"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                    <state key="normal" title="×"/>
+                    <connections>
+                        <action selector="didTapDismissButton:" destination="-1" eventType="touchUpInside" id="XPo-mV-K1B"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>

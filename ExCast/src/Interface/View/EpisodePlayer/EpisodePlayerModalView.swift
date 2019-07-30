@@ -113,18 +113,14 @@ class EpisodePlayerModalView: UIView {
         super.init(frame: frame)
         self.loadFromNib()
         self.setupAppearences()
-
-        self.panGestureRecognizer.cancelsTouchesInView = false
-        self.tapGestureRecognizer.cancelsTouchesInView = false
+        self.setupGestureRecognizer()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.loadFromNib()
         self.setupAppearences()
-
-        self.panGestureRecognizer.cancelsTouchesInView = false
-        self.tapGestureRecognizer.cancelsTouchesInView = false
+        self.setupGestureRecognizer()
     }
 
     // MARK: - Methods
@@ -145,6 +141,23 @@ class EpisodePlayerModalView: UIView {
         self.dismissButton.setImage(UIImage(named: "player_cancel_black"), for: .normal)
         self.dismissButton.tintColor = .black
         self.thumbnailImageView.layer.cornerRadius = 20
+    }
+
+    private func setupGestureRecognizer() {
+        self.panGestureRecognizer.cancelsTouchesInView = false
+        self.tapGestureRecognizer.cancelsTouchesInView = false
+        self.panGestureRecognizer.delegate = self
+        self.tapGestureRecognizer.delegate = self
+    }
+
+}
+
+extension EpisodePlayerModalView: UIGestureRecognizerDelegate {
+
+    // MARK: - UIGestureRecognizerDelegate
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return touch.view is UIButton == false
     }
 
 }
