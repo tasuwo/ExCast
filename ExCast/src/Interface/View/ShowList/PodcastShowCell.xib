@@ -31,8 +31,8 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nG-F8-cg9">
-                        <rect key="frame" x="115" y="51" width="42" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="author" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nG-F8-cg9">
+                        <rect key="frame" x="115" y="51" width="219" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -42,11 +42,13 @@
                     <constraint firstItem="7nG-F8-cg9" firstAttribute="leading" secondItem="VIR-RL-ItD" secondAttribute="trailing" constant="10" id="0du-r4-iiK"/>
                     <constraint firstItem="iER-pV-iRH" firstAttribute="leading" secondItem="VIR-RL-ItD" secondAttribute="trailing" constant="10" id="5Ki-ke-VG3"/>
                     <constraint firstAttribute="trailing" secondItem="iER-pV-iRH" secondAttribute="trailing" constant="15" id="JE7-P8-7gb"/>
+                    <constraint firstAttribute="trailing" secondItem="7nG-F8-cg9" secondAttribute="trailing" constant="15" id="Jpd-Vo-DY2"/>
                     <constraint firstItem="VIR-RL-ItD" firstAttribute="top" secondItem="Bjy-Aj-UIj" secondAttribute="top" constant="15" id="LH0-Z0-B4I"/>
                     <constraint firstItem="VIR-RL-ItD" firstAttribute="leading" secondItem="Bjy-Aj-UIj" secondAttribute="leading" constant="15" id="YdZ-y4-qnd"/>
                     <constraint firstAttribute="bottom" secondItem="VIR-RL-ItD" secondAttribute="bottom" priority="990" constant="15" id="c3y-af-LIL"/>
                     <constraint firstItem="iER-pV-iRH" firstAttribute="top" secondItem="Bjy-Aj-UIj" secondAttribute="top" constant="25" id="elT-KT-8KV"/>
                     <constraint firstItem="7nG-F8-cg9" firstAttribute="top" secondItem="iER-pV-iRH" secondAttribute="bottom" constant="5" id="jJL-qg-jyo"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="7nG-F8-cg9" secondAttribute="bottom" constant="25" id="s4m-Yj-zot"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
