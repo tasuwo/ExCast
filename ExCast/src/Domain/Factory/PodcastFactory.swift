@@ -95,7 +95,7 @@ class PodcastFactory: NSObject {
     }
 
     // TODO: duration の表現は他にもあるので対応したい
-    private func parseDuration(_ str: String?) -> Int? {
+    private func parseDuration(_ str: String?) -> Double? {
         guard let durationStr = str else { return nil }
 
         // TODO: 数値変換に失敗した際の処理
@@ -104,6 +104,6 @@ class PodcastFactory: NSObject {
         let duration = parts.enumerated().reduce(0) { prev, val in
             return prev + Double(val.element) * NSDecimalNumber(decimal: pow(60, val.offset)).doubleValue
         }
-        return Int(duration)
+        return duration
     }
 }

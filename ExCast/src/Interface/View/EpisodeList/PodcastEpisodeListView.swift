@@ -68,7 +68,7 @@ extension PodcastEpisodeListView: UITableViewDataSource {
             return cell
         }
 
-        episodeCell.layout(title: episode.title, pubDate: episode.pubDate, description: episode.description ?? "", duration: String(episode.duration!))
+        episodeCell.layout(title: episode.title, pubDate: episode.pubDate, description: episode.description ?? "", duration: (episode.duration!).asTimeString())
 
         return cell
     }

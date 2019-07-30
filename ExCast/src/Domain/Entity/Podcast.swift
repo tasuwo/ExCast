@@ -64,7 +64,7 @@ struct Podcast: Codable, Equatable {
         
         /// The duration of an episode.
         /// Different duration formats are accepted.
-        let duration: Int?
+        let duration: Double?
         
         /// An episode link URL.
         let link: URL?
