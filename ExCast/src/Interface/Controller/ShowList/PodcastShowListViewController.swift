@@ -39,6 +39,8 @@ class PodcastShowListViewController: UIViewController {
         viewModel.podcasts ->> self.showListView.contentsBond
 
         self.viewModel.setup()
+
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
