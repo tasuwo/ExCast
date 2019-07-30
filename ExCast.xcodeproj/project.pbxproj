@@ -49,9 +49,9 @@
 		2CA13C8D22C9100100CC6072 /* FeedUrlInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CA13C8C22C9100100CC6072 /* FeedUrlInputView.xib */; };
 		2CA13C8F22C9100B00CC6072 /* FeedUrlInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C8E22C9100B00CC6072 /* FeedUrlInputView.swift */; };
 		2CA13C9122CA5AF500CC6072 /* AppRootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C9022CA5AF400CC6072 /* AppRootTabBarController.swift */; };
+		2CA2E9B822F0A26100A6E3A9 /* EpisodePlayerPlaybackButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D122E47D140055D27A /* EpisodePlayerPlaybackButtons.swift */; };
+		2CA2E9B922F0A2B100A6E3A9 /* EpisodePlayerPlaybackButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D322E47D220055D27A /* EpisodePlayerPlaybackButtons.xib */; };
 		2CCEC3CF22E47AAA0055D27A /* AudioPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3CE22E47AAA0055D27A /* AudioPlayerController.swift */; };
-		2CCEC3D222E47D140055D27A /* EpisodePlayerPlaybackButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D122E47D140055D27A /* EpisodePlayerPlaybackButtons.swift */; };
-		2CCEC3D422E47D220055D27A /* EpisodePlayerPlaybackButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D322E47D220055D27A /* EpisodePlayerPlaybackButtons.xib */; };
 		2CCEC3D722E484670055D27A /* EpisodePlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D622E484670055D27A /* EpisodePlayerViewModel.swift */; };
 		2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D922E4847F0055D27A /* EpisodePlayerViewController.swift */; };
 		2CCEC3DC22E485720055D27A /* EpisodePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CCEC3DB22E485720055D27A /* EpisodePlayerViewController.xib */; };
@@ -670,11 +670,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA2E9B922F0A2B100A6E3A9 /* EpisodePlayerPlaybackButtons.xib in Resources */,
 				2CA13C8D22C9100100CC6072 /* FeedUrlInputView.xib in Resources */,
 				2CDF07AC22EE8721002F8F5C /* EpisodePlayerSeekBar.xib in Resources */,
 				2CA13C6422C8D7D800CC6072 /* LaunchScreen.storyboard in Resources */,
-				2CCEC3D422E47D220055D27A /* EpisodePlayerPlaybackButtons.xib in Resources */,
-				2CCEC3D422E47D220055D27A /* EpisodePlayerPlaybackButtons.xib in Resources */,
 				2CA13C6122C8D7D800CC6072 /* Assets.xcassets in Resources */,
 				2CA13C8922C8FE7200CC6072 /* FeedUrlInputViewController.xib in Resources */,
 				2C122DEB22CA6BB300011558 /* PodcastShowListViewController.xib in Resources */,
@@ -744,6 +743,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA2E9B822F0A26100A6E3A9 /* EpisodePlayerPlaybackButtons.swift in Sources */,
 				2CA13C8F22C9100B00CC6072 /* FeedUrlInputView.swift in Sources */,
 				2CCEC3CF22E47AAA0055D27A /* AudioPlayerController.swift in Sources */,
 				2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */,
@@ -761,8 +761,6 @@
 				2CDF07A922EE86AE002F8F5C /* EpisdoePlayerSeekBar.swift in Sources */,
 				2CA13C7522C8E3F100CC6072 /* Language.swift in Sources */,
 				2CCEC3D722E484670055D27A /* EpisodePlayerViewModel.swift in Sources */,
-				2CCEC3D222E47D140055D27A /* EpisodePlayerPlaybackButtons.swift in Sources */,
-				2CCEC3D222E47D140055D27A /* EpisodePlayerPlaybackButtons.swift in Sources */,
 				2C122DF522CCFBA100011558 /* parseRfc822DateString.swift in Sources */,
 				2C6391DD22E1EB8300B5EBE0 /* PodcastFactory.swift in Sources */,
 				2C6391DA22E1DCAD00B5EBE0 /* FeedUrlInputViewModel.swift in Sources */,
