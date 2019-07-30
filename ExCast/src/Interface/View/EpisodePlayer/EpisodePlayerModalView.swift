@@ -129,7 +129,7 @@ class EpisodePlayerModalView: UIView {
     }
 
     private func setupAppearences() {
-        self.minimizeViewButton.setImage(UIImage(named: "player_down_arrow"), for: .normal)
+        self.minimizeViewButton.setImage(UIImage(named: "player_down_arrow_black"), for: .normal)
         self.minimizeViewButton.tintColor = .black
         self.dismissButton.isHidden = true
         self.dismissButton.setImage(UIImage(named: "player_cancel_black"), for: .normal)

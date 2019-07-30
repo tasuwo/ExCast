@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,7 +33,6 @@
                         <constraint firstAttribute="width" secondItem="Txv-iE-0Ca" secondAttribute="height" multiplier="1:1" id="aQZ-qz-44L"/>
                         <constraint firstAttribute="width" constant="72" id="vtF-jR-DXq"/>
                     </constraints>
-                    <state key="normal" title="Play"/>
                     <connections>
                         <action selector="didTapPlaybackButton:" destination="-1" eventType="touchUpInside" id="Zrz-5n-l5v"/>
                     </connections>
@@ -40,7 +43,6 @@
                         <constraint firstAttribute="width" constant="60" id="33b-76-Y1C"/>
                         <constraint firstAttribute="width" secondItem="eLE-mK-CwI" secondAttribute="height" multiplier="1:1" id="wZi-Yb-UUA"/>
                     </constraints>
-                    <state key="normal" title="Skip"/>
                     <connections>
                         <action selector="didTapSkipForwardButton:" destination="-1" eventType="touchUpInside" id="jHg-9y-fT9"/>
                     </connections>
@@ -51,7 +53,6 @@
                         <constraint firstAttribute="width" secondItem="jsN-Bu-A8T" secondAttribute="height" multiplier="1:1" id="a1B-uj-gfH"/>
                         <constraint firstAttribute="width" constant="60" id="uSS-oV-QFY"/>
                     </constraints>
-                    <state key="normal" title="Skip"/>
                     <connections>
                         <action selector="didTapSkipBackwardButton:" destination="-1" eventType="touchUpInside" id="CYi-tJ-L0z"/>
                     </connections>
