@@ -39,7 +39,7 @@ struct EpisodePlayerModalViewModel {
     // MARK: - Methods
 
     mutating func setup() {
-        self.modalState.value = .fullscreen
+        // self.modalState.value = .fullscreen
         self.panState.value = .none
 
         self.panBond = Bond() { [self] panState in
