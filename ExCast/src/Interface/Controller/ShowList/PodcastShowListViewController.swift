@@ -31,6 +31,8 @@ class PodcastShowListViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         setupNavigationBar()
         self.showListView.delegate_ = self
 
@@ -40,7 +42,12 @@ class PodcastShowListViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         self.viewModel.loadIfNeeded()
+
+        // TODO: 多言語対応
+        self.title = "Library"
     }
 
     // MARK: - Methods

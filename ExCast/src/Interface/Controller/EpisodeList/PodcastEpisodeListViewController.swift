@@ -32,14 +32,21 @@ class PodcastEpisodeListViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         self.episodeListView.delegate_ = self
 
         viewModel.episodes ->> self.episodeListView.contentsBond
 
         viewModel.setup()
+
+        // TODO: 多言語対応
+        self.title = self.viewModel.show.value.title
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         self.viewModel.loadIfNeeded()
     }
 

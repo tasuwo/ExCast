@@ -37,6 +37,13 @@ class FeedUrlInputViewController: UIViewController {
         self.viewModel.setup()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // TODO: 多言語対応
+        self.title = "Add New Podcast"
+    }
+
 }
 
 extension FeedUrlInputViewController: FeedUrlInputViewDelegate {
