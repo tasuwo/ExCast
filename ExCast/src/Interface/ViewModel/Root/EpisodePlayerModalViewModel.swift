@@ -67,7 +67,7 @@ struct EpisodePlayerModalViewModel {
 
             case (.fullscreen, .ended(length: let l, _)) where l > 300:
                 self.modalState.value = .mini
-            case (.fullscreen, .ended(_, velocity: let v)) where v > 1000:
+            case (.fullscreen, .ended(_, velocity: let v)) where v > 500:
                 self.modalState.value = .mini
             case (.mini, .ended(length: let l, velocity: let v)) where l < 0 && v < -500:
                 self.modalState.value = .fullscreen
