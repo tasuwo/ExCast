@@ -30,7 +30,7 @@ class AppRootTabBarController: UITabBarController {
         let viewModel = ShowListViewModel(repository: PodcastGateway(session: URLSession.shared, factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
 
         let showListVC = PodcastShowListViewController(layoutController: self.layoutController, viewModel: viewModel)
-        showListVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
+        showListVC.tabBarItem = UITabBarItem(title: "Library", image: UIImage(named: "tabbar_library_black"), tag: 0)
         let showListNVC = UINavigationController(rootViewController: showListVC)
 
         self.viewControllers = [showListNVC]
