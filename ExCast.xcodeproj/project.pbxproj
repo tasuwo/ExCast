@@ -51,6 +51,7 @@
 		2CA13C9122CA5AF500CC6072 /* AppRootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA13C9022CA5AF400CC6072 /* AppRootTabBarController.swift */; };
 		2CA2E9B822F0A26100A6E3A9 /* EpisodePlayerPlaybackButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D122E47D140055D27A /* EpisodePlayerPlaybackButtons.swift */; };
 		2CA2E9B922F0A2B100A6E3A9 /* EpisodePlayerPlaybackButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D322E47D220055D27A /* EpisodePlayerPlaybackButtons.xib */; };
+		2CA2E9BB22F1BF9800A6E3A9 /* ThumbnailDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2E9BA22F1BF9800A6E3A9 /* ThumbnailDownloader.swift */; };
 		2CCEC3CF22E47AAA0055D27A /* AudioPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3CE22E47AAA0055D27A /* AudioPlayerController.swift */; };
 		2CCEC3D722E484670055D27A /* EpisodePlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D622E484670055D27A /* EpisodePlayerViewModel.swift */; };
 		2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D922E4847F0055D27A /* EpisodePlayerViewController.swift */; };
@@ -119,6 +120,7 @@
 		2CA13C8C22C9100100CC6072 /* FeedUrlInputView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedUrlInputView.xib; sourceTree = "<group>"; };
 		2CA13C8E22C9100B00CC6072 /* FeedUrlInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUrlInputView.swift; sourceTree = "<group>"; };
 		2CA13C9022CA5AF400CC6072 /* AppRootTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootTabBarController.swift; sourceTree = "<group>"; };
+		2CA2E9BA22F1BF9800A6E3A9 /* ThumbnailDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailDownloader.swift; sourceTree = "<group>"; };
 		2CCEC3CE22E47AAA0055D27A /* AudioPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerController.swift; sourceTree = "<group>"; };
 		2CCEC3D122E47D140055D27A /* EpisodePlayerPlaybackButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerPlaybackButtons.swift; sourceTree = "<group>"; };
 		2CCEC3D322E47D220055D27A /* EpisodePlayerPlaybackButtons.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodePlayerPlaybackButtons.xib; sourceTree = "<group>"; };
@@ -446,6 +448,7 @@
 				2CCEC3CD22E47A990055D27A /* AudioPlayer */,
 				2C6391ED22E2BA6A00B5EBE0 /* Repository */,
 				2C6391CF22E1BECC00B5EBE0 /* Gateway */,
+				2CA2E9BA22F1BF9800A6E3A9 /* ThumbnailDownloader.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -751,6 +754,7 @@
 				2C6391F722E2C28400B5EBE0 /* PodcastEpisodeListViewController.swift in Sources */,
 				2C8D688722EC0BF900CE9660 /* EpisodePlayerModalViewModel.swift in Sources */,
 				2CA13C9122CA5AF500CC6072 /* AppRootTabBarController.swift in Sources */,
+				2CA2E9BB22F1BF9800A6E3A9 /* ThumbnailDownloader.swift in Sources */,
 				2CA13C5C22C8D7D700CC6072 /* FeedUrlInputViewController.swift in Sources */,
 				2C122DE922CA619E00011558 /* PodcastShowListViewController.swift in Sources */,
 				2C6391E022E2128700B5EBE0 /* XML.swift in Sources */,

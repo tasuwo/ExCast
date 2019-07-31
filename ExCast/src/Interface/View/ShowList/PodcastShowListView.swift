@@ -18,6 +18,8 @@ class PodcastShowListView: UITableView {
     static let identifier = "podcastShowCell"
 
     private var cache: [Podcast] = []
+    private var thumbnailCache: [IndexPath:UIImage] = [:]
+    private var thumbnailDownloadersInProgress: [IndexPath:ThumbnailDownloader] = [:]
     weak var delegate_: PodcastShowListViewDelegate?
 
     // MARK: - Initializers
@@ -68,13 +70,35 @@ extension PodcastShowListView: UITableViewDataSource {
             return cell
         }
 
-        // TODO: イメージどう格納するか考える
-        guard let data = try? Data(contentsOf: show.artwork) else {
+        if let thumbnail = self.thumbnailCache[indexPath] {
+            podcastShowCell.layout(artwork: thumbnail, title: show.title, author: show.author)
+            return cell
+        } else if let _ = self.thumbnailDownloadersInProgress[indexPath] {
+            podcastShowCell.layout(artwork: nil, title: show.title, author: show.author)
             return cell
         }
-        let image = UIImage(data: data)
 
-        podcastShowCell.layout(artwork: image, title: show.title, author: show.author)
+        let url = show.artwork
+        let downloader = ThumbnailDownloader(size: 90)
+        self.thumbnailDownloadersInProgress[indexPath] = downloader
+
+        downloader.startDownload(by: url, at: indexPath) { [weak self] index, result in
+            guard let self = self else { return }
+
+            switch result {
+            case let .success(image):
+                // TODO:
+                guard let cell = self.cellForRow(at: index) as? PodcastShowCell else { return }
+                cell.showArtwork.image = image
+                cell.setNeedsLayout()
+                self.thumbnailDownloadersInProgress.removeValue(forKey: index)
+            case .failure(_):
+                // TODO:
+                break
+            }
+        }
+
+        podcastShowCell.layout(artwork: nil, title: show.title, author: show.author)
 
         return cell
     }
