@@ -74,4 +74,8 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
         }
     }
 
+    func podcastEpisodeListView(didTapInformationViewOf episode: Podcast.Episode) {
+        Swift.print("tapped")
+    }
+
 }

@@ -15,6 +15,8 @@ protocol PodcastEpisodeListViewDelegate: AnyObject {
 
     func podcastEpisodeListView(shouldUpdate episodes: [Podcast.Episode], completion: @escaping () -> Void)
 
+    func podcastEpisodeListView(didTapInformationViewOf episode: Podcast.Episode)
+
 }
 
 class PodcastEpisodeListView: UITableView {
@@ -86,7 +88,9 @@ extension PodcastEpisodeListView: UITableViewDataSource {
             return cell
         }
 
+        episodeCell.episode = episode
         episodeCell.layout(title: episode.title, pubDate: episode.pubDate, description: episode.description ?? "", duration: (episode.duration!).asTimeString())
+        episodeCell.delegate = self
 
         return cell
     }
@@ -103,6 +107,16 @@ extension PodcastEpisodeListView: UITableViewDelegate {
         self.delegate_?.podcastEpisodeListView(didSelect: self.episodesCache[index], at: index)
     }
 
+}
+
+extension PodcastEpisodeListView: PodcastEpisodeCellDelegate {
+
+    // MARK: - PodcastEpisodeCellDelegate
+
+    func podcastEpisodeCell(_ cell: UITableViewCell, didSelect episode: Podcast.Episode) {
+        self.delegate_?.podcastEpisodeListView(didTapInformationViewOf: episode)
+    }
+    
 }
 
 extension PodcastEpisodeListView: BondableTableView {

@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol PodcastEpisodeCellDelegate: AnyObject {
+    func podcastEpisodeCell(_ cell: UITableViewCell, didSelect episode: Podcast.Episode)
+}
+
 protocol PodcastEpisodeCellProtocol {
     func layout(title: String, pubDate: Date?, description: String, duration: String?)
 }
@@ -18,7 +22,15 @@ class PodcastEpisodeCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var episodeDescription: UILabel!
     @IBOutlet weak var length: UILabel!
-    
+    @IBOutlet weak var informationButton: UIButton!
+
+    var episode: Podcast.Episode?
+    weak var delegate: PodcastEpisodeCellDelegate?
+
+    @IBAction func didTapInformationIcon(_ sender: UIButton) {
+        guard let episode = self.episode else { return }
+        self.delegate?.podcastEpisodeCell(self, didSelect: episode)
+    }
 }
 
 extension PodcastEpisodeCell: PodcastEpisodeCellProtocol {
@@ -41,5 +53,7 @@ extension PodcastEpisodeCell: PodcastEpisodeCellProtocol {
         } else {
             self.length.text = ""
         }
+
+        self.informationButton.setTitle("Detail", for: .normal)
     }
 }
