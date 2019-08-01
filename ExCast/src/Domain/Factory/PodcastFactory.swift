@@ -74,10 +74,11 @@ class PodcastFactory: NSObject {
             let enclosureUrl = URL(string: enclosureUrlStr),
             let enclosureTypeStr = enclosureAttributes["type"],
             let enclosureType = Enclosure.FileFormat.from(enclosureTypeStr),
-            let enclosureLengthStr = enclosureAttributes["length"],
-            let enclosureLength = Int(enclosureLengthStr) else {
+            let enclosureLengthStr = enclosureAttributes["length"] else {
                 return nil
         }
+
+        let enclosureLength = Int(enclosureLengthStr) ?? 0
 
         let enclosure = Enclosure(url: enclosureUrl, length: enclosureLength, type: enclosureType)
         var pubDate: Date? = nil
