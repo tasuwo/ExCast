@@ -50,6 +50,12 @@ struct Podcast: Codable, Equatable {
     }
 
     struct Episode: Codable, Equatable {
+        /// The string that uniquely identifies the episode.
+        let guid: String?
+
+        /// If this value is false, the guid assumed to be a url.
+        let guidIsPermaLink: Bool?
+
         /// An episode title.
         let title: String
         
