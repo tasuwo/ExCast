@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MaterialComponents
 
 class FeedUrlInputViewController: UIViewController {
 
@@ -56,13 +57,23 @@ extension FeedUrlInputViewController: FeedUrlInputViewDelegate {
     
     func didTapSend() {
         self.viewModel.fetchPodcast() { [weak self] podcast in
+            let message = MDCSnackbarMessage()
+
             guard let self = self, let podcast = podcast else {
-                Swift.print("Podcast 取得失敗")
+                message.text = "Could not find podcast feed at this url."
+                MDCSnackbarManager.show(message)
                 return
             }
-            
-            Swift.print("Podcast 取得成功")
+
+            message.text = "New podcast feed \"\(podcast.show.title)\" is successfully added."
+            MDCSnackbarManager.show(message)
+
             self.viewModel.store(podcast)
+
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
     
