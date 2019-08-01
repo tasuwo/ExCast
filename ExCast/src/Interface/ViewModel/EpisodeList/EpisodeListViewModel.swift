@@ -42,7 +42,7 @@ class EpisodeListViewModel {
                     self.show.value = fetchedPodcast.show
                 }
 
-                if fetchedPodcast.episodes != self.episodes.value {
+                if fetchedPodcast.episodes != self.episodes.values {
                     self.episodes.set(fetchedPodcast.episodes)
                 }
 

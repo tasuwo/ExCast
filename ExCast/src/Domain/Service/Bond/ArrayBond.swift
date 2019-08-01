@@ -36,46 +36,59 @@ class ArrayBond<T>: Bond<T> {
 typealias Id<T: Equatable, S: Hashable> = (T) -> S
 
 class DynamicArray<T> {
-    private(set) var value: Array<T>
+    private(set) var values: Array<T>
 
     var bonds: [BondBox<T>] = []
 
-    init(_ value: Array<T>) {
-        self.value = value
+    init(_ values: Array<T>) {
+        self.values = values
     }
 
     func remove(at index: Int) {
-        let target = self.value[index]
-        self.value.remove(at: index)
+        let target = self.values[index]
+        self.values.remove(at: index)
 
         self.bonds.forEach { ($0.bond as? ArrayBond<T>)?.removeListener?([(index, target)]) }
     }
 
     func update(at index: Int, value: T) {
         // TODO:
-        guard index < self.value.count else { return }
+        guard index < self.values.count else { return }
 
-        self.value[index] = value
+        self.values[index] = value
         self.bonds.forEach { ($0.bond as? ArrayBond<T>)?.updateListener?([(index, value)]) }
     }
 
     func append(value: T) {
-        self.value.append(value)
-        let index = self.value.count
+        self.values.append(value)
+        let index = self.values.count
         self.bonds.forEach { ($0.bond as? ArrayBond<T>)?.insertListener?([(index, value)]) }
     }
 
-    func set(_ value: Array<T>) {
-        let oldValue = self.value
-        self.value = value
-        self.bonds.forEach { [unowned self] box in
-            if oldValue.isEmpty == false {
-                let oldSets = oldValue.enumerated().map { ($0.offset, $0.element) }
-                (box.bond as? ArrayBond<T>)?.removeListener?(oldSets)
+    func set(_ newValues: Array<T>) {
+        if newValues.count > self.values.count {
+            // TODO: Equalibility
+            let updateValues = newValues.enumerated().filter { $0.offset < self.values.count }.map { ($0.offset, $0.element) }
+            if !updateValues.isEmpty {
+                self.bonds.forEach { ($0.bond as? ArrayBond<T>)?.updateListener?(updateValues) }
             }
 
-            let sets = self.value.enumerated().map { ($0.offset, $0.element) }
-            (box.bond as? ArrayBond<T>)?.insertListener?(sets)
+            let insertValues = newValues.enumerated().filter { $0.offset >= self.values.count }.map { ($0.offset, $0.element) }
+            if !insertValues.isEmpty {
+                self.bonds.forEach { ($0.bond as? ArrayBond<T>)?.insertListener?(insertValues) }
+            }
+        } else {
+            // TODO: Equalibility
+            if !newValues.isEmpty {
+                self.bonds.forEach { ($0.bond as? ArrayBond<T>)?.updateListener?(newValues.enumerated().map { ($0.offset, $0.element) }) }
+            }
+
+            let removeValues = self.values.enumerated().filter { $0.offset > newValues.count }.map { ($0.offset, $0.element) }
+            if !removeValues.isEmpty {
+                self.bonds.forEach { ($0.bond as? ArrayBond<T>)?.removeListener?(removeValues) }
+            }
         }
+
+        self.values = newValues
     }
 }

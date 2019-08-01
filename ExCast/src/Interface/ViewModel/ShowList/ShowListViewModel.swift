@@ -50,7 +50,7 @@ class ShowListViewModel {
 
             switch result {
             case .success(let fetchedPodcasts):
-                let oldPodcasts = self.podcasts.value
+                let oldPodcasts = self.podcasts.values
                 guard fetchedPodcasts != oldPodcasts else { return }
                 self.podcasts.set(fetchedPodcasts)
             case .failure(_): break
