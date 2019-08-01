@@ -34,7 +34,7 @@ class EpisodeListViewModel {
         self.show.value = podcast.show
     }
 
-    func loadIfNeeded() {
+    func loadIfNeeded(completion: @escaping (Bool) -> Void) {
         self.repository.fetch(feed: self.feedUrl) { [unowned self] result in
             switch result {
             case .success(let fetchedPodcast):
@@ -45,8 +45,11 @@ class EpisodeListViewModel {
                 if fetchedPodcast.episodes != self.episodes.value {
                     self.episodes.set(fetchedPodcast.episodes)
                 }
-            case .failure(_): break
+
+                completion(true)
+            case .failure(_):
                 // TODO: Error handling
+                completion(false)
             }
         }
     }

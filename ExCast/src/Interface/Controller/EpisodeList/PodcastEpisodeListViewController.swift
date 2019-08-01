@@ -5,7 +5,9 @@
 //  Created by Tasuku Tozawa on 2019/07/20.
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
+
 import UIKit
+import MaterialComponents
 
 class PodcastEpisodeListViewController: UIViewController {
 
@@ -42,12 +44,13 @@ class PodcastEpisodeListViewController: UIViewController {
 
         // TODO: 多言語対応
         self.title = self.viewModel.show.value.title
-    }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        self.viewModel.loadIfNeeded()
+        self.viewModel.loadIfNeeded() { result in
+            if !result {
+                let message = MDCSnackbarMessage(text: "Failed to load episodes.")
+                MDCSnackbarManager.show(message)
+            }
+        }
     }
 
 }
@@ -58,6 +61,17 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
 
     func podcastEpisodeListView(didSelect episode: Podcast.Episode, at index: Int) {
         layoutController.show(show: self.viewModel.show.value, episode: episode)
+    }
+
+    func podcastEpisodeListView(shouldUpdate episodes: [Podcast.Episode], completion: @escaping () -> Void) {
+        self.viewModel.loadIfNeeded { result in
+            if !result {
+                let message = MDCSnackbarMessage(text: "Failed to load episodes.")
+                MDCSnackbarManager.show(message)
+            }
+
+            completion()
+        }
     }
 
 }

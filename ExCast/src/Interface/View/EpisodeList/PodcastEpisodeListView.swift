@@ -7,9 +7,14 @@
 //
 
 import UIKit
+import MaterialComponents
 
 protocol PodcastEpisodeListViewDelegate: AnyObject {
+
     func podcastEpisodeListView(didSelect episode: Podcast.Episode, at index: Int)
+
+    func podcastEpisodeListView(shouldUpdate episodes: [Podcast.Episode], completion: @escaping () -> Void)
+
 }
 
 class PodcastEpisodeListView: UITableView {
@@ -24,19 +29,13 @@ class PodcastEpisodeListView: UITableView {
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         self.loadFromNib()
-
-        // TODO: Presenter に移譲する
-        self.delegate = self
-        self.dataSource = self
+        self.setup()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.loadFromNib()
-
-        // TODO: Presenter に移譲する
-        self.delegate = self
-        self.dataSource = self
+        self.setup()
     }
 
     // MARK: - Methods
@@ -49,8 +48,27 @@ class PodcastEpisodeListView: UITableView {
         self.register(nib, forCellReuseIdentifier: PodcastEpisodeListView.identifier)
     }
 
-}
+    private func setup() {
+        // TODO: Presenter に移譲する
+        self.delegate = self
+        self.dataSource = self
 
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl?.addTarget(self, action: #selector(self.refreshContents), for: .valueChanged)
+    }
+
+    @objc private func refreshContents() {
+        DispatchQueue.global(qos: .background).async {
+            self.delegate_?.podcastEpisodeListView(shouldUpdate: self.episodesCache) { [weak self] in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.refreshControl?.endRefreshing()
+                }
+            }
+        }
+    }
+
+}
 
 extension PodcastEpisodeListView: UITableViewDataSource {
 
