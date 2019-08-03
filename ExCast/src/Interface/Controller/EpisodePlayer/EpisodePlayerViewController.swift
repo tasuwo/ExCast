@@ -13,16 +13,20 @@ class EpisodePlayerViewController: UIViewController {
     @IBOutlet weak var modalView: EpisodePlayerModalView!
 
     private unowned var layoutController: EpisodePlayerModalLaytoutController
+
     private var modalViewModel: EpisodePlayerModalViewModel!
-    private var playerViewModel: EpisodePlayerViewModel!
+    private var controllerViewModel: EpisodePlayerControllerViewModel!
+    private var informationViewModel: EpisodePlayerInformationViewModel!
 
     // MARK: - Initializer
 
     init(layoutController: EpisodePlayerModalLaytoutController,
-         playerViewModel: EpisodePlayerViewModel,
+         playerViewModel: EpisodePlayerControllerViewModel,
+         informationViewModel: EpisodePlayerInformationViewModel,
          modalViewModel: EpisodePlayerModalViewModel) {
         self.layoutController = layoutController
-        self.playerViewModel = playerViewModel
+        self.controllerViewModel = playerViewModel
+        self.informationViewModel = informationViewModel
         self.modalViewModel = modalViewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -36,44 +40,53 @@ class EpisodePlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Delegate
+
         self.modalView.delegate = self
         self.modalView.seekBar.delegate = self
         self.modalView.playbackButtons.delegate = self
 
-        // TODO: modal 関連処理は分離したい
-        self.modalViewModel.modalState ->> self.modalView.layoutBond
+        // Bind
 
-        self.bindCurrentPlayerViewModelToView()
+        self.modalViewModel.modalState ->> self.modalView.layoutBond
+        self.bindEpisode()
+
+        // Setup
 
         self.modalViewModel.setup()
     }
 
     // MARK: - Methods
 
-    func reload(by model: EpisodePlayerViewModel) {
-        self.playerViewModel = nil
-        self.playerViewModel = model
+    func reload(by model: EpisodePlayerControllerViewModel) {
+        self.controllerViewModel = nil
+        self.controllerViewModel = model
 
-        self.bindCurrentPlayerViewModelToView()
+        self.bindEpisode()
     }
 
-    private func bindCurrentPlayerViewModelToView() {
-        // TODO:
-        let duration = Double(self.playerViewModel.episode.duration!)
-        self.modalView.seekBar.scrubBar.maximumValue = Float(duration)
+    private func bindEpisode() {
+        let length = self.controllerViewModel.episode.episodeLength
+        self.modalView.seekBar.bar.maximumValue = length
 
-        self.playerViewModel.showTitle ->> self.modalView.showTitleLabel
-        self.playerViewModel.episodeTitle ->> self.modalView.episodeTitleLabel
-        self.playerViewModel.thumbnail ->> self.modalView.thumbnailImageView
-        self.playerViewModel.isPrepared ->> self.modalView.playbackButtons.playbackButton
-        self.playerViewModel.isPrepared ->> self.modalView.playbackButtons.forwardSkipButton
-        self.playerViewModel.isPrepared ->> self.modalView.playbackButtons.backwardSkipButton
-        self.playerViewModel.isPlaying ->> self.modalView.playbackButtons.playbackButtonBond
-        self.playerViewModel.displayCurrentTime.map { $0.asTimeString() ?? "" } ->> self.modalView.seekBar.currentTimeLabel
-        self.playerViewModel.displayCurrentTime.map { ($0 - duration).asTimeString() ?? "" } ->> self.modalView.seekBar.remainingTimeLabel
-        self.playerViewModel.displayCurrentTime.map { Float($0) } ->> self.modalView.seekBar.scrubBar
+        // Bind
 
-        self.playerViewModel.setup()
+        self.informationViewModel.showTitle ->> self.modalView.showTitleLabel
+        self.informationViewModel.episodeTitle ->> self.modalView.episodeTitleLabel
+        self.informationViewModel.thumbnail ->> self.modalView.thumbnailImageView
+
+        self.controllerViewModel.isPrepared ->> self.modalView.playbackButtons.playbackButton
+        self.controllerViewModel.isPrepared ->> self.modalView.playbackButtons.forwardSkipButton
+        self.controllerViewModel.isPrepared ->> self.modalView.playbackButtons.backwardSkipButton
+        self.controllerViewModel.isPlaying ->> self.modalView.playbackButtons.playbackButtonBond
+        self.controllerViewModel.displayCurrentTime.map { $0.asTimeString() ?? "" } ->> self.modalView.seekBar.currentTimeLabel
+        self.controllerViewModel.displayCurrentTime.map { (Float($0) - length).asTimeString() ?? "" } ->> self.modalView.seekBar.remainingTimeLabel
+        self.controllerViewModel.displayCurrentTime.map { Float($0) } ->> self.modalView.seekBar.bar
+
+        // Setup
+
+        self.informationViewModel.setup()
+        self.controllerViewModel.setup()
     }
 
 }
@@ -83,31 +96,31 @@ extension EpisodePlayerViewController: EpisodePlayerPlaybackButtonsDelegate {
     // MARK: EpisodePlayerPlaybackButtonsDelegate
 
     func didTapPlaybackButton() {
-        self.playerViewModel.playback()
+        self.controllerViewModel.playback()
     }
 
     func didTapSkipForwardButton() {
-        self.playerViewModel.skipForward()
+        self.controllerViewModel.skipForward()
     }
 
     func didTapSkipBackwardButton() {
-        self.playerViewModel.skipBackward()
+        self.controllerViewModel.skipBackward()
     }
 
 }
 
-extension EpisodePlayerViewController: EpisodePlayerSeekBarDelegate {
+extension EpisodePlayerViewController: EpisodePlayerSeekBarContainerDelegate {
 
-    func didGrabbedPlaybackSlider() {
-        self.playerViewModel.isSliderGrabbed.value = true
+    func didStartSeek() {
+        self.controllerViewModel.isSliderGrabbed.value = true
     }
 
-    func didReleasedPlaybackSlider() {
-        self.playerViewModel.isSliderGrabbed.value = false
+    func didEndSeek() {
+        self.controllerViewModel.isSliderGrabbed.value = false
     }
 
-    func didChangePlaybackSliderValue(to time: TimeInterval) {
-        self.playerViewModel.displayCurrentTime.value = time
+    func didChangeSeekValue(to time: TimeInterval) {
+        self.controllerViewModel.displayCurrentTime.value = time
     }
 
 }

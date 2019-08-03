@@ -12,10 +12,17 @@ class AppRootTabBarController: UITabBarController {
 
     private unowned let layoutController: EpisodePlayerModalLaytoutController
 
+    private let repository: PodcastRepository
+    private let gateway: PodcastGateway
+
     // MARK: - Initializer
 
-    init(layoutController: EpisodePlayerModalLaytoutController) {
+    init(layoutController: EpisodePlayerModalLaytoutController,
+        repository: PodcastRepository,
+        gateway: PodcastGateway) {
         self.layoutController = layoutController
+        self.repository = repository
+        self.gateway = gateway
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -29,7 +36,12 @@ class AppRootTabBarController: UITabBarController {
         // TODO: DI
         let viewModel = ShowListViewModel(repository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
 
-        let showListVC = PodcastShowListViewController(layoutController: self.layoutController, viewModel: viewModel)
+        let showListVC = PodcastShowListViewController(
+            layoutController: self.layoutController,
+            viewModel: viewModel,
+            repository: self.repository,
+            gateway: self.gateway
+        )
         showListVC.tabBarItem = UITabBarItem(title: "Library", image: UIImage(named: "tabbar_library_black"), tag: 0)
         let showListNVC = UINavigationController(rootViewController: showListVC)
 

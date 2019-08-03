@@ -15,12 +15,21 @@ class PodcastShowListViewController: UIViewController {
     private unowned let layoutController: EpisodePlayerModalLaytoutController
     private let viewModel: ShowListViewModel
 
+    private let repository: PodcastRepository
+    private let gateway: PodcastGateway
+
     // MARK: - Initializer
 
     init(layoutController: EpisodePlayerModalLaytoutController,
-         viewModel: ShowListViewModel) {
+         viewModel: ShowListViewModel,
+         repository: PodcastRepository,
+         gateway: PodcastGateway) {
         self.layoutController = layoutController
         self.viewModel = viewModel
+
+        self.repository = repository
+        self.gateway = gateway
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -61,10 +70,7 @@ class PodcastShowListViewController: UIViewController {
 
     @objc private func didTapTabBar() {
         guard let navC = self.navigationController else { return }
-
-        // TODO: DI
-        let viewModel = FeedUrlInputViewModel(repository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)), gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory()))
-
+        let viewModel = FeedUrlInputViewModel(repository: self.repository, gateway: self.gateway)
         navC.pushViewController(FeedUrlInputViewController(viewModel: viewModel), animated: true)
     }
 }
@@ -75,7 +81,13 @@ extension PodcastShowListViewController: PodcastShowListViewDelegate {
     
     func podcastShowListView(didSelect podcast: Podcast, at index: Int) {
         guard let navC = self.navigationController else { return }
-        navC.pushViewController(PodcastEpisodeListViewController(layoutController: self.layoutController, podcast: podcast), animated: true)
+        navC.pushViewController(
+            PodcastEpisodeListViewController(
+                layoutController: self.layoutController,
+                podcast: podcast,
+                viewModel: EpisodeListViewModel(podcast: podcast, gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory()))),
+            animated: true
+        )
     }
 
     func podcastShowListView(didDelete podcast: Podcast, at index: Int) {

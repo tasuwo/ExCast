@@ -30,16 +30,7 @@ class EpisodeDetailViewController: UIViewController {
         super.viewDidLoad()
 
         self.viewModel.title ->> self.episodeDetailView.episodeTitleLabel
-        // TODO:
-        self.viewModel.pubDate.map { date in
-            if let date = date {
-                let formatter = DateFormatter()
-                formatter.dateStyle = .medium
-                formatter.timeStyle = .none
-                return formatter.string(from: date)
-            }
-            return ""
-        } ->> self.episodeDetailView.episodePubDateLabel
+        self.viewModel.pubDate.map { d in d?.asFormattedString() ?? "" } ->> self.episodeDetailView.episodePubDateLabel
         self.viewModel.duration.map { d in d.asTimeString() ?? "" } ->> self.episodeDetailView.episodeDurationLabel
         self.viewModel.thumbnail ->> self.episodeDetailView.episodeThumbnailView!
         self.viewModel.description ->> self.episodeDetailView.episodeDescriptionLabel.htmlBond

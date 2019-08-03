@@ -19,10 +19,10 @@ class PodcastEpisodeListViewController: UIViewController {
     // MARK: - Initializer
 
     init(layoutController: EpisodePlayerModalLaytoutController,
-         podcast: Podcast) {
+         podcast: Podcast,
+         viewModel: EpisodeListViewModel) {
         self.layoutController = layoutController
-        // TODO: DI
-        self.viewModel = EpisodeListViewModel(podcast: podcast, gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory()))
+        self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -71,7 +71,15 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
 
     func podcastEpisodeListView(didTapInformationViewOf episode: Podcast.Episode) {
         guard let navC = self.navigationController else { return }
-        navC.pushViewController(EpisodeDetailViewController(viewModel: EpisodeDetailViewModel(show: self.viewModel.show.value, episode: episode)), animated: true)
+        navC.pushViewController(
+            EpisodeDetailViewController(
+                viewModel: EpisodeDetailViewModel(
+                    show: self.viewModel.show.value,
+                    episode: episode
+                )
+            ),
+            animated: true
+        )
     }
 
 }

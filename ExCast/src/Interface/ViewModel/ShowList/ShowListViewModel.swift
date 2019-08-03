@@ -9,10 +9,11 @@
 import Foundation
 
 class ShowListViewModel {
+    
     private let repository: PodcastRepository
+    private var showsBond: ArrayBond<Podcast>!
 
     var podcasts: DynamicArray<Podcast>
-    private var showsBond: ArrayBond<Podcast>!
 
     // MARK: - Initializer
     

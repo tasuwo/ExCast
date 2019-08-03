@@ -8,23 +8,23 @@
 
 import UIKit
 
-protocol EpisodePlayerSeekBarDelegate: AnyObject {
+protocol EpisodePlayerSeekBarContainerDelegate: AnyObject {
 
-    func didGrabbedPlaybackSlider()
+    func didStartSeek()
 
-    func didReleasedPlaybackSlider()
+    func didEndSeek()
 
-    func didChangePlaybackSliderValue(to time: TimeInterval)
+    func didChangeSeekValue(to time: TimeInterval)
 
 }
 
-class EpisodePlayerSeekBar: UIView {
+class EpisodePlayerSeekBarContainer: UIView {
 
-    weak var delegate: EpisodePlayerSeekBarDelegate!
+    weak var delegate: EpisodePlayerSeekBarContainerDelegate!
 
     @IBOutlet var baseView: UIView!
 
-    @IBOutlet weak var scrubBar: UISlider!
+    @IBOutlet weak var bar: UISlider!
 
     @IBOutlet weak var currentTimeLabel: UILabel!
     
@@ -37,12 +37,12 @@ class EpisodePlayerSeekBar: UIView {
         for touch in touches {
             switch (touch.phase) {
             case .began:
-                self.delegate.didGrabbedPlaybackSlider()
+                self.delegate.didStartSeek()
             case .moved:
-                self.delegate.didChangePlaybackSliderValue(to: TimeInterval(slider.value))
+                self.delegate.didChangeSeekValue(to: TimeInterval(slider.value))
                 break
             case .ended:
-                self.delegate.didReleasedPlaybackSlider()
+                self.delegate.didEndSeek()
             default:
                 break
             }
@@ -69,7 +69,7 @@ class EpisodePlayerSeekBar: UIView {
     private func loadFromNib() {
         let bundle = Bundle.main
 
-        bundle.loadNibNamed("EpisodePlayerSeekBar", owner: self, options: nil)
+        bundle.loadNibNamed("EpisodePlayerSeekBarContainer", owner: self, options: nil)
 
         self.baseView.frame = self.bounds
         addSubview(baseView)

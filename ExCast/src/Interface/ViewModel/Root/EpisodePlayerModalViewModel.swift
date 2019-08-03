@@ -32,39 +32,13 @@ struct EpisodePlayerModalViewModel {
 
     private var panBond: Bond<PanState>!
 
-    // MARK: - Initializers
-
-    init() {}
-
     // MARK: - Methods
 
     mutating func setup() {
-        // self.modalState.value = .fullscreen
         self.panState.value = .none
 
         self.panBond = Bond() { [self] panState in
             switch (self.modalState.value, panState) {
-                /*
-            case (.fullscreen, .changed(lentgh: let l, _)) where l == 0:
-                self.modalState.value = .changing(to: .minimize, length: 0)
-            case (.mini, .changed(lentgh: let l, _)) where l == 0:
-                self.modalState.value = .changing(to: .fullscreen, length: 0)
-
-            case (.changing(to: .minimize, _), .ended(length: let l, velocity: _)) where l > 1000:
-                self.modalState.value = .mini
-            case (.changing(to: .minimize, _), .ended(length: _, velocity: let v)) where v > 1000:
-                self.modalState.value = .mini
-
-            case (.changing(to: .minimize, _), .ended(length: let l, _)) where l > -1000:
-                self.modalState.value = .mini
-            case (.changing(to: .minimize, _), .ended(_, velocity: let v)) where v > 1000:
-                self.modalState.value = .mini
-            case (.changing(to: .fullscreen, _), .ended(length: let l, velocity: let v)) where l < 0 && v > 1000:
-                self.modalState.value = .fullscreen
-            case (.changing(to: .fullscreen, _), .ended(length: let l, velocity: let v)) where l > 0 && v > 1000:
-                self.modalState.value = .hide
-                */
-
             case (.fullscreen, .ended(length: let l, _)) where l > 300:
                 self.modalState.value = .mini
             case (.fullscreen, .ended(_, velocity: let v)) where v > 500:

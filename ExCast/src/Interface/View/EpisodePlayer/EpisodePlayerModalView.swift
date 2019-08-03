@@ -40,7 +40,7 @@ class EpisodePlayerModalView: UIView {
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
 
-    @IBOutlet weak var seekBar: EpisodePlayerSeekBar!
+    @IBOutlet weak var seekBar: EpisodePlayerSeekBarContainer!
 
     @IBOutlet weak var playbackButtons: EpisodePlayerPlaybackButtons!
 

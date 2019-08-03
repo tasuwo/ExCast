@@ -43,9 +43,6 @@ class PodcastEpisodeListView: UITableView {
     // MARK: - Methods
 
     private func loadFromNib() {
-        // let bundle = Bundle.main
-        // bundle.loadNibNamed("PodcastShowListView", owner: self, options: nil)
-
         let nib = UINib(nibName: "PodcastEpisodeCell", bundle: nil)
         self.register(nib, forCellReuseIdentifier: PodcastEpisodeListView.identifier)
     }
@@ -89,7 +86,7 @@ extension PodcastEpisodeListView: UITableViewDataSource {
         }
 
         episodeCell.episode = episode
-        episodeCell.layout(title: episode.title, pubDate: episode.pubDate, description: episode.description ?? "", duration: (episode.duration!).asTimeString())
+        episodeCell.layout(title: episode.title, pubDate: episode.pubDate, description: episode.description, duration: episode.duration)
         episodeCell.delegate = self
 
         return cell

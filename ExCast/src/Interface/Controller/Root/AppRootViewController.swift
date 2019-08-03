@@ -16,7 +16,11 @@ class AppRootViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
-        self.rootTabBarController = AppRootTabBarController(layoutController: self)
+        self.rootTabBarController = AppRootTabBarController(
+            layoutController: self,
+            repository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)),
+            gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory())
+        )
         self.displayContentController(self.rootTabBarController)
     }
 
@@ -53,14 +57,15 @@ extension AppRootViewController: EpisodePlayerModalLaytoutController {
     func show(show: Podcast.Show, episode: Podcast.Episode) {
         if let view = self.playerModalView {
             let player = AudioPlayer(episode.enclosure.url)
-            view.reload(by: EpisodePlayerViewModel(show: show, episode: episode, controller: player))
+            view.reload(by: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player))
             return
         }
 
         let player = AudioPlayer(episode.enclosure.url)
         self.playerModalView = EpisodePlayerViewController(
             layoutController: self,
-            playerViewModel: EpisodePlayerViewModel(show: show, episode: episode, controller: player),
+            playerViewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player),
+            informationViewModel: EpisodePlayerInformationViewModel(show: show, episode: episode),
             modalViewModel: EpisodePlayerModalViewModel()
         )
         self.playerModalView.modalPresentationStyle = .formSheet

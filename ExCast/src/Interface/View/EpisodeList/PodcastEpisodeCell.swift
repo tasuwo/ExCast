@@ -13,7 +13,7 @@ protocol PodcastEpisodeCellDelegate: AnyObject {
 }
 
 protocol PodcastEpisodeCellProtocol {
-    func layout(title: String, pubDate: Date?, description: String, duration: String?)
+    func layout(title: String, pubDate: Date?, description: String?, duration: Double?)
 }
 
 class PodcastEpisodeCell: UITableViewCell {
@@ -35,25 +35,11 @@ class PodcastEpisodeCell: UITableViewCell {
 }
 
 extension PodcastEpisodeCell: PodcastEpisodeCellProtocol {
-    func layout(title: String, pubDate: Date?, description: String, duration: String?) {
+    func layout(title: String, pubDate: Date?, description: String?, duration: Double?) {
         self.title.text = title
-
-        if let date = pubDate {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .none
-            self.pubDate.text = formatter.string(from: date)
-        }
-
-        // TODO:
-        let str = try! NSAttributedString(data: description.data(using: .utf8)!, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil).string
-        self.episodeDescription.text = str
-
-        if let length = duration {
-            self.length.text = String(length)
-        } else {
-            self.length.text = ""
-        }
+        self.pubDate.text = pubDate?.asFormattedString()
+        self.episodeDescription.text = description?.toHtmlAttributedString(fontSize: 8).string ?? ""
+        self.length.text = duration?.asTimeString() ?? ""
 
         self.informationButton.setTitle("Detail", for: .normal)
         self.playingMarkIconView.image = generatePlayingMark()

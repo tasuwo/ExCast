@@ -45,9 +45,6 @@ class PodcastShowListView: UITableView {
     // MARK: - Methods
 
     private func loadFromNib() {
-        // let bundle = Bundle.main
-        // bundle.loadNibNamed("PodcastShowListView", owner: self, options: nil)
-
         let nib = UINib(nibName: "PodcastShowCell", bundle: nil)
         self.register(nib, forCellReuseIdentifier: PodcastShowListView.identifier)
     }

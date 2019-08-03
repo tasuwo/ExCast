@@ -1,5 +1,5 @@
 //
-//  EpisodePlayerViewModel.swift
+//  EpisodePlayerControllerViewModel.swift
 //  ExCast
 //
 //  Created by Tasuku Tozawa on 2019/07/21.
@@ -9,7 +9,7 @@
 import Foundation
 import MediaPlayer
 
-class EpisodePlayerViewModel {
+class EpisodePlayerControllerViewModel {
     let show: Podcast.Show
     let episode: Podcast.Episode
     private let commands: AudioPlayerControlCommands
@@ -18,11 +18,6 @@ class EpisodePlayerViewModel {
     private let forwardSkipDuration: Double = 10
     private let backwardSkipDuration: Double = 10
     private var playedAfterLoadingOnce: Bool = false
-
-    // 厳密にはプレーヤの一部ではないので、別の場所に置くべきかも
-    var showTitle: Dynamic<String>
-    var episodeTitle: Dynamic<String>
-    var thumbnail: Dynamic<URL?>
 
     var isPlaying: Dynamic<Bool>
     var isPrepared: Dynamic<Bool>
@@ -46,10 +41,6 @@ class EpisodePlayerViewModel {
             infoCenter: MPNowPlayingInfoCenter.default()
         )
 
-        self.showTitle = Dynamic(show.title)
-        self.episodeTitle = Dynamic(episode.title)
-        let artworkUrl = episode.artwork ?? show.artwork
-        self.thumbnail = Dynamic(artworkUrl)
         self.isPlaying = Dynamic(false)
         self.isPrepared = Dynamic(false)
         self.currentTime = Dynamic(0)
@@ -60,10 +51,6 @@ class EpisodePlayerViewModel {
 
     func setup() {
         // TODO: 初回の同期を綺麗にする
-        self.showTitle.value = show.title
-        self.episodeTitle.value = episode.title
-        let artworkUrl = self.episode.artwork ?? self.show.artwork
-        self.thumbnail.value = artworkUrl
         self.isPlaying.value = false
         self.isPrepared.value = false
         self.currentTime.value = 0
@@ -112,7 +99,7 @@ class EpisodePlayerViewModel {
 
 }
 
-extension EpisodePlayerViewModel: AudioPlayerDelegate {
+extension EpisodePlayerControllerViewModel: AudioPlayerDelegate {
 
     // MARK: - AudioPlayerDelegate
 
