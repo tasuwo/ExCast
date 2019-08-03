@@ -13,13 +13,15 @@ private var handle: UInt8 = 0;
 
 // MARK: - UILabel
 
+private var labelTextHandle: UInt8 = 0;
+
 extension UILabel {
     var textBond: Bond<String> {
-        if let bond = objc_getAssociatedObject(self, &handle) {
+        if let bond = objc_getAssociatedObject(self, &labelTextHandle) {
             return bond as! Bond<String>
         } else {
             let bond = Bond<String>() { [unowned self] value in self.text = value }
-            objc_setAssociatedObject(self, &handle, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &labelTextHandle, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return bond
         }
     }
@@ -28,6 +30,42 @@ extension UILabel {
 extension UILabel: Bondable {
     var designatedBond: Bond<String> {
         return self.textBond
+    }
+}
+
+// MARK: - UITextView
+
+private var textViewHtmlHandle: UInt8 = 1;
+
+extension UITextView {
+    var htmlBond: Bond<String> {
+        if let bond = objc_getAssociatedObject(self, &textViewHtmlHandle) {
+            return bond as! Bond<String>
+        } else {
+            let bond = Bond<String>() { [unowned self] value in
+                DispatchQueue.main.async {
+                    let modifiedFont = String(format:"<span style=\"font-family: '-apple-system', 'HelveticaNeue'; font-size: \(self.font!.pointSize)\">%@</span>", value)
+                    let source = modifiedFont.data(using: .utf8)!
+                    let text = try? NSAttributedString(
+                        data: source,
+                        options: [
+                            .documentType:NSAttributedString.DocumentType.html,
+                            .characterEncoding:String.Encoding.utf8.rawValue
+                        ],
+                        documentAttributes: nil
+                    )
+                    self.attributedText = text
+                }
+            }
+            objc_setAssociatedObject(self, &textViewHtmlHandle, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return bond
+        }
+    }
+}
+
+extension UITextView: Bondable {
+    var designatedBond: Bond<String> {
+        return self.htmlBond
     }
 }
 
@@ -170,6 +208,28 @@ extension UISlider {
 extension UISlider: Bondable {
     var designatedBond: Bond<Float> {
         return self.valueBond
+    }
+}
+
+// MARK: UITextView
+
+private var textViewHtmlValueHandle: UInt8 = 0;
+
+extension UITextView {
+    var htmlValueBond: Bond<String> {
+        if let bond = objc_getAssociatedObject(self, &textViewHtmlValueHandle) {
+            return bond as! Bond<String>
+        } else {
+            let bond = Bond<String>() { [unowned self] value in
+                DispatchQueue.main.async {
+                    let source = value.data(using: .utf8)!
+                    let text = try? NSAttributedString(data: source, options: [.documentType:NSAttributedString.DocumentType.html], documentAttributes: nil)
+                    self.attributedText = text
+                }
+            }
+            objc_setAssociatedObject(self, &textViewHtmlValueHandle, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return bond
+        }
     }
 }
 

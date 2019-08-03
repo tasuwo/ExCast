@@ -51,6 +51,8 @@ class PodcastEpisodeListViewController: UIViewController {
                 MDCSnackbarManager.show(message)
             }
         }
+
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     }
 
 }
@@ -75,7 +77,8 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
     }
 
     func podcastEpisodeListView(didTapInformationViewOf episode: Podcast.Episode) {
-        Swift.print("tapped")
+        guard let navC = self.navigationController else { return }
+        navC.pushViewController(EpisodeDetailViewController(viewModel: EpisodeDetailViewModel(show: self.viewModel.show.value, episode: episode)), animated: true)
     }
 
 }
