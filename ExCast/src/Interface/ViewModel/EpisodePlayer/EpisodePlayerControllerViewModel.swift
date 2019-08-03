@@ -7,13 +7,12 @@
 //
 
 import Foundation
-import MediaPlayer
 
 class EpisodePlayerControllerViewModel {
     let show: Podcast.Show
     let episode: Podcast.Episode
     private let commands: AudioPlayerControlCommands
-    private let commandCenter: RemoteCommandHandler
+    private let remoteCommands: AudioPlayerDelegate
 
     private let forwardSkipDuration: Double = 10
     private let backwardSkipDuration: Double = 10
@@ -28,18 +27,14 @@ class EpisodePlayerControllerViewModel {
     private var currentTimeBond: Bond<Double>!
     private var isSliderGrabbedBond: Bond<Bool>!
 
-    init(show: Podcast.Show, episode: Podcast.Episode, controller: AudioPlayerControlCommands) {
+    init(show: Podcast.Show,
+         episode: Podcast.Episode,
+         controller: AudioPlayerControlCommands,
+         remoteCommands: AudioPlayerDelegate) {
         self.show = show
         self.episode = episode
         self.commands = controller
-        // TODO: DI
-        self.commandCenter = RemoteCommandHandler(
-            show: self.show,
-            episode: self.episode,
-            commandCenter: MPRemoteCommandCenter.shared(),
-            player: self.commands,
-            infoCenter: MPNowPlayingInfoCenter.default()
-        )
+        self.remoteCommands = remoteCommands
 
         self.isPlaying = Dynamic(false)
         self.isPrepared = Dynamic(false)
@@ -56,7 +51,7 @@ class EpisodePlayerControllerViewModel {
         self.currentTime.value = 0
 
         self.commands.add(delegate: self)
-        self.commands.add(delegate: self.commandCenter)
+        self.commands.add(delegate: self.remoteCommands)
         self.commands.prepareToPlay()
 
         // Bind

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 class AppRootViewController: UIViewController {
 
@@ -53,19 +54,26 @@ extension AppRootViewController: EpisodePlayerPresenter {
     }
 
     func show(show: Podcast.Show, episode: Podcast.Episode) {
+        let player = AudioPlayer(episode.enclosure.url)
+        let commandHandler = RemoteCommandHandler(
+            show: show,
+            episode: episode,
+            commandCenter: MPRemoteCommandCenter.shared(),
+            player: player,
+            infoCenter: MPNowPlayingInfoCenter.default()
+        )
+
         if let view = self.playerModalViewController {
-            let player = AudioPlayer(episode.enclosure.url)
             view.reload(
-                controllerViewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player),
+                controllerViewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player,remoteCommands: commandHandler),
                 informationViewModel: EpisodePlayerInformationViewModel(show: show, episode: episode)
             )
             return
         }
 
-        let player = AudioPlayer(episode.enclosure.url)
         let playerViewController = EpisodePlayerViewController(
             presenter: self,
-            viewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player),
+            viewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler),
             informationViewModel: EpisodePlayerInformationViewModel(show: show, episode: episode),
             modalViewModel: EpisodePlayerModalViewModel()
         )

@@ -154,7 +154,6 @@ extension EpisodePlayerViewController: EpisodePlayerSeekBarContainerDelegate {
 
 }
 
-// TODO: Modal 関連処理は分離したい
 extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
 
     // MARK: - EpisodePlayerModalViewDelegate

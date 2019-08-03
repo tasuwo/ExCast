@@ -32,8 +32,7 @@ class AppRootTabBarController: UITabBarController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
-        // TODO: DI
-        let viewModel = ShowListViewModel(repository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
+        let viewModel = ShowListViewModel(repository: self.repository)
 
         let showListVC = PodcastShowListViewController(
             playerPresenter: self.playerPresenter,
