@@ -14,8 +14,8 @@ class EpisodePlayerControllerViewModel {
     private let commands: AudioPlayerControlCommands
     private let remoteCommands: AudioPlayerDelegate
 
-    private let forwardSkipDuration: Double = 10
-    private let backwardSkipDuration: Double = 10
+    private let forwardSkipDuration: Double = 15
+    private let backwardSkipDuration: Double = 15
     private var playedAfterLoadingOnce: Bool = false
 
     var isPlaying: Dynamic<Bool>
