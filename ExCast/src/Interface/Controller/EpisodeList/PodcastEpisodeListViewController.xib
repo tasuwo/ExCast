@@ -22,16 +22,16 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KbR-s0-UI4" customClass="PodcastEpisodeListView" customModule="ExCast" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="5" width="414" height="896"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="KbR-s0-UI4" firstAttribute="centerX" secondItem="w9v-cU-nRj" secondAttribute="centerX" id="9ac-LV-fGZ"/>
-                <constraint firstItem="KbR-s0-UI4" firstAttribute="centerY" secondItem="w9v-cU-nRj" secondAttribute="centerY" id="QEp-PK-WOY"/>
-                <constraint firstItem="KbR-s0-UI4" firstAttribute="width" secondItem="6nH-Ez-bhl" secondAttribute="width" id="a73-XQ-tHZ"/>
-                <constraint firstItem="KbR-s0-UI4" firstAttribute="height" secondItem="6nH-Ez-bhl" secondAttribute="height" id="k1L-0Q-98O"/>
+                <constraint firstItem="KbR-s0-UI4" firstAttribute="top" secondItem="6nH-Ez-bhl" secondAttribute="top" id="3Ep-9W-tP7"/>
+                <constraint firstItem="KbR-s0-UI4" firstAttribute="leading" secondItem="w9v-cU-nRj" secondAttribute="leading" id="FMT-B2-2ga"/>
+                <constraint firstItem="KbR-s0-UI4" firstAttribute="trailing" secondItem="w9v-cU-nRj" secondAttribute="trailing" id="TOs-os-Bgr"/>
+                <constraint firstAttribute="bottom" secondItem="KbR-s0-UI4" secondAttribute="bottom" id="tFz-Yn-l1W"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="w9v-cU-nRj"/>
         </view>

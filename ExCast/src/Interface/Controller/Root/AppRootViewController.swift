@@ -67,11 +67,17 @@ extension AppRootViewController: EpisodePlayerModalLaytoutController {
         self.playerModalView.modalTransitionStyle = .coverVertical
 
         self.displayContentController(self.playerModalView)
+
+        let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
+        self.rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
     }
 
     func dismiss() {
         self.hideContentController(self.playerModalView)
         self.playerModalView = nil
+
+        let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
     }
 
     func minimize() {
