@@ -8,7 +8,15 @@
 
 import UIKit
 
+protocol EpisodePlayerPresenterDelegate: AnyObject {
+    func didDismissPlayer()
+}
+
 protocol EpisodePlayerPresenter: AnyObject {
+
+    func playingEpisode() -> Podcast.Episode?
+
+    func setDelegate(_ delegate: EpisodePlayerPresenterDelegate)
 
     func show(show: Podcast.Show, episode: Podcast.Episode)
 
@@ -25,6 +33,12 @@ class EpisodePlayerViewController: UIViewController {
     @IBOutlet weak var modalView: EpisodePlayerModalView!
 
     private unowned var playerPresenter: EpisodePlayerPresenter
+
+    var playingEpisode: Podcast.Episode {
+        get {
+            return self.informationViewModel.episode
+        }
+    }
 
     private var modalViewModel: EpisodePlayerModalViewModel!
     private var controllerViewModel: EpisodePlayerControllerViewModel!
@@ -70,9 +84,12 @@ class EpisodePlayerViewController: UIViewController {
 
     // MARK: - Methods
 
-    func reload(by model: EpisodePlayerControllerViewModel) {
+    func reload(controllerViewModel: EpisodePlayerControllerViewModel,
+                informationViewModel: EpisodePlayerInformationViewModel) {
         self.controllerViewModel = nil
-        self.controllerViewModel = model
+        self.controllerViewModel = controllerViewModel
+        self.informationViewModel = nil
+        self.informationViewModel = informationViewModel
 
         self.bindEpisode()
     }

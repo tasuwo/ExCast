@@ -36,11 +36,13 @@ class PodcastEpisodeListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.playerPresenter.setDelegate(self)
         self.episodeListView.delegate_ = self
 
         viewModel.episodes ->> self.episodeListView.contentsBond
+        viewModel.playingEpisode ->> self.episodeListView
 
-        viewModel.setup()
+        viewModel.setup(with: self.playerPresenter.playingEpisode())
 
         // TODO: 多言語対応
         self.title = self.viewModel.show.value.title
@@ -55,6 +57,7 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
     // MARK: - PodcastEpisodeListViewDelegate
 
     func podcastEpisodeListView(didSelect episode: Podcast.Episode, at index: Int) {
+        self.viewModel.playingEpisode.value = episode
         self.playerPresenter.show(show: self.viewModel.show.value, episode: episode)
     }
 
@@ -80,6 +83,16 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
             ),
             animated: true
         )
+    }
+
+}
+
+extension PodcastEpisodeListViewController: EpisodePlayerPresenterDelegate {
+
+    // MARK: - EpisodePlayerPresenterDelegate
+
+    func didDismissPlayer() {
+        self.viewModel.playingEpisode.value = nil
     }
 
 }

@@ -11,7 +11,9 @@ import UIKit
 class AppRootViewController: UIViewController {
 
     private var rootTabBarController: AppRootTabBarController!
-    private var playerModalView: EpisodePlayerViewController!
+    private var playerModalViewController: EpisodePlayerViewController?
+
+    private weak var delegate: EpisodePlayerPresenterDelegate?
 
     // MARK: - Lifecycle
 
@@ -42,48 +44,69 @@ class AppRootViewController: UIViewController {
 
 extension AppRootViewController: EpisodePlayerPresenter {
 
+    func playingEpisode() -> Podcast.Episode? {
+        return self.playerModalViewController?.playingEpisode
+    }
+
+    func setDelegate(_ delegate: EpisodePlayerPresenterDelegate) {
+        self.delegate = delegate
+    }
+
     func show(show: Podcast.Show, episode: Podcast.Episode) {
-        if let view = self.playerModalView {
+        if let view = self.playerModalViewController {
             let player = AudioPlayer(episode.enclosure.url)
-            view.reload(by: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player))
+            view.reload(
+                controllerViewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player),
+                informationViewModel: EpisodePlayerInformationViewModel(show: show, episode: episode)
+            )
             return
         }
 
         let player = AudioPlayer(episode.enclosure.url)
-        self.playerModalView = EpisodePlayerViewController(
+        let playerViewController = EpisodePlayerViewController(
             presenter: self,
             viewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player),
             informationViewModel: EpisodePlayerInformationViewModel(show: show, episode: episode),
             modalViewModel: EpisodePlayerModalViewModel()
         )
-        self.playerModalView.modalPresentationStyle = .formSheet
-        self.playerModalView.modalTransitionStyle = .coverVertical
+        playerViewController.modalPresentationStyle = .formSheet
+        playerViewController.modalTransitionStyle = .coverVertical
 
-        self.displayContentController(self.playerModalView)
+        self.displayContentController(playerViewController)
+
+        self.playerModalViewController = playerViewController
 
         let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         self.rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
     }
 
     func dismiss() {
-        self.hideContentController(self.playerModalView)
-        self.playerModalView = nil
+        guard let playerViewController = self.playerModalViewController else { return }
+
+        self.hideContentController(playerViewController)
+        self.playerModalViewController = nil
 
         let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         self.rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
+
+        self.delegate?.didDismissPlayer()
     }
 
     func minimize() {
+        guard let playerViewController = self.playerModalViewController else { return }
+
         let tabBarInsets = self.rootTabBarController.tabBar.frame.height
         let bottom = self.view.frame.height - tabBarInsets
 
-        self.playerModalView.view.frame = CGRect(x: 0, y: bottom - 70, width: self.view.frame.width, height: 70)
-        self.playerModalView.view.layoutIfNeeded()
+        playerViewController.view.frame = CGRect(x: 0, y: bottom - 70, width: self.view.frame.width, height: 70)
+        playerViewController.view.layoutIfNeeded()
     }
 
     func expand() {
-        self.playerModalView.view.frame = self.view.frame
-        self.playerModalView.view.layoutIfNeeded()
+        guard let playerViewController = self.playerModalViewController else { return }
+
+        playerViewController.view.frame = self.view.frame
+        playerViewController.view.layoutIfNeeded()
     }
 
 }

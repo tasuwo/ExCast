@@ -24,6 +24,8 @@ class PodcastEpisodeListView: UITableView {
     static let identifier = "podcastEpisodeCell"
 
     private var episodesCache: [Podcast.Episode] = []
+    var playingEpisode: Podcast.Episode? = nil
+
     weak var delegate_: PodcastEpisodeListViewDelegate?
 
     // MARK: - Initializers
@@ -87,6 +89,7 @@ extension PodcastEpisodeListView: UITableViewDataSource {
 
         episodeCell.episode = episode
         episodeCell.layout(title: episode.title, pubDate: episode.pubDate, description: episode.description, duration: episode.duration)
+        episodeCell.playingMarkIconView.isHidden = episode != self.playingEpisode
         episodeCell.delegate = self
 
         return cell

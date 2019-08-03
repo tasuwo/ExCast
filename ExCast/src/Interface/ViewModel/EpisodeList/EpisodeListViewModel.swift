@@ -15,6 +15,7 @@ class EpisodeListViewModel {
 
     var show: Dynamic<Podcast.Show>
     var episodes: DynamicArray<Podcast.Episode>
+    var playingEpisode: Dynamic<Podcast.Episode?>
 
     // MARK: - Initializer
 
@@ -22,17 +23,18 @@ class EpisodeListViewModel {
         self.feedUrl = podcast.show.feedUrl
         self.show = Dynamic(podcast.show)
         self.episodes = DynamicArray([])
+        self.playingEpisode = Dynamic(nil)
         self.gateway = gateway
-
         self.podcast = podcast
     }
 
     // MARK: - Methods
 
-    func setup() {
+    func setup(with playingEpisode: Podcast.Episode?) {
         // 初回の View への同期、もっと綺麗な方法はないか
         self.show.value = podcast.show
         self.episodes.set(podcast.episodes)
+        self.playingEpisode.value = playingEpisode
     }
 
     func loadIfNeeded(completion: @escaping (Bool) -> Void) {
