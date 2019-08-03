@@ -34,18 +34,19 @@ extension PodcastShowCell: PodcastShowCellProtocol {
     // MARK: - PodcastShowCellProtocol
     
     func layout(artwork: UIImage?, title: String, author: String?) {
-        self.showArtwork.image = artwork != nil ? artwork : generateSimpleColorUIImage(color: .gray)
+        self.showArtwork.image = artwork != nil ? artwork : emptyThumbnail(by: .gray)
         self.showTitle.text = title
         self.showAuthor.text = author
     }
 
-    private func generateSimpleColorUIImage(color: UIColor) -> UIImage? {
-        let rect = CGRect(origin: .zero, size: CGSize(width: 10, height: 10))
-        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
-        color.setFill()
-        UIRectFill(rect)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+    private func emptyThumbnail(by color: UIColor) -> UIImage? {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10))
+        let image = renderer.image { ctx in
+            let rect = CGRect(origin: .zero, size: CGSize(width: 10, height: 10))
+            ctx.cgContext.addRect(rect)
+            ctx.cgContext.setFillColor(color.cgColor)
+            ctx.cgContext.drawPath(using: .fill)
+        }
         return image
     }
 }
