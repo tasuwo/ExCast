@@ -32,6 +32,7 @@ class EpisodeListViewModel {
     func setup() {
         // 初回の View への同期、もっと綺麗な方法はないか
         self.show.value = podcast.show
+        self.episodes.set(podcast.episodes)
     }
 
     func loadIfNeeded(completion: @escaping (Bool) -> Void) {

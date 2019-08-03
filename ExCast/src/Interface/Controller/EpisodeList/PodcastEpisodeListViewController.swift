@@ -45,13 +45,6 @@ class PodcastEpisodeListViewController: UIViewController {
         // TODO: 多言語対応
         self.title = self.viewModel.show.value.title
 
-        self.viewModel.loadIfNeeded() { result in
-            if !result {
-                let message = MDCSnackbarMessage(text: "Failed to load episodes.")
-                MDCSnackbarManager.show(message)
-            }
-        }
-
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     }
 
