@@ -12,14 +12,10 @@ protocol PodcastRepository {
 
     func fetchAll(_ completion: @escaping (Result<[Podcast], Error>) -> Void)
 
-    func fetch(feed: URL, _ completion: @escaping (Result<Podcast, Error>) -> Void)
+    func add(_ podcast: Podcast) throws
 
-    func insertIfNeeded(_ podcast: Podcast)
+    func update(_ podcast: Podcast) throws
 
-    func insertShow(at index: Int, _ value: Podcast.Show)
-
-    func updateShow(at index: Int, _ value: Podcast.Show)
-
-    func removeShow(at index: Int)
+    func remove(_ podcast: Podcast) throws
 
 }

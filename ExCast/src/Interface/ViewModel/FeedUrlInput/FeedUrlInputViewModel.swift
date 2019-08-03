@@ -11,6 +11,7 @@ import Foundation
 class FeedUrlInputViewModel {
     
     private let repository: PodcastRepository!
+    private let gateway: PodcastGateway!
 
     var url: Dynamic<String>
     private var feedUrlBond: Bond<String>!
@@ -18,8 +19,10 @@ class FeedUrlInputViewModel {
 
     // MARK: - Initializer
     
-    init(repository: PodcastRepository) {
+    init(repository: PodcastRepository, gateway: PodcastGateway) {
         self.repository = repository
+        self.gateway = gateway
+
         self.url = Dynamic("")
         self.isValid = Dynamic(false)
     }
@@ -47,7 +50,7 @@ class FeedUrlInputViewModel {
             return
         }
 
-        self.repository.fetch(feed: url) { result in
+        self.gateway.fetch(feed: url) { result in
             switch result {
             case .success(let podcast):
                 completion(podcast)
@@ -59,6 +62,6 @@ class FeedUrlInputViewModel {
     }
 
     func store(_ podcast: Podcast) {
-        self.repository.insertIfNeeded(podcast)
+        try! self.repository.add(podcast)
     }
 }

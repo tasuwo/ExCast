@@ -22,7 +22,7 @@ class PodcastEpisodeListViewController: UIViewController {
          podcast: Podcast) {
         self.layoutController = layoutController
         // TODO: DI
-        self.viewModel = EpisodeListViewModel(podcast: podcast, repository: PodcastGateway(session: URLSession.shared, factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
+        self.viewModel = EpisodeListViewModel(podcast: podcast, gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory()))
 
         super.init(nibName: nil, bundle: nil)
     }

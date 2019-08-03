@@ -63,7 +63,7 @@ class PodcastShowListViewController: UIViewController {
         guard let navC = self.navigationController else { return }
 
         // TODO: DI
-        let viewModel = FeedUrlInputViewModel(repository: PodcastGateway(session: URLSession.shared, factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
+        let viewModel = FeedUrlInputViewModel(repository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)), gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory()))
 
         navC.pushViewController(FeedUrlInputViewController(viewModel: viewModel), animated: true)
     }

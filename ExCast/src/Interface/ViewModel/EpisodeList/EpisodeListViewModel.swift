@@ -11,18 +11,18 @@ import Foundation
 class EpisodeListViewModel {
     private let feedUrl: URL
     private let podcast: Podcast
-    private let repository: PodcastRepository
+    private let gateway: PodcastGateway
 
     var show: Dynamic<Podcast.Show>
     var episodes: DynamicArray<Podcast.Episode>
 
     // MARK: - Initializer
 
-    init(podcast: Podcast, repository: PodcastRepository) {
+    init(podcast: Podcast, gateway: PodcastGateway) {
         self.feedUrl = podcast.show.feedUrl
         self.show = Dynamic(podcast.show)
         self.episodes = DynamicArray([])
-        self.repository = repository
+        self.gateway = gateway
 
         self.podcast = podcast
     }
@@ -35,7 +35,7 @@ class EpisodeListViewModel {
     }
 
     func loadIfNeeded(completion: @escaping (Bool) -> Void) {
-        self.repository.fetch(feed: self.feedUrl) { [unowned self] result in
+        self.gateway.fetch(feed: self.feedUrl) { [unowned self] result in
             switch result {
             case .success(let fetchedPodcast):
                 if fetchedPodcast.show != self.show.value {

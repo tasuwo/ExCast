@@ -27,7 +27,7 @@ class AppRootTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         // TODO: DI
-        let viewModel = ShowListViewModel(repository: PodcastGateway(session: URLSession.shared, factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
+        let viewModel = ShowListViewModel(repository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
 
         let showListVC = PodcastShowListViewController(layoutController: self.layoutController, viewModel: viewModel)
         showListVC.tabBarItem = UITabBarItem(title: "Library", image: UIImage(named: "tabbar_library_black"), tag: 0)

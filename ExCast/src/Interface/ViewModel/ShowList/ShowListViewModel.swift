@@ -26,16 +26,15 @@ class ShowListViewModel {
     func setup() {
         self.showsBond = ArrayBond<Podcast>(insert: { [unowned self] tuples in
             tuples.forEach { [unowned self] tuple in
-                self.repository.insertShow(at: tuple.0, tuple.1.show)
+                try! self.repository.add(tuple.1)
             }
         }, remove: { [unowned self] tuples  in
-            let indicis = tuples.map { $0.0 }
-            indicis.forEach { [unowned self] idx in
-                self.repository.removeShow(at: idx)
+            tuples.forEach { [unowned self] tuple in
+                try! self.repository.remove(tuple.1)
             }
         }, update: { [unowned self] tuples in
             tuples.forEach { [unowned self] tuple in
-                self.repository.updateShow(at: tuple.0, tuple.1.show)
+                try! self.repository.update(tuple.1)
             }
         })
     }
