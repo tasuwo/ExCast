@@ -17,7 +17,7 @@ class AppRootViewController: UIViewController {
 
     override func viewDidLoad() {
         self.rootTabBarController = AppRootTabBarController(
-            layoutController: self,
+            playerPresenter: self,
             repository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)),
             gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory())
         )
@@ -40,19 +40,7 @@ class AppRootViewController: UIViewController {
     }
 }
 
-protocol EpisodePlayerModalLaytoutController: AnyObject {
-
-    func show(show: Podcast.Show, episode: Podcast.Episode)
-
-    func dismiss()
-
-    func minimize()
-
-    func expand()
-
-}
-
-extension AppRootViewController: EpisodePlayerModalLaytoutController {
+extension AppRootViewController: EpisodePlayerPresenter {
 
     func show(show: Podcast.Show, episode: Podcast.Episode) {
         if let view = self.playerModalView {
@@ -63,8 +51,8 @@ extension AppRootViewController: EpisodePlayerModalLaytoutController {
 
         let player = AudioPlayer(episode.enclosure.url)
         self.playerModalView = EpisodePlayerViewController(
-            layoutController: self,
-            playerViewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player),
+            presenter: self,
+            viewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player),
             informationViewModel: EpisodePlayerInformationViewModel(show: show, episode: episode),
             modalViewModel: EpisodePlayerModalViewModel()
         )

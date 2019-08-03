@@ -10,17 +10,16 @@ import UIKit
 
 class AppRootTabBarController: UITabBarController {
 
-    private unowned let layoutController: EpisodePlayerModalLaytoutController
-
+    private unowned let playerPresenter: EpisodePlayerPresenter
     private let repository: PodcastRepository
     private let gateway: PodcastGateway
 
     // MARK: - Initializer
 
-    init(layoutController: EpisodePlayerModalLaytoutController,
+    init(playerPresenter: EpisodePlayerPresenter,
         repository: PodcastRepository,
         gateway: PodcastGateway) {
-        self.layoutController = layoutController
+        self.playerPresenter = playerPresenter
         self.repository = repository
         self.gateway = gateway
         super.init(nibName: nil, bundle: nil)
@@ -37,7 +36,7 @@ class AppRootTabBarController: UITabBarController {
         let viewModel = ShowListViewModel(repository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)))
 
         let showListVC = PodcastShowListViewController(
-            layoutController: self.layoutController,
+            playerPresenter: self.playerPresenter,
             viewModel: viewModel,
             repository: self.repository,
             gateway: self.gateway

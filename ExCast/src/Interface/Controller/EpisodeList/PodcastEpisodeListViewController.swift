@@ -13,15 +13,15 @@ class PodcastEpisodeListViewController: UIViewController {
 
     @IBOutlet weak var episodeListView: PodcastEpisodeListView!
 
-    private unowned let layoutController: EpisodePlayerModalLaytoutController
+    private unowned let playerPresenter: EpisodePlayerPresenter
     private var viewModel: EpisodeListViewModel
 
     // MARK: - Initializer
 
-    init(layoutController: EpisodePlayerModalLaytoutController,
+    init(playerPresenter: EpisodePlayerPresenter,
          podcast: Podcast,
          viewModel: EpisodeListViewModel) {
-        self.layoutController = layoutController
+        self.playerPresenter = playerPresenter
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
@@ -55,7 +55,7 @@ extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
     // MARK: - PodcastEpisodeListViewDelegate
 
     func podcastEpisodeListView(didSelect episode: Podcast.Episode, at index: Int) {
-        layoutController.show(show: self.viewModel.show.value, episode: episode)
+        self.playerPresenter.show(show: self.viewModel.show.value, episode: episode)
     }
 
     func podcastEpisodeListView(shouldUpdate episodes: [Podcast.Episode], completion: @escaping () -> Void) {

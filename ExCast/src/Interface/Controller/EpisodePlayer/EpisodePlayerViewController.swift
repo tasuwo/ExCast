@@ -8,11 +8,23 @@
 
 import UIKit
 
+protocol EpisodePlayerPresenter: AnyObject {
+
+    func show(show: Podcast.Show, episode: Podcast.Episode)
+
+    func dismiss()
+
+    func minimize()
+
+    func expand()
+
+}
+
 class EpisodePlayerViewController: UIViewController {
 
     @IBOutlet weak var modalView: EpisodePlayerModalView!
 
-    private unowned var layoutController: EpisodePlayerModalLaytoutController
+    private unowned var playerPresenter: EpisodePlayerPresenter
 
     private var modalViewModel: EpisodePlayerModalViewModel!
     private var controllerViewModel: EpisodePlayerControllerViewModel!
@@ -20,12 +32,12 @@ class EpisodePlayerViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init(layoutController: EpisodePlayerModalLaytoutController,
-         playerViewModel: EpisodePlayerControllerViewModel,
+    init(presenter: EpisodePlayerPresenter,
+         viewModel: EpisodePlayerControllerViewModel,
          informationViewModel: EpisodePlayerInformationViewModel,
          modalViewModel: EpisodePlayerModalViewModel) {
-        self.layoutController = layoutController
-        self.controllerViewModel = playerViewModel
+        self.playerPresenter = presenter
+        self.controllerViewModel = viewModel
         self.informationViewModel = informationViewModel
         self.modalViewModel = modalViewModel
         super.init(nibName: nil, bundle: nil)
@@ -131,15 +143,15 @@ extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
     // MARK: - EpisodePlayerModalViewDelegate
 
     func shouldDismiss() {
-        self.layoutController.dismiss()
+        self.playerPresenter.dismiss()
     }
 
     func shouldMinimize() {
-        self.layoutController.minimize()
+        self.playerPresenter.minimize()
     }
 
     func shouldExpand() {
-        self.layoutController.expand()
+        self.playerPresenter.expand()
     }
 
     func didTap() {

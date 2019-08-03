@@ -12,7 +12,7 @@ class PodcastShowListViewController: UIViewController {
 
     @IBOutlet weak var showListView: PodcastShowListView!
 
-    private unowned let layoutController: EpisodePlayerModalLaytoutController
+    private unowned let playerPresenter: EpisodePlayerPresenter
     private let viewModel: ShowListViewModel
 
     private let repository: PodcastRepository
@@ -20,11 +20,11 @@ class PodcastShowListViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init(layoutController: EpisodePlayerModalLaytoutController,
+    init(playerPresenter: EpisodePlayerPresenter,
          viewModel: ShowListViewModel,
          repository: PodcastRepository,
          gateway: PodcastGateway) {
-        self.layoutController = layoutController
+        self.playerPresenter = playerPresenter
         self.viewModel = viewModel
 
         self.repository = repository
@@ -83,7 +83,7 @@ extension PodcastShowListViewController: PodcastShowListViewDelegate {
         guard let navC = self.navigationController else { return }
         navC.pushViewController(
             PodcastEpisodeListViewController(
-                layoutController: self.layoutController,
+                playerPresenter: self.playerPresenter,
                 podcast: podcast,
                 viewModel: EpisodeListViewModel(podcast: podcast, gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory()))),
             animated: true
