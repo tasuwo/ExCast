@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EpisodePlayerSeekBarContainer" customModule="ExCast" customModuleProvider="target">
             <connections>
-                <outlet property="bar" destination="3k3-L6-c73" id="yZS-o2-6m6"/>
+                <outlet property="bar" destination="qJq-de-ocG" id="iTz-Uq-eI9"/>
                 <outlet property="baseView" destination="Jia-xI-87s" id="3Oi-GH-Raq"/>
                 <outlet property="currentTimeLabel" destination="oMg-br-NBb" id="6gb-5d-SqG"/>
                 <outlet property="remainingTimeLabel" destination="Efj-Q6-7tR" id="XWC-Nn-d1N"/>
@@ -49,18 +49,25 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AbL-RR-wqS">
                     <rect key="frame" x="0.0" y="0.0" width="457" height="35.5"/>
                     <subviews>
-                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3k3-L6-c73">
-                            <rect key="frame" x="-2" y="5.5" width="461" height="31"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qJq-de-ocG" customClass="MDCSlider">
+                            <rect key="frame" x="0.0" y="10.5" width="457" height="25"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="IRt-nD-362"/>
+                            </constraints>
                             <connections>
-                                <action selector="onPlaybackTimeDidChage:forEvent:" destination="-1" eventType="valueChanged" id="SLO-ar-9ce"/>
+                                <action selector="onTouchSeekBar:" destination="-1" eventType="touchDown" id="sHy-lL-rzX"/>
+                                <action selector="onTouchUpInsideSeekbar:" destination="-1" eventType="touchUpInside" id="CxB-8R-3Tw"/>
+                                <action selector="onTouchUpOutsideSeekbar:" destination="-1" eventType="touchUpOutside" id="Ahh-8j-kvn"/>
+                                <action selector="onValueChangedSeekBar:" destination="-1" eventType="valueChanged" id="Rak-9c-AMw"/>
                             </connections>
-                        </slider>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="3k3-L6-c73" secondAttribute="bottom" id="PcP-oR-wIR"/>
-                        <constraint firstItem="3k3-L6-c73" firstAttribute="width" secondItem="AbL-RR-wqS" secondAttribute="width" id="dlk-4Q-7M3"/>
-                        <constraint firstItem="3k3-L6-c73" firstAttribute="centerX" secondItem="AbL-RR-wqS" secondAttribute="centerX" id="dxb-Yz-HEh"/>
+                        <constraint firstAttribute="trailing" secondItem="qJq-de-ocG" secondAttribute="trailing" id="7tg-0E-HlM"/>
+                        <constraint firstItem="qJq-de-ocG" firstAttribute="leading" secondItem="AbL-RR-wqS" secondAttribute="leading" id="Fev-sb-yIv"/>
+                        <constraint firstAttribute="bottom" secondItem="qJq-de-ocG" secondAttribute="bottom" id="y5w-zR-mti"/>
                     </constraints>
                 </view>
             </subviews>

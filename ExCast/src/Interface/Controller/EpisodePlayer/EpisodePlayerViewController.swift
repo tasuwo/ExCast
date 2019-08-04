@@ -96,7 +96,7 @@ class EpisodePlayerViewController: UIViewController {
 
     private func bindEpisode() {
         let length = self.controllerViewModel.episode.episodeLength
-        self.modalView.seekBar.bar.maximumValue = length
+        self.modalView.seekBar.bar.maximumValue = CGFloat(length)
 
         // Bind
 
@@ -110,7 +110,7 @@ class EpisodePlayerViewController: UIViewController {
         self.controllerViewModel.isPlaying ->> self.modalView.playbackButtons.playbackButtonBond
         self.controllerViewModel.displayCurrentTime.map { $0.asTimeString() ?? "" } ->> self.modalView.seekBar.currentTimeLabel
         self.controllerViewModel.displayCurrentTime.map { (Float($0) - length).asTimeString() ?? "" } ->> self.modalView.seekBar.remainingTimeLabel
-        self.controllerViewModel.displayCurrentTime.map { Float($0) } ->> self.modalView.seekBar.bar
+        self.controllerViewModel.displayCurrentTime ->> self.modalView.seekBar.bar
 
         // Setup
 

@@ -102,25 +102,3 @@ extension UIImageView: Bondable {
         return self.imageBond
     }
 }
-
-// MARK: UISlider
-
-private var sliderValueHandle: UInt8 = 0;
-
-extension UISlider {
-    var valueBond: Bond<Float> {
-        if let bond = objc_getAssociatedObject(self, &sliderValueHandle) {
-            return bond as! Bond<Float>
-        } else {
-            let bond = Bond<Float>() { [unowned self] value in self.value = value }
-            objc_setAssociatedObject(self, &sliderValueHandle, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return bond
-        }
-    }
-}
-
-extension UISlider: Bondable {
-    var designatedBond: Bond<Float> {
-        return self.valueBond
-    }
-}

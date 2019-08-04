@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MaterialComponents
 
 protocol EpisodePlayerSeekBarContainerDelegate: AnyObject {
 
@@ -24,30 +25,28 @@ class EpisodePlayerSeekBarContainer: UIView {
 
     @IBOutlet var baseView: UIView!
 
-    @IBOutlet weak var bar: UISlider!
+    @IBOutlet weak var bar: MDCSlider!
 
     @IBOutlet weak var currentTimeLabel: UILabel!
     
     @IBOutlet weak var remainingTimeLabel: UILabel!
 
-    @IBAction func onPlaybackTimeDidChage(_ sender: Any, forEvent event: UIEvent) {
-        guard let slider = sender as? UISlider else { return }
-        guard let touches = event.allTouches else { return }
+    @IBAction func onTouchSeekBar(_ sender: Any) {
+        self.delegate.didStartSeek()
+    }
 
-        for touch in touches {
-            switch (touch.phase) {
-            case .began:
-                self.delegate.didStartSeek()
-            case .moved:
-                self.delegate.didChangeSeekValue(to: TimeInterval(slider.value))
-                break
-            case .ended:
-                self.delegate.didEndSeek()
-            default:
-                break
-            }
+    @IBAction func onTouchUpInsideSeekbar(_ slider: MDCSlider) {
+        // TODO: Disable seek by single tap.
+        self.delegate.didChangeSeekValue(to: TimeInterval(slider.value))
+        self.delegate.didEndSeek()
+    }
 
-        }
+    @IBAction func onTouchUpOutsideSeekbar(_ sender: Any) {
+        self.delegate.didEndSeek()
+    }
+
+    @IBAction func onValueChangedSeekBar(_ slider: MDCSlider) {
+        self.delegate.didChangeSeekValue(to: TimeInterval(slider.value))
     }
 
     // MARK: - Initializers
@@ -78,6 +77,10 @@ class EpisodePlayerSeekBarContainer: UIView {
     private func setupAppearences() {
         self.backgroundColor = .clear
         self.baseView.backgroundColor = .clear
+
+        self.bar.isStatefulAPIEnabled = true
+        self.bar.setThumbColor(.gray, for: .normal)
+        self.bar.setTrackFillColor(.gray, for: .normal)
 
         self.currentTimeLabel.text = "00:00"
         self.remainingTimeLabel.text = "-00:00"
