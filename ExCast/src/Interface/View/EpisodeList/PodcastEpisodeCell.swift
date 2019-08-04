@@ -41,7 +41,7 @@ extension PodcastEpisodeCell: PodcastEpisodeCellProtocol {
         self.episodeDescription.text = description?.toHtmlAttributedString(fontSize: 8).string ?? ""
         self.length.text = duration?.asTimeString() ?? ""
 
-        self.informationButton.setTitle("Detail", for: .normal)
+        self.informationButton.setTitle(NSLocalizedString("PodcastEpisodeListView.cell.detail", comment: ""), for: .normal)
         self.playingMarkIconView.image = generatePlayingMark()
         self.playingMarkIconView.isHidden = true
     }

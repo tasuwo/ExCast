@@ -57,8 +57,7 @@ class PodcastShowListViewController: UIViewController {
 
         self.viewModel.loadIfNeeded()
 
-        // TODO: 多言語対応
-        self.title = "Library"
+        self.title = NSLocalizedString("PodcastShowListView.title", comment: "")
     }
 
     // MARK: - Methods

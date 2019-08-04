@@ -40,7 +40,7 @@ class AppRootTabBarController: UITabBarController {
             repository: self.repository,
             gateway: self.gateway
         )
-        showListVC.tabBarItem = UITabBarItem(title: "Library", image: UIImage(named: "tabbar_library_black"), tag: 0)
+        showListVC.tabBarItem = UITabBarItem(title: NSLocalizedString("Tabbar.library", comment: ""), image: UIImage(named: "tabbar_library_black"), tag: 0)
         let showListNVC = UINavigationController(rootViewController: showListVC)
 
         self.viewControllers = [showListNVC]

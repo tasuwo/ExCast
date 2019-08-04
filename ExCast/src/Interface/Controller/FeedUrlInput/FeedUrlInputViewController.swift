@@ -41,8 +41,7 @@ class FeedUrlInputViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // TODO: 多言語対応
-        self.title = "Add New Podcast"
+        self.title = NSLocalizedString("FeedUrlInputView.title", comment: "")
     }
 
 }
@@ -60,12 +59,13 @@ extension FeedUrlInputViewController: FeedUrlInputViewDelegate {
             let message = MDCSnackbarMessage()
 
             guard let self = self, let podcast = podcast else {
-                message.text = "Could not find podcast feed at this url."
+                message.text = NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: "")
                 MDCSnackbarManager.show(message)
                 return
             }
 
-            message.text = "New podcast feed \"\(podcast.show.title)\" is successfully added."
+
+            message.text = String.init(format: NSLocalizedString("FeedUrlInputView.success.fetchPodcast", comment: ""), podcast.show.title)
             MDCSnackbarManager.show(message)
 
             self.viewModel.store(podcast)

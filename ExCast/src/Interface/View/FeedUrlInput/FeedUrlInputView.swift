@@ -59,14 +59,13 @@ class FeedUrlInputView: UIView {
     private func setupAppearances() {
         self.button.translatesAutoresizingMaskIntoConstraints = false
         self.button.setBackgroundColor(.black)
-        self.button.setTitle("FETCH", for: .normal)
+        self.button.setTitle(NSLocalizedString("FeedUrlInputView.fetchButton", comment: ""), for: .normal)
         self.button.setTitleColor(.white, for: .normal)
-        self.button.setTitle("FETCH", for: .disabled)
 
         self.textField.translatesAutoresizingMaskIntoConstraints = false
         self.textField.clearButtonMode = .unlessEditing
         self.textField.backgroundColor = .white
-        self.textField.placeholder = "Feed URL"
+        self.textField.placeholder = NSLocalizedString("FeedUrlInputView.placeholder", comment: "")
     }
 
 }

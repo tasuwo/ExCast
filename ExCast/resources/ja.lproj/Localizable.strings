@@ -1,0 +1,20 @@
+/* 
+  Localizable.strings
+  ExCast
+
+  Created by Tasuku Tozawa on 2019/08/04.
+  Copyright © 2019 Tasuku Tozawa. All rights reserved.
+*/
+
+"Tabbar.library" = "ライブラリ";
+
+"PodcastShowListView.title" = "ライブラリ";
+
+"FeedUrlInputView.title" = "新しい Podcast を追加";
+"FeedUrlInputView.fetchButton" = "取得";
+"FeedUrlInputView.placeholder" = "フィードURL";
+"FeedUrlInputView.error.failedToFindPodcast" = "指定されたURLのPodcastフィードが見つかりません";
+"FeedUrlInputView.success.fetchPodcast" = "新しい Podcast %@ を追加しました";
+
+"PodcastShowListView.error" = "エピソードの取得に失敗しました";
+"PodcastEpisodeListView.cell.detail" = "詳細";
