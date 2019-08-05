@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14845" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14799.2"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,16 +20,16 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NVC-LH-s9P" customClass="EpisodePlayerModalView" customModule="ExCast" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="5" width="414" height="896"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="NVC-LH-s9P" firstAttribute="centerX" secondItem="b9h-uR-UvA" secondAttribute="centerX" id="7Tv-v5-ajR"/>
-                <constraint firstItem="NVC-LH-s9P" firstAttribute="width" secondItem="GCt-xA-bge" secondAttribute="width" id="7c3-yM-8bk"/>
-                <constraint firstItem="NVC-LH-s9P" firstAttribute="height" secondItem="GCt-xA-bge" secondAttribute="height" id="MOF-MZ-tnG"/>
-                <constraint firstItem="NVC-LH-s9P" firstAttribute="centerY" secondItem="b9h-uR-UvA" secondAttribute="centerY" id="bFK-6l-Eg3"/>
+                <constraint firstItem="NVC-LH-s9P" firstAttribute="trailing" secondItem="b9h-uR-UvA" secondAttribute="trailing" id="1AS-gP-YbV"/>
+                <constraint firstItem="NVC-LH-s9P" firstAttribute="top" secondItem="GCt-xA-bge" secondAttribute="top" id="g5u-8u-Y6o"/>
+                <constraint firstItem="NVC-LH-s9P" firstAttribute="leading" secondItem="b9h-uR-UvA" secondAttribute="leading" id="im7-d7-I64"/>
+                <constraint firstAttribute="bottom" secondItem="NVC-LH-s9P" secondAttribute="bottom" id="yuF-0M-U7p"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="b9h-uR-UvA"/>
             <point key="canvasLocation" x="131.8840579710145" y="105.80357142857143"/>

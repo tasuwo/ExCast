@@ -24,9 +24,9 @@ extension EpisodePlayerPlaybackButtons {
                 guard let self = self else { return }
 
                 if isPlaying {
-                    self.playbackButton.setImage(UIImage(named: "player_pause_white"), for: .normal)
+                    self.playbackButton.setImage(UIImage(named: "player_pause"), for: .normal)
                 } else {
-                    self.playbackButton.setImage(UIImage(named: "player_playback_white"), for: .normal)
+                    self.playbackButton.setImage(UIImage(named: "player_playback"), for: .normal)
                 }
             }
 
@@ -92,20 +92,18 @@ extension EpisodePlayerModalView {
             self.thumbnailXConstraint.isActive = false
             self.thumbnailBottomConstraint.isActive = false
 
-
             // Dismiss Button
             self.dismissButton.isHidden = false
 
             self.layoutIfNeeded()
 
-            // Frame border
-            self.baseView.layer.borderWidth = 1
-            self.baseView.layer.borderColor = UIColor(white: 0.8, alpha: 1).cgColor
-            self.baseView.layer.layoutIfNeeded()
-
             self.delegate?.shouldMinimize()
         }) { _ in
-            self.baseView.backgroundColor = .lightText
+            if #available(iOS 13.0, *) {
+                self.baseView.backgroundColor = .secondarySystemBackground
+            } else {
+                self.baseView.backgroundColor = .lightText
+            }
         }
     }
 
@@ -148,11 +146,6 @@ extension EpisodePlayerModalView {
             self.episodeTitleLabel.isHidden = false
 
             self.layoutIfNeeded()
-
-            // Frame border
-            self.baseView.layer.borderWidth = 0
-            self.baseView.layer.borderColor = nil
-            self.baseView.layer.layoutIfNeeded()
         }
     }
 }

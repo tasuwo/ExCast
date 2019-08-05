@@ -39,7 +39,8 @@ class EpisodeDetailView: UIView {
 
         bundle.loadNibNamed("EpisodeDetailView", owner: self, options: nil)
 
-        self.baseView.frame = self.bounds
+        // TODO: ここのサイズ調整がうまくいかないので、どうにかする。。。
+        self.baseView.frame = UIScreen.main.bounds
         addSubview(baseView)
     }
 

@@ -82,17 +82,29 @@ class EpisodePlayerPlaybackButtons: UIView {
         self.backgroundColor = .clear
         self.baseView.backgroundColor = .clear
 
-        self.playbackButton.setImage(UIImage(named: "player_playback_white")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        self.playbackButton.setImage(UIImage(named: "player_playback")?.withRenderingMode(.alwaysTemplate), for: .normal)
         self.playbackButton.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
-        self.playbackButton.setBackgroundColor(.black)
+        if #available(iOS 13.0, *) {
+            self.playbackButton.setBackgroundColor(.label)
+        } else {
+            self.playbackButton.setBackgroundColor(.black)
+        }
 
-        self.forwardSkipButton.setImage(UIImage(named: "player_skip_forward_15_white"), for: .normal)
+        self.forwardSkipButton.setImage(UIImage(named: "player_skip_forward_15"), for: .normal)
         self.forwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        self.forwardSkipButton.setBackgroundColor(.black)
+        if #available(iOS 13.0, *) {
+            self.forwardSkipButton.setBackgroundColor(.label)
+        } else {
+            self.forwardSkipButton.setBackgroundColor(.black)
+        }
 
-        self.backwardSkipButton.setImage(UIImage(named: "player_skip_backward_15_white"), for: .normal)
+        self.backwardSkipButton.setImage(UIImage(named: "player_skip_backward_15"), for: .normal)
         self.backwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        self.backwardSkipButton.setBackgroundColor(.black)
+        if #available(iOS 13.0, *) {
+            self.backwardSkipButton.setBackgroundColor(.label)
+        } else {
+            self.backwardSkipButton.setBackgroundColor(.black)
+        }
     }
 
 }

@@ -135,11 +135,21 @@ class EpisodePlayerModalView: UIView {
     }
 
     private func setupAppearences() {
-        self.minimizeViewButton.setImage(UIImage(named: "player_down_arrow_black"), for: .normal)
-        self.minimizeViewButton.tintColor = .black
+        self.minimizeViewButton.setImage(UIImage(named: "player_down_arrow"), for: .normal)
+        if #available(iOS 13.0, *) {
+            self.minimizeViewButton.tintColor = .label
+        } else {
+            self.minimizeViewButton.tintColor = .black
+        }
+
         self.dismissButton.isHidden = true
-        self.dismissButton.setImage(UIImage(named: "player_cancel_black"), for: .normal)
-        self.dismissButton.tintColor = .black
+        self.dismissButton.setImage(UIImage(named: "player_cancel"), for: .normal)
+        if #available(iOS 13.0, *) {
+            self.dismissButton.tintColor = .label
+        } else {
+            self.dismissButton.tintColor = .black
+        }
+        
         self.thumbnailImageView.layer.cornerRadius = 20
     }
 

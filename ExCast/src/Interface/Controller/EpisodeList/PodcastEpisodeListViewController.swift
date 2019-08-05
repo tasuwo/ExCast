@@ -36,6 +36,9 @@ class PodcastEpisodeListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        Swift.print("list viewcontroller")
+                Swift.print(self.view.bounds)
+
         self.playerPresenter.setDelegate(self)
         self.episodeListView.delegate_ = self
 
