@@ -11,7 +11,15 @@ import UIKit
 
 extension String {
     func toHtmlAttributedString(fontSize: CGFloat) -> NSAttributedString {
-        let modifiedFont = String(format:"<span style=\"font-family: '-apple-system', 'HelveticaNeue'; font-size: \(fontSize)\">%@</span>", self)
+        let modifiedFont: String
+
+        // TODO: アプリ起動中に切り替えるとうまく動作しない
+        if #available(iOS 13.0, *) {
+            modifiedFont = String(format:"<span style=\"font-family: '-apple-system', 'HelveticaNeue'; font-size: \(fontSize); color: \(UIColor.label.rgbString)\">%@</span>", self)
+        } else {
+            modifiedFont = String(format:"<span style=\"font-family: '-apple-system', 'HelveticaNeue'; font-size: \(fontSize); color: \(UIColor.black.rgbString)\">%@</span>", self)
+
+        }
         let source = modifiedFont.data(using: .utf8)!
         return try! NSAttributedString(
             data: source,

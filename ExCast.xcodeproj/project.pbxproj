@@ -13,6 +13,7 @@
 		2C122DEF22CBAFC300011558 /* PodcastShowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DEE22CBAFC300011558 /* PodcastShowCell.swift */; };
 		2C122DF322CBB42700011558 /* PodcastShowListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DF222CBB42700011558 /* PodcastShowListView.swift */; };
 		2C122DF522CCFBA100011558 /* parseRfc822DateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DF422CCFBA100011558 /* parseRfc822DateString.swift */; };
+		2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */; };
 		2C6391C222E1995000B5EBE0 /* parseRfc822DateStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */; };
 		2C6391D122E1BEE000B5EBE0 /* PodcastGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D022E1BEE000B5EBE0 /* PodcastGatewayImpl.swift */; };
 		2C6391D422E1C16900B5EBE0 /* ShowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D322E1C16900B5EBE0 /* ShowListViewModel.swift */; };
@@ -97,6 +98,7 @@
 		2C122DEE22CBAFC300011558 /* PodcastShowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowCell.swift; sourceTree = "<group>"; };
 		2C122DF222CBB42700011558 /* PodcastShowListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowListView.swift; sourceTree = "<group>"; };
 		2C122DF422CCFBA100011558 /* parseRfc822DateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parseRfc822DateString.swift; sourceTree = "<group>"; };
+		2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+rgbString.swift"; sourceTree = "<group>"; };
 		2C6391BF22E1995000B5EBE0 /* ExCastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExCastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parseRfc822DateStringTests.swift; sourceTree = "<group>"; };
 		2C6391C322E1995000B5EBE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -642,6 +644,7 @@
 				2CA2E9D822F5C2A900A6E3A9 /* Float+asTimeString.swift */,
 				2CA2E9DA22F5C2D300A6E3A9 /* Date+asFormattedString.swift */,
 				2CA2E9DC22F5C66400A6E3A9 /* String+toHtmlAttributedString.swift */,
+				2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -881,6 +884,7 @@
 				2CA13C5A22C8D7D700CC6072 /* AppDelegate.swift in Sources */,
 				2C6391F422E2C04F00B5EBE0 /* PodcastEpisodeListView.swift in Sources */,
 				2C8D687822EB5CDC00CE9660 /* AppRootViewController.swift in Sources */,
+				2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */,
 				2CA13C7322C8E3CF00CC6072 /* Enclosure.swift in Sources */,
 				2C6391E922E230E000B5EBE0 /* LocalRepository.swift in Sources */,
 				2C63920D22E4045A00B5EBE0 /* ArrayBond.swift in Sources */,
