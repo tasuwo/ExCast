@@ -100,7 +100,9 @@ extension EpisodePlayerModalView {
             self.delegate?.shouldMinimize()
         }) { _ in
             if #available(iOS 13.0, *) {
-                self.baseView.backgroundColor = .secondarySystemBackground
+                self.traitCollection.performAsCurrent {
+                    self.baseView.backgroundColor = .secondarySystemBackground
+                }
             } else {
                 self.baseView.backgroundColor = .lightText
             }
