@@ -37,4 +37,8 @@ class EpisodeDetailViewModel {
         self.description.value = self.episode.description ?? ""
     }
 
+    func layoutDescription() {
+        self.description.value = self.episode.description ?? ""
+    }
+
 }

@@ -38,4 +38,16 @@ class EpisodeDetailViewController: UIViewController {
         self.viewModel.setup()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard let previousTraitCollection = previousTraitCollection else { return }
+
+        if #available(iOS 13.0, *) {
+            if previousTraitCollection.hasDifferentColorAppearance(comparedTo: self.traitCollection) {
+                self.viewModel.layoutDescription()
+            }
+        }
+    }
+
 }
