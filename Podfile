@@ -7,5 +7,6 @@ target 'ExCast' do
 
   # Pods for ExCast
   pod 'MaterialComponents'
+  pod 'AWSSNS'
 
 end
