@@ -24,6 +24,7 @@ class PodcastEpisodeListView: UITableView {
     static let identifier = "podcastEpisodeCell"
 
     private var episodesCache: [Podcast.Episode] = []
+    private var cellHeightCache: [IndexPath:CGFloat] = [:]
     var playingEpisode: Podcast.Episode? = nil
 
     weak var delegate_: PodcastEpisodeListViewDelegate?
@@ -93,6 +94,17 @@ extension PodcastEpisodeListView: UITableViewDataSource {
         episodeCell.delegate = self
 
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let cellHeight = self.cellHeightCache[indexPath] else {
+            return UITableView.automaticDimension
+        }
+        return cellHeight
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.cellHeightCache[indexPath] = cell.frame.height
     }
 }
 
