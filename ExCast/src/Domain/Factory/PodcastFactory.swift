@@ -40,7 +40,8 @@ class PodcastFactory: NSObject {
             let artworkUrlStr = (node |> "itunes:image")?.attributes["href"],
             let artwork = URL(string: artworkUrlStr),
             let explicitStr = (node |> "itunes:explicit")?.value,
-            let languageStr = (node |> "language")?.value else {
+            let languageStr = (node |> "language")?.value,
+            let language = Language.fromString(languageStr) else {
                 return nil
         }
         
@@ -60,10 +61,8 @@ class PodcastFactory: NSObject {
             let email = (node |> "ituner:owner" |> "itunes:email")?.value {
             owner = Podcast.Owner(name: name, email: email)
         }
-        
-        // TODO: parse language
 
-        return Podcast.Show(feedUrl: feedUrl, title: title, description: description, artwork: artwork, categories: [], explicit: explicit, language: .Japanese, author: author, site: site, owner: owner)
+        return Podcast.Show(feedUrl: feedUrl, title: title, description: description, artwork: artwork, categories: [], explicit: explicit, language: language, author: author, site: site, owner: owner)
     }
     
     private func composeItem(by node: XmlNode) -> Podcast.Episode? {
