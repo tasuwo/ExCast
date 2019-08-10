@@ -12,6 +12,7 @@ class EpisodeListViewModel {
     private let feedUrl: URL
     private let podcast: Podcast
     private let gateway: PodcastGateway
+    private let repository: PodcastRepository
 
     var show: Dynamic<Podcast.Show>
     var episodes: DynamicArray<Podcast.Episode>
@@ -19,12 +20,13 @@ class EpisodeListViewModel {
 
     // MARK: - Initializer
 
-    init(podcast: Podcast, gateway: PodcastGateway) {
+    init(podcast: Podcast, gateway: PodcastGateway, repository: PodcastRepository) {
         self.feedUrl = podcast.show.feedUrl
         self.show = Dynamic(podcast.show)
         self.episodes = DynamicArray([])
         self.playingEpisode = Dynamic(nil)
         self.gateway = gateway
+        self.repository = repository
         self.podcast = podcast
     }
 
@@ -41,12 +43,20 @@ class EpisodeListViewModel {
         self.gateway.fetch(feed: self.feedUrl) { [unowned self] result in
             switch result {
             case .success(let fetchedPodcast):
+                var isChanged = false
+
                 if fetchedPodcast.show != self.show.value {
                     self.show.value = fetchedPodcast.show
+                    isChanged = true
                 }
 
                 if fetchedPodcast.episodes != self.episodes.values {
                     self.episodes.set(fetchedPodcast.episodes)
+                    isChanged = true
+                }
+
+                if isChanged {
+                    try? self.repository.update(fetchedPodcast)
                 }
 
                 completion(true)

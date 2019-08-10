@@ -84,7 +84,7 @@ extension PodcastShowListViewController: PodcastShowListViewDelegate {
             PodcastEpisodeListViewController(
                 playerPresenter: self.playerPresenter,
                 podcast: podcast,
-                viewModel: EpisodeListViewModel(podcast: podcast, gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory()))),
+                viewModel: EpisodeListViewModel(podcast: podcast, gateway: self.gateway, repository: self.repository)),
             animated: true
         )
     }
