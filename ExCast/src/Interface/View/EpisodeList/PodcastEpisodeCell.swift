@@ -13,7 +13,7 @@ protocol PodcastEpisodeCellDelegate: AnyObject {
 }
 
 protocol PodcastEpisodeCellProtocol {
-    func layout(title: String, pubDate: Date?, description: String?, duration: Double?)
+    func layout(title: String, pubDate: Date?, description: String, duration: Float)
 }
 
 class PodcastEpisodeCell: UITableViewCell {
@@ -35,11 +35,11 @@ class PodcastEpisodeCell: UITableViewCell {
 }
 
 extension PodcastEpisodeCell: PodcastEpisodeCellProtocol {
-    func layout(title: String, pubDate: Date?, description: String?, duration: Double?) {
+    func layout(title: String, pubDate: Date?, description: String, duration: Float) {
         self.title.text = title
         self.pubDate.text = pubDate?.asFormattedString()
-        self.episodeDescription.text = description?.toHtmlAttributedString(fontSize: 8).string ?? ""
-        self.length.text = duration?.asTimeString() ?? ""
+        self.episodeDescription.text = description
+        self.length.text = duration.asTimeString()
 
         self.informationButton.setTitle(NSLocalizedString("PodcastEpisodeListView.cell.detail", comment: ""), for: .normal)
         self.playingMarkIconView.image = generatePlayingMark()

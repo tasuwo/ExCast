@@ -58,7 +58,10 @@ struct Podcast: Codable, Equatable {
 
         /// An episode title.
         let title: String
-        
+
+        /// An episode subtitle.
+        let subTitle: String?
+
         /// The episode content, file size, and file type information.
         let enclosure: Enclosure
         

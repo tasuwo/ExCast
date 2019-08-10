@@ -88,7 +88,7 @@ extension PodcastEpisodeListView: UITableViewDataSource {
         }
 
         episodeCell.episode = episode
-        episodeCell.layout(title: episode.title, pubDate: episode.pubDate, description: episode.description, duration: episode.duration)
+        episodeCell.layout(title: episode.title, pubDate: episode.pubDate, description: episode.subTitle ?? "", duration: episode.episodeLength)
         episodeCell.playingMarkIconView.isHidden = episode != self.playingEpisode
         episodeCell.delegate = self
 

@@ -79,6 +79,7 @@ class PodcastFactory: NSObject {
 
         let enclosureLength = Int(enclosureLengthStr) ?? 0
 
+        let subTitle = (node |> "itunes:subtitle")?.value
         let guid = (node |> "guid")?.value
         let isPermaLinkStr = (node |> "guid")?.attributes["isPermaLink"]
         var isPermaLink = true
@@ -98,7 +99,7 @@ class PodcastFactory: NSObject {
         
         // TODO: duration, artwork
 
-        return Podcast.Episode(guid: guid, guidIsPermaLink: isPermaLink, title: title, enclosure: enclosure, pubDate: pubDate, description: description, duration: duration, link: link, artwork: nil)
+        return Podcast.Episode(guid: guid, guidIsPermaLink: isPermaLink, title: title, subTitle: subTitle, enclosure: enclosure, pubDate: pubDate, description: description, duration: duration, link: link, artwork: nil)
     }
 
     // TODO: duration の表現は他にもあるので対応したい
