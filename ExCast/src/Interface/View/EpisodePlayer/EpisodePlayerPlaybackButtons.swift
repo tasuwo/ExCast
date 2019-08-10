@@ -94,17 +94,15 @@ class EpisodePlayerPlaybackButtons: UIView {
         if #available(iOS 13.0, *) {
             let buttonColor = UIColor { (trait: UITraitCollection) -> UIColor in
                 if trait.userInterfaceStyle == .dark {
-                    return .white
+                    return .lightGray
                 } else {
                     return .black
                 }
             }
 
-            self.traitCollection.performAsCurrent {
-                self.playbackButton.setBackgroundColor(buttonColor)
-                self.forwardSkipButton.setBackgroundColor(buttonColor)
-                self.backwardSkipButton.setBackgroundColor(buttonColor)
-            }
+            self.playbackButton.setBackgroundColor(buttonColor)
+            self.forwardSkipButton.setBackgroundColor(buttonColor)
+            self.backwardSkipButton.setBackgroundColor(buttonColor)
         } else {
             self.playbackButton.setBackgroundColor(.black)
             self.forwardSkipButton.setBackgroundColor(.black)

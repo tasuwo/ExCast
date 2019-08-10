@@ -57,14 +57,44 @@ class FeedUrlInputView: UIView {
     }
 
     private func setupAppearances() {
+        // TODO: バグで Interface Builder 上での Dynamic Color が反映されていないのだと思われる。修正されたら外す
+        if #available(iOS 13.0, *) {
+            self.baseView.backgroundColor = UIColor.systemBackground
+        }
+
+        if #available(iOS 13.0, *) {
+            let buttonColor = UIColor { (trait: UITraitCollection) -> UIColor in
+                if trait.userInterfaceStyle == .dark {
+                    return .lightGray
+                } else {
+                    return .black
+                }
+            }
+            self.button.setBackgroundColor(buttonColor, for: .normal)
+            let titleColor = UIColor { (trait: UITraitCollection) -> UIColor in
+                if trait.userInterfaceStyle == .dark {
+                    return .black
+                } else {
+                    return .white
+                }
+            }
+            self.button.setTitleColor(titleColor, for: .normal)
+
+            self.textField.backgroundColor = .systemBackground
+            self.textField.textColor = .white
+            self.textField.cursorColor = .label
+            self.textField.placeholderLabel.textColor = .label
+        } else {
+            self.button.setBackgroundColor(.black)
+            self.button.setTitleColor(.white, for: .normal)
+            self.textField.backgroundColor = .white
+        }
+
         self.button.translatesAutoresizingMaskIntoConstraints = false
-        self.button.setBackgroundColor(.black)
         self.button.setTitle(NSLocalizedString("FeedUrlInputView.fetchButton", comment: ""), for: .normal)
-        self.button.setTitleColor(.white, for: .normal)
 
         self.textField.translatesAutoresizingMaskIntoConstraints = false
         self.textField.clearButtonMode = .unlessEditing
-        self.textField.backgroundColor = .white
         self.textField.placeholder = NSLocalizedString("FeedUrlInputView.placeholder", comment: "")
     }
 

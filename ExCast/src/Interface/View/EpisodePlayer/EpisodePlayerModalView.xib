@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14845" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14799.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="iOS 13.0 system colors" minToolsVersion="11.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EpisodePlayerModalView" customModule="ExCast" customModuleProvider="target">
@@ -40,7 +39,6 @@
                         <constraint firstAttribute="height" constant="28" id="Tx3-gF-frG"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                    <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P57-B9-4iI">
@@ -49,19 +47,19 @@
                         <constraint firstAttribute="height" constant="16" id="EIn-UZ-GCe"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="secondaryLabelColor"/>
+                    <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udp-sb-xnI" customClass="EpisodePlayerSeekBarContainer" customModule="ExCast" customModuleProvider="target">
                     <rect key="frame" x="28" y="562" width="358" height="60"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="secondarySystemBackgroundColor"/>
+                    <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="jHt-T5-jiN"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqi-iY-iNm" userLabel="PlaybackButtons" customClass="EpisodePlayerPlaybackButtons" customModule="ExCast" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="642" width="414" height="160"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="secondarySystemBackgroundColor"/>
+                    <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="320" id="8cD-Me-buq"/>
                         <constraint firstAttribute="height" priority="999" constant="160" id="hkg-cp-che"/>
@@ -95,7 +93,7 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" cocoaTouchSystemColor="secondarySystemBackgroundColor"/>
+            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="fqi-iY-iNm" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" priority="200" id="0fq-23-GHV" userLabel="Controller Y SubConstraint"/>
