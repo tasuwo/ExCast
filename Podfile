@@ -8,5 +8,15 @@ target 'ExCast' do
   # Pods for ExCast
   pod 'MaterialComponents'
   pod 'AWSSNS'
+  pod 'ObjectMapper', '~> 3.4'
 
 end
+
+plugin 'cocoapods-keys', {
+  :project => "ExCast",
+  :keys => [
+    "AwsSnsApplicationArn",
+    "AwsAccessKey",
+    "AwsSecretKey"
+  ]
+}

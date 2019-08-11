@@ -8,7 +8,19 @@
 
 import Foundation
 
+enum PushNotificationProviderGatewayError: Error {
+    case InvalidParameterError
+    case InvalidResponse
+    case InternalServerError(Error)
+}
+
+typealias ProviderKey = String
+
 protocol PushNotificationProviderGateway {
-    func register(_ token: Data)
-    func unregister(_ token: Date)
+
+    func register(_ token: Data, context: NotificationContext, completion: @escaping (Result<ProviderKey,PushNotificationProviderGatewayError>) -> Void)
+
+    func update(_ key: ProviderKey, context: NotificationContext, completion: @escaping (Result<Void,PushNotificationProviderGatewayError>) -> Void)
+
+    func unregister(_ key: ProviderKey, completion: @escaping (Result<Void,PushNotificationProviderGatewayError>) -> Void)
 }

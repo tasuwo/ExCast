@@ -1,12 +1,11 @@
 //
-//  PushNotificationProviderImpl.swift
+//  PushNotificationProviderGatewayImpl.swift
 //  ExCast
 //
 //  Created by Tasuku Tozawa on 2019/08/11.
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import Foundation
 import AWSSNS
 
 class PushNotificationProviderGatewayImpl: PushNotificationProviderGateway {
@@ -18,31 +17,85 @@ class PushNotificationProviderGatewayImpl: PushNotificationProviderGateway {
         self.applicationArn = applicationArn
     }
 
-    func register(_ token: Data) {
+    func register(_ token: Data, context: NotificationContext, completion: @escaping (Result<ProviderKey,PushNotificationProviderGatewayError>) -> Void) {
+        guard let jsonData = try? JSONEncoder().encode(context),
+            let jsonString = String(data: jsonData, encoding: .utf8) else {
+                completion(Result.failure(.InvalidParameterError))
+                return
+        }
         let tokenString = token.map { String(format: "%.2hhx", $0) }.joined()
-        Swift.print(tokenString)
 
-        let params = [
+        // NOTE: see also https://docs.aws.amazon.com/sns/latest/api/API_CreatePlatformEndpoint.html
+        let params: [String: Any] = [
             "token": tokenString,
-            "customUserData": "{\"lang\":\"ja\"}",
+            "customUserData": jsonString,
             "platformApplicationArn": applicationArn
         ]
         let input = try! AWSSNSCreatePlatformEndpointInput(dictionary: params, error: ())
 
         snsClient.createPlatformEndpoint(input).continueWith(executor: .mainThread()) { task in
-            if let err = task.error {
-                Swift.print(err)
+            if let err = task.error as NSError? {
+                switch (err.domain, err.code) {
+                case (AWSSNSErrorDomain, AWSSNSErrorType.invalidParameter.rawValue):
+                    // TODO: contextの不整合が発生したら更新したい
+                    completion(Result.failure(.InternalServerError(err)))
+                default:
+                    completion(Result.failure(.InternalServerError(err)))
+                }
                 return nil
             }
 
-            // TODO:
-            Swift.print(task.result)
+            guard let endpointArn = task.result?.endpointArn else {
+                completion(Result.failure(.InvalidResponse))
+                return nil
+            }
+
+            completion(Result.success(endpointArn))
             return nil
         }
     }
 
-    func unregister(_ token: Date) {
+    func update(_ key: ProviderKey, context: NotificationContext, completion: @escaping (Result<Void,PushNotificationProviderGatewayError>) -> Void) {
+        guard let jsonData = try? JSONEncoder().encode(context),
+            let jsonString = String(data: jsonData, encoding: .utf8) else {
+                completion(Result.failure(.InvalidParameterError))
+                return
+        }
 
+        // NOTE: see also https://docs.aws.amazon.com/sns/latest/api/API_SetEndpointAttributes.html
+        let params: [String:Any] = [
+            "endpointArn": key,
+            "attributes": [
+                "CustomUserData": jsonString
+            ]
+        ]
+        let input = try! AWSSNSSetEndpointAttributesInput(dictionary: params, error: ())
+
+        snsClient.setEndpointAttributes(input) { err in
+            if let err = err {
+                completion(.failure(.InternalServerError(err)))
+                return
+            }
+
+            completion(.success(()))
+        }
+    }
+
+    func unregister(_ key: ProviderKey, completion: @escaping (Result<Void,PushNotificationProviderGatewayError>) -> Void) {
+        // NOTE: see also https://docs.aws.amazon.com/sns/latest/api/API_DeleteEndpoint.html
+        let params = [
+            "endpointArn": key
+        ]
+        let input = try! AWSSNSDeleteEndpointInput(dictionary: params, error: ())
+
+        snsClient.deleteEndpoint(input) { err in
+            if let err = err {
+                completion(.failure(.InternalServerError(err)))
+                return
+            }
+
+            completion(.success(()))
+        }
     }
 
 }

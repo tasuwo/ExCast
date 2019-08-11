@@ -16,6 +16,10 @@
 		2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */; };
 		2C546C5922FF2AF700C1BB83 /* PushNotificationProviderGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C5822FF2AF700C1BB83 /* PushNotificationProviderGateway.swift */; };
 		2C546C5B22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C5A22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift */; };
+		2C546C5E22FFA45800C1BB83 /* NotificationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C5D22FFA45800C1BB83 /* NotificationContext.swift */; };
+		2C546C6222FFB73500C1BB83 /* NotificationSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C6122FFB73500C1BB83 /* NotificationSetting.swift */; };
+		2C546C6422FFB99600C1BB83 /* NotificationSettingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C6322FFB99600C1BB83 /* NotificationSettingRepository.swift */; };
+		2C546C6622FFBA4600C1BB83 /* NotificationSettingRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C6522FFBA4500C1BB83 /* NotificationSettingRepositoryImpl.swift */; };
 		2C6391C222E1995000B5EBE0 /* parseRfc822DateStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */; };
 		2C6391D122E1BEE000B5EBE0 /* PodcastGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D022E1BEE000B5EBE0 /* PodcastGatewayImpl.swift */; };
 		2C6391D422E1C16900B5EBE0 /* ShowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D322E1C16900B5EBE0 /* ShowListViewModel.swift */; };
@@ -104,6 +108,10 @@
 		2C546C5722FF279F00C1BB83 /* ExCast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExCast.entitlements; sourceTree = "<group>"; };
 		2C546C5822FF2AF700C1BB83 /* PushNotificationProviderGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationProviderGateway.swift; sourceTree = "<group>"; };
 		2C546C5A22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationProviderGatewayImpl.swift; sourceTree = "<group>"; };
+		2C546C5D22FFA45800C1BB83 /* NotificationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContext.swift; sourceTree = "<group>"; };
+		2C546C6122FFB73500C1BB83 /* NotificationSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSetting.swift; sourceTree = "<group>"; };
+		2C546C6322FFB99600C1BB83 /* NotificationSettingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingRepository.swift; sourceTree = "<group>"; };
+		2C546C6522FFBA4500C1BB83 /* NotificationSettingRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingRepositoryImpl.swift; sourceTree = "<group>"; };
 		2C6391BF22E1995000B5EBE0 /* ExCastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExCastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parseRfc822DateStringTests.swift; sourceTree = "<group>"; };
 		2C6391C322E1995000B5EBE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -204,6 +212,30 @@
 				2C122DF222CBB42700011558 /* PodcastShowListView.swift */,
 			);
 			path = ShowList;
+			sourceTree = "<group>";
+		};
+		2C546C5C22FFA43E00C1BB83 /* Value Object */ = {
+			isa = PBXGroup;
+			children = (
+				2C546C6722FFC11900C1BB83 /* Notification */,
+			);
+			path = "Value Object";
+			sourceTree = "<group>";
+		};
+		2C546C6722FFC11900C1BB83 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				2C546C5D22FFA45800C1BB83 /* NotificationContext.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		2C546C6822FFC12200C1BB83 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				2C546C6122FFB73500C1BB83 /* NotificationSetting.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		2C6391C022E1995000B5EBE0 /* ExCastTests */ = {
@@ -344,6 +376,7 @@
 			children = (
 				2C6391E822E230E000B5EBE0 /* LocalRepository.swift */,
 				2CA2E9CE22F53C5200A6E3A9 /* PodcastRepositoryImpl.swift */,
+				2C546C6522FFBA4500C1BB83 /* NotificationSettingRepositoryImpl.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -483,6 +516,7 @@
 		2CA13C6F22C8D83300CC6072 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				2C546C5C22FFA43E00C1BB83 /* Value Object */,
 				2C6391DB22E1EB7600B5EBE0 /* Factory */,
 				2CA13C7822C8E8EC00CC6072 /* Repository */,
 				2CA2E9CB22F53C1800A6E3A9 /* Gateway */,
@@ -507,6 +541,7 @@
 		2CA13C7722C8E79F00CC6072 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				2C546C6822FFC12200C1BB83 /* Notification */,
 				2CA13C7022C8D86100CC6072 /* Podcast.swift */,
 				2CA13C7222C8E3CF00CC6072 /* Enclosure.swift */,
 				2CA13C7422C8E3F100CC6072 /* Language.swift */,
@@ -518,6 +553,7 @@
 			isa = PBXGroup;
 			children = (
 				2CA13C7922C8EA9000CC6072 /* PodcastRepository.swift */,
+				2C546C6322FFB99600C1BB83 /* NotificationSettingRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -868,6 +904,7 @@
 				2CA13C5C22C8D7D700CC6072 /* FeedUrlInputViewController.swift in Sources */,
 				2CA2E9E322F5D86C00A6E3A9 /* PodcastEpisodeListView+Bond.swift in Sources */,
 				2C122DE922CA619E00011558 /* PodcastShowListViewController.swift in Sources */,
+				2C546C6422FFB99600C1BB83 /* NotificationSettingRepository.swift in Sources */,
 				2CA2E9EB22F6D38600A6E3A9 /* MDCSlider+Bond.swift in Sources */,
 				2C6391E022E2128700B5EBE0 /* XML.swift in Sources */,
 				2C6391FA22E2C30F00B5EBE0 /* EpisodeListViewModel.swift in Sources */,
@@ -879,6 +916,7 @@
 				2CA13C7522C8E3F100CC6072 /* Language.swift in Sources */,
 				2CCEC3D722E484670055D27A /* EpisodePlayerControllerViewModel.swift in Sources */,
 				2C122DF522CCFBA100011558 /* parseRfc822DateString.swift in Sources */,
+				2C546C6622FFBA4600C1BB83 /* NotificationSettingRepositoryImpl.swift in Sources */,
 				2C6391DD22E1EB8300B5EBE0 /* PodcastFactory.swift in Sources */,
 				2C6391DA22E1DCAD00B5EBE0 /* FeedUrlInputViewModel.swift in Sources */,
 				2CA2E9D922F5C2A900A6E3A9 /* Float+asTimeString.swift in Sources */,
@@ -889,6 +927,7 @@
 				2C6391D722E1D91B00B5EBE0 /* Bond.swift in Sources */,
 				2C546C5B22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift in Sources */,
 				2C6391D122E1BEE000B5EBE0 /* PodcastGatewayImpl.swift in Sources */,
+				2C546C6222FFB73500C1BB83 /* NotificationSetting.swift in Sources */,
 				2C63920A22E4017200B5EBE0 /* Bondable.swift in Sources */,
 				2CA13C7A22C8EA9000CC6072 /* PodcastRepository.swift in Sources */,
 				2CA13C5A22C8D7D700CC6072 /* AppDelegate.swift in Sources */,
@@ -899,6 +938,7 @@
 				2C6391E922E230E000B5EBE0 /* LocalRepository.swift in Sources */,
 				2C63920D22E4045A00B5EBE0 /* ArrayBond.swift in Sources */,
 				2CA13C7122C8D86100CC6072 /* Podcast.swift in Sources */,
+				2C546C5E22FFA45800C1BB83 /* NotificationContext.swift in Sources */,
 				2C122DEF22CBAFC300011558 /* PodcastShowCell.swift in Sources */,
 				2C8D688922EC778700CE9660 /* RemoteCommandHandler.swift in Sources */,
 				2CDF07A422ED7F83002F8F5C /* Double+asTimeString.swift in Sources */,

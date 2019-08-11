@@ -10,12 +10,15 @@ import UIKit
 import AVFoundation
 import MediaPlayer
 import AWSSNS
+import Keys
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let keys = ExCastKeys()
     var provider: PushNotificationProviderGateway?
+    var settingRepository: NotificationSettingRepository?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
@@ -36,9 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
 
+        self.settingRepository = NotificationSettingRepositoryImpl(repository: LocalRepositoryImpl(defaults: UserDefaults.standard))
+
         AWSServiceManager.default()?.defaultServiceConfiguration = AWSServiceConfiguration(region: .APNortheast1, credentialsProvider: self)
-        // TODO:
-        self.provider = PushNotificationProviderGatewayImpl(snsClient: AWSSNS.default(), applicationArn: "")
+        self.provider = PushNotificationProviderGatewayImpl(snsClient: AWSSNS.default(), applicationArn: keys.awsSnsApplicationArn)
 
         window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {
@@ -72,7 +76,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Notification
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        self.provider?.register(deviceToken)
+        let context = self.settingRepository?.get()?.context ?? NotificationContext.default()
+        self.provider?.register(deviceToken, context: context) { result in
+            switch result {
+            case let .success(key):
+                let setting = NotificationSetting(key: key, deviceToken: deviceToken, context: context)
+                try? self.settingRepository?.add(setting)
+            case let .failure(err):
+                Swift.print(err)
+            }
+        }
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -82,9 +95,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: AWSCredentialsProvider {
+
+    // MARK: - AWSCredentialsProvider
+
     func credentials() -> AWSTask<AWSCredentials> {
-        // TODO:
-        return AWSTask(result: AWSCredentials(accessKey: "", secretKey: "", sessionKey: nil, expiration: nil))
+        return AWSTask(result: AWSCredentials(accessKey: keys.awsAccessKey, secretKey: keys.awsSecretKey, sessionKey: nil, expiration: nil))
     }
 
     func invalidateCachedTemporaryCredentials() {
