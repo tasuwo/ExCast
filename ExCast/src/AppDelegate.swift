@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        // AVPlayer
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(AVAudioSession.Category.playback)
@@ -29,21 +30,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Setting category to AVAudioSessionCategoryPlayback failed.")
         }
 
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, err in }
-
-        UNUserNotificationCenter.current().getNotificationSettings { (setting) in
-            if setting.authorizationStatus == .authorized {
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
+        // Notification
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().setNotificationCategories(NotificationCategory.makeCategories())
+        let options: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: options) { granted, err in
+            if !granted {
+                print("User has declined notifidations.")
             }
         }
+        UNUserNotificationCenter.current().getNotificationSettings { (setting) in
+            guard setting.authorizationStatus == .authorized else { return }
 
-        self.settingRepository = NotificationSettingRepositoryImpl(repository: LocalRepositoryImpl(defaults: UserDefaults.standard))
-
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
         AWSServiceManager.default()?.defaultServiceConfiguration = AWSServiceConfiguration(region: .APNortheast1, credentialsProvider: self)
         self.provider = PushNotificationProviderGatewayImpl(snsClient: AWSSNS.default(), applicationArn: keys.awsSnsApplicationArn)
 
+        // Setting
+        self.settingRepository = NotificationSettingRepositoryImpl(repository: LocalRepositoryImpl(defaults: UserDefaults.standard))
+
+        // Window
         window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {
             window.rootViewController = AppRootViewController()
@@ -108,3 +117,31 @@ extension AppDelegate: AWSCredentialsProvider {
 
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+
+    // MARK: - UNUserNotificationCenterDelegate
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("Push Notification will present")
+        completionHandler([.badge, .sound, .alert])
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+
+        // TODO:
+        let category = NotificationCategory(rawValue: response.notification.request.content.categoryIdentifier)
+        switch (category, response.actionIdentifier) {
+        case (.GENERAL, GeneralNotificationAction.Accept.rawValue):
+            print("Touch accept.")
+        case (.GENERAL, GeneralNotificationAction.Decline.rawValue):
+            print("Touch decline.")
+        case (_, UNNotificationDefaultActionIdentifier),
+             (_, UNNotificationDismissActionIdentifier):
+            break
+        default:
+            break
+        }
+
+        completionHandler()
+    }
+}

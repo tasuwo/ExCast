@@ -6,6 +6,9 @@
   Copyright © 2019 Tasuku Tozawa. All rights reserved.
 */
 
+"Notification.General.Accept" = "Accept";
+"Notification.General.Decline" = "Decline";
+
 "Tabbar.library" = "Library";
 
 "PodcastShowListView.title" = "Library";

@@ -20,6 +20,8 @@
 		2C546C6222FFB73500C1BB83 /* NotificationSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C6122FFB73500C1BB83 /* NotificationSetting.swift */; };
 		2C546C6422FFB99600C1BB83 /* NotificationSettingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C6322FFB99600C1BB83 /* NotificationSettingRepository.swift */; };
 		2C546C6622FFBA4600C1BB83 /* NotificationSettingRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C6522FFBA4500C1BB83 /* NotificationSettingRepositoryImpl.swift */; };
+		2C546C9B2301AEBB00C1BB83 /* NotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C9A2301AEBB00C1BB83 /* NotificationAction.swift */; };
+		2C546C9D2301AFE400C1BB83 /* NotificaitonCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C9C2301AFE400C1BB83 /* NotificaitonCategory.swift */; };
 		2C6391C222E1995000B5EBE0 /* parseRfc822DateStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */; };
 		2C6391D122E1BEE000B5EBE0 /* PodcastGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D022E1BEE000B5EBE0 /* PodcastGatewayImpl.swift */; };
 		2C6391D422E1C16900B5EBE0 /* ShowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D322E1C16900B5EBE0 /* ShowListViewModel.swift */; };
@@ -96,6 +98,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		2C546C9622FFDABB00C1BB83 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		2A77DC886F1A54345DB1D66F /* Pods_ExCast.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExCast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C122DE822CA619E00011558 /* PodcastShowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowListViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +127,10 @@
 		2C546C6122FFB73500C1BB83 /* NotificationSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSetting.swift; sourceTree = "<group>"; };
 		2C546C6322FFB99600C1BB83 /* NotificationSettingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingRepository.swift; sourceTree = "<group>"; };
 		2C546C6522FFBA4500C1BB83 /* NotificationSettingRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingRepositoryImpl.swift; sourceTree = "<group>"; };
+		2C546C8822FFDABB00C1BB83 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		2C546C8A22FFDABB00C1BB83 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		2C546C9A2301AEBB00C1BB83 /* NotificationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAction.swift; sourceTree = "<group>"; };
+		2C546C9C2301AFE400C1BB83 /* NotificaitonCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificaitonCategory.swift; sourceTree = "<group>"; };
 		2C6391BF22E1995000B5EBE0 /* ExCastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExCastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parseRfc822DateStringTests.swift; sourceTree = "<group>"; };
 		2C6391C322E1995000B5EBE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -226,6 +245,8 @@
 			isa = PBXGroup;
 			children = (
 				2C546C5D22FFA45800C1BB83 /* NotificationContext.swift */,
+				2C546C9A2301AEBB00C1BB83 /* NotificationAction.swift */,
+				2C546C9C2301AFE400C1BB83 /* NotificaitonCategory.swift */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -698,6 +719,8 @@
 			children = (
 				2CA2E9C922F359BB00A6E3A9 /* WebKit.framework */,
 				2A77DC886F1A54345DB1D66F /* Pods_ExCast.framework */,
+				2C546C8822FFDABB00C1BB83 /* UserNotifications.framework */,
+				2C546C8A22FFDABB00C1BB83 /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -741,6 +764,7 @@
 				2CA13C5322C8D7D700CC6072 /* Frameworks */,
 				2CA13C5422C8D7D700CC6072 /* Resources */,
 				A84F72227ADF636BCFAC9E91 /* [CP] Embed Pods Frameworks */,
+				2C546C9622FFDABB00C1BB83 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -757,7 +781,7 @@
 		2CA13C4E22C8D7D600CC6072 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1020;
+				LastSwiftUpdateCheck = 1100;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Tasuku Tozawa";
 				TargetAttributes = {
@@ -914,6 +938,7 @@
 				2CDF07A922EE86AE002F8F5C /* EpisdoePlayerSeekBarContainer.swift in Sources */,
 				2CA2E9D722F5BAEC00A6E3A9 /* EpisodePlayerInformationViewModel.swift in Sources */,
 				2CA13C7522C8E3F100CC6072 /* Language.swift in Sources */,
+				2C546C9D2301AFE400C1BB83 /* NotificaitonCategory.swift in Sources */,
 				2CCEC3D722E484670055D27A /* EpisodePlayerControllerViewModel.swift in Sources */,
 				2C122DF522CCFBA100011558 /* parseRfc822DateString.swift in Sources */,
 				2C546C6622FFBA4600C1BB83 /* NotificationSettingRepositoryImpl.swift in Sources */,
@@ -927,6 +952,7 @@
 				2C6391D722E1D91B00B5EBE0 /* Bond.swift in Sources */,
 				2C546C5B22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift in Sources */,
 				2C6391D122E1BEE000B5EBE0 /* PodcastGatewayImpl.swift in Sources */,
+				2C546C9B2301AEBB00C1BB83 /* NotificationAction.swift in Sources */,
 				2C546C6222FFB73500C1BB83 /* NotificationSetting.swift in Sources */,
 				2C63920A22E4017200B5EBE0 /* Bondable.swift in Sources */,
 				2CA13C7A22C8EA9000CC6072 /* PodcastRepository.swift in Sources */,
@@ -1136,9 +1162,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 66394F62A7189D3149187C80 /* Pods-ExCast.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ExCast/ExCast.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RY2377PP7S;
 				INFOPLIST_FILE = "$(SRCROOT)/ExCast/resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1147,7 +1175,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = ExCastDev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1157,9 +1185,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 468059232EDB8A89A02BD943 /* Pods-ExCast.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ExCast/ExCast.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RY2377PP7S;
 				INFOPLIST_FILE = "$(SRCROOT)/ExCast/resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1168,7 +1198,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = ExCastDev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
