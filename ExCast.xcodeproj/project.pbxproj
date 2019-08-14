@@ -27,6 +27,7 @@
 		2C5BD1342301C2FF0096A41C /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BD1332301C2FF0096A41C /* NotificationViewController.swift */; };
 		2C5BD1372301C2FF0096A41C /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C5BD1352301C2FF0096A41C /* MainInterface.storyboard */; };
 		2C5BD13B2301C2FF0096A41C /* ThumbnailNotification.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2C5BD12F2301C2FF0096A41C /* ThumbnailNotification.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2C5BD140230395D80096A41C /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BD13F230395D80096A41C /* NotificationService.swift */; };
 		2C6391C222E1995000B5EBE0 /* parseRfc822DateStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */; };
 		2C6391D122E1BEE000B5EBE0 /* PodcastGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D022E1BEE000B5EBE0 /* PodcastGatewayImpl.swift */; };
 		2C6391D422E1C16900B5EBE0 /* ShowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6391D322E1C16900B5EBE0 /* ShowListViewModel.swift */; };
@@ -148,6 +149,7 @@
 		2C5BD1332301C2FF0096A41C /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		2C5BD1362301C2FF0096A41C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		2C5BD1382301C2FF0096A41C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2C5BD13F230395D80096A41C /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		2C6391BF22E1995000B5EBE0 /* ExCastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExCastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C6391C122E1995000B5EBE0 /* parseRfc822DateStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parseRfc822DateStringTests.swift; sourceTree = "<group>"; };
 		2C6391C322E1995000B5EBE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -622,6 +624,7 @@
 			children = (
 				2C63920B22E401C000B5EBE0 /* Parser */,
 				2C6391D522E1D8FF00B5EBE0 /* Bond */,
+				2C5BD13F230395D80096A41C /* NotificationService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1021,6 +1024,7 @@
 				2C6391DD22E1EB8300B5EBE0 /* PodcastFactory.swift in Sources */,
 				2C6391DA22E1DCAD00B5EBE0 /* FeedUrlInputViewModel.swift in Sources */,
 				2CA2E9D922F5C2A900A6E3A9 /* Float+asTimeString.swift in Sources */,
+				2C5BD140230395D80096A41C /* NotificationService.swift in Sources */,
 				2C8D688022EB6B2E00CE9660 /* EpisodePlayerModalView.swift in Sources */,
 				2C122DF322CBB42700011558 /* PodcastShowListView.swift in Sources */,
 				2CA2E9BE22F34B9C00A6E3A9 /* EpisodeDetailView.swift in Sources */,

@@ -17,8 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     let keys = ExCastKeys()
-    var provider: PushNotificationProviderGateway?
-    var settingRepository: NotificationSettingRepository?
+    var notificationService: NotificationService?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
@@ -30,27 +29,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Setting category to AVAudioSessionCategoryPlayback failed.")
         }
 
-        // Notification
-        UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().setNotificationCategories(NotificationCategory.makeCategories())
-        let options: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(options: options) { granted, err in
-            if !granted {
-                print("User has declined notifidations.")
-            }
-        }
-        UNUserNotificationCenter.current().getNotificationSettings { (setting) in
-            guard setting.authorizationStatus == .authorized else { return }
-
-            DispatchQueue.main.async {
-                UIApplication.shared.registerForRemoteNotifications()
-            }
-        }
+        // AWS
         AWSServiceManager.default()?.defaultServiceConfiguration = AWSServiceConfiguration(region: .APNortheast1, credentialsProvider: self)
-        self.provider = PushNotificationProviderGatewayImpl(snsClient: AWSSNS.default(), applicationArn: keys.awsSnsApplicationArn)
 
-        // Setting
-        self.settingRepository = NotificationSettingRepositoryImpl(repository: LocalRepositoryImpl(defaults: UserDefaults.standard))
+        // Notification
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.delegate = self
+        let gateway = PushNotificationProviderGatewayImpl(snsClient: AWSSNS.default(), applicationArn: keys.awsSnsApplicationArn)
+        let repository = NotificationSettingRepositoryImpl(repository: LocalRepositoryImpl(defaults: UserDefaults.standard))
+        self.notificationService = NotificationService(notificationCenter: notificationCenter, gateway: gateway, repository: repository)
+
+        self.notificationService?.registerToApnsIfNeeded()
 
         // Window
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -85,19 +74,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Notification
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let context = self.settingRepository?.get()?.context ?? NotificationContext.default()
-        self.provider?.register(deviceToken, context: context) { result in
-            switch result {
-            case let .success(key):
-                let setting = NotificationSetting(key: key, deviceToken: deviceToken, context: context)
-                try? self.settingRepository?.add(setting)
-            case let .failure(err):
-                Swift.print(err)
-            }
-        }
+        self.notificationService?.pushDeviceTokenToProvider(deviceToken)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // TODO:
         Swift.print(error)
     }
 
