@@ -19,7 +19,11 @@ class RemoteCommandHandler: NSObject {
     private let forwardSkipTimeInterval: TimeInterval = 15
     private let backwardSkipTimeInterval: TimeInterval = 15
 
-    private var currentTime: TimeInterval = 0
+    private var currentTime: TimeInterval = 0 {
+        didSet {
+            self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.currentTime
+        }
+    }
 
     init(show: Podcast.Show, episode: Podcast.Episode, commandCenter: MPRemoteCommandCenter, player: AudioPlayerControlCommands, infoCenter: MPNowPlayingInfoCenter) {
         self.show = show
