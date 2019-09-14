@@ -135,11 +135,6 @@ class EpisodePlayerModalView: UIView {
     }
 
     private func setupAppearences() {
-        // TODO: バグで Interface Builder 上での Dynamic Color が反映されていないのだと思われる。修正されたら外す
-        if #available(iOS 13.0, *) {
-            self.baseView.backgroundColor = .secondarySystemBackground
-        }
-
         self.minimizeViewButton.setImage(UIImage(named: "player_down_arrow"), for: .normal)
         if #available(iOS 13.0, *) {
             self.minimizeViewButton.tintColor = .label

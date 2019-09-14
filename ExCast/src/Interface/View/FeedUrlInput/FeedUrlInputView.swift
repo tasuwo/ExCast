@@ -57,11 +57,6 @@ class FeedUrlInputView: UIView {
     }
 
     private func setupAppearances() {
-        // TODO: バグで Interface Builder 上での Dynamic Color が反映されていないのだと思われる。修正されたら外す
-        if #available(iOS 13.0, *) {
-            self.baseView.backgroundColor = UIColor.systemBackground
-        }
-
         if #available(iOS 13.0, *) {
             let buttonColor = UIColor { (trait: UITraitCollection) -> UIColor in
                 if trait.userInterfaceStyle == .dark {

@@ -46,13 +46,6 @@ class EpisodeDetailView: UIView {
     }
 
     private func setupAppearences() {
-        // TODO: バグで Interface Builder 上での Dynamic Color が反映されていないのだと思われる。修正されたら外す
-        if #available(iOS 13.0, *) {
-            self.baseView.backgroundColor = UIColor.systemBackground
-            self.contentView.backgroundColor = UIColor.systemBackground
-            self.episodeDescriptionLabel.backgroundColor = UIColor.systemBackground
-        }
-
         self.baseView.isScrollEnabled = true
         self.episodeThumbnailView.layer.cornerRadius = 10
         self.episodeDescriptionLabel.isEditable = false
