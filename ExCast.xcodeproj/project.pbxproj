@@ -14,6 +14,7 @@
 		2C122DF322CBB42700011558 /* PodcastShowListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DF222CBB42700011558 /* PodcastShowListView.swift */; };
 		2C122DF522CCFBA100011558 /* parseRfc822DateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DF422CCFBA100011558 /* parseRfc822DateString.swift */; };
 		2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */; };
+		2C4D9115232C86E200895CD7 /* ExCastPlayerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D9114232C86E200895CD7 /* ExCastPlayerProtocol.swift */; };
 		2C546C5922FF2AF700C1BB83 /* PushNotificationProviderGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C5822FF2AF700C1BB83 /* PushNotificationProviderGateway.swift */; };
 		2C546C5B22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C5A22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift */; };
 		2C546C5E22FFA45800C1BB83 /* NotificationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C5D22FFA45800C1BB83 /* NotificationContext.swift */; };
@@ -84,7 +85,7 @@
 		2CA2E9E322F5D86C00A6E3A9 /* PodcastEpisodeListView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2E9E222F5D86C00A6E3A9 /* PodcastEpisodeListView+Bond.swift */; };
 		2CA2E9E622F66CEF00A6E3A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2CA2E9E822F66CEF00A6E3A9 /* Localizable.strings */; };
 		2CA2E9EB22F6D38600A6E3A9 /* MDCSlider+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2E9EA22F6D38600A6E3A9 /* MDCSlider+Bond.swift */; };
-		2CCEC3CF22E47AAA0055D27A /* AudioPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3CE22E47AAA0055D27A /* AudioPlayerController.swift */; };
+		2CCEC3CF22E47AAA0055D27A /* ExCastPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3CE22E47AAA0055D27A /* ExCastPlayer.swift */; };
 		2CCEC3D722E484670055D27A /* EpisodePlayerControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D622E484670055D27A /* EpisodePlayerControllerViewModel.swift */; };
 		2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D922E4847F0055D27A /* EpisodePlayerViewController.swift */; };
 		2CCEC3DC22E485720055D27A /* EpisodePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CCEC3DB22E485720055D27A /* EpisodePlayerViewController.xib */; };
@@ -134,6 +135,7 @@
 		2C122DF222CBB42700011558 /* PodcastShowListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowListView.swift; sourceTree = "<group>"; };
 		2C122DF422CCFBA100011558 /* parseRfc822DateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parseRfc822DateString.swift; sourceTree = "<group>"; };
 		2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+rgbString.swift"; sourceTree = "<group>"; };
+		2C4D9114232C86E200895CD7 /* ExCastPlayerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExCastPlayerProtocol.swift; sourceTree = "<group>"; };
 		2C546C5722FF279F00C1BB83 /* ExCast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExCast.entitlements; sourceTree = "<group>"; };
 		2C546C5822FF2AF700C1BB83 /* PushNotificationProviderGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationProviderGateway.swift; sourceTree = "<group>"; };
 		2C546C5A22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationProviderGatewayImpl.swift; sourceTree = "<group>"; };
@@ -210,7 +212,7 @@
 		2CA2E9E722F66CEF00A6E3A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2CA2E9E922F66D0B00A6E3A9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2CA2E9EA22F6D38600A6E3A9 /* MDCSlider+Bond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDCSlider+Bond.swift"; sourceTree = "<group>"; };
-		2CCEC3CE22E47AAA0055D27A /* AudioPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerController.swift; sourceTree = "<group>"; };
+		2CCEC3CE22E47AAA0055D27A /* ExCastPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExCastPlayer.swift; sourceTree = "<group>"; };
 		2CCEC3D122E47D140055D27A /* EpisodePlayerPlaybackButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerPlaybackButtons.swift; sourceTree = "<group>"; };
 		2CCEC3D322E47D220055D27A /* EpisodePlayerPlaybackButtons.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodePlayerPlaybackButtons.xib; sourceTree = "<group>"; };
 		2CCEC3D622E484670055D27A /* EpisodePlayerControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerControllerViewModel.swift; sourceTree = "<group>"; };
@@ -591,7 +593,7 @@
 			isa = PBXGroup;
 			children = (
 				2C8D688A22EC830000CE9660 /* RemoteCommand */,
-				2CCEC3CD22E47A990055D27A /* AudioPlayer */,
+				2CCEC3CD22E47A990055D27A /* ExCastPlayer */,
 				2C6391ED22E2BA6A00B5EBE0 /* Repository */,
 				2C6391CF22E1BECC00B5EBE0 /* Gateway */,
 				2CA2E9BA22F1BF9800A6E3A9 /* ThumbnailDownloader.swift */,
@@ -702,12 +704,13 @@
 			path = Gateway;
 			sourceTree = "<group>";
 		};
-		2CCEC3CD22E47A990055D27A /* AudioPlayer */ = {
+		2CCEC3CD22E47A990055D27A /* ExCastPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				2CCEC3CE22E47AAA0055D27A /* AudioPlayerController.swift */,
+				2CCEC3CE22E47AAA0055D27A /* ExCastPlayer.swift */,
+				2C4D9114232C86E200895CD7 /* ExCastPlayerProtocol.swift */,
 			);
-			path = AudioPlayer;
+			path = ExCastPlayer;
 			sourceTree = "<group>";
 		};
 		2CCEC3D022E47CFA0055D27A /* EpisodePlayer */ = {
@@ -992,7 +995,7 @@
 				2CA2E9D322F5B9DC00A6E3A9 /* UITableView+Bond.swift in Sources */,
 				2CA13C8F22C9100B00CC6072 /* FeedUrlInputView.swift in Sources */,
 				2CA2E9CD22F53C2F00A6E3A9 /* PodcastGateway.swift in Sources */,
-				2CCEC3CF22E47AAA0055D27A /* AudioPlayerController.swift in Sources */,
+				2CCEC3CF22E47AAA0055D27A /* ExCastPlayer.swift in Sources */,
 				2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */,
 				2C63920522E3FBC500B5EBE0 /* UIKit+Bond.swift in Sources */,
 				2CA2E9DD22F5C66400A6E3A9 /* String+toHtmlAttributedString.swift in Sources */,
@@ -1047,6 +1050,7 @@
 				2C546C5E22FFA45800C1BB83 /* NotificationContext.swift in Sources */,
 				2C122DEF22CBAFC300011558 /* PodcastShowCell.swift in Sources */,
 				2C8D688922EC778700CE9660 /* RemoteCommandHandler.swift in Sources */,
+				2C4D9115232C86E200895CD7 /* ExCastPlayerProtocol.swift in Sources */,
 				2CDF07A422ED7F83002F8F5C /* Double+asTimeString.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

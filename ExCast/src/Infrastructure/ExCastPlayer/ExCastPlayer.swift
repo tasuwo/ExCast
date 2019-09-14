@@ -1,5 +1,5 @@
 //
-//  AudioPlayerController.swift
+//  ExCastPlayer.swift
 //  ExCast
 //
 //  Created by Tasuku Tozawa on 2019/07/21.
@@ -8,59 +8,25 @@
 
 import AVFoundation
 
-protocol AudioPlayerControlCommands: AnyObject {
-    func prepareToPlay()
-
-    func play()
-
-    func pause()
-
-    func stop()
-
-    func seek(to time: TimeInterval, _ completion: @escaping (Bool) -> Void)
-
-    func skip(direction: AudioPlayer.SkipDirection, duration seconds: TimeInterval, _ completion: @escaping (Bool) -> Void)
-
-    func add(delegate: AudioPlayerDelegate)
-}
-
-protocol AudioPlayerDelegate: AnyObject {
-    func didFinishPrepare()
-
-    func didChangePlayingState(to state: AudioPlayer.PlayingState)
-
-    func didChangePlaybackTime(to time: TimeInterval)
-}
-
 private var kAudioPlayerContext: UInt8 = 0
 
 fileprivate class DelegateWrapper {
-    weak var delegate: AudioPlayerDelegate?
-    init(_ d: AudioPlayerDelegate) { delegate = d }
+    weak var delegate: ExCastPlayerDelegate?
+    init(_ d: ExCastPlayerDelegate) { delegate = d }
 }
 
-class AudioPlayer: NSObject {
+class ExCastPlayer: NSObject {
     private let contentUrl: URL
+
     private weak var playerItem: AVPlayerItem!
     private var player: AVPlayer!
+
     private var timeObserverToken: Any?
-
     fileprivate var delegates: [DelegateWrapper] = []
-
-    enum PlayingState {
-        case playing
-        case pause
-        case finish
-    }
-
-    enum SkipDirection {
-        case forward
-        case backward
-    }
 
     // MARK: - Lifecycle
 
-    init(_ contentUrl: URL) {
+    init(contentUrl: URL) {
         self.contentUrl = contentUrl
     }
 
@@ -79,10 +45,7 @@ class AudioPlayer: NSObject {
                                change: [NSKeyValueChangeKey : Any]?,
                                context: UnsafeMutableRawPointer?) {
         guard context == &kAudioPlayerContext else {
-            super.observeValue(forKeyPath: keyPath,
-                               of: object,
-                               change: change,
-                               context: context)
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
 
@@ -127,10 +90,9 @@ class AudioPlayer: NSObject {
     }
 }
 
-// TODO: player.rate を見て失敗を通知する
-extension AudioPlayer: AudioPlayerControlCommands {
+extension ExCastPlayer: ExCastPlayerProtocol {
 
-    // MARK: - AudioPlayerControlCommands
+    // MARK: - ExCastPlayerProtocol
 
     func prepareToPlay() {
         DispatchQueue.global(qos: .background).async {
@@ -138,7 +100,7 @@ extension AudioPlayer: AudioPlayerControlCommands {
             let playerItem = AVPlayerItem(asset: asset)
             self.playerItem = playerItem
 
-            asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.isPlayable)], completionHandler: { [weak self] in
+            asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.isPlayable)]) { [weak self] in
                 guard let self = self else { return }
 
                 var error: NSError? = nil
@@ -165,47 +127,70 @@ extension AudioPlayer: AudioPlayerControlCommands {
                     // TODO:
                     break
                 }
-            })
+            }
         }
     }
 
     func play() {
         self.player.play()
-        self.delegates.forEach { $0.delegate?.didChangePlayingState(to: .playing) }
+        self.delegates.forEach {
+            $0.delegate?.didChangePlayingState(to: .playing)
+            $0.delegate?.didChangePlaybackRate(to: 1)
+        }
     }
 
     func pause() {
         self.player.pause()
-        self.delegates.forEach { $0.delegate?.didChangePlayingState(to: .pause) }
-    }
-
-    func stop() {
-        // TODO:
-    }
-
-    func seek(to seconds: TimeInterval, _ completion: @escaping (Bool) -> Void) {
-        let time = CMTimeMakeWithSeconds(Float64(seconds), preferredTimescale: 100)
-        self.player.seek(to: time, completionHandler: completion)
-    }
-
-    func skip(direction: SkipDirection, duration seconds: TimeInterval, _ completion: @escaping (Bool) -> Void) {
-        let duration = CMTimeMakeWithSeconds(Float64(seconds), preferredTimescale: 100)
-
-        let time: CMTime
-        switch direction {
-        case .backward:
-            let tmp = player.currentTime() - duration
-            time = tmp < CMTime.zero ? CMTime.zero : tmp
-        case .forward:
-            let tmp = player.currentTime() + duration
-            time = tmp > playerItem.duration ? playerItem.duration : tmp
+        self.delegates.forEach {
+            $0.delegate?.didChangePlayingState(to: .pause)
+            $0.delegate?.didChangePlaybackRate(to: 0)
         }
-        self.player.seek(to: time, completionHandler: completion)
-
-        self.delegates.forEach { $0.delegate?.didChangePlaybackTime(to: CMTimeGetSeconds(player.currentTime())) }
     }
 
-    func add(delegate: AudioPlayerDelegate) {
+    func seek(to seconds: TimeInterval, completion: @escaping (Bool) -> Void) {
+        let time = CMTimeMakeWithSeconds(Float64(seconds), preferredTimescale: 100)
+        self.seekInternalPlayer(to: time, completion: completion)
+    }
+
+    func skipForward(duration seconds: TimeInterval, completion: @escaping (Bool) -> Void) {
+        let duration = CMTimeMakeWithSeconds(Float64(seconds), preferredTimescale: 100)
+        let targetTimePoint = player.currentTime() + duration
+
+        guard targetTimePoint <= playerItem.duration else {
+            completion(false)
+            return
+        }
+
+        self.seekInternalPlayer(to: targetTimePoint, completion: completion)
+    }
+
+    func skipBackward(duration seconds: TimeInterval, completion: @escaping (Bool) -> Void) {
+        let duration = CMTimeMakeWithSeconds(Float64(seconds), preferredTimescale: 100)
+        let targetTimePoint = player.currentTime() - duration
+
+        guard targetTimePoint >= CMTime.zero else {
+            completion(false)
+            return
+        }
+
+        self.seekInternalPlayer(to: targetTimePoint, completion: completion)
+    }
+
+    private func seekInternalPlayer(to time: CMTime, completion: @escaping (Bool) -> Void) {
+        self.player.seek(to: time) { [weak self] seeked in
+            guard let self = self else { return }
+
+            if seeked {
+                self.delegates.forEach {
+                    $0.delegate?.didSeek(to: CMTimeGetSeconds(self.player.currentTime()))
+                }
+            }
+
+            completion(seeked)
+        }
+    }
+
+    func register(delegate: ExCastPlayerDelegate) {
         self.delegates.append(DelegateWrapper(delegate))
     }
 

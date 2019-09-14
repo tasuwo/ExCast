@@ -13,19 +13,13 @@ class RemoteCommandHandler: NSObject {
     private let show: Podcast.Show
     private let episode: Podcast.Episode
     private let commandCenter: MPRemoteCommandCenter
-    private weak var player: AudioPlayerControlCommands?
+    private weak var player: ExCastPlayerProtocol?
     private unowned var infoCenter: MPNowPlayingInfoCenter
 
     private let forwardSkipTimeInterval: TimeInterval = 15
     private let backwardSkipTimeInterval: TimeInterval = 15
 
-    private var currentTime: TimeInterval = 0 {
-        didSet {
-            self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.currentTime
-        }
-    }
-
-    init(show: Podcast.Show, episode: Podcast.Episode, commandCenter: MPRemoteCommandCenter, player: AudioPlayerControlCommands, infoCenter: MPNowPlayingInfoCenter) {
+    init(show: Podcast.Show, episode: Podcast.Episode, commandCenter: MPRemoteCommandCenter, player: ExCastPlayerProtocol, infoCenter: MPNowPlayingInfoCenter) {
         self.show = show
         self.episode = episode
         self.commandCenter = commandCenter
@@ -73,13 +67,13 @@ class RemoteCommandHandler: NSObject {
             nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
         }
 
-        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.currentTime
+        // TODO: 途中から再生の場合どうするか
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
 
         self.infoCenter.nowPlayingInfo = nowPlayingInfo
     }
 
-    // TODO: 失敗を通知する
     private func setupRemoteTransportControls() {
         self.commandCenter.nextTrackCommand.isEnabled = false
         self.commandCenter.previousTrackCommand.isEnabled = false
@@ -114,21 +108,13 @@ class RemoteCommandHandler: NSObject {
 
     @objc private func didSkipForward(_ event: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         guard let player = self.player else { return .commandFailed }
-        player.skip(direction: .forward, duration: self.forwardSkipTimeInterval) { success in
-            if success {
-                self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.currentTime
-            }
-        }
+        player.skipForward(duration: self.forwardSkipTimeInterval) { _ in }
         return .success
     }
 
     @objc private func didSkipBackward(_ event: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         guard let player = self.player else { return .commandFailed }
-        player.skip(direction: .backward, duration: self.backwardSkipTimeInterval) { success in
-            if success {
-                self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.currentTime
-            }
-        }
+        player.skipBackward(duration: self.backwardSkipTimeInterval) { _ in }
         return .success
     }
 
@@ -137,28 +123,32 @@ class RemoteCommandHandler: NSObject {
               let event = event as? MPChangePlaybackPositionCommandEvent else {
                 return .commandFailed
         }
-        player.seek(to: event.positionTime) { success in
-            if success {
-                self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.currentTime
-            }
-        }
+        player.seek(to: event.positionTime) { _ in }
         return .success
     }
 }
 
-extension RemoteCommandHandler: AudioPlayerDelegate {
+extension RemoteCommandHandler: ExCastPlayerDelegate {
 
     func didFinishPrepare() {
         self.setupNowPlayingInfo()
         self.setupRemoteTransportControls()
     }
 
-    func didChangePlayingState(to state: AudioPlayer.PlayingState) {
+    func didChangePlayingState(to state: ExCastPlayerState) {
         // NOP:
     }
 
+    func didSeek(to time: TimeInterval) {
+        self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = time
+    }
+
+    func didChangePlaybackRate(to rate: Double) {
+        self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = rate
+    }
+
     func didChangePlaybackTime(to time: TimeInterval) {
-        self.currentTime = time
+        // NOP:
     }
 
 }

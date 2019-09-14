@@ -54,7 +54,7 @@ extension AppRootViewController: EpisodePlayerPresenter {
     }
 
     func show(show: Podcast.Show, episode: Podcast.Episode) {
-        let player = AudioPlayer(episode.enclosure.url)
+        let player = ExCastPlayer(contentUrl: episode.enclosure.url)
         let commandHandler = RemoteCommandHandler(
             show: show,
             episode: episode,

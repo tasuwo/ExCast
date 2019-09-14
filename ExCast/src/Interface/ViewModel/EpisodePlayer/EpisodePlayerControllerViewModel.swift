@@ -11,8 +11,8 @@ import Foundation
 class EpisodePlayerControllerViewModel {
     let show: Podcast.Show
     let episode: Podcast.Episode
-    private let commands: AudioPlayerControlCommands
-    private let remoteCommands: AudioPlayerDelegate
+    private let commands: ExCastPlayerProtocol
+    private let remoteCommands: ExCastPlayerDelegate
 
     private let forwardSkipDuration: Double = 15
     private let backwardSkipDuration: Double = 15
@@ -29,8 +29,8 @@ class EpisodePlayerControllerViewModel {
 
     init(show: Podcast.Show,
          episode: Podcast.Episode,
-         controller: AudioPlayerControlCommands,
-         remoteCommands: AudioPlayerDelegate) {
+         controller: ExCastPlayerProtocol,
+         remoteCommands: ExCastPlayerDelegate) {
         self.show = show
         self.episode = episode
         self.commands = controller
@@ -50,8 +50,8 @@ class EpisodePlayerControllerViewModel {
         self.isPrepared.value = false
         self.currentTime.value = 0
 
-        self.commands.add(delegate: self)
-        self.commands.add(delegate: self.remoteCommands)
+        self.commands.register(delegate: self)
+        self.commands.register(delegate: self.remoteCommands)
         self.commands.prepareToPlay()
 
         // Bind
@@ -85,16 +85,16 @@ class EpisodePlayerControllerViewModel {
     }
 
     func skipForward() {
-        self.commands.skip(direction: .forward, duration: self.forwardSkipDuration) { _ in }
+        self.commands.skipForward(duration: self.forwardSkipDuration) { _ in }
     }
 
     func skipBackward() {
-        self.commands.skip(direction: .backward, duration: self.backwardSkipDuration) { _ in }
+        self.commands.skipBackward(duration: self.backwardSkipDuration) { _ in }
     }
 
 }
 
-extension EpisodePlayerControllerViewModel: AudioPlayerDelegate {
+extension EpisodePlayerControllerViewModel: ExCastPlayerDelegate {
 
     // MARK: - AudioPlayerDelegate
 
@@ -107,7 +107,7 @@ extension EpisodePlayerControllerViewModel: AudioPlayerDelegate {
         }
     }
 
-    func didChangePlayingState(to state: AudioPlayer.PlayingState) {
+    func didChangePlayingState(to state: ExCastPlayerState) {
         switch state {
         case .playing:
             self.isPlaying.value = true
@@ -118,6 +118,14 @@ extension EpisodePlayerControllerViewModel: AudioPlayerDelegate {
 
     func didChangePlaybackTime(to time: TimeInterval) {
         self.currentTime.value = time
+    }
+
+    func didChangePlaybackRate(to rate: Double) {
+        // NOP:
+    }
+
+    func didSeek(to time: TimeInterval) {
+        // NOP:
     }
 
 }
