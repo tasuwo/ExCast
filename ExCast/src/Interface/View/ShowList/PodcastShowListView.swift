@@ -70,33 +70,30 @@ extension PodcastShowListView: UITableViewDataSource {
         if let thumbnail = self.thumbnailCache[indexPath] {
             podcastShowCell.layout(artwork: thumbnail, title: show.title, author: show.author)
             return cell
-        } else if let _ = self.thumbnailDownloadersInProgress[indexPath] {
+        }
+
+        if let _ = self.thumbnailDownloadersInProgress[indexPath] {
             podcastShowCell.layout(artwork: nil, title: show.title, author: show.author)
             return cell
         }
 
         let url = show.artwork
         let downloader = ThumbnailDownloader(size: 90)
-        self.thumbnailDownloadersInProgress[indexPath] = downloader
-
-        downloader.startDownload(by: url, at: indexPath) { [weak self] index, result in
+        downloader.startDownload(by: url) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
             case let .success(image):
-                // TODO:
-                guard let cell = self.cellForRow(at: index) as? PodcastShowCell else { return }
-                cell.showArtwork.image = image
-                cell.setNeedsLayout()
-                self.thumbnailDownloadersInProgress.removeValue(forKey: index)
+                self.thumbnailCache[indexPath] = image
+                podcastShowCell.layout(artwork: image, title: show.title, author: show.author)
+                self.thumbnailDownloadersInProgress.removeValue(forKey: indexPath)
             case .failure(_):
-                // TODO:
                 break
             }
         }
+        self.thumbnailDownloadersInProgress[indexPath] = downloader
 
         podcastShowCell.layout(artwork: nil, title: show.title, author: show.author)
-
         return cell
     }
 }
