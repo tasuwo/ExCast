@@ -610,12 +610,20 @@ PODS:
   - MotionInterchange (1.6.0)
   - MotionTransitioning (5.0.0)
   - ObjectMapper (3.5.1)
+  - RxCocoa (5.0.0):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.0.0):
+    - RxSwift (~> 5)
+  - RxSwift (5.0.0)
 
 DEPENDENCIES:
   - AWSSNS
   - Keys (from `Pods/CocoaPodsKeys`)
   - MaterialComponents
   - ObjectMapper (~> 3.4)
+  - RxCocoa (~> 5)
+  - RxSwift (~> 5)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -628,6 +636,9 @@ SPEC REPOS:
     - MotionInterchange
     - MotionTransitioning
     - ObjectMapper
+    - RxCocoa
+    - RxRelay
+    - RxSwift
 
 EXTERNAL SOURCES:
   Keys:
@@ -644,7 +655,10 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   MotionTransitioning: 23d25edc2f4606efb922403cbac6d81af37aa33a
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
+  RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
+  RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
+  RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
 
-PODFILE CHECKSUM: ee0ca4e8d458f995fb0fe4b86dfe7e88645f0ea9
+PODFILE CHECKSUM: 9e99cb1657d17c3c460d88e436b42cbdc3b83ee9
 
 COCOAPODS: 1.7.1

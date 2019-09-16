@@ -9,6 +9,8 @@ target 'ExCast' do
   pod 'MaterialComponents'
   pod 'AWSSNS'
   pod 'ObjectMapper', '~> 3.4'
+  pod 'RxSwift', '~> 5'
+  pod 'RxCocoa', '~> 5'
 
 end
 

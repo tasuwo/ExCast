@@ -8,11 +8,14 @@
 
 import UIKit
 import MaterialComponents
+import RxCocoa
+import RxSwift
 
 class FeedUrlInputViewController: UIViewController {
 
     @IBOutlet weak var baseView: FeedUrlInputView!
     private let viewModel: FeedUrlInputViewModel
+    private var disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
@@ -31,11 +34,13 @@ class FeedUrlInputViewController: UIViewController {
         super.viewDidLoad()
 
         self.baseView.delegate = self
+        self.baseView.textField.rx.text.orEmpty
+            .bind(to: self.viewModel.url)
+            .disposed(by: self.disposeBag)
 
-        viewModel.url ->> self.baseView.textField
-        viewModel.isValid ->> self.baseView.button
-
-        self.viewModel.setup()
+        self.viewModel.isValid.map { $0 }
+            .bind(to: self.baseView.button.rx.isEnabled)
+            .disposed(by: disposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -49,10 +54,6 @@ class FeedUrlInputViewController: UIViewController {
 extension FeedUrlInputViewController: FeedUrlInputViewDelegate {
     
     // MARK: - FeedUrlInputViewDelegate
-    
-    func didChange(feedUrl: String?) {
-        self.viewModel.url.value = feedUrl ?? ""
-    }
     
     func didTapSend() {
         self.viewModel.fetchPodcast() { [weak self] podcast in

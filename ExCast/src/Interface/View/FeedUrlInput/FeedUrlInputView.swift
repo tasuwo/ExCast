@@ -10,7 +10,6 @@ import MaterialComponents
 import UIKit
 
 protocol FeedUrlInputViewDelegate: AnyObject {
-    func didChange(feedUrl: String?)
     func didTapSend()
 }
 
@@ -20,10 +19,6 @@ class FeedUrlInputView: UIView {
     @IBOutlet var baseView: UIView!
 
     @IBOutlet weak var textField: MDCTextField!
-    
-    @IBAction func didChangeFeedUrl(_ sender: Any) {
-        self.delegate?.didChange(feedUrl: self.textField.text)
-    }
     
     @IBOutlet weak var button: MDCFloatingButton!
     

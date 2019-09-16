@@ -6,46 +6,33 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import Foundation
+import RxSwift
 
 class FeedUrlInputViewModel {
     
     private let repository: PodcastRepository!
     private let gateway: PodcastGateway!
 
-    var url: Dynamic<String>
-    private var feedUrlBond: Bond<String>!
-    var isValid: Dynamic<Bool>
+    var url = BehaviorSubject<String>(value: "")
+    var isValid: Observable<Bool> {
+        return self.url.map { url in
+            return url.count > 0
+        }
+    }
+
+    private var feedUrlDisposable: Disposable!
 
     // MARK: - Initializer
     
     init(repository: PodcastRepository, gateway: PodcastGateway) {
         self.repository = repository
         self.gateway = gateway
-
-        self.url = Dynamic("")
-        self.isValid = Dynamic(false)
     }
     
     // MARK: - Methods
     
-    func setup() {
-        // 初回の View への同期、もっと綺麗な方法はないか
-        self.url.value = ""
-        self.isValid.value = false
-
-        self.feedUrlBond = Bond() { (name: String) in
-            self.isValid.value = self.evaluateValidity()
-        }
-        self.feedUrlBond.bind(self.url)
-    }
-
-    func evaluateValidity() -> Bool {
-        return self.url.value.count != 0
-    }
-
     func fetchPodcast(_ completion: @escaping ((Podcast?) -> Void)) {
-        guard let url = URL(string: self.url.value) else {
+        guard let url = URL(string: try! self.url.value()) else {
             completion(nil)
             return
         }
