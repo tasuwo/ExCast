@@ -7,13 +7,14 @@
 //
 
 import RxSwift
+import RxRelay
 
 class FeedUrlInputViewModel {
     
     private let repository: PodcastRepository!
     private let gateway: PodcastGateway!
 
-    var url = BehaviorSubject<String>(value: "")
+    var url = BehaviorRelay<String>(value: "")
     var isValid: Observable<Bool> {
         return self.url.map { url in
             return url.count > 0
@@ -32,7 +33,7 @@ class FeedUrlInputViewModel {
     // MARK: - Methods
     
     func fetchPodcast(_ completion: @escaping ((Podcast?) -> Void)) {
-        guard let url = URL(string: try! self.url.value()) else {
+        guard let url = URL(string: self.url.value) else {
             completion(nil)
             return
         }

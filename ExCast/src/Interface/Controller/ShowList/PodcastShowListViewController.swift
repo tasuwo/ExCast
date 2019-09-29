@@ -7,16 +7,21 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 class PodcastShowListViewController: UIViewController {
 
     @IBOutlet weak var showListView: PodcastShowListView!
+    private let dataSourceContainer = PodcastShowListViewDataSourceContainer()
 
     private unowned let playerPresenter: EpisodePlayerPresenter
     private let viewModel: ShowListViewModel
 
     private let repository: PodcastRepository
     private let gateway: PodcastGateway
+
+    private let disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
@@ -43,20 +48,41 @@ class PodcastShowListViewController: UIViewController {
         super.viewDidLoad()
         
         setupNavigationBar()
-        self.showListView.delegate_ = self
 
-        viewModel.podcasts ->> self.showListView.contentsBond
+        self.viewModel.podcasts
+            .bind(to: self.showListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
+            .disposed(by: self.disposeBag)
 
-        self.viewModel.setup()
+        self.showListView.rx.itemDeleted
+            .subscribe({ [weak self] event in
+                switch event {
+                case let .next(indexPath):
+                    self?.viewModel.remove(at: indexPath.row)
+                default: break
+                }
+            })
+            .disposed(by: self.disposeBag)
+        self.showListView.rx.itemSelected
+            .subscribe({ [weak self] event in
+                switch event {
+                case let .next(indexPath):
+                    self?.didSelectShow(at: indexPath)
+                default: break
+                }
+            })
+            .disposed(by: self.disposeBag)
 
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
+
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil,
+                                                                style: .plain,
+                                                                target: nil,
+                                                                action: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.viewModel.loadIfNeeded()
-
+        self.viewModel.load()
         self.title = NSLocalizedString("PodcastShowListView.title", comment: "")
     }
 
@@ -72,25 +98,21 @@ class PodcastShowListViewController: UIViewController {
         let viewModel = FeedUrlInputViewModel(repository: self.repository, gateway: self.gateway)
         navC.pushViewController(FeedUrlInputViewController(viewModel: viewModel), animated: true)
     }
-}
 
-extension PodcastShowListViewController: PodcastShowListViewDelegate {
-    
-    // MARK: - PodcastShowListViewDelegate
-    
-    func podcastShowListView(didSelect podcast: Podcast, at index: Int) {
-        guard let navC = self.navigationController else { return }
-        navC.pushViewController(
+    private func didSelectShow(at indexPath: IndexPath) {
+        guard let navigationController = self.navigationController else { return }
+
+        let podcast = self.viewModel.podcasts.value(at: indexPath)
+        navigationController.pushViewController(
             PodcastEpisodeListViewController(
                 playerPresenter: self.playerPresenter,
                 podcast: podcast,
-                viewModel: EpisodeListViewModel(podcast: podcast, gateway: self.gateway, repository: self.repository)),
+                viewModel: EpisodeListViewModel(podcast: podcast,
+                                                gateway: self.gateway,
+                                                repository: self.repository)
+            ),
             animated: true
         )
-    }
-
-    func podcastShowListView(didDelete podcast: Podcast, at index: Int) {
-        self.viewModel.podcasts.remove(at: index)
     }
 
 }

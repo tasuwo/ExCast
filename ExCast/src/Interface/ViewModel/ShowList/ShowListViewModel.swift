@@ -6,57 +6,59 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import Foundation
+import RxSwift
+import RxRelay
+import RxDataSources
 
 class ShowListViewModel {
-    
-    private let repository: PodcastRepository
-    private var showsBond: ArrayBond<Podcast>!
 
-    var podcasts: DynamicArray<Podcast>
+    private static let sectionIdentifier = ""
+
+    private(set) var podcasts: BehaviorRelay<[AnimatableSectionModel<String, Podcast>]> = BehaviorRelay(value: [
+        .init(model: ShowListViewModel.sectionIdentifier, items: [])
+    ])
+    private let repository: PodcastRepository
 
     // MARK: - Initializer
     
     init(repository: PodcastRepository) {
         self.repository = repository
-        self.podcasts = DynamicArray([])
     }
 
     // MARK: - Methods
 
-    func setup() {
-        self.showsBond = ArrayBond<Podcast>(insert: { [unowned self] tuples in
-            tuples.forEach { [unowned self] tuple in
-                try! self.repository.add(tuple.1)
-            }
-        }, remove: { [unowned self] tuples  in
-            tuples.forEach { [unowned self] tuple in
-                try! self.repository.remove(tuple.1)
-            }
-        }, update: { [unowned self] tuples in
-            tuples.forEach { [unowned self] tuple in
-                try! self.repository.update(tuple.1)
-            }
-        })
+    func remove(at index: Int) {
+        try! self.repository.remove(self.podcasts.value[0].items[index])
+
+        var newValue = self.podcasts.value[0].items
+        newValue.remove(at: index)
+        self.podcasts.accept([
+            .init(model: ShowListViewModel.sectionIdentifier, items: newValue)
+        ])
     }
 
-    func loadIfNeeded() {
-        self.showsBond.release(self.podcasts)
-
+    func load() {
         self.repository.fetchAll { [unowned self] result in
-            defer {
-                self.showsBond.bind(self.podcasts)
-            }
-
             switch result {
             case .success(let fetchedPodcasts):
-                let oldPodcasts = self.podcasts.values
-                guard fetchedPodcasts != oldPodcasts else { return }
-                self.podcasts.set(fetchedPodcasts)
+                self.podcasts.accept([
+                    .init(model: ShowListViewModel.sectionIdentifier, items: fetchedPodcasts)
+                ])
             case .failure(_): break
                 // TODO: Error handling
             }
         }
     }
 
+}
+
+extension Podcast: IdentifiableType {
+
+    // MARK: - IndetifiableType
+
+    typealias Identity = URL
+
+    var identity: URL {
+        return self.show.feedUrl
+    }
 }

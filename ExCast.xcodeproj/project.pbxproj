@@ -15,6 +15,8 @@
 		2C122DF522CCFBA100011558 /* parseRfc822DateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DF422CCFBA100011558 /* parseRfc822DateString.swift */; };
 		2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */; };
 		2C4D9115232C86E200895CD7 /* ExCastPlayerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D9114232C86E200895CD7 /* ExCastPlayerProtocol.swift */; };
+		2C4D9117234075A100895CD7 /* PodcastShowListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D9116234075A100895CD7 /* PodcastShowListViewDataSource.swift */; };
+		2C4D911C2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D911B2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift */; };
 		2C546C5922FF2AF700C1BB83 /* PushNotificationProviderGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C5822FF2AF700C1BB83 /* PushNotificationProviderGateway.swift */; };
 		2C546C5B22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C5A22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift */; };
 		2C546C5E22FFA45800C1BB83 /* NotificationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C546C5D22FFA45800C1BB83 /* NotificationContext.swift */; };
@@ -136,6 +138,8 @@
 		2C122DF422CCFBA100011558 /* parseRfc822DateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parseRfc822DateString.swift; sourceTree = "<group>"; };
 		2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+rgbString.swift"; sourceTree = "<group>"; };
 		2C4D9114232C86E200895CD7 /* ExCastPlayerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExCastPlayerProtocol.swift; sourceTree = "<group>"; };
+		2C4D9116234075A100895CD7 /* PodcastShowListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowListViewDataSource.swift; sourceTree = "<group>"; };
+		2C4D911B2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BehaviorRelay+ValueAt.swift"; sourceTree = "<group>"; };
 		2C546C5722FF279F00C1BB83 /* ExCast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExCast.entitlements; sourceTree = "<group>"; };
 		2C546C5822FF2AF700C1BB83 /* PushNotificationProviderGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationProviderGateway.swift; sourceTree = "<group>"; };
 		2C546C5A22FF2B3E00C1BB83 /* PushNotificationProviderGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationProviderGatewayImpl.swift; sourceTree = "<group>"; };
@@ -259,8 +263,25 @@
 				2C122DEC22CBAD4D00011558 /* PodcastShowCell.xib */,
 				2C122DEE22CBAFC300011558 /* PodcastShowCell.swift */,
 				2C122DF222CBB42700011558 /* PodcastShowListView.swift */,
+				2C4D9116234075A100895CD7 /* PodcastShowListViewDataSource.swift */,
 			);
 			path = ShowList;
+			sourceTree = "<group>";
+		};
+		2C4D91192340C4B700895CD7 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2C4D911A2340C4BC00895CD7 /* Extension */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2C4D911A2340C4BC00895CD7 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				2C4D911B2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		2C546C5C22FFA43E00C1BB83 /* Value Object */ = {
@@ -552,6 +573,7 @@
 				2CA13C6C22C8D7F000CC6072 /* Interface */,
 				2CA13C6F22C8D83300CC6072 /* Domain */,
 				2CA13C7622C8E77B00CC6072 /* Infrastructure */,
+				2C4D91192340C4B700895CD7 /* Common */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -996,6 +1018,7 @@
 				2CA13C8F22C9100B00CC6072 /* FeedUrlInputView.swift in Sources */,
 				2CA2E9CD22F53C2F00A6E3A9 /* PodcastGateway.swift in Sources */,
 				2CCEC3CF22E47AAA0055D27A /* ExCastPlayer.swift in Sources */,
+				2C4D9117234075A100895CD7 /* PodcastShowListViewDataSource.swift in Sources */,
 				2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */,
 				2C63920522E3FBC500B5EBE0 /* UIKit+Bond.swift in Sources */,
 				2CA2E9DD22F5C66400A6E3A9 /* String+toHtmlAttributedString.swift in Sources */,
@@ -1006,6 +1029,7 @@
 				2C6391F722E2C28400B5EBE0 /* PodcastEpisodeListViewController.swift in Sources */,
 				2C8D688722EC0BF900CE9660 /* EpisodePlayerModalViewModel.swift in Sources */,
 				2CA13C9122CA5AF500CC6072 /* AppRootTabBarController.swift in Sources */,
+				2C4D911C2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift in Sources */,
 				2CA2E9BB22F1BF9800A6E3A9 /* ThumbnailDownloader.swift in Sources */,
 				2CA13C5C22C8D7D700CC6072 /* FeedUrlInputViewController.swift in Sources */,
 				2CA2E9E322F5D86C00A6E3A9 /* PodcastEpisodeListView+Bond.swift in Sources */,

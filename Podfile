@@ -11,6 +11,7 @@ target 'ExCast' do
   pod 'ObjectMapper', '~> 3.4'
   pod 'RxSwift', '~> 5'
   pod 'RxCocoa', '~> 5'
+  pod 'RxDataSources', '~> 4.0'
 
 end
 

@@ -2,6 +2,7 @@ PODS:
   - AWSCore (2.10.0)
   - AWSSNS (2.10.0):
     - AWSCore (= 2.10.0)
+  - Differentiator (4.0.1)
   - Keys (1.0.1)
   - MaterialComponents (85.8.0):
     - MaterialComponents/ActionSheet (= 85.8.0)
@@ -613,6 +614,10 @@ PODS:
   - RxCocoa (5.0.0):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
+  - RxDataSources (4.0.1):
+    - Differentiator (~> 4.0)
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
   - RxRelay (5.0.0):
     - RxSwift (~> 5)
   - RxSwift (5.0.0)
@@ -623,12 +628,14 @@ DEPENDENCIES:
   - MaterialComponents
   - ObjectMapper (~> 3.4)
   - RxCocoa (~> 5)
+  - RxDataSources (~> 4.0)
   - RxSwift (~> 5)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AWSCore
     - AWSSNS
+    - Differentiator
     - MaterialComponents
     - MDFInternationalization
     - MDFTextAccessibility
@@ -637,6 +644,7 @@ SPEC REPOS:
     - MotionTransitioning
     - ObjectMapper
     - RxCocoa
+    - RxDataSources
     - RxRelay
     - RxSwift
 
@@ -647,6 +655,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AWSCore: d5667976d58ee878961b98744cb38b6066785895
   AWSSNS: bfc23b75cb787fc9a326b9771cf0b5c6f796b6d6
+  Differentiator: 886080237d9f87f322641dedbc5be257061b0602
   Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
   MaterialComponents: d3c6936b52687041650c99d2298d16fb2767f97a
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
@@ -656,9 +665,10 @@ SPEC CHECKSUMS:
   MotionTransitioning: 23d25edc2f4606efb922403cbac6d81af37aa33a
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
   RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
+  RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
   RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
 
-PODFILE CHECKSUM: 9e99cb1657d17c3c460d88e436b42cbdc3b83ee9
+PODFILE CHECKSUM: 2b2df3ff15b6c78d92fd22d352eceb48ad781b09
 
 COCOAPODS: 1.7.1
