@@ -54,22 +54,12 @@ class PodcastShowListViewController: UIViewController {
             .disposed(by: self.disposeBag)
 
         self.showListView.rx.itemDeleted
-            .subscribe({ [weak self] event in
-                switch event {
-                case let .next(indexPath):
-                    self?.viewModel.remove(at: indexPath.row)
-                default: break
-                }
-            })
+            .map { $0.row }
+            .bind(onNext: self.viewModel.remove(at:))
             .disposed(by: self.disposeBag)
+        
         self.showListView.rx.itemSelected
-            .subscribe({ [weak self] event in
-                switch event {
-                case let .next(indexPath):
-                    self?.didSelectShow(at: indexPath)
-                default: break
-                }
-            })
+            .bind(onNext: self.didSelectShow(at:))
             .disposed(by: self.disposeBag)
 
 
@@ -107,9 +97,7 @@ class PodcastShowListViewController: UIViewController {
             PodcastEpisodeListViewController(
                 playerPresenter: self.playerPresenter,
                 podcast: podcast,
-                viewModel: EpisodeListViewModel(podcast: podcast,
-                                                gateway: self.gateway,
-                                                repository: self.repository)
+                viewModel: EpisodeListViewModel(podcast: podcast, gateway: self.gateway)
             ),
             animated: true
         )

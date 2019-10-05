@@ -8,13 +8,18 @@
 
 import UIKit
 import MaterialComponents
+import RxCocoa
+import RxSwift
 
 class PodcastEpisodeListViewController: UIViewController {
 
     @IBOutlet weak var episodeListView: PodcastEpisodeListView!
+    private let dataSourceContainer = PodcastEpisodeListViewDataSourceContainer()
 
     private unowned let playerPresenter: EpisodePlayerPresenter
     private var viewModel: EpisodeListViewModel
+
+    private let disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
@@ -36,45 +41,55 @@ class PodcastEpisodeListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        Swift.print("list viewcontroller")
-                Swift.print(self.view.bounds)
-
         self.playerPresenter.setDelegate(self)
-        self.episodeListView.delegate_ = self
+        self.dataSourceContainer.delegate = self
 
-        viewModel.episodes ->> self.episodeListView.contentsBond
-        viewModel.playingEpisode ->> self.episodeListView
+        self.viewModel.episodes
+            .bind(to: self.episodeListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
+            .disposed(by: self.disposeBag)
 
-        viewModel.setup(with: self.playerPresenter.playingEpisode())
+        self.episodeListView.rx.itemSelected
+            .bind(onNext: self.didSelectEpisode(at:))
+            .disposed(by: self.disposeBag)
 
-        self.title = self.viewModel.show.value.title
+        if let refreshControl = self.episodeListView.refreshControl {
+            refreshControl.rx.controlEvent(.valueChanged)
+                .bind(onNext: { [weak self] _ in
+                    self?.viewModel.load { result in
+                        if !result {
+                            let message = MDCSnackbarMessage(text: NSLocalizedString("PodcastShowListView.error", comment: ""))
+                            MDCSnackbarManager.show(message)
+                        }
+                        DispatchQueue.main.async {
+                            refreshControl.endRefreshing()
+                        }
+                    }
+                })
+                .disposed(by: self.disposeBag)
+        }
+        // viewModel.playingEpisode.accept(self.playerPresenter.playingEpisode())
 
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     }
 
-}
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
-extension PodcastEpisodeListViewController: PodcastEpisodeListViewDelegate {
+        self.viewModel.load { _ in }
+        self.title = self.viewModel.show.value.title
+    }
 
-    // MARK: - PodcastEpisodeListViewDelegate
-
-    func podcastEpisodeListView(didSelect episode: Podcast.Episode, at index: Int) {
-        self.viewModel.playingEpisode.value = episode
+    func didSelectEpisode(at indexPath: IndexPath) {
+        let episode = self.viewModel.episodes.value(at: indexPath)
         self.playerPresenter.show(show: self.viewModel.show.value, episode: episode)
     }
 
-    func podcastEpisodeListView(shouldUpdate episodes: [Podcast.Episode], completion: @escaping () -> Void) {
-        self.viewModel.loadIfNeeded { result in
-            if !result {
-                let message = MDCSnackbarMessage(text: NSLocalizedString("PodcastShowListView.error", comment: ""))
-                MDCSnackbarManager.show(message)
-            }
+}
 
-            completion()
-        }
-    }
+extension PodcastEpisodeListViewController: PodcastEpisodeCellDelegate {
+    // MARK: - PodcastEpisodeCellDelegate
 
-    func podcastEpisodeListView(didTapInformationViewOf episode: Podcast.Episode) {
+    func podcastEpisodeCell(_ cell: UITableViewCell, didSelect episode: Podcast.Episode) {
         guard let navC = self.navigationController else { return }
         navC.pushViewController(
             EpisodeDetailViewController(
@@ -94,7 +109,7 @@ extension PodcastEpisodeListViewController: EpisodePlayerPresenterDelegate {
     // MARK: - EpisodePlayerPresenterDelegate
 
     func didDismissPlayer() {
-        self.viewModel.playingEpisode.value = nil
+        // self.viewModel.playingEpisode = nil
     }
 
 }

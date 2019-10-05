@@ -6,65 +6,59 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import Foundation
+import RxSwift
+import RxRelay
+import RxDataSources
 
 class EpisodeListViewModel {
-    private let feedUrl: URL
-    private let podcast: Podcast
-    private let gateway: PodcastGateway
-    private let repository: PodcastRepository
 
-    var show: Dynamic<Podcast.Show>
-    var episodes: DynamicArray<Podcast.Episode>
-    var playingEpisode: Dynamic<Podcast.Episode?>
+    private static let sectionIdentifier = ""
+
+    private let feedUrl: URL
+    private(set) var show: BehaviorRelay<Podcast.Show>
+    private(set) var episodes: BehaviorRelay<[AnimatableSectionModel<String, Podcast.Episode>]>
+    private(set) var playingEpisode: BehaviorSubject<Podcast.Episode?> = BehaviorSubject(value: nil)
+
+    private let gateway: PodcastGateway
 
     // MARK: - Initializer
 
-    init(podcast: Podcast, gateway: PodcastGateway, repository: PodcastRepository) {
+    init(podcast: Podcast, gateway: PodcastGateway) {
         self.feedUrl = podcast.show.feedUrl
-        self.show = Dynamic(podcast.show)
-        self.episodes = DynamicArray([])
-        self.playingEpisode = Dynamic(nil)
+        self.show = BehaviorRelay(value: podcast.show)
+        self.episodes = BehaviorRelay(value: [
+            .init(model: EpisodeListViewModel.sectionIdentifier, items: [])
+        ])
         self.gateway = gateway
-        self.repository = repository
-        self.podcast = podcast
     }
 
     // MARK: - Methods
 
-    func setup(with playingEpisode: Podcast.Episode?) {
-        // 初回の View への同期、もっと綺麗な方法はないか
-        self.show.value = podcast.show
-        self.episodes.set(podcast.episodes)
-        self.playingEpisode.value = playingEpisode
-    }
-
-    func loadIfNeeded(completion: @escaping (Bool) -> Void) {
+    func load(completion: @escaping (Bool) -> Void) {
         self.gateway.fetch(feed: self.feedUrl) { [unowned self] result in
             switch result {
             case .success(let fetchedPodcast):
-                var isChanged = false
-
-                if fetchedPodcast.show != self.show.value {
-                    self.show.value = fetchedPodcast.show
-                    isChanged = true
-                }
-
-                if fetchedPodcast.episodes != self.episodes.values {
-                    self.episodes.set(fetchedPodcast.episodes)
-                    isChanged = true
-                }
-
-                if isChanged {
-                    try? self.repository.update(fetchedPodcast)
-                }
-
+                self.show.accept(fetchedPodcast.show)
+                self.episodes.accept([
+                    .init(model: EpisodeListViewModel.sectionIdentifier, items: fetchedPodcast.episodes)
+                ])
                 completion(true)
             case .failure(_):
-                // TODO: Error handling
                 completion(false)
+                break
             }
         }
     }
 
+}
+
+extension Podcast.Episode: IdentifiableType {
+
+    // MARK: - IndetifiableType
+
+    typealias Identity = String
+
+    var identity: String {
+        return self.title
+    }
 }
