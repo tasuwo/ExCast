@@ -7,38 +7,31 @@
 //
 
 import Foundation
+import RxRelay
 
 class EpisodeDetailViewModel {
 
     let show: Podcast.Show
     let episode: Podcast.Episode
 
-    var title: Dynamic<String>
-    var pubDate: Dynamic<Date?>
-    var duration: Dynamic<Double>
-    var thumbnail: Dynamic<URL?>
-    var description: Dynamic<String>
+    var title: BehaviorRelay<String>
+    var pubDate: BehaviorRelay<Date?>
+    var duration: BehaviorRelay<Double>
+    var thumbnail: BehaviorRelay<URL?>
+    var description: BehaviorRelay<String>
 
     init(show: Podcast.Show, episode: Podcast.Episode) {
         self.show = show
         self.episode = episode
-        self.title = Dynamic(episode.title)
-        self.pubDate = Dynamic(episode.pubDate)
-        self.duration = Dynamic(episode.duration ?? 0)
-        self.thumbnail = Dynamic(episode.artwork ?? show.artwork)
-        self.description = Dynamic(episode.description ?? "")
-    }
-
-    func setup() {
-        self.title.value = self.episode.title
-        self.pubDate.value = self.episode.pubDate
-        self.duration.value = self.episode.duration ?? 0
-        self.thumbnail.value = self.episode.artwork ?? self.show.artwork
-        self.description.value = self.episode.description ?? ""
+        self.title = BehaviorRelay(value: episode.title)
+        self.pubDate = BehaviorRelay(value: episode.pubDate)
+        self.duration = BehaviorRelay(value: episode.duration ?? 0)
+        self.thumbnail = BehaviorRelay(value: episode.artwork ?? show.artwork)
+        self.description = BehaviorRelay(value: episode.description ?? "")
     }
 
     func layoutDescription() {
-        self.description.value = self.episode.description ?? ""
+        self.description.accept(self.episode.description ?? "")
     }
 
 }

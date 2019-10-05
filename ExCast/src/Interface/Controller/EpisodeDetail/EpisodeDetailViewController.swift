@@ -7,11 +7,15 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 class EpisodeDetailViewController: UIViewController {
 
     @IBOutlet weak var episodeDetailView: EpisodeDetailView!
     private let viewModel: EpisodeDetailViewModel
+
+    private let disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
@@ -29,13 +33,40 @@ class EpisodeDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.viewModel.title ->> self.episodeDetailView.episodeTitleLabel
-        self.viewModel.pubDate.map { d in d?.asFormattedString() ?? "" } ->> self.episodeDetailView.episodePubDateLabel
-        self.viewModel.duration.map { d in d.asTimeString() ?? "" } ->> self.episodeDetailView.episodeDurationLabel
-        self.viewModel.thumbnail ->> self.episodeDetailView.episodeThumbnailView!
-        self.viewModel.description ->> self.episodeDetailView.episodeDescriptionLabel.htmlBond
+        self.viewModel.title
+            .bind(to: self.episodeDetailView.episodeTitleLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        self.viewModel.pubDate
+            .map { d in d?.asFormattedString() ?? "" }
+            .bind(to: self.episodeDetailView.episodePubDateLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        self.viewModel.duration
+            .map { d in d.asTimeString() ?? "" }
+            .bind(to: self.episodeDetailView.episodePubDateLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        self.viewModel.thumbnail
+            .compactMap({ $0 })
+            .compactMap({ try? Data(contentsOf: $0) })
+            .compactMap({ UIImage(data: $0) })
+            .bind(to: self.episodeDetailView.episodeThumbnailView.rx.image)
+            .disposed(by: self.disposeBag)
 
-        self.viewModel.setup()
+        let fontSize = self.episodeDetailView.episodeDescriptionLabel.font!.pointSize
+        self.viewModel.description
+            .map({ String(format:"<span style=\"font-family: '-apple-system', 'HelveticaNeue'; font-size: \(fontSize); color: \(UIColor.black.rgbString)\">%@</span>", $0) })
+            .compactMap({ $0.data(using: .utf8) })
+            .compactMap({
+                try? NSAttributedString(
+                    data: $0,
+                    options: [
+                        .documentType:NSAttributedString.DocumentType.html,
+                        .characterEncoding:String.Encoding.utf8.rawValue
+                    ],
+                    documentAttributes: nil
+                )
+            })
+            .bind(to: self.episodeDetailView.episodeDescriptionLabel.rx.attributedText)
+            .disposed(by: self.disposeBag)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
