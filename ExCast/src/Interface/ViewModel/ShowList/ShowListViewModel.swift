@@ -37,15 +37,16 @@ class ShowListViewModel {
         ])
     }
 
-    func load() {
+    func load(completion: @escaping (Bool) -> Void) {
         self.repository.fetchAll { [unowned self] result in
             switch result {
             case .success(let fetchedPodcasts):
                 self.podcasts.accept([
                     .init(model: ShowListViewModel.sectionIdentifier, items: fetchedPodcasts)
                 ])
+                completion(true)
             case .failure(_): break
-                // TODO: Error handling
+                completion(false)
             }
         }
     }

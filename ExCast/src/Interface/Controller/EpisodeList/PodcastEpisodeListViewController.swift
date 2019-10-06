@@ -42,32 +42,39 @@ class PodcastEpisodeListViewController: UIViewController {
         super.viewDidLoad()
 
         self.playerPresenter.setDelegate(self)
-        self.dataSourceContainer.delegate = self
 
-        self.viewModel.episodes
-            .bind(to: self.episodeListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
-            .disposed(by: self.disposeBag)
+        print("tasuwo: 1")
+        self.viewModel.load { [unowned self] _ in
+            self.dataSourceContainer.delegate = self
+        print("tasuwo: 2")
 
-        self.episodeListView.rx.itemSelected
-            .bind(onNext: self.didSelectEpisode(at:))
-            .disposed(by: self.disposeBag)
+            DispatchQueue.main.async {
+                self.viewModel.episodes
+                    .bind(to: self.episodeListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
+                    .disposed(by: self.disposeBag)
 
-        if let refreshControl = self.episodeListView.refreshControl {
-            refreshControl.rx.controlEvent(.valueChanged)
-                .bind(onNext: { [weak self] _ in
-                    self?.viewModel.load { result in
-                        if !result {
-                            let message = MDCSnackbarMessage(text: NSLocalizedString("PodcastShowListView.error", comment: ""))
-                            MDCSnackbarManager.show(message)
-                        }
-                        DispatchQueue.main.async {
-                            refreshControl.endRefreshing()
-                        }
-                    }
-                })
-                .disposed(by: self.disposeBag)
+                self.episodeListView.rx.itemSelected
+                    .bind(onNext: self.didSelectEpisode(at:))
+                    .disposed(by: self.disposeBag)
+
+                if let refreshControl = self.episodeListView.refreshControl {
+                    refreshControl.rx.controlEvent(.valueChanged)
+                        .bind(onNext: { [weak self] _ in
+                            self?.viewModel.load { result in
+                                if !result {
+                                    let message = MDCSnackbarMessage(text: NSLocalizedString("PodcastShowListView.error", comment: ""))
+                                    MDCSnackbarManager.show(message)
+                                }
+                                DispatchQueue.main.async {
+                                    refreshControl.endRefreshing()
+                                }
+                            }
+                        })
+                        .disposed(by: self.disposeBag)
+                }
+                // viewModel.playingEpisode.accept(self.playerPresenter.playingEpisode())
+            }
         }
-        // viewModel.playingEpisode.accept(self.playerPresenter.playingEpisode())
 
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     }

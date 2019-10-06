@@ -49,19 +49,27 @@ class PodcastShowListViewController: UIViewController {
         
         setupNavigationBar()
 
-        self.viewModel.podcasts
-            .bind(to: self.showListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
-            .disposed(by: self.disposeBag)
+        self.viewModel.load { isSucceeded in
+            guard isSucceeded else {
+                // TODO: Error Handling
+                return
+            }
 
-        self.showListView.rx.itemDeleted
-            .map { $0.row }
-            .bind(onNext: self.viewModel.remove(at:))
-            .disposed(by: self.disposeBag)
-        
-        self.showListView.rx.itemSelected
-            .bind(onNext: self.didSelectShow(at:))
-            .disposed(by: self.disposeBag)
+            DispatchQueue.main.async {
+                self.viewModel.podcasts
+                    .bind(to: self.showListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
+                    .disposed(by: self.disposeBag)
 
+                self.showListView.rx.itemDeleted
+                    .map { $0.row }
+                    .bind(onNext: self.viewModel.remove(at:))
+                    .disposed(by: self.disposeBag)
+
+                self.showListView.rx.itemSelected
+                    .bind(onNext: self.didSelectShow(at:))
+                    .disposed(by: self.disposeBag)
+            }
+        }
 
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil,
                                                                 style: .plain,
@@ -72,7 +80,7 @@ class PodcastShowListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.viewModel.load()
+        self.viewModel.load { _ in }
 
         self.title = NSLocalizedString("PodcastShowListView.title", comment: "")
 

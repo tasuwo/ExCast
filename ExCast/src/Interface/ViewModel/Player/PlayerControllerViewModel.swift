@@ -28,8 +28,9 @@ class PlayerControllerViewModel {
 
     private var preventToSyncTime: BehaviorRelay<Bool> = BehaviorRelay(value: false)
 
-    var currentTimeDisposeBag = DisposeBag()
     var disposeBag = DisposeBag()
+
+    // MARK: - Lifecycle
 
     init(show: Podcast.Show,
          episode: Podcast.Episode,
@@ -39,19 +40,11 @@ class PlayerControllerViewModel {
         self.episode = episode
         self.commands = controller
         self.remoteCommands = remoteCommands
-    }
-
-    // MARK: - Methods
-
-    func setup() {
-        self.commands.register(delegate: self)
-        self.commands.register(delegate: self.remoteCommands)
-        self.commands.prepareToPlay()
 
         self.currentTime
             .filter({ [unowned self] _ in self.preventToSyncTime.value == false })
             .bind(to: self.displayCurrentTime)
-            .disposed(by: self.currentTimeDisposeBag)
+            .disposed(by: self.disposeBag)
         self.isSliderGrabbed
             .filter({ [unowned self] _ in self.isPrepared.value })
             .bind(onNext: { [unowned self] grabbed in
@@ -66,6 +59,14 @@ class PlayerControllerViewModel {
                 }
             })
             .disposed(by: self.disposeBag)
+    }
+
+    // MARK: - Methods
+
+    func setup() {
+        self.commands.register(delegate: self)
+        self.commands.register(delegate: self.remoteCommands)
+        self.commands.prepareToPlay()
     }
 
     func playback() {
