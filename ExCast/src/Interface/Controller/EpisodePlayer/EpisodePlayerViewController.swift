@@ -143,7 +143,7 @@ class EpisodePlayerViewController: UIViewController {
                     return UIImage(named: "player_playback")
                 }
             })
-            .bind(to: self.modalView.playbackButtons.playbackButton.rx.backgroundImage(for: .normal))
+            .bind(to: self.modalView.playbackButtons.playbackButton.rx.image(for: .normal))
             .disposed(by: self.disposeBag)
         self.controllerViewModel.displayCurrentTime
             .compactMap({ $0.asTimeString() })
