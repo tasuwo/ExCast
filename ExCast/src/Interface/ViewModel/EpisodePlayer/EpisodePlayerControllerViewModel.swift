@@ -26,6 +26,8 @@ class EpisodePlayerControllerViewModel {
     var displayCurrentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
     var isSliderGrabbed: BehaviorRelay<Bool> = BehaviorRelay(value: false)
 
+    private var preventToSyncTime: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+
     var currentTimeDisposeBag = DisposeBag()
     var disposeBag = DisposeBag()
 
@@ -47,14 +49,20 @@ class EpisodePlayerControllerViewModel {
         self.commands.prepareToPlay()
 
         self.currentTime
-            .filter({ [unowned self] _ in self.isSliderGrabbed.value == false })
+            .filter({ [unowned self] _ in self.preventToSyncTime.value == false })
             .bind(to: self.displayCurrentTime)
             .disposed(by: self.currentTimeDisposeBag)
         self.isSliderGrabbed
             .filter({ [unowned self] _ in self.isPrepared.value })
             .bind(onNext: { [unowned self] grabbed in
-                if grabbed == false {
-                    self.commands.seek(to: self.displayCurrentTime.value) { _ in }
+                if grabbed {
+                    self.preventToSyncTime.accept(true)
+                } else {
+                    self.commands.seek(to: self.displayCurrentTime.value) { isSucceeded in
+                        guard isSucceeded else { return }
+                        self.displayCurrentTime.accept(self.currentTime.value)
+                        self.preventToSyncTime.accept(false)
+                    }
                 }
             })
             .disposed(by: self.disposeBag)
