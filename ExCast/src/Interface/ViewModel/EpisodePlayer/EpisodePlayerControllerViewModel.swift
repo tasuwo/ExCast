@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import RxRelay
+import RxSwift
 
 class EpisodePlayerControllerViewModel {
     let show: Podcast.Show
@@ -18,14 +20,14 @@ class EpisodePlayerControllerViewModel {
     private let backwardSkipDuration: Double = 15
     private var playedAfterLoadingOnce: Bool = false
 
-    var isPlaying: Dynamic<Bool>
-    var isPrepared: Dynamic<Bool>
-    var currentTime: Dynamic<Double>
-    var displayCurrentTime: Dynamic<Double> = Dynamic(0)
-    var isSliderGrabbed: Dynamic<Bool>
+    var isPlaying: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    var isPrepared: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    var currentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
+    var displayCurrentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
+    var isSliderGrabbed: BehaviorRelay<Bool> = BehaviorRelay(value: false)
 
-    private var currentTimeBond: Bond<Double>!
-    private var isSliderGrabbedBond: Bond<Bool>!
+    var currentTimeDisposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
 
     init(show: Podcast.Show,
          episode: Podcast.Episode,
@@ -35,45 +37,27 @@ class EpisodePlayerControllerViewModel {
         self.episode = episode
         self.commands = controller
         self.remoteCommands = remoteCommands
-
-        self.isPlaying = Dynamic(false)
-        self.isPrepared = Dynamic(false)
-        self.currentTime = Dynamic(0)
-        self.isSliderGrabbed = Dynamic(false)
     }
 
     // MARK: - Methods
 
     func setup() {
-        // TODO: 初回の同期を綺麗にする
-        self.isPlaying.value = false
-        self.isPrepared.value = false
-        self.currentTime.value = 0
-
         self.commands.register(delegate: self)
         self.commands.register(delegate: self.remoteCommands)
         self.commands.prepareToPlay()
 
-        // Bind
-        self.currentTimeBond = Bond() { [unowned self] currentTime in
-            self.displayCurrentTime.value = currentTime
-        }
-        self.currentTimeBond.bind(self.currentTime)
-
-        self.isSliderGrabbedBond = Bond() { [unowned self] isGrabbed in
-            if isGrabbed {
-                self.currentTimeBond.release(self.currentTime)
-            } else {
-                self.commands.seek(to: self.displayCurrentTime.value) { [unowned self] result in
-                    if result == false {
-                        // TODO: Error handling
-                    }
-
-                    self.currentTimeBond.bind(self.currentTime)
+        self.currentTime
+            .filter({ [unowned self] _ in self.isSliderGrabbed.value == false })
+            .bind(to: self.displayCurrentTime)
+            .disposed(by: self.currentTimeDisposeBag)
+        self.isSliderGrabbed
+            .filter({ [unowned self] _ in self.isPrepared.value })
+            .bind(onNext: { [unowned self] grabbed in
+                if grabbed == false {
+                    self.commands.seek(to: self.displayCurrentTime.value) { _ in }
                 }
-            }
-        }
-        self.isSliderGrabbedBond.bind(self.isSliderGrabbed)
+            })
+            .disposed(by: self.disposeBag)
     }
 
     func playback() {
@@ -99,7 +83,7 @@ extension EpisodePlayerControllerViewModel: ExCastPlayerDelegate {
     // MARK: - AudioPlayerDelegate
 
     func didFinishPrepare() {
-        self.isPrepared.value = true
+        self.isPrepared.accept(true)
 
         if playedAfterLoadingOnce == false {
             self.commands.play()
@@ -110,14 +94,14 @@ extension EpisodePlayerControllerViewModel: ExCastPlayerDelegate {
     func didChangePlayingState(to state: ExCastPlayerState) {
         switch state {
         case .playing:
-            self.isPlaying.value = true
+            self.isPlaying.accept(true)
         case .pause, .finish:
-            self.isPlaying.value = false
+            self.isPlaying.accept(false)
         }
     }
 
     func didChangePlaybackTime(to time: TimeInterval) {
-        self.currentTime.value = time
+        self.currentTime.accept(time)
     }
 
     func didChangePlaybackRate(to rate: Double) {

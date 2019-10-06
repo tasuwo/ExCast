@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 protocol EpisodePlayerPresenterDelegate: AnyObject {
     func didDismissPlayer()
@@ -43,6 +45,8 @@ class EpisodePlayerViewController: UIViewController {
     private var modalViewModel: EpisodePlayerModalViewModel!
     private var controllerViewModel: EpisodePlayerControllerViewModel!
     private var informationViewModel: EpisodePlayerInformationViewModel!
+
+    private var disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
@@ -100,21 +104,51 @@ class EpisodePlayerViewController: UIViewController {
 
         // Bind
 
-        self.informationViewModel.showTitle ->> self.modalView.showTitleLabel
-        self.informationViewModel.episodeTitle ->> self.modalView.episodeTitleLabel
-        self.informationViewModel.thumbnail ->> self.modalView.thumbnailImageView
+        self.informationViewModel.showTitle
+            .bind(to: self.modalView.showTitleLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        self.informationViewModel.episodeTitle
+            .bind(to: self.modalView.showTitleLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        self.informationViewModel.thumbnail
+            .compactMap({ $0 })
+            .compactMap({ try? Data(contentsOf: $0) })
+            .compactMap({ UIImage(data: $0) })
+            .bind(to: self.modalView.thumbnailImageView.rx.image)
+            .disposed(by: self.disposeBag)
 
-        self.controllerViewModel.isPrepared ->> self.modalView.playbackButtons.playbackButton
-        self.controllerViewModel.isPrepared ->> self.modalView.playbackButtons.forwardSkipButton
-        self.controllerViewModel.isPrepared ->> self.modalView.playbackButtons.backwardSkipButton
-        self.controllerViewModel.isPlaying ->> self.modalView.playbackButtons.playbackButtonBond
-        self.controllerViewModel.displayCurrentTime.map { $0.asTimeString() ?? "" } ->> self.modalView.seekBar.currentTimeLabel
-        self.controllerViewModel.displayCurrentTime.map { (Float($0) - length).asTimeString() ?? "" } ->> self.modalView.seekBar.remainingTimeLabel
-        self.controllerViewModel.displayCurrentTime ->> self.modalView.seekBar.bar
+        self.controllerViewModel.isPrepared
+            .bind(to: self.modalView.playbackButtons.playbackButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+        self.controllerViewModel.isPrepared
+            .bind(to: self.modalView.playbackButtons.forwardSkipButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+        self.controllerViewModel.isPrepared
+            .bind(to: self.modalView.playbackButtons.backwardSkipButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+        self.controllerViewModel.isPlaying
+            .compactMap({ isPlaying -> UIImage? in
+                if isPlaying {
+                    return UIImage(named: "player_pause")
+                } else {
+                    return UIImage(named: "player_playback")
+                }
+            })
+            .bind(to: self.modalView.playbackButtons.playbackButton.rx.backgroundImage(for: .normal))
+            .disposed(by: self.disposeBag)
+        self.controllerViewModel.displayCurrentTime
+            .compactMap({ $0.asTimeString() })
+            .bind(to: self.modalView.seekBar.currentTimeLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        self.controllerViewModel.displayCurrentTime
+            .compactMap({ (Float($0) - length).asTimeString() })
+            .bind(to: self.modalView.seekBar.remainingTimeLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        self.controllerViewModel.displayCurrentTime
+            .map({ CGFloat($0) })
+            .bind(onNext: { [weak self] time in self?.modalView.seekBar.bar.value = time })
+            .disposed(by: self.disposeBag)
 
-        // Setup
-
-        self.informationViewModel.setup()
         self.controllerViewModel.setup()
     }
 
@@ -141,15 +175,15 @@ extension EpisodePlayerViewController: EpisodePlayerPlaybackButtonsDelegate {
 extension EpisodePlayerViewController: EpisodePlayerSeekBarContainerDelegate {
 
     func didStartSeek() {
-        self.controllerViewModel.isSliderGrabbed.value = true
+        self.controllerViewModel.isSliderGrabbed.accept(true)
     }
 
     func didEndSeek() {
-        self.controllerViewModel.isSliderGrabbed.value = false
+        self.controllerViewModel.isSliderGrabbed.accept(false)
     }
 
     func didChangeSeekValue(to time: TimeInterval) {
-        self.controllerViewModel.displayCurrentTime.value = time
+        self.controllerViewModel.displayCurrentTime.accept(time)
     }
 
 }
