@@ -17,38 +17,38 @@ class ShowListViewModel {
     private(set) var podcasts: BehaviorRelay<[AnimatableSectionModel<String, Podcast>]> = BehaviorRelay(value: [
         .init(model: ShowListViewModel.sectionIdentifier, items: [])
     ])
-    private let repository: PodcastRepository
+
+    private let service: PodcastService
+    private var disposeBag = DisposeBag()
 
     // MARK: - Initializer
     
-    init(repository: PodcastRepository) {
-        self.repository = repository
+    init(service: PodcastService) {
+        self.service = service
+        self.service.command.accept(.refresh)
+
+        self.service.state
+            .compactMap({ state -> [Podcast]? in
+                switch state {
+                case let .content(podcasts):
+                    return podcasts
+                default:
+                    return nil
+                }
+            })
+            .map({ [.init(model: ShowListViewModel.sectionIdentifier, items: $0)] as [AnimatableSectionModel<String, Podcast>] })
+            .bind(to: self.podcasts)
+            .disposed(by: self.disposeBag)
     }
 
     // MARK: - Methods
 
     func remove(at index: Int) {
-        try! self.repository.remove(self.podcasts.value[0].items[index])
-
-        var newValue = self.podcasts.value[0].items
-        newValue.remove(at: index)
-        self.podcasts.accept([
-            .init(model: ShowListViewModel.sectionIdentifier, items: newValue)
-        ])
+        self.service.command.accept(.delete(self.podcasts.value[0].items[index]))
     }
 
-    func load(completion: @escaping (Bool) -> Void) {
-        self.repository.fetchAll { [unowned self] result in
-            switch result {
-            case .success(let fetchedPodcasts):
-                self.podcasts.accept([
-                    .init(model: ShowListViewModel.sectionIdentifier, items: fetchedPodcasts)
-                ])
-                completion(true)
-            case .failure(_): break
-                completion(false)
-            }
-        }
+    func load() {
+        self.service.command.accept(.refresh)
     }
 
 }

@@ -11,7 +11,7 @@ import RxRelay
 
 class FeedUrlInputViewModel {
     
-    private let repository: PodcastRepository!
+    private let service: PodcastService!
     private let gateway: PodcastGateway!
 
     var url = BehaviorRelay<String>(value: "")
@@ -25,8 +25,8 @@ class FeedUrlInputViewModel {
 
     // MARK: - Initializer
     
-    init(repository: PodcastRepository, gateway: PodcastGateway) {
-        self.repository = repository
+    init(service: PodcastService, gateway: PodcastGateway) {
+        self.service = service
         self.gateway = gateway
     }
     
@@ -50,6 +50,6 @@ class FeedUrlInputViewModel {
     }
 
     func store(_ podcast: Podcast) {
-        try! self.repository.add(podcast)
+        self.service.command.accept(.create(podcast))
     }
 }

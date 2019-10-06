@@ -21,7 +21,7 @@ class AppRootViewController: UIViewController {
     override func viewDidLoad() {
         self.rootTabBarController = AppRootTabBarController(
             playerPresenter: self,
-            repository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)),
+            service: PodcastService(podcastRepository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard))),
             gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory())
         )
         self.displayContentController(self.rootTabBarController)

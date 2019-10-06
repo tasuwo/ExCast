@@ -11,16 +11,16 @@ import UIKit
 class AppRootTabBarController: UITabBarController {
 
     private unowned let playerPresenter: EpisodePlayerPresenter
-    private let repository: PodcastRepository
+    private let service: PodcastService
     private let gateway: PodcastGateway
 
     // MARK: - Initializer
 
     init(playerPresenter: EpisodePlayerPresenter,
-        repository: PodcastRepository,
+        service: PodcastService,
         gateway: PodcastGateway) {
         self.playerPresenter = playerPresenter
-        self.repository = repository
+        self.service = service
         self.gateway = gateway
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,12 +32,12 @@ class AppRootTabBarController: UITabBarController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
-        let viewModel = ShowListViewModel(repository: self.repository)
+        let viewModel = ShowListViewModel(service: self.service)
 
         let showListVC = PodcastShowListViewController(
             playerPresenter: self.playerPresenter,
             viewModel: viewModel,
-            repository: self.repository,
+            service: self.service,
             gateway: self.gateway
         )
         showListVC.tabBarItem = UITabBarItem(title: NSLocalizedString("Tabbar.library", comment: ""), image: UIImage(named: "tabbar_library_black"), tag: 0)

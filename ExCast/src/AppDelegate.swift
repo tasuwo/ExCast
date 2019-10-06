@@ -36,8 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.delegate = self
         let gateway = PushNotificationProviderGatewayImpl(snsClient: AWSSNS.default(), applicationArn: keys.awsSnsApplicationArn)
-        let repository = NotificationSettingRepositoryImpl(repository: LocalRepositoryImpl(defaults: UserDefaults.standard))
-        self.notificationService = NotificationService(notificationCenter: notificationCenter, gateway: gateway, repository: repository)
+        // let repository = NotificationSettingRepositoryImpl(repository: LocalRepositoryImpl(defaults: UserDefaults.standard))
+        // self.notificationService = NotificationService(notificationCenter: notificationCenter, gateway: gateway, repository: repository)
 
         self.notificationService?.registerToApnsIfNeeded()
 

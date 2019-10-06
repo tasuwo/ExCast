@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NotificationSettingRepositoryImpl: NotificationSettingRepository {
+class NotificationSettingRepositoryImpl /* : NotificationSettingRepository */ {
 
     private let repository: LocalRespository
 

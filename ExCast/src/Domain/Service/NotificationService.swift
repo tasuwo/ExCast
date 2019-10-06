@@ -13,12 +13,12 @@ class NotificationService {
 
     private let notificationCenter: UNUserNotificationCenter
     private let gateway: PushNotificationProviderGateway
-    private let repository: NotificationSettingRepository
+    // private let repository: NotificationSettingRepository
 
-    init(notificationCenter: UNUserNotificationCenter, gateway: PushNotificationProviderGateway, repository: NotificationSettingRepository) {
+    init(notificationCenter: UNUserNotificationCenter, gateway: PushNotificationProviderGateway /* , repository: NotificationSettingRepository */) {
         self.notificationCenter = notificationCenter
         self.gateway = gateway
-        self.repository = repository
+        // self.repository = repository
     }
 
     func registerToApnsIfNeeded() {
@@ -52,6 +52,7 @@ class NotificationService {
     }
 
     func pushDeviceTokenToProvider(_ deviceToken: Data) {
+        /*
         let context = self.repository.get()?.context ?? NotificationContext.default()
         self.gateway.register(deviceToken, context: context) { result in
             switch result {
@@ -63,6 +64,7 @@ class NotificationService {
                 Swift.print(err)
             }
         }
+         */
     }
 
 }

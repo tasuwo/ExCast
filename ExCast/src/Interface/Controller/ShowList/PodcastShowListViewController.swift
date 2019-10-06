@@ -18,7 +18,7 @@ class PodcastShowListViewController: UIViewController {
     private unowned let playerPresenter: EpisodePlayerPresenter
     private let viewModel: ShowListViewModel
 
-    private let repository: PodcastRepository
+    private let service: PodcastService
     private let gateway: PodcastGateway
 
     private let disposeBag = DisposeBag()
@@ -27,12 +27,12 @@ class PodcastShowListViewController: UIViewController {
 
     init(playerPresenter: EpisodePlayerPresenter,
          viewModel: ShowListViewModel,
-         repository: PodcastRepository,
+         service: PodcastService,
          gateway: PodcastGateway) {
         self.playerPresenter = playerPresenter
         self.viewModel = viewModel
 
-        self.repository = repository
+        self.service = service
         self.gateway = gateway
 
         super.init(nibName: nil, bundle: nil)
@@ -49,27 +49,18 @@ class PodcastShowListViewController: UIViewController {
         
         setupNavigationBar()
 
-        self.viewModel.load { isSucceeded in
-            guard isSucceeded else {
-                // TODO: Error Handling
-                return
-            }
+        self.viewModel.podcasts
+            .bind(to: self.showListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
+            .disposed(by: self.disposeBag)
 
-            DispatchQueue.main.async {
-                self.viewModel.podcasts
-                    .bind(to: self.showListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
-                    .disposed(by: self.disposeBag)
+        self.showListView.rx.itemDeleted
+            .map { $0.row }
+            .bind(onNext: self.viewModel.remove(at:))
+            .disposed(by: self.disposeBag)
 
-                self.showListView.rx.itemDeleted
-                    .map { $0.row }
-                    .bind(onNext: self.viewModel.remove(at:))
-                    .disposed(by: self.disposeBag)
-
-                self.showListView.rx.itemSelected
-                    .bind(onNext: self.didSelectShow(at:))
-                    .disposed(by: self.disposeBag)
-            }
-        }
+        self.showListView.rx.itemSelected
+            .bind(onNext: self.didSelectShow(at:))
+            .disposed(by: self.disposeBag)
 
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil,
                                                                 style: .plain,
@@ -80,7 +71,7 @@ class PodcastShowListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.viewModel.load { _ in }
+        self.viewModel.load()
 
         self.title = NSLocalizedString("PodcastShowListView.title", comment: "")
 
@@ -98,7 +89,7 @@ class PodcastShowListViewController: UIViewController {
 
     @objc private func didTapTabBar() {
         guard let navC = self.navigationController else { return }
-        let viewModel = FeedUrlInputViewModel(repository: self.repository, gateway: self.gateway)
+        let viewModel = FeedUrlInputViewModel(service: self.service, gateway: self.gateway)
         navC.pushViewController(FeedUrlInputViewController(viewModel: viewModel), animated: true)
     }
 
