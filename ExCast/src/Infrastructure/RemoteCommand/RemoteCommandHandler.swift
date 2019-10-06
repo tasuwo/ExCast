@@ -19,6 +19,8 @@ class RemoteCommandHandler: NSObject {
     private let forwardSkipTimeInterval: TimeInterval = 15
     private let backwardSkipTimeInterval: TimeInterval = 15
 
+    // MARK: - Lifecycle
+
     init(show: Podcast.Show, episode: Podcast.Episode, commandCenter: MPRemoteCommandCenter, player: ExCastPlayerProtocol, infoCenter: MPNowPlayingInfoCenter) {
         self.show = show
         self.episode = episode
@@ -35,6 +37,8 @@ class RemoteCommandHandler: NSObject {
         self.commandCenter.skipBackwardCommand.removeTarget(self)
         self.commandCenter.changePlaybackPositionCommand.removeTarget(self)
     }
+
+    // MARK: - Methods
 
     private func setupNowPlayingInfo() {
         var nowPlayingInfo = [String : Any]()

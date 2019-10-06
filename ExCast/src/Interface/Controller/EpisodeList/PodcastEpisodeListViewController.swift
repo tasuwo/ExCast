@@ -43,10 +43,8 @@ class PodcastEpisodeListViewController: UIViewController {
 
         self.playerPresenter.setDelegate(self)
 
-        print("tasuwo: 1")
         self.viewModel.load { [unowned self] _ in
             self.dataSourceContainer.delegate = self
-        print("tasuwo: 2")
 
             DispatchQueue.main.async {
                 self.viewModel.episodes
