@@ -9,7 +9,7 @@
 import RxRelay
 import RxSwift
 
-struct EpisodePlayerModalViewModel {
+struct PlayerModalViewModel {
 
     enum ModalChangeTarget {
         case minimize

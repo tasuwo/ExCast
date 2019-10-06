@@ -9,7 +9,7 @@
 import Foundation
 import RxRelay
 
-class EpisodePlayerInformationViewModel {
+class PlayerInformationViewModel {
     let show: Podcast.Show
     let episode: Podcast.Episode
 

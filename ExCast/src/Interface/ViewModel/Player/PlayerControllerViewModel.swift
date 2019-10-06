@@ -10,7 +10,7 @@ import Foundation
 import RxRelay
 import RxSwift
 
-class EpisodePlayerControllerViewModel {
+class PlayerControllerViewModel {
     let show: Podcast.Show
     let episode: Podcast.Episode
     private let commands: ExCastPlayerProtocol
@@ -86,7 +86,7 @@ class EpisodePlayerControllerViewModel {
 
 }
 
-extension EpisodePlayerControllerViewModel: ExCastPlayerDelegate {
+extension PlayerControllerViewModel: ExCastPlayerDelegate {
 
     // MARK: - AudioPlayerDelegate
 

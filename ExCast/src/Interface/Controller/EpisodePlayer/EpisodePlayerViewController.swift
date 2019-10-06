@@ -42,18 +42,18 @@ class EpisodePlayerViewController: UIViewController {
         }
     }
 
-    private var modalViewModel: EpisodePlayerModalViewModel!
-    private var controllerViewModel: EpisodePlayerControllerViewModel!
-    private var informationViewModel: EpisodePlayerInformationViewModel!
+    private var modalViewModel: PlayerModalViewModel!
+    private var controllerViewModel: PlayerControllerViewModel!
+    private var informationViewModel: PlayerInformationViewModel!
 
     private var disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
     init(presenter: EpisodePlayerPresenter,
-         viewModel: EpisodePlayerControllerViewModel,
-         informationViewModel: EpisodePlayerInformationViewModel,
-         modalViewModel: EpisodePlayerModalViewModel) {
+         viewModel: PlayerControllerViewModel,
+         informationViewModel: PlayerInformationViewModel,
+         modalViewModel: PlayerModalViewModel) {
         self.playerPresenter = presenter
         self.controllerViewModel = viewModel
         self.informationViewModel = informationViewModel
@@ -97,8 +97,8 @@ class EpisodePlayerViewController: UIViewController {
 
     // MARK: - Methods
 
-    func reload(controllerViewModel: EpisodePlayerControllerViewModel,
-                informationViewModel: EpisodePlayerInformationViewModel) {
+    func reload(controllerViewModel: PlayerControllerViewModel,
+                informationViewModel: PlayerInformationViewModel) {
         self.controllerViewModel = nil
         self.controllerViewModel = controllerViewModel
         self.informationViewModel = nil

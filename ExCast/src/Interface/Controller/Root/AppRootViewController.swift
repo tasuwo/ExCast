@@ -65,17 +65,17 @@ extension AppRootViewController: EpisodePlayerPresenter {
 
         if let view = self.playerModalViewController {
             view.reload(
-                controllerViewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player,remoteCommands: commandHandler),
-                informationViewModel: EpisodePlayerInformationViewModel(show: show, episode: episode)
+                controllerViewModel: PlayerControllerViewModel(show: show, episode: episode, controller: player,remoteCommands: commandHandler),
+                informationViewModel: PlayerInformationViewModel(show: show, episode: episode)
             )
             return
         }
 
         let playerViewController = EpisodePlayerViewController(
             presenter: self,
-            viewModel: EpisodePlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler),
-            informationViewModel: EpisodePlayerInformationViewModel(show: show, episode: episode),
-            modalViewModel: EpisodePlayerModalViewModel()
+            viewModel: PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler),
+            informationViewModel: PlayerInformationViewModel(show: show, episode: episode),
+            modalViewModel: PlayerModalViewModel()
         )
         playerViewController.modalPresentationStyle = .formSheet
         playerViewController.modalTransitionStyle = .coverVertical
