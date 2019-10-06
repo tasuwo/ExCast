@@ -16,17 +16,17 @@ class RemoteCommandHandler: NSObject {
     private weak var player: ExCastPlayerProtocol?
     private unowned var infoCenter: MPNowPlayingInfoCenter
 
-    private let forwardSkipTimeInterval: TimeInterval = 15
-    private let backwardSkipTimeInterval: TimeInterval = 15
+    private let configuration: PlayerConfiguration
 
     // MARK: - Lifecycle
 
-    init(show: Podcast.Show, episode: Podcast.Episode, commandCenter: MPRemoteCommandCenter, player: ExCastPlayerProtocol, infoCenter: MPNowPlayingInfoCenter) {
+    init(show: Podcast.Show, episode: Podcast.Episode, commandCenter: MPRemoteCommandCenter, player: ExCastPlayerProtocol, infoCenter: MPNowPlayingInfoCenter, configuration: PlayerConfiguration) {
         self.show = show
         self.episode = episode
         self.commandCenter = commandCenter
         self.player = player
         self.infoCenter = infoCenter
+        self.configuration = configuration
     }
 
     deinit {
@@ -87,11 +87,11 @@ class RemoteCommandHandler: NSObject {
         self.commandCenter.pauseCommand.addTarget(self, action: #selector(self.didPause(_:)))
 
         self.commandCenter.skipForwardCommand.isEnabled = true
-        self.commandCenter.skipForwardCommand.preferredIntervals = [NSNumber(value: self.forwardSkipTimeInterval)]
+        self.commandCenter.skipForwardCommand.preferredIntervals = [NSNumber(value: self.configuration.forwardSkipTime)]
         self.commandCenter.skipForwardCommand.addTarget(self, action: #selector(self.didSkipForward(_:)))
 
         self.commandCenter.skipBackwardCommand.isEnabled = true
-        self.commandCenter.skipBackwardCommand.preferredIntervals = [NSNumber(value: self.backwardSkipTimeInterval)]
+        self.commandCenter.skipBackwardCommand.preferredIntervals = [NSNumber(value: self.configuration.backwardSkipTime)]
         self.commandCenter.skipBackwardCommand.addTarget(self, action: #selector(self.didSkipBackward(_:)))
 
         self.commandCenter.changePlaybackPositionCommand.isEnabled = true
@@ -112,13 +112,13 @@ class RemoteCommandHandler: NSObject {
 
     @objc private func didSkipForward(_ event: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         guard let player = self.player else { return .commandFailed }
-        player.skipForward(duration: self.forwardSkipTimeInterval) { _ in }
+        player.skipForward(duration: self.configuration.forwardSkipTime) { _ in }
         return .success
     }
 
     @objc private func didSkipBackward(_ event: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         guard let player = self.player else { return .commandFailed }
-        player.skipBackward(duration: self.backwardSkipTimeInterval) { _ in }
+        player.skipBackward(duration: self.configuration.backwardSkipTime) { _ in }
         return .success
     }
 

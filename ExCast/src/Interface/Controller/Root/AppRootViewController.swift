@@ -53,19 +53,20 @@ extension AppRootViewController: EpisodePlayerPresenter {
         self.delegate = delegate
     }
 
-    func show(show: Podcast.Show, episode: Podcast.Episode) {
+    func show(show: Podcast.Show, episode: Podcast.Episode, configuration: PlayerConfiguration) {
         let player = ExCastPlayer(contentUrl: episode.enclosure.url)
         let commandHandler = RemoteCommandHandler(
             show: show,
             episode: episode,
             commandCenter: MPRemoteCommandCenter.shared(),
             player: player,
-            infoCenter: MPNowPlayingInfoCenter.default()
+            infoCenter: MPNowPlayingInfoCenter.default(),
+            configuration: configuration
         )
 
         if let view = self.playerModalViewController {
             view.reload(
-                controllerViewModel: PlayerControllerViewModel(show: show, episode: episode, controller: player,remoteCommands: commandHandler),
+                controllerViewModel: PlayerControllerViewModel(show: show, episode: episode, controller: player,remoteCommands: commandHandler, configuration: configuration),
                 informationViewModel: PlayerInformationViewModel(show: show, episode: episode)
             )
             return
@@ -73,7 +74,7 @@ extension AppRootViewController: EpisodePlayerPresenter {
 
         let playerViewController = EpisodePlayerViewController(
             presenter: self,
-            viewModel: PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler),
+            viewModel: PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler, configuration: configuration),
             informationViewModel: PlayerInformationViewModel(show: show, episode: episode),
             modalViewModel: PlayerModalViewModel()
         )

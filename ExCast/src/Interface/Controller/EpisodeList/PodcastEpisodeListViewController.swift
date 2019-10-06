@@ -91,7 +91,9 @@ class PodcastEpisodeListViewController: UIViewController {
 
     func didSelectEpisode(at indexPath: IndexPath) {
         let episode = self.viewModel.episodes.value(at: indexPath)
-        self.playerPresenter.show(show: self.viewModel.show.value, episode: episode)
+        
+        // TODO: Inject player configuration
+        self.playerPresenter.show(show: self.viewModel.show.value, episode: episode, configuration: PlayerConfiguration.default)
     }
 
 }

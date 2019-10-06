@@ -15,9 +15,8 @@ class PlayerControllerViewModel {
     let episode: Podcast.Episode
     private let commands: ExCastPlayerProtocol
     private let remoteCommands: ExCastPlayerDelegate
+    private let configuration: PlayerConfiguration
 
-    private let forwardSkipDuration: Double = 15
-    private let backwardSkipDuration: Double = 15
     private var playedAfterLoadingOnce: Bool = false
 
     var isPlaying: BehaviorRelay<Bool> = BehaviorRelay(value: false)
@@ -35,11 +34,13 @@ class PlayerControllerViewModel {
     init(show: Podcast.Show,
          episode: Podcast.Episode,
          controller: ExCastPlayerProtocol,
-         remoteCommands: ExCastPlayerDelegate) {
+         remoteCommands: ExCastPlayerDelegate,
+         configuration: PlayerConfiguration) {
         self.show = show
         self.episode = episode
         self.commands = controller
         self.remoteCommands = remoteCommands
+        self.configuration = configuration
 
         self.currentTime
             .filter({ [unowned self] _ in self.preventToSyncTime.value == false })
@@ -78,11 +79,11 @@ class PlayerControllerViewModel {
     }
 
     func skipForward() {
-        self.commands.skipForward(duration: self.forwardSkipDuration) { _ in }
+        self.commands.skipForward(duration: self.configuration.forwardSkipTime) { _ in }
     }
 
     func skipBackward() {
-        self.commands.skipBackward(duration: self.backwardSkipDuration) { _ in }
+        self.commands.skipBackward(duration: self.configuration.backwardSkipTime) { _ in }
     }
 
 }

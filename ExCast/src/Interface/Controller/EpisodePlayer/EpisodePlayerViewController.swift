@@ -20,7 +20,7 @@ protocol EpisodePlayerPresenter: AnyObject {
 
     func setDelegate(_ delegate: EpisodePlayerPresenterDelegate)
 
-    func show(show: Podcast.Show, episode: Podcast.Episode)
+    func show(show: Podcast.Show, episode: Podcast.Episode, configuration: PlayerConfiguration)
 
     func dismiss()
 
