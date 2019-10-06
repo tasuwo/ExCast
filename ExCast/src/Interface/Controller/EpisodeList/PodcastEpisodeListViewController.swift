@@ -76,7 +76,12 @@ class PodcastEpisodeListViewController: UIViewController {
         super.viewWillAppear(animated)
 
         self.viewModel.load { _ in }
+
         self.title = self.viewModel.show.value.title
+
+        if let selectedRow = self.episodeListView.indexPathForSelectedRow {
+            self.episodeListView.deselectRow(at: selectedRow, animated: true)
+        }
     }
 
     func didSelectEpisode(at indexPath: IndexPath) {

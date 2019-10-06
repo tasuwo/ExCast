@@ -73,7 +73,12 @@ class PodcastShowListViewController: UIViewController {
         super.viewWillAppear(animated)
 
         self.viewModel.load()
+
         self.title = NSLocalizedString("PodcastShowListView.title", comment: "")
+
+        if let selectedRow = self.showListView.indexPathForSelectedRow {
+            self.showListView.deselectRow(at: selectedRow, animated: true)
+        }
     }
 
     // MARK: - Methods
