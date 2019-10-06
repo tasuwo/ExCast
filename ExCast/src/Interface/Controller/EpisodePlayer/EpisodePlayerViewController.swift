@@ -78,12 +78,21 @@ class EpisodePlayerViewController: UIViewController {
 
         // Bind
 
-        self.modalViewModel.modalState ->> self.modalView.layoutBond
+        self.modalViewModel.modalState
+            .bind(onNext: { [unowned self] state in
+                switch state {
+                case .fullscreen:
+                    self.modalView.expand()
+                case .mini:
+                    self.modalView.minimize()
+                case .hide:
+                    self.shouldDismiss()
+                default:
+                    break
+                }
+            })
+            .disposed(by: self.disposeBag)
         self.bindEpisode()
-
-        // Setup
-
-        self.modalViewModel.setup()
     }
 
     // MARK: - Methods
@@ -209,16 +218,16 @@ extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
     }
 
     func didPanned(distance: Float, velocity: Float) {
-        self.modalViewModel.panState.value = .changed(lentgh: distance, velocity: velocity)
+        self.modalViewModel.panState.accept(.changed(lentgh: distance, velocity: velocity))
     }
 
     func didEndPanned(distance: Float, velocity: Float) {
-        self.modalViewModel.panState.value = .ended(length: distance, velocity: velocity)
-        self.modalViewModel.panState.value = .none
+        self.modalViewModel.panState.accept(.ended(length: distance, velocity: velocity))
+        self.modalViewModel.panState.accept(.none)
     }
 
     func didTapMinimizeButton() {
-        self.modalViewModel.modalState.value = .mini
+        self.modalViewModel.modalState.accept(.mini)
     }
 
 }

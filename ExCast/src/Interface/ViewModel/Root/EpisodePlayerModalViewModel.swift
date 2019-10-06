@@ -6,6 +6,8 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import RxRelay
+import RxSwift
 
 struct EpisodePlayerModalViewModel {
 
@@ -27,37 +29,35 @@ struct EpisodePlayerModalViewModel {
         case none
     }
 
-    var modalState: Dynamic<ModalState> = Dynamic(.fullscreen)
-    var panState: Dynamic<PanState> = Dynamic(.none)
+    var modalState: BehaviorRelay<ModalState> = BehaviorRelay(value: .fullscreen)
+    var panState: BehaviorRelay<PanState> = BehaviorRelay(value: .none)
 
-    private var panBond: Bond<PanState>!
+    private var disposeBag = DisposeBag()
 
-    // MARK: - Methods
+    // MARK: - Lifecycle
 
-    mutating func setup() {
-        self.panState.value = .none
-
-        self.panBond = Bond() { [self] panState in
-            switch (self.modalState.value, panState) {
-            case (.fullscreen, .ended(length: let l, _)) where l > 300:
-                self.modalState.value = .mini
-            case (.fullscreen, .ended(_, velocity: let v)) where v > 500:
-                self.modalState.value = .mini
-            case (.mini, .ended(length: let l, velocity: let v)) where l < 0 && v < -500:
-                self.modalState.value = .fullscreen
-            case (.mini, .ended(length: let l, velocity: let v)) where l > 0 && v > 500:
-                self.modalState.value = .hide
-
-            default:
-                break
-            }
-        }
-        self.panBond.bind(self.panState)
+    init() {
+        self.panState
+            .bind(onNext: { [self] panState in
+                switch (self.modalState.value, panState) {
+                case (.fullscreen, .ended(length: let l, _)) where l > 300:
+                    self.modalState.accept(.mini)
+                case (.fullscreen, .ended(_, velocity: let v)) where v > 500:
+                    self.modalState.accept(.mini)
+                case (.mini, .ended(length: let l, velocity: let v)) where l < 0 && v < -500:
+                    self.modalState.accept(.fullscreen)
+                case (.mini, .ended(length: let l, velocity: let v)) where l > 0 && v > 500:
+                    self.modalState.accept(.hide)
+                default:
+                    break
+                }
+            })
+            .disposed(by: self.disposeBag)
     }
 
     func didTap() {
         if self.modalState.value == .mini {
-            self.modalState.value = .fullscreen
+            self.modalState.accept(.fullscreen)
         }
     }
 
