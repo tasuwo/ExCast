@@ -53,8 +53,17 @@ class EpisodeDetailViewController: UIViewController {
 
         let fontSize = self.episodeDetailView.episodeDescriptionLabel.font!.pointSize
         self.viewModel.description
-            .map({ String(format:"<span style=\"font-family: '-apple-system', 'HelveticaNeue'; font-size: \(fontSize); color: \(UIColor.black.rgbString)\">%@</span>", $0) })
+            .observeOn(MainScheduler.instance)
+            .compactMap({ str -> String in
+                if #available(iOS 13.0, *) {
+                    return String(format:"<span style=\"font-family: '-apple-system', 'HelveticaNeue'; font-size: \(fontSize); color: \(UIColor.label.rgbString)\">%@</span>", str)
+                } else {
+                    return String(format:"<span style=\"font-family: '-apple-system', 'HelveticaNeue'; font-size: \(fontSize); color: \(UIColor.black.rgbString)\">%@</span>", str)
+                }
+            })
+            .observeOn(MainScheduler.instance)
             .compactMap({ $0.data(using: .utf8) })
+            .observeOn(MainScheduler.instance)
             .compactMap({
                 try? NSAttributedString(
                     data: $0,
@@ -65,6 +74,7 @@ class EpisodeDetailViewController: UIViewController {
                     documentAttributes: nil
                 )
             })
+            .observeOn(MainScheduler.instance)
             .bind(to: self.episodeDetailView.episodeDescriptionLabel.rx.attributedText)
             .disposed(by: self.disposeBag)
     }

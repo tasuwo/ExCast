@@ -75,7 +75,6 @@
 		2CA2E9D722F5BAEC00A6E3A9 /* PlayerInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2E9D622F5BAEC00A6E3A9 /* PlayerInformationViewModel.swift */; };
 		2CA2E9D922F5C2A900A6E3A9 /* Float+asTimeString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2E9D822F5C2A900A6E3A9 /* Float+asTimeString.swift */; };
 		2CA2E9DB22F5C2D300A6E3A9 /* Date+asFormattedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2E9DA22F5C2D300A6E3A9 /* Date+asFormattedString.swift */; };
-		2CA2E9DD22F5C66400A6E3A9 /* String+toHtmlAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2E9DC22F5C66400A6E3A9 /* String+toHtmlAttributedString.swift */; };
 		2CA2E9E622F66CEF00A6E3A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2CA2E9E822F66CEF00A6E3A9 /* Localizable.strings */; };
 		2CCEC3CF22E47AAA0055D27A /* ExCastPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3CE22E47AAA0055D27A /* ExCastPlayer.swift */; };
 		2CCEC3D722E484670055D27A /* PlayerControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D622E484670055D27A /* PlayerControllerViewModel.swift */; };
@@ -196,7 +195,6 @@
 		2CA2E9D622F5BAEC00A6E3A9 /* PlayerInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInformationViewModel.swift; sourceTree = "<group>"; };
 		2CA2E9D822F5C2A900A6E3A9 /* Float+asTimeString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+asTimeString.swift"; sourceTree = "<group>"; };
 		2CA2E9DA22F5C2D300A6E3A9 /* Date+asFormattedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+asFormattedString.swift"; sourceTree = "<group>"; };
-		2CA2E9DC22F5C66400A6E3A9 /* String+toHtmlAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+toHtmlAttributedString.swift"; sourceTree = "<group>"; };
 		2CA2E9E722F66CEF00A6E3A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2CA2E9E922F66D0B00A6E3A9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2CCEC3CE22E47AAA0055D27A /* ExCastPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExCastPlayer.swift; sourceTree = "<group>"; };
@@ -753,7 +751,6 @@
 				2CDF07A322ED7F83002F8F5C /* Double+asTimeString.swift */,
 				2CA2E9D822F5C2A900A6E3A9 /* Float+asTimeString.swift */,
 				2CA2E9DA22F5C2D300A6E3A9 /* Date+asFormattedString.swift */,
-				2CA2E9DC22F5C66400A6E3A9 /* String+toHtmlAttributedString.swift */,
 				2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */,
 			);
 			path = Util;
@@ -997,7 +994,6 @@
 				2CCEC3CF22E47AAA0055D27A /* ExCastPlayer.swift in Sources */,
 				2C4D9117234075A100895CD7 /* PodcastShowListViewDataSource.swift in Sources */,
 				2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */,
-				2CA2E9DD22F5C66400A6E3A9 /* String+toHtmlAttributedString.swift in Sources */,
 				2CA2E9C322F3515D00A6E3A9 /* EpisodeDetailViewController.swift in Sources */,
 				2CA2E9CF22F53C5200A6E3A9 /* PodcastRepository.swift in Sources */,
 				2C546C5922FF2AF700C1BB83 /* PushNotificationProviderGateway.swift in Sources */,
