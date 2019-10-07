@@ -117,7 +117,7 @@ class EpisodePlayerViewController: UIViewController {
             .bind(to: self.modalView.showTitleLabel.rx.text)
             .disposed(by: self.disposeBag)
         self.informationViewModel.episodeTitle
-            .bind(to: self.modalView.showTitleLabel.rx.text)
+            .bind(to: self.modalView.episodeTitleLabel.rx.text)
             .disposed(by: self.disposeBag)
         self.informationViewModel.thumbnail
             .compactMap({ $0 })

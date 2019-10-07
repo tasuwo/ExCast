@@ -42,7 +42,7 @@ class EpisodeDetailViewController: UIViewController {
             .disposed(by: self.disposeBag)
         self.viewModel.duration
             .map { d in d.asTimeString() ?? "" }
-            .bind(to: self.episodeDetailView.episodePubDateLabel.rx.text)
+            .bind(to: self.episodeDetailView.episodeDurationLabel.rx.text)
             .disposed(by: self.disposeBag)
         self.viewModel.thumbnail
             .compactMap({ $0 })
