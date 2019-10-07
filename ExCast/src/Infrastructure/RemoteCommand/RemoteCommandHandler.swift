@@ -17,6 +17,7 @@ class RemoteCommandHandler: NSObject {
     private unowned var infoCenter: MPNowPlayingInfoCenter
 
     private let configuration: PlayerConfiguration
+    private var currentTime: TimeInterval = 0
 
     // MARK: - Lifecycle
 
@@ -140,11 +141,11 @@ extension RemoteCommandHandler: ExCastPlayerDelegate {
     }
 
     func didChangePlayingState(to state: ExCastPlayerState) {
-        // NOP:
+        self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.currentTime
     }
 
     func didSeek(to time: TimeInterval) {
-        self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = time
+        self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.currentTime
     }
 
     func didChangePlaybackRate(to rate: Double) {
@@ -152,7 +153,7 @@ extension RemoteCommandHandler: ExCastPlayerDelegate {
     }
 
     func didChangePlaybackTime(to time: TimeInterval) {
-        // NOP:
+        self.currentTime = time
     }
 
 }
