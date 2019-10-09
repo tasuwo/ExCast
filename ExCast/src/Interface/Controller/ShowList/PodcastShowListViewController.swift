@@ -18,8 +18,8 @@ class PodcastShowListViewController: UIViewController {
     private unowned let playerPresenter: EpisodePlayerPresenter
     private let viewModel: ShowListViewModel
 
-    private let service: PodcastService
-    private let gateway: PodcastGateway
+    private let service: PodcastServiceProtocol
+    private let gateway: PodcastGatewayProtocol
 
     private let disposeBag = DisposeBag()
 
@@ -27,8 +27,8 @@ class PodcastShowListViewController: UIViewController {
 
     init(playerPresenter: EpisodePlayerPresenter,
          viewModel: ShowListViewModel,
-         service: PodcastService,
-         gateway: PodcastGateway) {
+         service: PodcastServiceProtocol,
+         gateway: PodcastGatewayProtocol) {
         self.playerPresenter = playerPresenter
         self.viewModel = viewModel
 
@@ -62,16 +62,13 @@ class PodcastShowListViewController: UIViewController {
             .bind(onNext: self.didSelectShow(at:))
             .disposed(by: self.disposeBag)
 
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil,
-                                                                style: .plain,
-                                                                target: nil,
-                                                                action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
+
+        self.viewModel.load()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        self.viewModel.load()
 
         self.title = NSLocalizedString("PodcastShowListView.title", comment: "")
 
@@ -101,7 +98,7 @@ class PodcastShowListViewController: UIViewController {
             PodcastEpisodeListViewController(
                 playerPresenter: self.playerPresenter,
                 podcast: podcast,
-                viewModel: EpisodeListViewModel(podcast: podcast, gateway: self.gateway)
+                viewModel: EpisodeListViewModel(podcast: podcast, service: self.service)
             ),
             animated: true
         )

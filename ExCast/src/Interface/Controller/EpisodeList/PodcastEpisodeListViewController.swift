@@ -23,12 +23,9 @@ class PodcastEpisodeListViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init(playerPresenter: EpisodePlayerPresenter,
-         podcast: Podcast,
-         viewModel: EpisodeListViewModel) {
+    init(playerPresenter: EpisodePlayerPresenter, podcast: Podcast, viewModel: EpisodeListViewModel) {
         self.playerPresenter = playerPresenter
         self.viewModel = viewModel
-
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -43,36 +40,30 @@ class PodcastEpisodeListViewController: UIViewController {
 
         self.playerPresenter.setDelegate(self)
 
-        self.viewModel.load { [unowned self] _ in
-            self.dataSourceContainer.delegate = self
+        self.dataSourceContainer.delegate = self
 
-            DispatchQueue.main.async {
-                self.viewModel.episodes
-                    .bind(to: self.episodeListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
-                    .disposed(by: self.disposeBag)
+        self.viewModel.episodes
+            .bind(to: self.episodeListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
+            .disposed(by: self.disposeBag)
 
-                self.episodeListView.rx.itemSelected
-                    .bind(onNext: self.didSelectEpisode(at:))
-                    .disposed(by: self.disposeBag)
+        self.episodeListView.rx.itemSelected
+            .bind(onNext: self.didSelectEpisode(at:))
+            .disposed(by: self.disposeBag)
 
-                if let refreshControl = self.episodeListView.refreshControl {
-                    refreshControl.rx.controlEvent(.valueChanged)
-                        .bind(onNext: { [weak self] _ in
-                            self?.viewModel.load { result in
-                                if !result {
-                                    let message = MDCSnackbarMessage(text: NSLocalizedString("PodcastShowListView.error", comment: ""))
-                                    MDCSnackbarManager.show(message)
-                                }
-                                DispatchQueue.main.async {
-                                    refreshControl.endRefreshing()
-                                }
-                            }
-                        })
-                        .disposed(by: self.disposeBag)
+        self.episodeListView.refreshControl?.rx.controlEvent(.valueChanged)
+            .bind(onNext: { [weak self] _ in self?.viewModel.load() })
+            .disposed(by: self.disposeBag)
+
+        self.viewModel.service.state
+            .observeOn(MainScheduler.instance)
+            .bind(onNext: { [self] query in
+                switch query {
+                case .content(_), .error:
+                    self.episodeListView.refreshControl?.endRefreshing()
+                case .progress:
+                    self.episodeListView.refreshControl?.beginRefreshing()
                 }
-                // viewModel.playingEpisode.accept(self.playerPresenter.playingEpisode())
-            }
-        }
+            }).disposed(by: self.disposeBag)
 
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     }
@@ -80,9 +71,9 @@ class PodcastEpisodeListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.viewModel.load { _ in }
+        self.viewModel.load()
 
-        self.title = self.viewModel.show.value.title
+        self.title = self.viewModel.podcast.value.show.title
 
         if let selectedRow = self.episodeListView.indexPathForSelectedRow {
             self.episodeListView.deselectRow(at: selectedRow, animated: true)
@@ -93,7 +84,7 @@ class PodcastEpisodeListViewController: UIViewController {
         let episode = self.viewModel.episodes.value(at: indexPath)
         
         // TODO: Inject player configuration
-        self.playerPresenter.show(show: self.viewModel.show.value, episode: episode, configuration: PlayerConfiguration.default)
+        self.playerPresenter.show(show: self.viewModel.podcast.value.show, episode: episode, configuration: PlayerConfiguration.default)
     }
 
 }
@@ -104,12 +95,7 @@ extension PodcastEpisodeListViewController: PodcastEpisodeCellDelegate {
     func podcastEpisodeCell(_ cell: UITableViewCell, didSelect episode: Podcast.Episode) {
         guard let navC = self.navigationController else { return }
         navC.pushViewController(
-            EpisodeDetailViewController(
-                viewModel: EpisodeDetailViewModel(
-                    show: self.viewModel.show.value,
-                    episode: episode
-                )
-            ),
+            EpisodeDetailViewController(viewModel: EpisodeDetailViewModel(show: self.viewModel.podcast.value.show, episode: episode)),
             animated: true
         )
     }

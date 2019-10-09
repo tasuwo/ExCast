@@ -44,11 +44,15 @@ class ShowListViewModel {
     // MARK: - Methods
 
     func remove(at index: Int) {
-        self.service.command.accept(.delete(self.podcasts.value[0].items[index]))
+        DispatchQueue.global().async {
+            self.service.command.accept(.delete(self.podcasts.value[0].items[index]))
+        }
     }
 
     func load() {
-        self.service.command.accept(.refresh)
+        DispatchQueue.global().async {
+            self.service.command.accept(.refresh)
+        }
     }
 
 }

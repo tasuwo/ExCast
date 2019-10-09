@@ -10,43 +10,60 @@ import RxSwift
 import RxRelay
 import RxDataSources
 
-class EpisodeListViewModel {
+struct EpisodeListViewModel {
 
     private static let sectionIdentifier = ""
 
     private let feedUrl: URL
-    private(set) var show: BehaviorRelay<Podcast.Show>
-    private(set) var episodes: BehaviorRelay<[AnimatableSectionModel<String, Podcast.Episode>]>
-    private(set) var playingEpisode: BehaviorSubject<Podcast.Episode?> = BehaviorSubject(value: nil)
+    private(set) var service: PodcastServiceProtocol
 
-    private let gateway: PodcastGateway
+    private(set) var podcast: BehaviorRelay<Podcast>
+    private(set) var episodes: BehaviorRelay<[AnimatableSectionModel<String, Podcast.Episode>]>
+
+    private var disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
-    init(podcast: Podcast, gateway: PodcastGateway) {
+    init(podcast: Podcast, service: PodcastServiceProtocol) {
         self.feedUrl = podcast.show.feedUrl
-        self.show = BehaviorRelay(value: podcast.show)
+        self.service = service
+
+        self.podcast = BehaviorRelay(value: podcast)
         self.episodes = BehaviorRelay(value: [
             .init(model: EpisodeListViewModel.sectionIdentifier, items: [])
         ])
-        self.gateway = gateway
+
+        self.service.state
+            .compactMap({ state -> [Podcast]? in
+                switch state {
+                case let .content(podcasts):
+                    return podcasts
+                default:
+                    return nil
+                }
+            })
+            .subscribe({ [self] event in
+                switch event {
+                case let .next(podcasts):
+                    // TODO: 効率化
+                    self.podcast.accept(podcasts.first(where: { $0.show.feedUrl == self.feedUrl })!)
+                default: break
+                }
+            })
+            .disposed(by: self.disposeBag)
+
+        self.podcast
+            .map({ $0.episodes })
+            .map({ [.init(model: EpisodeListViewModel.sectionIdentifier, items: $0)] as [AnimatableSectionModel<String, Podcast.Episode>] })
+            .bind(to: self.episodes)
+            .disposed(by: self.disposeBag)
     }
 
     // MARK: - Methods
 
-    func load(completion: @escaping (Bool) -> Void) {
-        self.gateway.fetch(feed: self.feedUrl) { [unowned self] result in
-            switch result {
-            case .success(let fetchedPodcast):
-                self.show.accept(fetchedPodcast.show)
-                self.episodes.accept([
-                    .init(model: EpisodeListViewModel.sectionIdentifier, items: fetchedPodcast.episodes)
-                ])
-                completion(true)
-            case .failure(_):
-                completion(false)
-                break
-            }
+    func load() {
+        DispatchQueue.global().async {
+            self.service.command.accept(.refresh)
         }
     }
 

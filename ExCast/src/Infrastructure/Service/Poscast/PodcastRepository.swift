@@ -8,14 +8,14 @@
 
 import RxSwift
 
-protocol PodcastRepository {
+protocol PodcastRepositoryProtocol {
     func getAll() -> Observable<Result<[Podcast], Error>>
     func add(_ podcast: Podcast) -> Observable<Result<Podcast, Error>>
     func update(_ podcast: Podcast) -> Observable<Result<Podcast, Error>>
     func remove(_ podcast: Podcast) -> Observable<Result<Podcast, Error>>
 }
 
-struct PodcastRepositoryImpl: PodcastRepository {
+struct PodcastRepository: PodcastRepositoryProtocol {
 
     private let factory: PodcastFactory!
     private let repository: LocalRespository!
@@ -29,7 +29,7 @@ struct PodcastRepositoryImpl: PodcastRepository {
 
     func getAll() -> Observable<Result<[Podcast], Error>> {
         return Observable.create { observer in
-            let podcasts = self.repository.fetch(forKey: PodcastRepositoryImpl.key) as [Podcast]? ?? []
+            let podcasts = self.repository.fetch(forKey: PodcastRepository.key) as [Podcast]? ?? []
             observer.onNext(.success(podcasts))
             observer.onCompleted()
             return Disposables.create()
@@ -38,7 +38,7 @@ struct PodcastRepositoryImpl: PodcastRepository {
 
     func add(_ podcast: Podcast) -> Observable<Result<Podcast, Error>> {
         return Observable.create { [self] observer in
-            let podcasts = self.repository.fetch(forKey: PodcastRepositoryImpl.key) as [Podcast]? ?? []
+            let podcasts = self.repository.fetch(forKey: PodcastRepository.key) as [Podcast]? ?? []
 
             if let _ = podcasts.first(where: { $0.show.feedUrl == podcast.show.feedUrl }) {
                 observer.onNext(.success(podcast))
@@ -46,7 +46,7 @@ struct PodcastRepositoryImpl: PodcastRepository {
                 return Disposables.create()
             }
 
-            self.repository.store(obj: podcasts + [podcast], forKey: PodcastRepositoryImpl.key)
+            self.repository.store(obj: podcasts + [podcast], forKey: PodcastRepository.key)
             observer.onNext(.success(podcast))
             observer.onCompleted()
             return Disposables.create()
@@ -55,7 +55,7 @@ struct PodcastRepositoryImpl: PodcastRepository {
 
     func update(_ podcast: Podcast) -> Observable<Result<Podcast, Error>> {
         return Observable.create { observer in
-            var podcasts = self.repository.fetch(forKey: PodcastRepositoryImpl.key) as [Podcast]? ?? []
+            var podcasts = self.repository.fetch(forKey: PodcastRepository.key) as [Podcast]? ?? []
 
             guard let target = podcasts.first(where: { $0.show.feedUrl == podcast.show.feedUrl }),
                 let index = podcasts.firstIndex(of: target) else {
@@ -66,7 +66,7 @@ struct PodcastRepositoryImpl: PodcastRepository {
 
             podcasts[index] = podcast
 
-            self.repository.store(obj: podcasts, forKey: PodcastRepositoryImpl.key)
+            self.repository.store(obj: podcasts, forKey: PodcastRepository.key)
             observer.onNext(.success(podcast))
             observer.onCompleted()
             return Disposables.create()
@@ -75,7 +75,7 @@ struct PodcastRepositoryImpl: PodcastRepository {
 
     func remove(_ podcast: Podcast) -> Observable<Result<Podcast, Error>> {
         return Observable.create { observer in
-            var podcasts = self.repository.fetch(forKey: PodcastRepositoryImpl.key) as [Podcast]? ?? []
+            var podcasts = self.repository.fetch(forKey: PodcastRepository.key) as [Podcast]? ?? []
 
             guard let target = podcasts.first(where: { $0.show.feedUrl == podcast.show.feedUrl }),
                 let index = podcasts.firstIndex(of: target) else {
@@ -86,7 +86,7 @@ struct PodcastRepositoryImpl: PodcastRepository {
 
             podcasts.remove(at: index)
 
-            self.repository.store(obj: podcasts, forKey: PodcastRepositoryImpl.key)
+            self.repository.store(obj: podcasts, forKey: PodcastRepository.key)
             observer.onNext(.success(podcast))
             observer.onCompleted()
             return Disposables.create()

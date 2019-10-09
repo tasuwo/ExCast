@@ -9,10 +9,19 @@
 import RxSwift
 import RxRelay
 
+protocol FeedUrlInputViewProtocol: AnyObject {
+    func showMessage(_ message: String)
+    func didFetchPodcastSuccessfully()
+}
+
 class FeedUrlInputViewModel {
     
-    private let service: PodcastService!
-    private let gateway: PodcastGateway!
+    private let service: PodcastServiceProtocol
+    private let gateway: PodcastGatewayProtocol
+
+    weak var view: FeedUrlInputViewProtocol?
+
+    private let disposeBag = DisposeBag()
 
     var url = BehaviorRelay<String>(value: "")
     var isValid: Observable<Bool> {
@@ -25,31 +34,35 @@ class FeedUrlInputViewModel {
 
     // MARK: - Initializer
     
-    init(service: PodcastService, gateway: PodcastGateway) {
+    init(service: PodcastServiceProtocol, gateway: PodcastGatewayProtocol) {
         self.service = service
         self.gateway = gateway
     }
     
     // MARK: - Methods
     
-    func fetchPodcast(_ completion: @escaping ((Podcast?) -> Void)) {
+    func fetchPodcast() {
         guard let url = URL(string: self.url.value) else {
-            completion(nil)
+            self.view?.showMessage(NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: ""))
             return
         }
 
-        self.gateway.fetch(feed: url) { result in
-            switch result {
-            case .success(let podcast):
-                completion(podcast)
-            case .failure(_):
-                // TODO: Error handling
-                completion(nil)
+        self.gateway.fetch(feed: url).subscribe { [self] event in
+            switch event {
+            case .error(_):
+                self.view?.showMessage(NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: ""))
+            case let .next(podcast):
+                self.view?.showMessage(String.init(format: NSLocalizedString("FeedUrlInputView.success.fetchPodcast", comment: ""), podcast.show.title))
+                self.store(podcast)
+                self.view?.didFetchPodcastSuccessfully()
+            case .completed: break
             }
-        }
+        }.disposed(by: self.disposeBag)
     }
 
-    func store(_ podcast: Podcast) {
-        self.service.command.accept(.create(podcast))
+    private func store(_ podcast: Podcast) {
+        DispatchQueue.global().async {
+            self.service.command.accept(.create(podcast))
+        }
     }
 }

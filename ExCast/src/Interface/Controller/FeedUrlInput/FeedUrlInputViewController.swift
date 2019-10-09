@@ -38,6 +38,7 @@ class FeedUrlInputViewController: UIViewController {
             .bind(to: self.viewModel.url)
             .disposed(by: self.disposeBag)
 
+        self.viewModel.view = self
         self.viewModel.isValid.map { $0 }
             .bind(to: self.baseView.button.rx.isEnabled)
             .disposed(by: disposeBag)
@@ -51,31 +52,29 @@ class FeedUrlInputViewController: UIViewController {
 
 }
 
+extension FeedUrlInputViewController: FeedUrlInputViewProtocol {
+    // MARK: - FeedUrlInputViewProtocol
+
+    func showMessage(_ message: String) {
+        let msg = MDCSnackbarMessage()
+        msg.text = message
+        MDCSnackbarManager.show(msg)
+    }
+
+    func didFetchPodcastSuccessfully() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+}
+
 extension FeedUrlInputViewController: FeedUrlInputViewDelegate {
     
     // MARK: - FeedUrlInputViewDelegate
     
     func didTapSend() {
-        self.viewModel.fetchPodcast() { [weak self] podcast in
-            let message = MDCSnackbarMessage()
-
-            guard let self = self, let podcast = podcast else {
-                message.text = NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: "")
-                MDCSnackbarManager.show(message)
-                return
-            }
-
-
-            message.text = String.init(format: NSLocalizedString("FeedUrlInputView.success.fetchPodcast", comment: ""), podcast.show.title)
-            MDCSnackbarManager.show(message)
-
-            self.viewModel.store(podcast)
-
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.navigationController?.popViewController(animated: true)
-            }
-        }
+        self.viewModel.fetchPodcast()
     }
     
 }

@@ -19,10 +19,11 @@ class AppRootViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
+        let gateway = PodcastGateway(session: URLSession.shared, factory: PodcastFactory())
         self.rootTabBarController = AppRootTabBarController(
             playerPresenter: self,
-            service: PodcastService(podcastRepository: PodcastRepositoryImpl(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard))),
-            gateway: PodcastGatewayImpl(session: URLSession.shared, factory: PodcastFactory())
+            service: PodcastService(repository: PodcastRepository(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)), gateway: gateway),
+            gateway: gateway
         )
         self.displayContentController(self.rootTabBarController)
     }
