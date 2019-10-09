@@ -43,24 +43,10 @@ class ShowListViewModel {
     // MARK: - Methods
 
     func remove(at index: Int) {
-        DispatchQueue.global().async {
-            self.service.command.accept(.delete(self.podcasts.value[0].items[index]))
-        }
+        self.service.command.accept(.delete(self.podcasts.value[0].items[index]))
     }
 
     func load() {
-        DispatchQueue.global().async {
-            self.service.command.accept(.refresh)
-        }
-    }
-}
-
-extension Podcast: IdentifiableType {
-    // MARK: - IndetifiableType
-
-    typealias Identity = URL
-
-    var identity: URL {
-        return show.feedUrl
+        self.service.command.accept(.refresh)
     }
 }

@@ -20,7 +20,7 @@ class PodcastEpisodeListViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - Initializer
+    // MARK: - Lifecycle
 
     init(playerPresenter: EpisodePlayerPresenter, podcast _: Podcast, viewModel: EpisodeListViewModel) {
         self.playerPresenter = playerPresenter
@@ -31,8 +31,6 @@ class PodcastEpisodeListViewController: UIViewController {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,12 +63,12 @@ class PodcastEpisodeListViewController: UIViewController {
             }).disposed(by: disposeBag)
 
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
+
+        viewModel.load()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        viewModel.load()
 
         title = viewModel.podcast.value.show.title
 
@@ -78,6 +76,8 @@ class PodcastEpisodeListViewController: UIViewController {
             episodeListView.deselectRow(at: selectedRow, animated: true)
         }
     }
+
+    // MARK: - Methods
 
     func didSelectEpisode(at indexPath: IndexPath) {
         let episode = viewModel.episodes.value(at: indexPath)

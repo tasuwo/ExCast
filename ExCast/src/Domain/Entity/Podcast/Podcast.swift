@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxDataSources
 
 /// https://help.apple.com/itc/podcasts_connect/#/itcb54353390
 struct Podcast: Codable, Equatable {
@@ -91,4 +92,14 @@ struct Podcast: Codable, Equatable {
 
     let show: Show
     var episodes: [Episode]
+}
+
+extension Podcast: IdentifiableType {
+    // MARK: - IndetifiableType
+
+    typealias Identity = URL
+
+    var identity: URL {
+        return show.feedUrl
+    }
 }

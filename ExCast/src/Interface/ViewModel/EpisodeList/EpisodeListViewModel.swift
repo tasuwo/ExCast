@@ -61,9 +61,7 @@ struct EpisodeListViewModel {
     // MARK: - Methods
 
     func load() {
-        DispatchQueue.global().async {
-            self.service.command.accept(.refresh)
-        }
+        self.service.command.accept(.refresh)
     }
 }
 

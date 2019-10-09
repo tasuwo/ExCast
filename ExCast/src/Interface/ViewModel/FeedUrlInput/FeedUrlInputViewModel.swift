@@ -29,8 +29,6 @@ class FeedUrlInputViewModel {
         }
     }
 
-    private var feedUrlDisposable: Disposable!
-
     // MARK: - Initializer
 
     init(service: PodcastServiceProtocol, gateway: PodcastGatewayProtocol) {
@@ -46,22 +44,22 @@ class FeedUrlInputViewModel {
             return
         }
 
-        gateway.fetch(feed: url).subscribe { [self] event in
-            switch event {
-            case .error:
-                self.view?.showMessage(NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: ""))
-            case let .next(podcast):
-                self.view?.showMessage(String(format: NSLocalizedString("FeedUrlInputView.success.fetchPodcast", comment: ""), podcast.show.title))
-                self.store(podcast)
-                self.view?.didFetchPodcastSuccessfully()
-            case .completed: break
-            }
-        }.disposed(by: disposeBag)
+        gateway.fetch(feed: url)
+            .subscribe({ [self] event in
+                switch event {
+                case .error:
+                    self.view?.showMessage(NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: ""))
+                case let .next(podcast):
+                    self.view?.showMessage(String(format: NSLocalizedString("FeedUrlInputView.success.fetchPodcast", comment: ""), podcast.show.title))
+                    self.store(podcast)
+                    self.view?.didFetchPodcastSuccessfully()
+                case .completed: break
+                }
+            })
+            .disposed(by: disposeBag)
     }
 
     private func store(_ podcast: Podcast) {
-        DispatchQueue.global().async {
-            self.service.command.accept(.create(podcast))
-        }
+        self.service.command.accept(.create(podcast))
     }
 }

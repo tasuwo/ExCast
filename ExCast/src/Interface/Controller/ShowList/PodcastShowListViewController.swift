@@ -24,10 +24,7 @@ class PodcastShowListViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init(playerPresenter: EpisodePlayerPresenter,
-         viewModel: ShowListViewModel,
-         service: PodcastServiceProtocol,
-         gateway: PodcastGatewayProtocol) {
+    init(playerPresenter: EpisodePlayerPresenter, viewModel: ShowListViewModel, service: PodcastServiceProtocol, gateway: PodcastGatewayProtocol) {
         self.playerPresenter = playerPresenter
         self.viewModel = viewModel
 
@@ -84,22 +81,21 @@ class PodcastShowListViewController: UIViewController {
     }
 
     @objc private func didTapTabBar() {
-        guard let navC = self.navigationController else { return }
+        guard let navigationController = self.navigationController else { return }
+
         let viewModel = FeedUrlInputViewModel(service: service, gateway: gateway)
-        navC.pushViewController(FeedUrlInputViewController(viewModel: viewModel), animated: true)
+        let nextViewController = FeedUrlInputViewController(viewModel: viewModel)
+
+        navigationController.pushViewController(nextViewController, animated: true)
     }
 
     private func didSelectShow(at indexPath: IndexPath) {
         guard let navigationController = self.navigationController else { return }
 
         let podcast = viewModel.podcasts.value(at: indexPath)
-        navigationController.pushViewController(
-            PodcastEpisodeListViewController(
-                playerPresenter: playerPresenter,
-                podcast: podcast,
-                viewModel: EpisodeListViewModel(podcast: podcast, service: service)
-            ),
-            animated: true
-        )
+        let viewModel = EpisodeListViewModel(podcast: podcast, service: service)
+        let nextViewController = PodcastEpisodeListViewController(playerPresenter: playerPresenter, podcast: podcast, viewModel: viewModel)
+
+        navigationController.pushViewController(nextViewController, animated: true)
     }
 }
