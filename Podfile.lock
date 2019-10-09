@@ -621,6 +621,7 @@ PODS:
   - RxRelay (5.0.0):
     - RxSwift (~> 5)
   - RxSwift (5.0.0)
+  - SwiftFormat/CLI (0.40.10)
 
 DEPENDENCIES:
   - AWSSNS
@@ -630,6 +631,7 @@ DEPENDENCIES:
   - RxCocoa (~> 5)
   - RxDataSources (~> 4.0)
   - RxSwift (~> 5)
+  - SwiftFormat/CLI
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -647,6 +649,7 @@ SPEC REPOS:
     - RxDataSources
     - RxRelay
     - RxSwift
+    - SwiftFormat
 
 EXTERNAL SOURCES:
   Keys:
@@ -668,7 +671,8 @@ SPEC CHECKSUMS:
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
   RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
+  SwiftFormat: d0e2118da5bfccc0158f0b8eff80c476c5acd984
 
-PODFILE CHECKSUM: 2b2df3ff15b6c78d92fd22d352eceb48ad781b09
+PODFILE CHECKSUM: 69fbe6cafe5dc3d03109a4e5d72e01db83928bb3
 
 COCOAPODS: 1.7.1
