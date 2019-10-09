@@ -15,12 +15,12 @@ protocol NotificationAction: CaseIterable {
 
 extension NotificationAction {
     func makeUNNotificationAction() -> UNNotificationAction {
-        return UNNotificationAction(identifier: self.identifier,
-                                    title: self.title,
+        return UNNotificationAction(identifier: identifier,
+                                    title: title,
                                     options: UNNotificationActionOptions(rawValue: 0))
     }
 
-    static func makeActions() -> Array<UNNotificationAction> {
+    static func makeActions() -> [UNNotificationAction] {
         return Self.allCases.map { `case` in `case`.makeUNNotificationAction() }
     }
 }
@@ -41,6 +41,6 @@ enum GeneralNotificationAction: String, NotificationAction {
     }
 
     var identifier: String {
-        return self.rawValue
+        return rawValue
     }
 }

@@ -16,7 +16,6 @@ protocol PodcastRepositoryProtocol {
 }
 
 struct PodcastRepository: PodcastRepositoryProtocol {
-
     private let factory: PodcastFactory!
     private let repository: LocalRespository!
 
@@ -59,9 +58,9 @@ struct PodcastRepository: PodcastRepositoryProtocol {
 
             guard let target = podcasts.first(where: { $0.show.feedUrl == podcast.show.feedUrl }),
                 let index = podcasts.firstIndex(of: target) else {
-                    observer.onNext(.success(podcast))
-                    observer.onCompleted()
-                    return Disposables.create()
+                observer.onNext(.success(podcast))
+                observer.onCompleted()
+                return Disposables.create()
             }
 
             podcasts[index] = podcast
@@ -79,9 +78,9 @@ struct PodcastRepository: PodcastRepositoryProtocol {
 
             guard let target = podcasts.first(where: { $0.show.feedUrl == podcast.show.feedUrl }),
                 let index = podcasts.firstIndex(of: target) else {
-                    observer.onNext(.success(podcast))
-                    observer.onCompleted()
-                    return Disposables.create()
+                observer.onNext(.success(podcast))
+                observer.onCompleted()
+                return Disposables.create()
             }
 
             podcasts.remove(at: index)
@@ -92,6 +91,4 @@ struct PodcastRepository: PodcastRepositoryProtocol {
             return Disposables.create()
         }
     }
-
 }
-

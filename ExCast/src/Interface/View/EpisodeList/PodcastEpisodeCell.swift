@@ -17,20 +17,19 @@ protocol PodcastEpisodeCellProtocol {
 }
 
 class PodcastEpisodeCell: UITableViewCell {
-    
-    @IBOutlet weak var pubDate: UILabel!
-    @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var episodeDescription: UILabel!
-    @IBOutlet weak var length: UILabel!
-    @IBOutlet weak var informationButton: UIButton!
-    @IBOutlet weak var playingMarkIconView: UIImageView!
+    @IBOutlet var pubDate: UILabel!
+    @IBOutlet var title: UILabel!
+    @IBOutlet var episodeDescription: UILabel!
+    @IBOutlet var length: UILabel!
+    @IBOutlet var informationButton: UIButton!
+    @IBOutlet var playingMarkIconView: UIImageView!
 
     var episode: Podcast.Episode?
     weak var delegate: PodcastEpisodeCellDelegate?
 
-    @IBAction func didTapInformationIcon(_ sender: UIButton) {
+    @IBAction func didTapInformationIcon(_: UIButton) {
         guard let episode = self.episode else { return }
-        self.delegate?.podcastEpisodeCell(self, didSelect: episode)
+        delegate?.podcastEpisodeCell(self, didSelect: episode)
     }
 }
 
@@ -38,18 +37,18 @@ extension PodcastEpisodeCell: PodcastEpisodeCellProtocol {
     func layout(title: String, pubDate: Date?, description: String, duration: Float) {
         self.title.text = title
         self.pubDate.text = pubDate?.asFormattedString()
-        self.episodeDescription.text = description
-        self.length.text = duration.asTimeString()
+        episodeDescription.text = description
+        length.text = duration.asTimeString()
 
-        self.informationButton.setTitle(NSLocalizedString("PodcastEpisodeListView.cell.detail", comment: ""), for: .normal)
-        self.playingMarkIconView.image = generatePlayingMark()
-        self.playingMarkIconView.isHidden = true
+        informationButton.setTitle(NSLocalizedString("PodcastEpisodeListView.cell.detail", comment: ""), for: .normal)
+        playingMarkIconView.image = generatePlayingMark()
+        playingMarkIconView.isHidden = true
     }
 
     private func generatePlayingMark() -> UIImage {
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10))
         let image = renderer.image { ctx in
-            let circle = UIBezierPath(arcCenter: CGPoint(x: 5, y: 5), radius: 2.5, startAngle: 0, endAngle: CGFloat(Double.pi)*2, clockwise: true)
+            let circle = UIBezierPath(arcCenter: CGPoint(x: 5, y: 5), radius: 2.5, startAngle: 0, endAngle: CGFloat(Double.pi) * 2, clockwise: true)
             ctx.cgContext.setFillColor(UIColor.red.cgColor)
             ctx.cgContext.addPath(circle.cgPath)
             ctx.cgContext.drawPath(using: .fill)

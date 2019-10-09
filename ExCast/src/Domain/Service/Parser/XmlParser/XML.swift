@@ -9,46 +9,45 @@
 import Foundation
 
 class XML: NSObject {
-    private var rootNode: XmlNode? = nil
-    private var activeNode: XmlNode? = nil
-    
+    private var rootNode: XmlNode?
+    private var activeNode: XmlNode?
+
     public func parse(_ data: Data) -> Result<XmlNode, Error> {
         let parser = XMLParser(data: data)
         parser.delegate = self
-        
+
         guard parser.parse() else {
             return Result.failure(NSError(domain: "", code: -1, userInfo: nil))
         }
-        
+
         guard let node = rootNode else {
             return Result.failure(NSError(domain: "", code: -1, userInfo: nil))
         }
-        
+
         return Result.success(node)
     }
 }
 
 extension XML: XMLParserDelegate {
+    // MARK: - XMLParserDelegate
 
-    /// MARK: - XMLParserDelegate
-    
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+    func parser(_: XMLParser, didStartElement elementName: String, namespaceURI _: String?, qualifiedName _: String?, attributes attributeDict: [String: String] = [:]) {
         let node = XmlNode(name: elementName, attributes: attributeDict)
-        
+
         if let active = activeNode {
             active.children.append(node)
             node.parent = active
-            self.activeNode = node
+            activeNode = node
         } else {
-            self.activeNode = node
+            activeNode = node
         }
-        
+
         if rootNode == nil {
             rootNode = node
         }
     }
-    
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
+
+    func parser(_: XMLParser, foundCharacters string: String) {
         guard let node = activeNode else { return }
 
         if let previousString = node.value {
@@ -57,11 +56,11 @@ extension XML: XMLParserDelegate {
             node.value = string
         }
     }
-    
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+
+    func parser(_: XMLParser, didEndElement _: String, namespaceURI _: String?, qualifiedName _: String?) {
         guard let node = activeNode else { return }
         guard let parent = node.parent else { return }
 
-        self.activeNode = parent
+        activeNode = parent
     }
 }

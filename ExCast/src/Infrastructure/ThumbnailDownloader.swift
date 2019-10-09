@@ -23,7 +23,7 @@ class ThumbnailDownloader {
     }
 
     func startDownload(by url: URL, completion: @escaping (Result<UIImage, Error>) -> Void) {
-        self.dataTask = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+        dataTask = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             guard let self = self else { fatalError() }
             guard let data = data else {
                 completion(Result.failure(ThumbnailDownloadError.failedToFetchData))
@@ -45,12 +45,11 @@ class ThumbnailDownloader {
             }
         }
 
-        self.dataTask?.resume()
+        dataTask?.resume()
     }
 
     func cancelDownload() {
-        self.dataTask?.cancel()
-        self.dataTask = nil
+        dataTask?.cancel()
+        dataTask = nil
     }
-
 }

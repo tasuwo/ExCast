@@ -13,30 +13,27 @@ protocol PodcastShowCellProtocol: AnyObject {
 }
 
 class PodcastShowCell: UITableViewCell {
-    
-    @IBOutlet weak var showArtwork: UIImageView!
-    @IBOutlet weak var showTitle: UILabel!
-    @IBOutlet weak var showAuthor: UILabel!
+    @IBOutlet var showArtwork: UIImageView!
+    @IBOutlet var showTitle: UILabel!
+    @IBOutlet var showAuthor: UILabel!
 
     // MARK: - Lifecyle
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.showArtwork.layer.cornerRadius = 5
-        self.separatorInset = UIEdgeInsets(top: 0, left: 90+15+10, bottom: 0, right: 0)
+        showArtwork.layer.cornerRadius = 5
+        separatorInset = UIEdgeInsets(top: 0, left: 90 + 15 + 10, bottom: 0, right: 0)
     }
 }
 
-
 extension PodcastShowCell: PodcastShowCellProtocol {
-    
     // MARK: - PodcastShowCellProtocol
-    
+
     func layout(artwork: UIImage?, title: String, author: String?) {
-        self.showArtwork.image = artwork != nil ? artwork : emptyThumbnail(by: .gray)
-        self.showTitle.text = title
-        self.showAuthor.text = author
+        showArtwork.image = artwork != nil ? artwork : emptyThumbnail(by: .gray)
+        showTitle.text = title
+        showAuthor.text = author
     }
 
     private func emptyThumbnail(by color: UIColor) -> UIImage? {

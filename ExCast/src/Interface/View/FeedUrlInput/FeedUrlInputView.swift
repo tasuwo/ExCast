@@ -18,26 +18,26 @@ class FeedUrlInputView: UIView {
 
     @IBOutlet var baseView: UIView!
 
-    @IBOutlet weak var textField: MDCTextField!
-    
-    @IBOutlet weak var button: MDCFloatingButton!
-    
-    @IBAction func didTapButton(_ sender: Any) {
-        self.delegate?.didTapSend()
+    @IBOutlet var textField: MDCTextField!
+
+    @IBOutlet var button: MDCFloatingButton!
+
+    @IBAction func didTapButton(_: Any) {
+        delegate?.didTapSend()
     }
 
     // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadFromNib()
-        self.setupAppearances()
+        loadFromNib()
+        setupAppearances()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadFromNib()
-        self.setupAppearances()
+        loadFromNib()
+        setupAppearances()
     }
 
     // MARK: - Methods
@@ -47,7 +47,7 @@ class FeedUrlInputView: UIView {
 
         bundle.loadNibNamed("FeedUrlInputView", owner: self, options: nil)
 
-        self.baseView.frame = self.bounds
+        baseView.frame = bounds
         addSubview(baseView)
     }
 
@@ -75,17 +75,16 @@ class FeedUrlInputView: UIView {
             self.textField.cursorColor = .label
             self.textField.placeholderLabel.textColor = .label
         } else {
-            self.button.setBackgroundColor(.black)
-            self.button.setTitleColor(.white, for: .normal)
-            self.textField.backgroundColor = .white
+            button.setBackgroundColor(.black)
+            button.setTitleColor(.white, for: .normal)
+            textField.backgroundColor = .white
         }
 
-        self.button.translatesAutoresizingMaskIntoConstraints = false
-        self.button.setTitle(NSLocalizedString("FeedUrlInputView.fetchButton", comment: ""), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(NSLocalizedString("FeedUrlInputView.fetchButton", comment: ""), for: .normal)
 
-        self.textField.translatesAutoresizingMaskIntoConstraints = false
-        self.textField.clearButtonMode = .unlessEditing
-        self.textField.placeholder = NSLocalizedString("FeedUrlInputView.placeholder", comment: "")
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.clearButtonMode = .unlessEditing
+        textField.placeholder = NSLocalizedString("FeedUrlInputView.placeholder", comment: "")
     }
-
 }

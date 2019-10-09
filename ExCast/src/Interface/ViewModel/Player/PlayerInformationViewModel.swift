@@ -23,9 +23,9 @@ class PlayerInformationViewModel {
         self.show = show
         self.episode = episode
 
-        self.showTitle = BehaviorRelay(value: show.title)
-        self.episodeTitle = BehaviorRelay(value: episode.title)
+        showTitle = BehaviorRelay(value: show.title)
+        episodeTitle = BehaviorRelay(value: episode.title)
         let artworkUrl = episode.artwork ?? show.artwork
-        self.thumbnail = BehaviorRelay(value: artworkUrl)
+        thumbnail = BehaviorRelay(value: artworkUrl)
     }
 }

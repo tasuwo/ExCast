@@ -18,7 +18,7 @@ struct Enclosure: Codable, Equatable {
         case MP4
         case M4V
         case PDF
-        
+
         static func from(_ string: String) -> FileFormat? {
             switch string {
             case "audio/x-m4a":
@@ -40,12 +40,12 @@ struct Enclosure: Codable, Equatable {
             }
         }
     }
-    
+
     enum ResourceType: String, Codable, Equatable {
         case AUDIO
         case VIDEO
         case APPLICATION
-        
+
         static func from(format: FileFormat) -> ResourceType {
             switch format {
             case .M4A:
@@ -64,13 +64,12 @@ struct Enclosure: Codable, Equatable {
         }
     }
 
-    
     /// The URL which points to podcast media file.
     let url: URL
-    
+
     /// The file size in bytes.
     let length: Int
-    
+
     /// The correct category for the type of file.
     let type: FileFormat
 }

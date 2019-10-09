@@ -21,7 +21,7 @@ public class LocalRepositoryImpl: LocalRespository {
         self.defaults = defaults
     }
 
-    public func fetch<T>(forKey name: String) -> T? where T : Decodable, T : Encodable {
+    public func fetch<T>(forKey name: String) -> T? where T: Decodable, T: Encodable {
         guard let json = self.defaults.object(forKey: name) as? Data else {
             return nil
         }
@@ -29,21 +29,21 @@ public class LocalRepositoryImpl: LocalRespository {
             let obj = try JSONDecoder().decode(T.self, from: json)
             return obj
         } catch {
-            self.delete(forKey: name)
+            delete(forKey: name)
             return nil
         }
     }
-    
+
     public func store<T: Codable>(obj: T, forKey name: String) {
         do {
             let json = try JSONEncoder().encode(obj)
-            self.defaults.set(json, forKey: name)
+            defaults.set(json, forKey: name)
         } catch {
             // NOP
         }
     }
-    
+
     public func delete(forKey name: String) {
-        self.defaults.removeObject(forKey: name)
+        defaults.removeObject(forKey: name)
     }
 }

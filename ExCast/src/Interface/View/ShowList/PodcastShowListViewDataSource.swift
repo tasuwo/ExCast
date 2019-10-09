@@ -9,14 +9,14 @@
 import RxDataSources
 
 class PodcastShowListViewDataSourceContainer: NSObject {
-    private var thumbnailCache: [IndexPath:UIImage] = [:]
-    private var thumbnailDownloadersInProgress: [IndexPath:ThumbnailDownloader] = [:]
+    private var thumbnailCache: [IndexPath: UIImage] = [:]
+    private var thumbnailDownloadersInProgress: [IndexPath: ThumbnailDownloader] = [:]
 
     lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AnimatableSectionModel<String, Podcast>> = .init(
         animationConfiguration: AnimationConfiguration(insertAnimation: .automatic,
                                                        reloadAnimation: .automatic,
                                                        deleteAnimation: .automatic),
-        configureCell: { [weak self] dataSource, tableView, indexPath, item in
+        configureCell: { [weak self] _, tableView, indexPath, item in
             guard let self = self else { return UITableViewCell() }
 
             let cell = tableView.dequeueReusableCell(withIdentifier: PodcastShowListView.identifier, for: indexPath)
@@ -49,7 +49,7 @@ class PodcastShowListViewDataSourceContainer: NSObject {
                                            title: item.show.title,
                                            author: item.show.author)
                     self.thumbnailDownloadersInProgress.removeValue(forKey: indexPath)
-                case .failure(_):
+                case .failure:
                     break
                 }
             }
@@ -57,5 +57,6 @@ class PodcastShowListViewDataSourceContainer: NSObject {
 
             podcastShowCell.layout(artwork: nil, title: item.show.title, author: item.show.author)
             return cell
-        }, canEditRowAtIndexPath: { _, _ in true })
+        }, canEditRowAtIndexPath: { _, _ in true }
+    )
 }

@@ -14,7 +14,7 @@ class PodcastEpisodeListViewDataSourceContainer: NSObject {
         animationConfiguration: AnimationConfiguration(insertAnimation: .automatic,
                                                        reloadAnimation: .automatic,
                                                        deleteAnimation: .automatic),
-        configureCell: { [weak self] dataSource, tableView, indexPath, item in
+        configureCell: { [weak self] _, tableView, indexPath, item in
             guard let self = self else { return UITableViewCell() }
 
             let cell = tableView.dequeueReusableCell(withIdentifier: PodcastEpisodeListView.identifier, for: indexPath)
@@ -30,6 +30,6 @@ class PodcastEpisodeListViewDataSourceContainer: NSObject {
             // episodeCell.playingMarkIconView.isHidden = item != self.playingEpisode
 
             return cell
-        }, canEditRowAtIndexPath: { _, _ in false })
-
+        }, canEditRowAtIndexPath: { _, _ in false }
+    )
 }

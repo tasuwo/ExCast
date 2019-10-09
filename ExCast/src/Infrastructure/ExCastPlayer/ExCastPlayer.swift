@@ -10,7 +10,7 @@ import AVFoundation
 
 private var kAudioPlayerContext: UInt8 = 0
 
-fileprivate class DelegateWrapper {
+private class DelegateWrapper {
     weak var delegate: ExCastPlayerDelegate?
     init(_ d: ExCastPlayerDelegate) { delegate = d }
 }
@@ -42,7 +42,7 @@ class ExCastPlayer: NSObject {
 
     override func observeValue(forKeyPath keyPath: String?,
                                of object: Any?,
-                               change: [NSKeyValueChangeKey : Any]?,
+                               change: [NSKeyValueChangeKey: Any]?,
                                context: UnsafeMutableRawPointer?) {
         guard context == &kAudioPlayerContext else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
@@ -76,7 +76,7 @@ class ExCastPlayer: NSObject {
         let timeScale = CMTimeScale(NSEC_PER_SEC)
         let time = CMTime(seconds: 0.1, preferredTimescale: timeScale)
 
-        self.timeObserverToken = player.addPeriodicTimeObserver(forInterval: time, queue: .main) { [weak self] time in
+        timeObserverToken = player.addPeriodicTimeObserver(forInterval: time, queue: .main) { [weak self] time in
             guard let self = self else { return }
             self.delegates.forEach { $0.delegate?.didChangePlaybackTime(to: time.seconds) }
         }
@@ -84,14 +84,13 @@ class ExCastPlayer: NSObject {
 
     private func removePeriodicTimeObserver() {
         if let timeObserverToken = timeObserverToken {
-            self.player.removeTimeObserver(timeObserverToken)
+            player.removeTimeObserver(timeObserverToken)
             self.timeObserverToken = nil
         }
     }
 }
 
 extension ExCastPlayer: ExCastPlayerProtocol {
-
     // MARK: - ExCastPlayerProtocol
 
     func prepareToPlay() {
@@ -103,7 +102,7 @@ extension ExCastPlayer: ExCastPlayerProtocol {
             asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.isPlayable)]) { [weak self] in
                 guard let self = self else { return }
 
-                var error: NSError? = nil
+                var error: NSError?
                 let status = asset.statusOfValue(forKey: #keyPath(AVAsset.isPlayable), error: &error)
 
                 switch status {
@@ -132,16 +131,16 @@ extension ExCastPlayer: ExCastPlayerProtocol {
     }
 
     func play() {
-        self.player.play()
-        self.delegates.forEach {
+        player.play()
+        delegates.forEach {
             $0.delegate?.didChangePlayingState(to: .playing)
             $0.delegate?.didChangePlaybackRate(to: 1)
         }
     }
 
     func pause() {
-        self.player.pause()
-        self.delegates.forEach {
+        player.pause()
+        delegates.forEach {
             $0.delegate?.didChangePlayingState(to: .pause)
             $0.delegate?.didChangePlaybackRate(to: 0)
         }
@@ -149,7 +148,7 @@ extension ExCastPlayer: ExCastPlayerProtocol {
 
     func seek(to seconds: TimeInterval, completion: @escaping (Bool) -> Void) {
         let time = CMTimeMakeWithSeconds(Float64(seconds), preferredTimescale: 100)
-        self.seekInternalPlayer(to: time, completion: completion)
+        seekInternalPlayer(to: time, completion: completion)
     }
 
     func skipForward(duration seconds: TimeInterval, completion: @escaping (Bool) -> Void) {
@@ -161,7 +160,7 @@ extension ExCastPlayer: ExCastPlayerProtocol {
             return
         }
 
-        self.seekInternalPlayer(to: targetTimePoint, completion: completion)
+        seekInternalPlayer(to: targetTimePoint, completion: completion)
     }
 
     func skipBackward(duration seconds: TimeInterval, completion: @escaping (Bool) -> Void) {
@@ -173,11 +172,11 @@ extension ExCastPlayer: ExCastPlayerProtocol {
             return
         }
 
-        self.seekInternalPlayer(to: targetTimePoint, completion: completion)
+        seekInternalPlayer(to: targetTimePoint, completion: completion)
     }
 
     private func seekInternalPlayer(to time: CMTime, completion: @escaping (Bool) -> Void) {
-        self.player.seek(to: time) { [weak self] seeked in
+        player.seek(to: time) { [weak self] seeked in
             guard let self = self else { return }
 
             if seeked {
@@ -191,8 +190,6 @@ extension ExCastPlayer: ExCastPlayerProtocol {
     }
 
     func register(delegate: ExCastPlayerDelegate) {
-        self.delegates.append(DelegateWrapper(delegate))
+        delegates.append(DelegateWrapper(delegate))
     }
-
 }
-

@@ -6,65 +6,62 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import UIKit
 import MaterialComponents
+import UIKit
 
 protocol EpisodePlayerPlaybackButtonsDelegate: AnyObject {
-
     func didTapPlaybackButton()
 
     func didTapSkipForwardButton()
 
     func didTapSkipBackwardButton()
-
 }
 
 class EpisodePlayerPlaybackButtons: UIView {
-
     weak var delegate: EpisodePlayerPlaybackButtonsDelegate!
-    
+
     @IBOutlet var baseView: UIView!
 
-    @IBOutlet weak var playbackButton: MDCFloatingButton!
+    @IBOutlet var playbackButton: MDCFloatingButton!
 
-    @IBOutlet weak var forwardSkipButton: MDCFloatingButton!
+    @IBOutlet var forwardSkipButton: MDCFloatingButton!
 
-    @IBOutlet weak var backwardSkipButton: MDCFloatingButton!
+    @IBOutlet var backwardSkipButton: MDCFloatingButton!
 
-    @IBOutlet weak var playbackButtonSizeConstraint: NSLayoutConstraint!
+    @IBOutlet var playbackButtonSizeConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var forwardSkipButtonSizeConstraint: NSLayoutConstraint!
+    @IBOutlet var forwardSkipButtonSizeConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var backwardSkipButtonSizeConstraint: NSLayoutConstraint!
+    @IBOutlet var backwardSkipButtonSizeConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var buttonMarginLeftConstraint: NSLayoutConstraint!
+    @IBOutlet var buttonMarginLeftConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var buttonMarginRightConstraint: NSLayoutConstraint!
+    @IBOutlet var buttonMarginRightConstraint: NSLayoutConstraint!
 
-    @IBAction func didTapPlaybackButton(_ sender: Any) {
-        self.delegate?.didTapPlaybackButton()
+    @IBAction func didTapPlaybackButton(_: Any) {
+        delegate?.didTapPlaybackButton()
     }
 
-    @IBAction func didTapSkipForwardButton(_ sender: Any) {
-        self.delegate?.didTapSkipForwardButton()
+    @IBAction func didTapSkipForwardButton(_: Any) {
+        delegate?.didTapSkipForwardButton()
     }
 
-    @IBAction func didTapSkipBackwardButton(_ sender: Any) {
-        self.delegate?.didTapSkipBackwardButton()
+    @IBAction func didTapSkipBackwardButton(_: Any) {
+        delegate?.didTapSkipBackwardButton()
     }
 
     // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadFromNib()
-        self.setupAppearences()
+        loadFromNib()
+        setupAppearences()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadFromNib()
-        self.setupAppearences()
+        loadFromNib()
+        setupAppearences()
     }
 
     // MARK: - Methods
@@ -74,22 +71,22 @@ class EpisodePlayerPlaybackButtons: UIView {
 
         bundle.loadNibNamed("EpisodePlayerPlaybackButtons", owner: self, options: nil)
 
-        self.baseView.frame = self.bounds
+        baseView.frame = bounds
         addSubview(baseView)
     }
 
     private func setupAppearences() {
-        self.backgroundColor = .clear
-        self.baseView.backgroundColor = .clear
+        backgroundColor = .clear
+        baseView.backgroundColor = .clear
 
-        self.playbackButton.setImage(UIImage(named: "player_playback")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        self.playbackButton.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
-        
-        self.forwardSkipButton.setImage(UIImage(named: "player_skip_forward_15"), for: .normal)
-        self.forwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        playbackButton.setImage(UIImage(named: "player_playback")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        playbackButton.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
 
-        self.backwardSkipButton.setImage(UIImage(named: "player_skip_backward_15"), for: .normal)
-        self.backwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        forwardSkipButton.setImage(UIImage(named: "player_skip_forward_15"), for: .normal)
+        forwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+
+        backwardSkipButton.setImage(UIImage(named: "player_skip_backward_15"), for: .normal)
+        backwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
 
         if #available(iOS 13.0, *) {
             let buttonColor = UIColor { (trait: UITraitCollection) -> UIColor in
@@ -104,10 +101,9 @@ class EpisodePlayerPlaybackButtons: UIView {
             self.forwardSkipButton.setBackgroundColor(buttonColor)
             self.backwardSkipButton.setBackgroundColor(buttonColor)
         } else {
-            self.playbackButton.setBackgroundColor(.black)
-            self.forwardSkipButton.setBackgroundColor(.black)
-            self.backwardSkipButton.setBackgroundColor(.black)
+            playbackButton.setBackgroundColor(.black)
+            forwardSkipButton.setBackgroundColor(.black)
+            backwardSkipButton.setBackgroundColor(.black)
         }
     }
-
 }

@@ -6,12 +6,11 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import RxSwift
-import RxRelay
 import RxDataSources
+import RxRelay
+import RxSwift
 
 struct EpisodeListViewModel {
-
     private static let sectionIdentifier = ""
 
     private let feedUrl: URL
@@ -25,38 +24,38 @@ struct EpisodeListViewModel {
     // MARK: - Initializer
 
     init(podcast: Podcast, service: PodcastServiceProtocol) {
-        self.feedUrl = podcast.show.feedUrl
+        feedUrl = podcast.show.feedUrl
         self.service = service
 
         self.podcast = BehaviorRelay(value: podcast)
-        self.episodes = BehaviorRelay(value: [
-            .init(model: EpisodeListViewModel.sectionIdentifier, items: [])
+        episodes = BehaviorRelay(value: [
+            .init(model: EpisodeListViewModel.sectionIdentifier, items: []),
         ])
 
         self.service.state
-            .compactMap({ state -> [Podcast]? in
+            .compactMap { state -> [Podcast]? in
                 switch state {
                 case let .content(podcasts):
                     return podcasts
                 default:
                     return nil
                 }
-            })
-            .subscribe({ [self] event in
+            }
+            .subscribe { [self] event in
                 switch event {
                 case let .next(podcasts):
                     // TODO: 効率化
                     self.podcast.accept(podcasts.first(where: { $0.show.feedUrl == self.feedUrl })!)
                 default: break
                 }
-            })
-            .disposed(by: self.disposeBag)
+            }
+            .disposed(by: disposeBag)
 
         self.podcast
-            .map({ $0.episodes })
-            .map({ [.init(model: EpisodeListViewModel.sectionIdentifier, items: $0)] as [AnimatableSectionModel<String, Podcast.Episode>] })
-            .bind(to: self.episodes)
-            .disposed(by: self.disposeBag)
+            .map { $0.episodes }
+            .map { [.init(model: EpisodeListViewModel.sectionIdentifier, items: $0)] as [AnimatableSectionModel<String, Podcast.Episode>] }
+            .bind(to: episodes)
+            .disposed(by: disposeBag)
     }
 
     // MARK: - Methods
@@ -66,16 +65,14 @@ struct EpisodeListViewModel {
             self.service.command.accept(.refresh)
         }
     }
-
 }
 
 extension Podcast.Episode: IdentifiableType {
-
     // MARK: - IndetifiableType
 
     typealias Identity = String
 
     var identity: String {
-        return self.title
+        return title
     }
 }

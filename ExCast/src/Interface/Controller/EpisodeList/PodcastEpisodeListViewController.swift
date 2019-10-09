@@ -6,14 +6,13 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import UIKit
 import MaterialComponents
 import RxCocoa
 import RxSwift
+import UIKit
 
 class PodcastEpisodeListViewController: UIViewController {
-
-    @IBOutlet weak var episodeListView: PodcastEpisodeListView!
+    @IBOutlet var episodeListView: PodcastEpisodeListView!
     private let dataSourceContainer = PodcastEpisodeListViewDataSourceContainer()
 
     private unowned let playerPresenter: EpisodePlayerPresenter
@@ -23,13 +22,13 @@ class PodcastEpisodeListViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init(playerPresenter: EpisodePlayerPresenter, podcast: Podcast, viewModel: EpisodeListViewModel) {
+    init(playerPresenter: EpisodePlayerPresenter, podcast _: Podcast, viewModel: EpisodeListViewModel) {
         self.playerPresenter = playerPresenter
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -38,23 +37,23 @@ class PodcastEpisodeListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.playerPresenter.setDelegate(self)
+        playerPresenter.setDelegate(self)
 
-        self.dataSourceContainer.delegate = self
+        dataSourceContainer.delegate = self
 
-        self.viewModel.episodes
-            .bind(to: self.episodeListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
-            .disposed(by: self.disposeBag)
+        viewModel.episodes
+            .bind(to: episodeListView.rx.items(dataSource: dataSourceContainer.dataSource))
+            .disposed(by: disposeBag)
 
-        self.episodeListView.rx.itemSelected
-            .bind(onNext: self.didSelectEpisode(at:))
-            .disposed(by: self.disposeBag)
+        episodeListView.rx.itemSelected
+            .bind(onNext: didSelectEpisode(at:))
+            .disposed(by: disposeBag)
 
-        self.episodeListView.refreshControl?.rx.controlEvent(.valueChanged)
+        episodeListView.refreshControl?.rx.controlEvent(.valueChanged)
             .bind(onNext: { [weak self] _ in self?.viewModel.load() })
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
 
-        self.viewModel.service.state
+        viewModel.service.state
             .observeOn(MainScheduler.instance)
             .bind(onNext: { [self] query in
                 switch query {
@@ -63,51 +62,47 @@ class PodcastEpisodeListViewController: UIViewController {
                 case .progress:
                     self.episodeListView.refreshControl?.beginRefreshing()
                 }
-            }).disposed(by: self.disposeBag)
+            }).disposed(by: disposeBag)
 
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.viewModel.load()
+        viewModel.load()
 
-        self.title = self.viewModel.podcast.value.show.title
+        title = viewModel.podcast.value.show.title
 
         if let selectedRow = self.episodeListView.indexPathForSelectedRow {
-            self.episodeListView.deselectRow(at: selectedRow, animated: true)
+            episodeListView.deselectRow(at: selectedRow, animated: true)
         }
     }
 
     func didSelectEpisode(at indexPath: IndexPath) {
-        let episode = self.viewModel.episodes.value(at: indexPath)
-        
-        // TODO: Inject player configuration
-        self.playerPresenter.show(show: self.viewModel.podcast.value.show, episode: episode, configuration: PlayerConfiguration.default)
-    }
+        let episode = viewModel.episodes.value(at: indexPath)
 
+        // TODO: Inject player configuration
+        playerPresenter.show(show: viewModel.podcast.value.show, episode: episode, configuration: PlayerConfiguration.default)
+    }
 }
 
 extension PodcastEpisodeListViewController: PodcastEpisodeCellDelegate {
     // MARK: - PodcastEpisodeCellDelegate
 
-    func podcastEpisodeCell(_ cell: UITableViewCell, didSelect episode: Podcast.Episode) {
+    func podcastEpisodeCell(_: UITableViewCell, didSelect episode: Podcast.Episode) {
         guard let navC = self.navigationController else { return }
         navC.pushViewController(
-            EpisodeDetailViewController(viewModel: EpisodeDetailViewModel(show: self.viewModel.podcast.value.show, episode: episode)),
+            EpisodeDetailViewController(viewModel: EpisodeDetailViewModel(show: viewModel.podcast.value.show, episode: episode)),
             animated: true
         )
     }
-
 }
 
 extension PodcastEpisodeListViewController: EpisodePlayerPresenterDelegate {
-
     // MARK: - EpisodePlayerPresenterDelegate
 
     func didDismissPlayer() {
         // self.viewModel.playingEpisode = nil
     }
-
 }

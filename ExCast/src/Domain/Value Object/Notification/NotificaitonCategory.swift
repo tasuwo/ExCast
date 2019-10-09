@@ -12,10 +12,10 @@ enum NotificationCategory: String, CaseIterable {
     case GENERAL
 
     var identifier: String {
-        return self.rawValue
+        return rawValue
     }
 
-    var actions: Array<UNNotificationAction> {
+    var actions: [UNNotificationAction] {
         switch self {
         case .GENERAL:
             return GeneralNotificationAction.makeActions()
@@ -25,7 +25,7 @@ enum NotificationCategory: String, CaseIterable {
     func makeUNNotificationCategory() -> UNNotificationCategory {
         switch self {
         case .GENERAL:
-            return UNNotificationCategory(identifier: self.identifier,
+            return UNNotificationCategory(identifier: identifier,
                                           actions: self.actions,
                                           intentIdentifiers: [],
                                           options: .customDismissAction)

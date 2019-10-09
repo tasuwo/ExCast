@@ -9,27 +9,26 @@
 import Foundation
 
 class PodcastFactory: NSObject {
-    
-    /// MARK: - Methods
-    
+    // MARK: - Methods
+
     func create(from data: Data) -> Result<Podcast, Error> {
         let parser = XML()
         switch parser.parse(data) {
-        case .success(let node):
+        case let .success(node):
             guard let show = composeShow(by: node |> "channel") else {
                 return Result.failure(NSError(domain: "", code: -1, userInfo: nil))
             }
-            
+
             let episodes = (node |> "channel" ||> "item")?.compactMap { [weak self] item in
-                return self?.composeItem(by: item)
+                self?.composeItem(by: item)
             }
-            
+
             return Result.success(Podcast(show: show, episodes: episodes ?? []))
-        case .failure(let err):
+        case let .failure(err):
             return Result.failure(err)
         }
     }
-    
+
     private func composeShow(by node: XmlNode?) -> Podcast.Show? {
         guard
             let node = node,
@@ -42,29 +41,29 @@ class PodcastFactory: NSObject {
             let explicitStr = (node |> "itunes:explicit")?.value,
             let languageStr = (node |> "language")?.value,
             let language = Language.fromString(languageStr) else {
-                return nil
+            return nil
         }
-        
+
         let feedUrlNode = feedUrlCandidates.first { $0.attributes["rel"] == "self" }
         guard
             let feedUrlStr = feedUrlNode?.attributes["href"],
             let feedUrl = URL(string: feedUrlStr) else {
-                return nil
+            return nil
         }
-        
+
         let explicit = explicitStr == "yes" ? true : false
         let author = (node |> "itunes:author")?.value
         let link = (node |> "link")?.value
         let site = link != nil ? URL(string: link!) : nil
-        var owner: Podcast.Owner? = nil
-        if  let name = (node |> "ituner:owner" |> "itunes:name")?.value,
+        var owner: Podcast.Owner?
+        if let name = (node |> "ituner:owner" |> "itunes:name")?.value,
             let email = (node |> "ituner:owner" |> "itunes:email")?.value {
             owner = Podcast.Owner(name: name, email: email)
         }
 
         return Podcast.Show(feedUrl: feedUrl, title: title, description: description, artwork: artwork, categories: [], explicit: explicit, language: language, author: author, site: site, owner: owner)
     }
-    
+
     private func composeItem(by node: XmlNode) -> Podcast.Episode? {
         guard
             let title = (node |> "title")?.value,
@@ -74,7 +73,7 @@ class PodcastFactory: NSObject {
             let enclosureTypeStr = enclosureAttributes["type"],
             let enclosureType = Enclosure.FileFormat.from(enclosureTypeStr),
             let enclosureLengthStr = enclosureAttributes["length"] else {
-                return nil
+            return nil
         }
 
         let enclosureLength = Int(enclosureLengthStr) ?? 0
@@ -88,7 +87,7 @@ class PodcastFactory: NSObject {
         }
 
         let enclosure = Enclosure(url: enclosureUrl, length: enclosureLength, type: enclosureType)
-        var pubDate: Date? = nil
+        var pubDate: Date?
         if let pubDateStr = (node |> "pubDate")?.value {
             pubDate = parseRfc822DateString(pubDateStr)
         }
@@ -96,7 +95,7 @@ class PodcastFactory: NSObject {
         let linkStr = (node |> "link")?.value
         let link = linkStr != nil ? URL(string: linkStr!) : nil
         let duration = parseDuration((node |> "itunes:duration")?.value)
-        
+
         // TODO: duration, artwork
 
         return Podcast.Episode(guid: guid, guidIsPermaLink: isPermaLink, title: title, subTitle: subTitle, enclosure: enclosure, pubDate: pubDate, description: description, duration: duration, link: link, artwork: nil)
@@ -110,7 +109,7 @@ class PodcastFactory: NSObject {
         let parts = durationStr.split(separator: ":").reversed().map { Int($0)! }
 
         let duration = parts.enumerated().reduce(0) { prev, val in
-            return prev + Double(val.element) * NSDecimalNumber(decimal: pow(60, val.offset)).doubleValue
+            prev + Double(val.element) * NSDecimalNumber(decimal: pow(60, val.offset)).doubleValue
         }
         return duration
     }

@@ -9,7 +9,6 @@
 import Foundation
 
 protocol ExCastPlayerProtocol: AnyObject {
-
     func prepareToPlay()
 
     func play()
@@ -23,7 +22,6 @@ protocol ExCastPlayerProtocol: AnyObject {
     func skipBackward(duration seconds: TimeInterval, completion: @escaping (Bool) -> Void)
 
     func register(delegate: ExCastPlayerDelegate)
-
 }
 
 enum ExCastPlayerState {
@@ -33,7 +31,6 @@ enum ExCastPlayerState {
 }
 
 protocol ExCastPlayerDelegate: AnyObject {
-
     func didFinishPrepare()
 
     func didChangePlayingState(to state: ExCastPlayerState)
@@ -43,5 +40,4 @@ protocol ExCastPlayerDelegate: AnyObject {
     func didSeek(to time: TimeInterval)
 
     func didChangePlaybackTime(to time: TimeInterval)
-
 }

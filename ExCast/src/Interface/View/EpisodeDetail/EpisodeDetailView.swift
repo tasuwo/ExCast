@@ -10,27 +10,26 @@ import UIKit
 import WebKit
 
 class EpisodeDetailView: UIView {
-
     @IBOutlet var baseView: UIScrollView!
-    @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var episodeThumbnailView: UIImageView!
-    @IBOutlet weak var episodePubDateLabel: UILabel!
-    @IBOutlet weak var episodeTitleLabel: UILabel!
-    @IBOutlet weak var episodeDurationLabel: UILabel!
-    @IBOutlet weak var episodeDescriptionLabel: UITextView!
+    @IBOutlet var contentView: UIView!
+    @IBOutlet var episodeThumbnailView: UIImageView!
+    @IBOutlet var episodePubDateLabel: UILabel!
+    @IBOutlet var episodeTitleLabel: UILabel!
+    @IBOutlet var episodeDurationLabel: UILabel!
+    @IBOutlet var episodeDescriptionLabel: UITextView!
 
     // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadFromNib()
-        self.setupAppearences()
+        loadFromNib()
+        setupAppearences()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadFromNib()
-        self.setupAppearences()
+        loadFromNib()
+        setupAppearences()
     }
 
     // MARK: - Methods
@@ -41,16 +40,15 @@ class EpisodeDetailView: UIView {
         bundle.loadNibNamed("EpisodeDetailView", owner: self, options: nil)
 
         // TODO: ここのサイズ調整がうまくいかないので、どうにかする。。。
-        self.baseView.frame = UIScreen.main.bounds
+        baseView.frame = UIScreen.main.bounds
         addSubview(baseView)
     }
 
     private func setupAppearences() {
-        self.baseView.isScrollEnabled = true
-        self.episodeThumbnailView.layer.cornerRadius = 10
-        self.episodeDescriptionLabel.isEditable = false
-        self.episodeDescriptionLabel.isSelectable = true
-        self.episodeDescriptionLabel.isScrollEnabled = false
+        baseView.isScrollEnabled = true
+        episodeThumbnailView.layer.cornerRadius = 10
+        episodeDescriptionLabel.isEditable = false
+        episodeDescriptionLabel.isSelectable = true
+        episodeDescriptionLabel.isScrollEnabled = false
     }
-
 }

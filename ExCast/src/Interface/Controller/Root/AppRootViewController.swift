@@ -6,11 +6,10 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import UIKit
 import MediaPlayer
+import UIKit
 
 class AppRootViewController: UIViewController {
-
     private var rootTabBarController: AppRootTabBarController!
     private var playerModalViewController: EpisodePlayerViewController?
 
@@ -20,20 +19,20 @@ class AppRootViewController: UIViewController {
 
     override func viewDidLoad() {
         let gateway = PodcastGateway(session: URLSession.shared, factory: PodcastFactory())
-        self.rootTabBarController = AppRootTabBarController(
+        rootTabBarController = AppRootTabBarController(
             playerPresenter: self,
             service: PodcastService(repository: PodcastRepository(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)), gateway: gateway),
             gateway: gateway
         )
-        self.displayContentController(self.rootTabBarController)
+        displayContentController(rootTabBarController)
     }
 
     // MARK: - Methods
 
     func displayContentController(_ content: UIViewController) {
-        self.addChild(content)
-        content.view.frame = self.view.bounds
-        self.view.addSubview(content.view)
+        addChild(content)
+        content.view.frame = view.bounds
+        view.addSubview(content.view)
         content.didMove(toParent: self)
     }
 
@@ -45,9 +44,8 @@ class AppRootViewController: UIViewController {
 }
 
 extension AppRootViewController: EpisodePlayerPresenter {
-
     func playingEpisode() -> Podcast.Episode? {
-        return self.playerModalViewController?.playingEpisode
+        return playerModalViewController?.playingEpisode
     }
 
     func setDelegate(_ delegate: EpisodePlayerPresenterDelegate) {
@@ -67,7 +65,7 @@ extension AppRootViewController: EpisodePlayerPresenter {
 
         if let view = self.playerModalViewController {
             view.reload(
-                controllerViewModel: PlayerControllerViewModel(show: show, episode: episode, controller: player,remoteCommands: commandHandler, configuration: configuration),
+                controllerViewModel: PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler, configuration: configuration),
                 informationViewModel: PlayerInformationViewModel(show: show, episode: episode)
             )
             return
@@ -82,41 +80,40 @@ extension AppRootViewController: EpisodePlayerPresenter {
         playerViewController.modalPresentationStyle = .formSheet
         playerViewController.modalTransitionStyle = .coverVertical
 
-        self.displayContentController(playerViewController)
+        displayContentController(playerViewController)
 
-        self.playerModalViewController = playerViewController
+        playerModalViewController = playerViewController
 
         let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
-        self.rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
+        rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
     }
 
     func dismiss() {
         guard let playerViewController = self.playerModalViewController else { return }
 
-        self.hideContentController(playerViewController)
-        self.playerModalViewController = nil
+        hideContentController(playerViewController)
+        playerModalViewController = nil
 
         let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        self.rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
+        rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
 
-        self.delegate?.didDismissPlayer()
+        delegate?.didDismissPlayer()
     }
 
     func minimize() {
         guard let playerViewController = self.playerModalViewController else { return }
 
-        let tabBarInsets = self.rootTabBarController.tabBar.frame.height
-        let bottom = self.view.frame.height - tabBarInsets
+        let tabBarInsets = rootTabBarController.tabBar.frame.height
+        let bottom = view.frame.height - tabBarInsets
 
-        playerViewController.view.frame = CGRect(x: 0, y: bottom - 70, width: self.view.frame.width, height: 70)
+        playerViewController.view.frame = CGRect(x: 0, y: bottom - 70, width: view.frame.width, height: 70)
         playerViewController.view.layoutIfNeeded()
     }
 
     func expand() {
         guard let playerViewController = self.playerModalViewController else { return }
 
-        playerViewController.view.frame = self.view.frame
+        playerViewController.view.frame = view.frame
         playerViewController.view.layoutIfNeeded()
     }
-
 }

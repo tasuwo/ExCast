@@ -15,19 +15,18 @@ class PodcastShowListView: UITableView {
 
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
-        self.loadFromNib()
+        loadFromNib()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadFromNib()
+        loadFromNib()
     }
 
     // MARK: - Methods
 
     private func loadFromNib() {
         let nib = UINib(nibName: "PodcastShowCell", bundle: nil)
-        self.register(nib, forCellReuseIdentifier: PodcastShowListView.identifier)
+        register(nib, forCellReuseIdentifier: PodcastShowListView.identifier)
     }
-
 }

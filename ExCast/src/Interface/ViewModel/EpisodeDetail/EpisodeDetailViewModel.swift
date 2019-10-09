@@ -10,7 +10,6 @@ import Foundation
 import RxRelay
 
 class EpisodeDetailViewModel {
-
     let show: Podcast.Show
     let episode: Podcast.Episode
 
@@ -23,15 +22,14 @@ class EpisodeDetailViewModel {
     init(show: Podcast.Show, episode: Podcast.Episode) {
         self.show = show
         self.episode = episode
-        self.title = BehaviorRelay(value: episode.title)
-        self.pubDate = BehaviorRelay(value: episode.pubDate)
-        self.duration = BehaviorRelay(value: episode.duration ?? 0)
-        self.thumbnail = BehaviorRelay(value: episode.artwork ?? show.artwork)
-        self.description = BehaviorRelay(value: episode.description ?? "")
+        title = BehaviorRelay(value: episode.title)
+        pubDate = BehaviorRelay(value: episode.pubDate)
+        duration = BehaviorRelay(value: episode.duration ?? 0)
+        thumbnail = BehaviorRelay(value: episode.artwork ?? show.artwork)
+        description = BehaviorRelay(value: episode.description ?? "")
     }
 
     func layoutDescription() {
-        self.description.accept(self.episode.description ?? "")
+        description.accept(episode.description ?? "")
     }
-
 }

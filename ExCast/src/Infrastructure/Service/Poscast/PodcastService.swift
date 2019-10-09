@@ -10,7 +10,6 @@ import RxRelay
 import RxSwift
 
 struct PodcastService: PodcastServiceProtocol {
-
     var state: BehaviorRelay<PodcastServiceQuery> = BehaviorRelay(value: .content([]))
     var command: PublishRelay<PodcastServiceCommand> = PublishRelay()
 
@@ -30,69 +29,69 @@ struct PodcastService: PodcastServiceProtocol {
 
         let refreshResultState = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .flatMapLatest({ [self] command -> Observable<Result<[Podcast], Error>> in
+            .flatMapLatest { [self] command -> Observable<Result<[Podcast], Error>> in
                 switch command {
                 case .refresh:
                     return self.repository.getAll()
                 default:
                     return Observable.never()
                 }
-            })
-            .map({ result -> PodcastServiceQuery in
+            }
+            .map { result -> PodcastServiceQuery in
                 switch result {
                 case let .success(podcasts):
                     return .content(podcasts)
-                case .failure(_):
+                case .failure:
                     return .error
                 }
-            })
+            }
 
         let createResultCommand = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .flatMapLatest({ [self] command -> Observable<Result<Podcast, Error>> in
+            .flatMapLatest { [self] command -> Observable<Result<Podcast, Error>> in
                 switch command {
                 case let .create(podcast):
                     return self.repository.add(podcast)
                 default:
                     return Observable.never()
                 }
-            })
-            .flatMap({ result -> Single<PodcastServiceCommand> in
+            }
+            .flatMap { result -> Single<PodcastServiceCommand> in
                 switch result {
-                case .success(_):
+                case .success:
                     return Single.just(PodcastServiceCommand.refresh)
                 default:
                     return Single.never()
                 }
-            })
+            }
 
         let deleteResultCommand = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .flatMapLatest({ [self] command -> Observable<Result<Podcast, Error>> in
+            .flatMapLatest { [self] command -> Observable<Result<Podcast, Error>> in
                 switch command {
                 case let .delete(podcast):
                     return self.repository.remove(podcast)
                 default:
                     return Observable.never()
                 }
-            })
-            .flatMap({ result -> Single<PodcastServiceCommand> in
+            }
+            .flatMap { result -> Single<PodcastServiceCommand> in
                 switch result {
-                case .success(_):
+                case .success:
                     return Single.just(PodcastServiceCommand.refresh)
                 default:
                     return Single.never()
                 }
-            })
+            }
 
         Observable
             .merge(refreshState, refreshResultState)
-            .bind(to: self.state)
-            .disposed(by: self.disposeBag)
+            .bind(to: state)
+            .disposed(by: disposeBag)
 
         Observable
             .merge(createResultCommand, deleteResultCommand)
-            .bind(to: self.command)
-            .disposed(by: self.disposeBag)
+            .bind(to: command)
+            .disposed(by: disposeBag)
     }
 }

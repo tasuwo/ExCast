@@ -8,8 +8,8 @@
 
 public class XmlNode {
     let name: String
-    let attributes: [String:String]
-    var value: String? = nil {
+    let attributes: [String: String]
+    var value: String? {
         didSet {
             guard let value = self.value else { return }
 
@@ -18,25 +18,24 @@ public class XmlNode {
             }
         }
     }
-    
-    weak var parent: XmlNode? = nil
+
+    weak var parent: XmlNode?
     var children: [XmlNode] = []
-    
-    init(name: String, attributes: [String:String]) {
+
+    init(name: String, attributes: [String: String]) {
         self.name = name
         self.attributes = attributes
     }
 }
 
 extension XmlNode: Equatable {
-    
-    /// MARK: - Equatable
-    
-    static public func == (lhs: XmlNode, rhs: XmlNode) -> Bool {
+    // MARK: - Equatable
+
+    public static func == (lhs: XmlNode, rhs: XmlNode) -> Bool {
         return lhs.name == rhs.name &&
-                lhs.attributes == rhs.attributes &&
-                lhs.value == rhs.value
-     }
+            lhs.attributes == rhs.attributes &&
+            lhs.value == rhs.value
+    }
 }
 
 precedencegroup XmlNodePrecedence {

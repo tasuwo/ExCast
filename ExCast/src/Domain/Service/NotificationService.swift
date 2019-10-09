@@ -10,22 +10,21 @@ import UIKit
 import UserNotifications
 
 class NotificationService {
-
     private let notificationCenter: UNUserNotificationCenter
     private let gateway: PushNotificationProviderGateway
     // private let repository: NotificationSettingRepository
 
-    init(notificationCenter: UNUserNotificationCenter, gateway: PushNotificationProviderGateway /* , repository: NotificationSettingRepository */) {
+    init(notificationCenter: UNUserNotificationCenter, gateway: PushNotificationProviderGateway /* , repository: NotificationSettingRepository */ ) {
         self.notificationCenter = notificationCenter
         self.gateway = gateway
         // self.repository = repository
     }
 
     func registerToApnsIfNeeded() {
-        self.notificationCenter.setNotificationCategories(NotificationCategory.makeCategories())
+        notificationCenter.setNotificationCategories(NotificationCategory.makeCategories())
 
         let options: UNAuthorizationOptions = [.alert, .badge, .sound]
-        self.notificationCenter.getNotificationSettings { (setting) in
+        notificationCenter.getNotificationSettings { setting in
             switch setting.authorizationStatus {
             case .denied: break
             case .authorized, .provisional:
@@ -51,20 +50,19 @@ class NotificationService {
         }
     }
 
-    func pushDeviceTokenToProvider(_ deviceToken: Data) {
+    func pushDeviceTokenToProvider(_: Data) {
         /*
-        let context = self.repository.get()?.context ?? NotificationContext.default()
-        self.gateway.register(deviceToken, context: context) { result in
-            switch result {
-            case let .success(key):
-                let setting = NotificationSetting(key: key, deviceToken: deviceToken, context: context)
-                try? self.repository.add(setting)
-            case let .failure(err):
-                // TODO:
-                Swift.print(err)
-            }
-        }
+         let context = self.repository.get()?.context ?? NotificationContext.default()
+         self.gateway.register(deviceToken, context: context) { result in
+             switch result {
+             case let .success(key):
+                 let setting = NotificationSetting(key: key, deviceToken: deviceToken, context: context)
+                 try? self.repository.add(setting)
+             case let .failure(err):
+                 // TODO:
+                 Swift.print(err)
+             }
+         }
          */
     }
-
 }

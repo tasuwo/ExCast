@@ -17,11 +17,11 @@ class PushNotificationProviderGatewayImpl: PushNotificationProviderGateway {
         self.applicationArn = applicationArn
     }
 
-    func register(_ token: Data, context: NotificationContext, completion: @escaping (Result<ProviderKey,PushNotificationProviderGatewayError>) -> Void) {
+    func register(_ token: Data, context: NotificationContext, completion: @escaping (Result<ProviderKey, PushNotificationProviderGatewayError>) -> Void) {
         guard let jsonData = try? JSONEncoder().encode(context),
             let jsonString = String(data: jsonData, encoding: .utf8) else {
-                completion(Result.failure(.InvalidParameterError))
-                return
+            completion(Result.failure(.InvalidParameterError))
+            return
         }
         let tokenString = token.map { String(format: "%.2hhx", $0) }.joined()
 
@@ -29,7 +29,7 @@ class PushNotificationProviderGatewayImpl: PushNotificationProviderGateway {
         let params: [String: Any] = [
             "token": tokenString,
             "customUserData": jsonString,
-            "platformApplicationArn": applicationArn
+            "platformApplicationArn": applicationArn,
         ]
         let input = try! AWSSNSCreatePlatformEndpointInput(dictionary: params, error: ())
 
@@ -55,19 +55,19 @@ class PushNotificationProviderGatewayImpl: PushNotificationProviderGateway {
         }
     }
 
-    func update(_ key: ProviderKey, context: NotificationContext, completion: @escaping (Result<Void,PushNotificationProviderGatewayError>) -> Void) {
+    func update(_ key: ProviderKey, context: NotificationContext, completion: @escaping (Result<Void, PushNotificationProviderGatewayError>) -> Void) {
         guard let jsonData = try? JSONEncoder().encode(context),
             let jsonString = String(data: jsonData, encoding: .utf8) else {
-                completion(Result.failure(.InvalidParameterError))
-                return
+            completion(Result.failure(.InvalidParameterError))
+            return
         }
 
         // NOTE: see also https://docs.aws.amazon.com/sns/latest/api/API_SetEndpointAttributes.html
-        let params: [String:Any] = [
+        let params: [String: Any] = [
             "endpointArn": key,
             "attributes": [
-                "CustomUserData": jsonString
-            ]
+                "CustomUserData": jsonString,
+            ],
         ]
         let input = try! AWSSNSSetEndpointAttributesInput(dictionary: params, error: ())
 
@@ -81,10 +81,10 @@ class PushNotificationProviderGatewayImpl: PushNotificationProviderGateway {
         }
     }
 
-    func unregister(_ key: ProviderKey, completion: @escaping (Result<Void,PushNotificationProviderGatewayError>) -> Void) {
+    func unregister(_ key: ProviderKey, completion: @escaping (Result<Void, PushNotificationProviderGatewayError>) -> Void) {
         // NOTE: see also https://docs.aws.amazon.com/sns/latest/api/API_DeleteEndpoint.html
         let params = [
-            "endpointArn": key
+            "endpointArn": key,
         ]
         let input = try! AWSSNSDeleteEndpointInput(dictionary: params, error: ())
 
@@ -97,5 +97,4 @@ class PushNotificationProviderGatewayImpl: PushNotificationProviderGateway {
             completion(.success(()))
         }
     }
-
 }

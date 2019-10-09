@@ -6,13 +6,12 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import UIKit
 import RxCocoa
 import RxSwift
+import UIKit
 
 class PodcastShowListViewController: UIViewController {
-
-    @IBOutlet weak var showListView: PodcastShowListView!
+    @IBOutlet var showListView: PodcastShowListView!
     private let dataSourceContainer = PodcastShowListViewDataSourceContainer()
 
     private unowned let playerPresenter: EpisodePlayerPresenter
@@ -38,7 +37,7 @@ class PodcastShowListViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -46,34 +45,34 @@ class PodcastShowListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupNavigationBar()
 
-        self.viewModel.podcasts
-            .bind(to: self.showListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
-            .disposed(by: self.disposeBag)
+        viewModel.podcasts
+            .bind(to: showListView.rx.items(dataSource: dataSourceContainer.dataSource))
+            .disposed(by: disposeBag)
 
-        self.showListView.rx.itemDeleted
+        showListView.rx.itemDeleted
             .map { $0.row }
-            .bind(onNext: self.viewModel.remove(at:))
-            .disposed(by: self.disposeBag)
+            .bind(onNext: viewModel.remove(at:))
+            .disposed(by: disposeBag)
 
-        self.showListView.rx.itemSelected
-            .bind(onNext: self.didSelectShow(at:))
-            .disposed(by: self.disposeBag)
+        showListView.rx.itemSelected
+            .bind(onNext: didSelectShow(at:))
+            .disposed(by: disposeBag)
 
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
 
-        self.viewModel.load()
+        viewModel.load()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.title = NSLocalizedString("PodcastShowListView.title", comment: "")
+        title = NSLocalizedString("PodcastShowListView.title", comment: "")
 
         if let selectedRow = self.showListView.indexPathForSelectedRow {
-            self.showListView.deselectRow(at: selectedRow, animated: true)
+            showListView.deselectRow(at: selectedRow, animated: true)
         }
     }
 
@@ -81,27 +80,26 @@ class PodcastShowListViewController: UIViewController {
 
     private func setupNavigationBar() {
         let item = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapTabBar))
-        self.navigationItem.setRightBarButton(item, animated: true)
+        navigationItem.setRightBarButton(item, animated: true)
     }
 
     @objc private func didTapTabBar() {
         guard let navC = self.navigationController else { return }
-        let viewModel = FeedUrlInputViewModel(service: self.service, gateway: self.gateway)
+        let viewModel = FeedUrlInputViewModel(service: service, gateway: gateway)
         navC.pushViewController(FeedUrlInputViewController(viewModel: viewModel), animated: true)
     }
 
     private func didSelectShow(at indexPath: IndexPath) {
         guard let navigationController = self.navigationController else { return }
 
-        let podcast = self.viewModel.podcasts.value(at: indexPath)
+        let podcast = viewModel.podcasts.value(at: indexPath)
         navigationController.pushViewController(
             PodcastEpisodeListViewController(
-                playerPresenter: self.playerPresenter,
+                playerPresenter: playerPresenter,
                 podcast: podcast,
-                viewModel: EpisodeListViewModel(podcast: podcast, service: self.service)
+                viewModel: EpisodeListViewModel(podcast: podcast, service: service)
             ),
             animated: true
         )
     }
-
 }

@@ -9,7 +9,6 @@
 import UIKit
 
 extension UIColor {
-
     var rgbString: String {
         var r: CGFloat = -1
         var g: CGFloat = -1
@@ -20,5 +19,4 @@ extension UIColor {
             return res + (NSString(format: "%02X", intval) as String)
         }
     }
-
 }

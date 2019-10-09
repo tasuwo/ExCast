@@ -10,7 +10,6 @@ import RxRelay
 import RxSwift
 
 struct PlayerModalViewModel {
-
     enum ModalChangeTarget {
         case minimize
         case fullscreen
@@ -37,28 +36,27 @@ struct PlayerModalViewModel {
     // MARK: - Lifecycle
 
     init() {
-        self.panState
+        panState
             .bind(onNext: { [self] panState in
                 switch (self.modalState.value, panState) {
                 case (.fullscreen, .ended(length: let l, _)) where l > 300:
                     self.modalState.accept(.mini)
-                case (.fullscreen, .ended(_, velocity: let v)) where v > 500:
+                case let (.fullscreen, .ended(_, velocity: v)) where v > 500:
                     self.modalState.accept(.mini)
-                case (.mini, .ended(length: let l, velocity: let v)) where l < 0 && v < -500:
+                case let (.mini, .ended(length: l, velocity: v)) where l < 0 && v < -500:
                     self.modalState.accept(.fullscreen)
-                case (.mini, .ended(length: let l, velocity: let v)) where l > 0 && v > 500:
+                case let (.mini, .ended(length: l, velocity: v)) where l > 0 && v > 500:
                     self.modalState.accept(.hide)
                 default:
                     break
                 }
             })
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
     }
 
     func didTap() {
-        if self.modalState.value == .mini {
-            self.modalState.accept(.fullscreen)
+        if modalState.value == .mini {
+            modalState.accept(.fullscreen)
         }
     }
-
 }

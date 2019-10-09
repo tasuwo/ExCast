@@ -9,7 +9,6 @@
 import Foundation
 
 class NotificationSettingRepositoryImpl /* : NotificationSettingRepository */ {
-
     private let repository: LocalRespository
 
     private static let key = "Notification"
@@ -19,16 +18,14 @@ class NotificationSettingRepositoryImpl /* : NotificationSettingRepository */ {
     }
 
     func get() -> NotificationSetting? {
-        return self.repository.fetch(forKey: NotificationSettingRepositoryImpl.key)
+        return repository.fetch(forKey: NotificationSettingRepositoryImpl.key)
     }
 
     func add(_ setting: NotificationSetting) {
-        self.repository.store(obj: setting, forKey: NotificationSettingRepositoryImpl.key)
+        repository.store(obj: setting, forKey: NotificationSettingRepositoryImpl.key)
     }
 
     func clear() {
-        self.repository.delete(forKey: NotificationSettingRepositoryImpl.key)
+        repository.delete(forKey: NotificationSettingRepositoryImpl.key)
     }
-
 }
-

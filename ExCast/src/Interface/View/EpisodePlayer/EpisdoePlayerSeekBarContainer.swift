@@ -6,61 +6,58 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import UIKit
 import MaterialComponents
+import UIKit
 
 protocol EpisodePlayerSeekBarContainerDelegate: AnyObject {
-
     func didStartSeek()
 
     func didEndSeek()
 
     func didChangeSeekValue(to time: TimeInterval)
-
 }
 
 class EpisodePlayerSeekBarContainer: UIView {
-
     weak var delegate: EpisodePlayerSeekBarContainerDelegate!
 
     @IBOutlet var baseView: UIView!
 
-    @IBOutlet weak var bar: MDCSlider!
+    @IBOutlet var bar: MDCSlider!
 
-    @IBOutlet weak var currentTimeLabel: UILabel!
-    
-    @IBOutlet weak var remainingTimeLabel: UILabel!
+    @IBOutlet var currentTimeLabel: UILabel!
 
-    @IBAction func onTouchSeekBar(_ sender: Any) {
-        self.delegate.didStartSeek()
+    @IBOutlet var remainingTimeLabel: UILabel!
+
+    @IBAction func onTouchSeekBar(_: Any) {
+        delegate.didStartSeek()
     }
 
     @IBAction func onTouchUpInsideSeekbar(_ slider: MDCSlider) {
         // TODO: Disable seek by single tap.
-        self.delegate.didChangeSeekValue(to: TimeInterval(slider.value))
-        self.delegate.didEndSeek()
+        delegate.didChangeSeekValue(to: TimeInterval(slider.value))
+        delegate.didEndSeek()
     }
 
-    @IBAction func onTouchUpOutsideSeekbar(_ sender: Any) {
-        self.delegate.didEndSeek()
+    @IBAction func onTouchUpOutsideSeekbar(_: Any) {
+        delegate.didEndSeek()
     }
 
     @IBAction func onValueChangedSeekBar(_ slider: MDCSlider) {
-        self.delegate.didChangeSeekValue(to: TimeInterval(slider.value))
+        delegate.didChangeSeekValue(to: TimeInterval(slider.value))
     }
 
     // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadFromNib()
-        self.setupAppearences()
+        loadFromNib()
+        setupAppearences()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadFromNib()
-        self.setupAppearences()
+        loadFromNib()
+        setupAppearences()
     }
 
     // MARK: - Methods
@@ -70,20 +67,19 @@ class EpisodePlayerSeekBarContainer: UIView {
 
         bundle.loadNibNamed("EpisodePlayerSeekBarContainer", owner: self, options: nil)
 
-        self.baseView.frame = self.bounds
+        baseView.frame = bounds
         addSubview(baseView)
     }
 
     private func setupAppearences() {
-        self.backgroundColor = .clear
-        self.baseView.backgroundColor = .clear
+        backgroundColor = .clear
+        baseView.backgroundColor = .clear
 
-        self.bar.isStatefulAPIEnabled = true
-        self.bar.setThumbColor(.gray, for: .normal)
-        self.bar.setTrackFillColor(.gray, for: .normal)
+        bar.isStatefulAPIEnabled = true
+        bar.setThumbColor(.gray, for: .normal)
+        bar.setTrackFillColor(.gray, for: .normal)
 
-        self.currentTimeLabel.text = "00:00"
-        self.remainingTimeLabel.text = "-00:00"
+        currentTimeLabel.text = "00:00"
+        remainingTimeLabel.text = "-00:00"
     }
-
 }

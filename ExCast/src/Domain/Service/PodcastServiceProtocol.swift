@@ -6,13 +6,13 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import RxSwift
 import RxRelay
+import RxSwift
 
 enum PodcastServiceQuery {
     case progress
     case error
-    case content(Array<Podcast>)
+    case content([Podcast])
 }
 
 enum PodcastServiceCommand {

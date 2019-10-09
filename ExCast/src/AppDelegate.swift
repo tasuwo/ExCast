@@ -6,21 +6,19 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import UIKit
 import AVFoundation
-import MediaPlayer
 import AWSSNS
 import Keys
+import MediaPlayer
+import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
     let keys = ExCastKeys()
     var notificationService: NotificationService?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+    func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // AVPlayer
         let audioSession = AVAudioSession.sharedInstance()
         do {
@@ -39,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // let repository = NotificationSettingRepositoryImpl(repository: LocalRepositoryImpl(defaults: UserDefaults.standard))
         // self.notificationService = NotificationService(notificationCenter: notificationCenter, gateway: gateway, repository: repository)
 
-        self.notificationService?.registerToApnsIfNeeded()
+        notificationService?.registerToApnsIfNeeded()
 
         // Window
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -47,45 +45,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window.rootViewController = AppRootViewController()
             window.makeKeyAndVisible()
         }
-        
+
         return true
     }
 
-    func applicationWillResignActive(_ application: UIApplication) {
+    func applicationWillResignActive(_: UIApplication) {
         // NOP
     }
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
+    func applicationDidEnterBackground(_: UIApplication) {
         // NOP
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
+    func applicationWillEnterForeground(_: UIApplication) {
         // NOP
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
+    func applicationDidBecomeActive(_: UIApplication) {
         // NOP
     }
 
-    func applicationWillTerminate(_ application: UIApplication) {
+    func applicationWillTerminate(_: UIApplication) {
         // NOP
     }
 
     // MARK: - Notification
 
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        self.notificationService?.pushDeviceTokenToProvider(deviceToken)
+    func application(_: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        notificationService?.pushDeviceTokenToProvider(deviceToken)
     }
 
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    func application(_: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         // TODO:
         Swift.print(error)
     }
-
 }
 
 extension AppDelegate: AWSCredentialsProvider {
-
     // MARK: - AWSCredentialsProvider
 
     func credentials() -> AWSTask<AWSCredentials> {
@@ -95,20 +91,17 @@ extension AppDelegate: AWSCredentialsProvider {
     func invalidateCachedTemporaryCredentials() {
         // NOP
     }
-
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-
     // MARK: - UNUserNotificationCenterDelegate
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    func userNotificationCenter(_: UNUserNotificationCenter, willPresent _: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("Push Notification will present")
         completionHandler([.badge, .sound, .alert])
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-
+    func userNotificationCenter(_: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         // TODO:
         let category = NotificationCategory(rawValue: response.notification.request.content.categoryIdentifier)
         switch (category, response.actionIdentifier) {

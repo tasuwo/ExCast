@@ -6,39 +6,38 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import RxSwift
-import RxRelay
 import RxDataSources
+import RxRelay
+import RxSwift
 
 class ShowListViewModel {
-
     private static let sectionIdentifier = ""
 
     private(set) var podcasts: BehaviorRelay<[AnimatableSectionModel<String, Podcast>]> = BehaviorRelay(value: [
-        .init(model: ShowListViewModel.sectionIdentifier, items: [])
+        .init(model: ShowListViewModel.sectionIdentifier, items: []),
     ])
 
     private let service: PodcastService
     private var disposeBag = DisposeBag()
 
     // MARK: - Initializer
-    
+
     init(service: PodcastService) {
         self.service = service
         self.service.command.accept(.refresh)
 
         self.service.state
-            .compactMap({ state -> [Podcast]? in
+            .compactMap { state -> [Podcast]? in
                 switch state {
                 case let .content(podcasts):
                     return podcasts
                 default:
                     return nil
                 }
-            })
-            .map({ [.init(model: ShowListViewModel.sectionIdentifier, items: $0)] as [AnimatableSectionModel<String, Podcast>] })
-            .bind(to: self.podcasts)
-            .disposed(by: self.disposeBag)
+            }
+            .map { [.init(model: ShowListViewModel.sectionIdentifier, items: $0)] as [AnimatableSectionModel<String, Podcast>] }
+            .bind(to: podcasts)
+            .disposed(by: disposeBag)
     }
 
     // MARK: - Methods
@@ -54,16 +53,14 @@ class ShowListViewModel {
             self.service.command.accept(.refresh)
         }
     }
-
 }
 
 extension Podcast: IdentifiableType {
-
     // MARK: - IndetifiableType
 
     typealias Identity = URL
 
     var identity: URL {
-        return self.show.feedUrl
+        return show.feedUrl
     }
 }

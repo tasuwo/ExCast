@@ -15,7 +15,7 @@ public func parseRfc822DateString(_ dateString: String) -> Date? {
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: "en_US_POSIX")
     formatter.timeZone = TimeZone(identifier: "UTC")
-    
+
     if dateString.contains(",") {
         formatter.dateFormat = "EEE, d MMM yyyy HH:mm:ss zzz"
         return formatter.date(from: dateString)

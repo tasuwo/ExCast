@@ -9,7 +9,6 @@
 import UIKit
 
 protocol EpisodePlayerModalViewDelegate: AnyObject {
-
     func shouldDismiss()
 
     func shouldMinimize()
@@ -23,34 +22,32 @@ protocol EpisodePlayerModalViewDelegate: AnyObject {
     func didEndPanned(distance: Float, velocity: Float)
 
     func didTapMinimizeButton()
-
 }
 
 class EpisodePlayerModalView: UIView {
-
     weak var delegate: EpisodePlayerModalViewDelegate?
 
     @IBOutlet var baseView: UIView!
 
-    @IBOutlet weak var minimizeViewButton: UIButton!
+    @IBOutlet var minimizeViewButton: UIButton!
 
-    @IBOutlet weak var showTitleLabel: UILabel!
+    @IBOutlet var showTitleLabel: UILabel!
 
-    @IBOutlet weak var episodeTitleLabel: UILabel!
+    @IBOutlet var episodeTitleLabel: UILabel!
 
-    @IBOutlet weak var thumbnailImageView: UIImageView!
+    @IBOutlet var thumbnailImageView: UIImageView!
 
-    @IBOutlet weak var seekBar: EpisodePlayerSeekBarContainer!
+    @IBOutlet var seekBar: EpisodePlayerSeekBarContainer!
 
-    @IBOutlet weak var playbackButtons: EpisodePlayerPlaybackButtons!
+    @IBOutlet var playbackButtons: EpisodePlayerPlaybackButtons!
 
-    @IBOutlet weak var dismissButton: UIButton!
+    @IBOutlet var dismissButton: UIButton!
 
     @IBOutlet var playbackButtonsHeightConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var playbackButtonsBottomConstraint: NSLayoutConstraint!
+    @IBOutlet var playbackButtonsBottomConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var thumbnailTopConstraint: NSLayoutConstraint!
+    @IBOutlet var thumbnailTopConstraint: NSLayoutConstraint!
 
     @IBOutlet var thumbnailLeftConstraint: NSLayoutConstraint!
 
@@ -62,8 +59,8 @@ class EpisodePlayerModalView: UIView {
 
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
 
-    @IBAction func didTapDismissButton(_ sender: Any) {
-        self.delegate?.shouldDismiss()
+    @IBAction func didTapDismissButton(_: Any) {
+        delegate?.shouldDismiss()
     }
 
     var lastYLocation: CGFloat = 0
@@ -76,17 +73,17 @@ class EpisodePlayerModalView: UIView {
 
         switch gestureRecognizer.state {
         case .began:
-            self.distance = 0
-            self.delegate?.didPanned(distance: Float(self.distance), velocity: Float(velocity.y))
-            self.lastYLocation = 0
+            distance = 0
+            delegate?.didPanned(distance: Float(distance), velocity: Float(velocity.y))
+            lastYLocation = 0
         case .changed:
-            self.distance += translation.y - self.lastYLocation
-            self.delegate?.didPanned(distance: Float(self.distance), velocity: Float(velocity.y))
-            self.lastYLocation = translation.y
+            distance += translation.y - lastYLocation
+            delegate?.didPanned(distance: Float(distance), velocity: Float(velocity.y))
+            lastYLocation = translation.y
         case .ended:
-            self.distance += translation.y - self.lastYLocation
-            self.delegate?.didEndPanned(distance: Float(self.distance), velocity: Float(velocity.y))
-            self.lastYLocation = 0
+            distance += translation.y - lastYLocation
+            delegate?.didEndPanned(distance: Float(distance), velocity: Float(velocity.y))
+            lastYLocation = 0
         case .possible, .cancelled, .failed:
             break
         @unknown default:
@@ -97,30 +94,30 @@ class EpisodePlayerModalView: UIView {
     @IBAction func didTap(_ gestureRecognizer: UITapGestureRecognizer) {
         switch gestureRecognizer.state {
         case .ended:
-            self.delegate?.didTap()
+            delegate?.didTap()
         default:
             break
         }
     }
-    
-    @IBAction func didTapMinimizeViewButton(_ sender: Any) {
-        self.delegate?.didTapMinimizeButton()
+
+    @IBAction func didTapMinimizeViewButton(_: Any) {
+        delegate?.didTapMinimizeButton()
     }
 
     // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadFromNib()
-        self.setupAppearences()
-        self.setupGestureRecognizer()
+        loadFromNib()
+        setupAppearences()
+        setupGestureRecognizer()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadFromNib()
-        self.setupAppearences()
-        self.setupGestureRecognizer()
+        loadFromNib()
+        setupAppearences()
+        setupGestureRecognizer()
     }
 
     // MARK: - Methods
@@ -130,54 +127,50 @@ class EpisodePlayerModalView: UIView {
 
         bundle.loadNibNamed("EpisodePlayerModalView", owner: self, options: nil)
 
-        self.baseView.frame = self.bounds
+        baseView.frame = bounds
         addSubview(baseView)
     }
 
     private func setupAppearences() {
-        self.minimizeViewButton.setImage(UIImage(named: "player_down_arrow"), for: .normal)
+        minimizeViewButton.setImage(UIImage(named: "player_down_arrow"), for: .normal)
         if #available(iOS 13.0, *) {
             self.minimizeViewButton.tintColor = .label
         } else {
-            self.minimizeViewButton.tintColor = .black
+            minimizeViewButton.tintColor = .black
         }
 
-        self.dismissButton.isHidden = true
-        self.dismissButton.setImage(UIImage(named: "player_cancel"), for: .normal)
+        dismissButton.isHidden = true
+        dismissButton.setImage(UIImage(named: "player_cancel"), for: .normal)
         if #available(iOS 13.0, *) {
             self.dismissButton.tintColor = .label
         } else {
-            self.dismissButton.tintColor = .black
+            dismissButton.tintColor = .black
         }
-        
-        self.thumbnailImageView.layer.cornerRadius = 20
+
+        thumbnailImageView.layer.cornerRadius = 20
     }
 
     private func setupGestureRecognizer() {
-        self.panGestureRecognizer.cancelsTouchesInView = false
-        self.tapGestureRecognizer.cancelsTouchesInView = false
-        self.panGestureRecognizer.delegate = self
-        self.tapGestureRecognizer.delegate = self
+        panGestureRecognizer.cancelsTouchesInView = false
+        tapGestureRecognizer.cancelsTouchesInView = false
+        panGestureRecognizer.delegate = self
+        tapGestureRecognizer.delegate = self
     }
-
 }
 
 extension EpisodePlayerModalView: UIGestureRecognizerDelegate {
-
     // MARK: - UIGestureRecognizerDelegate
 
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    func gestureRecognizer(_: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return touch.view is UIButton == false
     }
-
 }
 
 extension EpisodePlayerModalView {
-    
     func minimize() {
         // SeekBar
-        self.seekBar.isHidden = true
-        self.playbackButtons.layoutIfNeeded()
+        seekBar.isHidden = true
+        playbackButtons.layoutIfNeeded()
 
         UIView.animate(withDuration: 0.2, animations: { [unowned self] in
             // Playback Buttons

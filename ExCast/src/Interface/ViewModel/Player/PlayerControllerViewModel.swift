@@ -38,16 +38,16 @@ class PlayerControllerViewModel {
          configuration: PlayerConfiguration) {
         self.show = show
         self.episode = episode
-        self.commands = controller
+        commands = controller
         self.remoteCommands = remoteCommands
         self.configuration = configuration
 
-        self.currentTime
-            .filter({ [unowned self] _ in self.preventToSyncTime.value == false })
-            .bind(to: self.displayCurrentTime)
-            .disposed(by: self.disposeBag)
-        self.isSliderGrabbed
-            .filter({ [unowned self] _ in self.isPrepared.value })
+        currentTime
+            .filter { [unowned self] _ in self.preventToSyncTime.value == false }
+            .bind(to: displayCurrentTime)
+            .disposed(by: disposeBag)
+        isSliderGrabbed
+            .filter { [unowned self] _ in self.isPrepared.value }
             .bind(onNext: { [unowned self] grabbed in
                 if grabbed {
                     self.preventToSyncTime.accept(true)
@@ -59,44 +59,42 @@ class PlayerControllerViewModel {
                     }
                 }
             })
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
     }
 
     // MARK: - Methods
 
     func setup() {
-        self.commands.register(delegate: self)
-        self.commands.register(delegate: self.remoteCommands)
-        self.commands.prepareToPlay()
+        commands.register(delegate: self)
+        commands.register(delegate: remoteCommands)
+        commands.prepareToPlay()
     }
 
     func playback() {
-        if self.isPlaying.value {
-            self.commands.pause()
+        if isPlaying.value {
+            commands.pause()
         } else {
-            self.commands.play()
+            commands.play()
         }
     }
 
     func skipForward() {
-        self.commands.skipForward(duration: self.configuration.forwardSkipTime) { _ in }
+        commands.skipForward(duration: configuration.forwardSkipTime) { _ in }
     }
 
     func skipBackward() {
-        self.commands.skipBackward(duration: self.configuration.backwardSkipTime) { _ in }
+        commands.skipBackward(duration: configuration.backwardSkipTime) { _ in }
     }
-
 }
 
 extension PlayerControllerViewModel: ExCastPlayerDelegate {
-
     // MARK: - AudioPlayerDelegate
 
     func didFinishPrepare() {
-        self.isPrepared.accept(true)
+        isPrepared.accept(true)
 
         if playedAfterLoadingOnce == false {
-            self.commands.play()
+            commands.play()
             playedAfterLoadingOnce = true
         }
     }
@@ -104,22 +102,21 @@ extension PlayerControllerViewModel: ExCastPlayerDelegate {
     func didChangePlayingState(to state: ExCastPlayerState) {
         switch state {
         case .playing:
-            self.isPlaying.accept(true)
+            isPlaying.accept(true)
         case .pause, .finish:
-            self.isPlaying.accept(false)
+            isPlaying.accept(false)
         }
     }
 
     func didChangePlaybackTime(to time: TimeInterval) {
-        self.currentTime.accept(time)
+        currentTime.accept(time)
     }
 
-    func didChangePlaybackRate(to rate: Double) {
+    func didChangePlaybackRate(to _: Double) {
         // NOP:
     }
 
-    func didSeek(to time: TimeInterval) {
+    func didSeek(to _: TimeInterval) {
         // NOP:
     }
-
 }

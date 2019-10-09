@@ -6,14 +6,13 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import UIKit
 import MaterialComponents
 import RxCocoa
 import RxSwift
+import UIKit
 
 class FeedUrlInputViewController: UIViewController {
-
-    @IBOutlet weak var baseView: FeedUrlInputView!
+    @IBOutlet var baseView: FeedUrlInputView!
     private let viewModel: FeedUrlInputViewModel
     private var disposeBag = DisposeBag()
 
@@ -24,7 +23,7 @@ class FeedUrlInputViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -33,23 +32,22 @@ class FeedUrlInputViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.baseView.delegate = self
-        self.baseView.textField.rx.text.orEmpty
-            .bind(to: self.viewModel.url)
-            .disposed(by: self.disposeBag)
+        baseView.delegate = self
+        baseView.textField.rx.text.orEmpty
+            .bind(to: viewModel.url)
+            .disposed(by: disposeBag)
 
-        self.viewModel.view = self
-        self.viewModel.isValid.map { $0 }
-            .bind(to: self.baseView.button.rx.isEnabled)
+        viewModel.view = self
+        viewModel.isValid.map { $0 }
+            .bind(to: baseView.button.rx.isEnabled)
             .disposed(by: disposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.title = NSLocalizedString("FeedUrlInputView.title", comment: "")
+        title = NSLocalizedString("FeedUrlInputView.title", comment: "")
     }
-
 }
 
 extension FeedUrlInputViewController: FeedUrlInputViewProtocol {
@@ -70,11 +68,9 @@ extension FeedUrlInputViewController: FeedUrlInputViewProtocol {
 }
 
 extension FeedUrlInputViewController: FeedUrlInputViewDelegate {
-    
     // MARK: - FeedUrlInputViewDelegate
-    
+
     func didTapSend() {
-        self.viewModel.fetchPodcast()
+        viewModel.fetchPodcast()
     }
-    
 }

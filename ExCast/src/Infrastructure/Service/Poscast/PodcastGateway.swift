@@ -14,7 +14,6 @@ protocol PodcastGatewayProtocol {
 }
 
 class PodcastGateway: PodcastGatewayProtocol {
-
     private let session: URLSession!
     private let factory: PodcastFactory!
 
@@ -25,13 +24,13 @@ class PodcastGateway: PodcastGatewayProtocol {
 
     func fetch(feed: URL) -> Observable<Podcast> {
         return Observable.create { observer in
-            let task = self.session.dataTask(with: feed) { [unowned self] (data, res, err) in
+            let task = self.session.dataTask(with: feed) { [unowned self] data, res, err in
                 if let error = err {
                     observer.onError(error)
                     return
                 }
 
-                guard let response = res as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                guard let response = res as? HTTPURLResponse, (200 ... 299).contains(response.statusCode) else {
                     // TODO: Error Handling
                     observer.onError(NSError(domain: "", code: -1, userInfo: nil))
                     return
@@ -44,10 +43,10 @@ class PodcastGateway: PodcastGatewayProtocol {
                 }
 
                 switch self.factory.create(from: xml) {
-                case .success(let podcast):
+                case let .success(podcast):
                     observer.onNext(podcast)
                     observer.onCompleted()
-                case .failure(_):
+                case .failure:
                     // TODO: Error handling
                     observer.onError(NSError(domain: "", code: -1, userInfo: nil))
                 }
@@ -58,5 +57,4 @@ class PodcastGateway: PodcastGatewayProtocol {
             return Disposables.create { task.cancel() }
         }
     }
-
 }
