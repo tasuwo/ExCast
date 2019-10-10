@@ -9,13 +9,9 @@
 import Foundation
 import RxSwift
 
-protocol PodcastGatewayProtocol {
-    func fetch(feed: URL) -> Observable<Podcast>
-}
-
 class PodcastGateway: PodcastGatewayProtocol {
-    private let session: URLSession!
-    private let factory: PodcastFactory!
+    private let session: URLSession
+    private let factory: PodcastFactory
 
     init(session: URLSession, factory: PodcastFactory) {
         self.session = session

@@ -60,8 +60,12 @@ struct EpisodeListViewModel {
 
     // MARK: - Methods
 
-    func load() {
+    func refresh() {
         self.service.command.accept(.refresh)
+    }
+
+    func fetch(url: URL) {
+        self.service.command.accept(.fetch(url))
     }
 }
 

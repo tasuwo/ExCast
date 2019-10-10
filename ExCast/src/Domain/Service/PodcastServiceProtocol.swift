@@ -17,6 +17,7 @@ enum PodcastServiceQuery {
 
 enum PodcastServiceCommand {
     case refresh
+    case fetch(URL)
     case create(Podcast)
     case delete(Podcast)
 }

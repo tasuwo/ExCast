@@ -48,7 +48,8 @@ class PodcastEpisodeListViewController: UIViewController {
             .disposed(by: disposeBag)
 
         episodeListView.refreshControl?.rx.controlEvent(.valueChanged)
-            .bind(onNext: { [weak self] _ in self?.viewModel.load() })
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
+            .bind(onNext: { [unowned self] _ in self.viewModel.fetch(url: self.viewModel.podcast.value.show.feedUrl) })
             .disposed(by: disposeBag)
 
         viewModel.service.state
@@ -64,7 +65,7 @@ class PodcastEpisodeListViewController: UIViewController {
 
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
 
-        viewModel.load()
+        viewModel.refresh()
     }
 
     override func viewWillAppear(_ animated: Bool) {
