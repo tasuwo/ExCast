@@ -79,8 +79,6 @@ class PodcastEpisodeListViewController: UIViewController {
             .disposed(by: self.disposeBag)
 
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
-
-        self.viewModel.refresh()
     }
 
     override func viewWillAppear(_ animated: Bool) {
