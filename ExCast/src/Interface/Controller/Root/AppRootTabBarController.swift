@@ -9,18 +9,14 @@
 import UIKit
 
 class AppRootTabBarController: UITabBarController {
-    private unowned let playerPresenter: EpisodePlayerPresenter
-    private let service: PodcastService
-    private let gateway: PodcastGateway
+    typealias Factory = ViewControllerFactory
+
+    private let factory: Factory
 
     // MARK: - Initializer
 
-    init(playerPresenter: EpisodePlayerPresenter,
-         service: PodcastService,
-         gateway: PodcastGateway) {
-        self.playerPresenter = playerPresenter
-        self.service = service
-        self.gateway = gateway
+    init(factory: Factory) {
+        self.factory = factory
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -31,17 +27,11 @@ class AppRootTabBarController: UITabBarController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
-        let viewModel = ShowListViewModel(service: service)
+        let showListViewController = self.factory.makePodcastShowListViewController()
 
-        let showListVC = PodcastShowListViewController(
-            playerPresenter: playerPresenter,
-            viewModel: viewModel,
-            service: service,
-            gateway: gateway
-        )
-        showListVC.tabBarItem = UITabBarItem(title: NSLocalizedString("Tabbar.library", comment: ""), image: UIImage(named: "tabbar_library_black"), tag: 0)
-        let showListNVC = UINavigationController(rootViewController: showListVC)
+        showListViewController.tabBarItem = UITabBarItem(title: NSLocalizedString("Tabbar.library", comment: ""), image: UIImage(named: "tabbar_library_black"), tag: 0)
+        let showListNavigationViewController = UINavigationController(rootViewController: showListViewController)
 
-        viewControllers = [showListNVC]
+        self.viewControllers = [showListNavigationViewController]
     }
 }

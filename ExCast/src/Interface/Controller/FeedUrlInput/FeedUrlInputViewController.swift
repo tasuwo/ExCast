@@ -12,13 +12,19 @@ import RxSwift
 import UIKit
 
 class FeedUrlInputViewController: UIViewController {
+    typealias Factory = ViewControllerFactory
+
     @IBOutlet var baseView: FeedUrlInputView!
+
+    private let factory: Factory
     private let viewModel: FeedUrlInputViewModel
+
     private var disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
-    init(viewModel: FeedUrlInputViewModel) {
+    init(factory: Factory, viewModel: FeedUrlInputViewModel) {
+        self.factory = factory
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

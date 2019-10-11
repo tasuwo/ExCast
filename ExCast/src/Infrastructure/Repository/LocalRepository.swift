@@ -8,13 +8,13 @@
 
 import Foundation
 
-protocol LocalRespository {
+protocol LocalRespositoryProtocol {
     func fetch<T: Codable>(forKey name: String) -> T?
     func store<T: Codable>(obj: T, forKey name: String)
     func delete(forKey name: String) -> Void
 }
 
-public class LocalRepositoryImpl: LocalRespository {
+public class LocalRepository: LocalRespositoryProtocol {
     private let defaults: UserDefaults!
 
     init(defaults: UserDefaults) {

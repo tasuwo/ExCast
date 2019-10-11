@@ -16,12 +16,12 @@ protocol PodcastRepositoryProtocol {
 }
 
 struct PodcastRepository: PodcastRepositoryProtocol {
-    private let factory: PodcastFactory!
-    private let repository: LocalRespository!
+    private let factory: PodcastFactory
+    private let repository: LocalRespositoryProtocol
 
     private static let key = "Podcast"
 
-    init(factory: PodcastFactory, repository: LocalRespository) {
+    init(factory: PodcastFactory, repository: LocalRespositoryProtocol) {
         self.factory = factory
         self.repository = repository
     }

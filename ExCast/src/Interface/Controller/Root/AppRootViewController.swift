@@ -6,25 +6,30 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import MediaPlayer
 import UIKit
 
 class AppRootViewController: UIViewController {
-    private var rootTabBarController: AppRootTabBarController!
+    typealias Factory = ViewControllerFactory & ViewModelFactory
+
+    private lazy var rootTabBarController = self.factory.makeAppRootTabBarController()
     private var playerModalViewController: EpisodePlayerViewController?
 
+    private let factory: Factory
     private weak var delegate: EpisodePlayerPresenterDelegate?
 
     // MARK: - Lifecycle
 
+    init(factory: Factory) {
+        self.factory = factory
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
-        let gateway = PodcastGateway(session: URLSession.shared, factory: PodcastFactory())
-        rootTabBarController = AppRootTabBarController(
-            playerPresenter: self,
-            service: PodcastService(repository: PodcastRepository(factory: PodcastFactory(), repository: LocalRepositoryImpl(defaults: UserDefaults.standard)), gateway: gateway),
-            gateway: gateway
-        )
-        displayContentController(rootTabBarController)
+        displayContentController(self.rootTabBarController)
     }
 
     // MARK: - Methods
@@ -43,7 +48,9 @@ class AppRootViewController: UIViewController {
     }
 }
 
-extension AppRootViewController: EpisodePlayerPresenter {
+extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
+    // MARK: - EpisodePlayerModalPresenterProtocol
+
     func playingEpisode() -> Podcast.Episode? {
         return playerModalViewController?.playingEpisode
     }
@@ -52,31 +59,16 @@ extension AppRootViewController: EpisodePlayerPresenter {
         self.delegate = delegate
     }
 
-    func show(show: Podcast.Show, episode: Podcast.Episode, configuration: PlayerConfiguration) {
-        let player = ExCastPlayer(contentUrl: episode.enclosure.url)
-        let commandHandler = RemoteCommandHandler(
-            show: show,
-            episode: episode,
-            commandCenter: MPRemoteCommandCenter.shared(),
-            player: player,
-            infoCenter: MPNowPlayingInfoCenter.default(),
-            configuration: configuration
-        )
-
+    func show(show: Podcast.Show, episode: Podcast.Episode) {
         if let view = self.playerModalViewController {
             view.reload(
-                controllerViewModel: PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler, configuration: configuration),
-                informationViewModel: PlayerInformationViewModel(show: show, episode: episode)
+                controllerViewModel: self.factory.makePlayerControllerViewModel(show: show, episode: episode),
+                informationViewModel: self.factory.makePlayerInformationViewModel(show: show, episode: episode)
             )
             return
         }
 
-        let playerViewController = EpisodePlayerViewController(
-            presenter: self,
-            viewModel: PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler, configuration: configuration),
-            informationViewModel: PlayerInformationViewModel(show: show, episode: episode),
-            modalViewModel: PlayerModalViewModel()
-        )
+        let playerViewController = self.factory.makeEpisodePlayerViewController(show: show, episode: episode)
         playerViewController.modalPresentationStyle = .formSheet
         playerViewController.modalTransitionStyle = .coverVertical
 

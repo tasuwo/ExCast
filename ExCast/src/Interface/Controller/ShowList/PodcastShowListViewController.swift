@@ -11,26 +11,21 @@ import RxSwift
 import UIKit
 
 class PodcastShowListViewController: UIViewController {
+    typealias Factory = ViewControllerFactory
+
     @IBOutlet var showListView: PodcastShowListView!
     private let dataSourceContainer = PodcastShowListViewDataSourceContainer()
 
-    private unowned let playerPresenter: EpisodePlayerPresenter
+    private let factory: Factory
     private let viewModel: ShowListViewModel
-
-    private let service: PodcastServiceProtocol
-    private let gateway: PodcastGatewayProtocol
 
     private let disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
-    init(playerPresenter: EpisodePlayerPresenter, viewModel: ShowListViewModel, service: PodcastServiceProtocol, gateway: PodcastGatewayProtocol) {
-        self.playerPresenter = playerPresenter
+    init(factory: Factory, viewModel: ShowListViewModel) {
+        self.factory = factory
         self.viewModel = viewModel
-
-        self.service = service
-        self.gateway = gateway
-
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -83,9 +78,7 @@ class PodcastShowListViewController: UIViewController {
     @objc private func didTapTabBar() {
         guard let navigationController = self.navigationController else { return }
 
-        let viewModel = FeedUrlInputViewModel(service: service, gateway: gateway)
-        let nextViewController = FeedUrlInputViewController(viewModel: viewModel)
-
+        let nextViewController = self.factory.makeFeedUrlInputViewController()
         navigationController.pushViewController(nextViewController, animated: true)
     }
 
@@ -93,9 +86,7 @@ class PodcastShowListViewController: UIViewController {
         guard let navigationController = self.navigationController else { return }
 
         let podcast = viewModel.podcasts.value(at: indexPath)
-        let viewModel = EpisodeListViewModel(podcast: podcast, service: service)
-        let nextViewController = PodcastEpisodeListViewController(playerPresenter: playerPresenter, podcast: podcast, viewModel: viewModel)
-
+        let nextViewController = self.factory.makeEpisodeListViewController(podcast: podcast)
         navigationController.pushViewController(nextViewController, animated: true)
     }
 }

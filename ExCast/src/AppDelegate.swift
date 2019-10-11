@@ -31,9 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AWSServiceManager.default()?.defaultServiceConfiguration = AWSServiceConfiguration(region: .APNortheast1, credentialsProvider: self)
 
         // Notification
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.delegate = self
-        let gateway = PushNotificationProviderGatewayImpl(snsClient: AWSSNS.default(), applicationArn: keys.awsSnsApplicationArn)
+        // let notificationCenter = UNUserNotificationCenter.current()
+        // notificationCenter.delegate = self
+        // let gateway = PushNotificationProviderGatewayImpl(snsClient: AWSSNS.default(), applicationArn: keys.awsSnsApplicationArn)
         // let repository = NotificationSettingRepositoryImpl(repository: LocalRepositoryImpl(defaults: UserDefaults.standard))
         // self.notificationService = NotificationService(notificationCenter: notificationCenter, gateway: gateway, repository: repository)
 
@@ -42,7 +42,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Window
         window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {
-            window.rootViewController = AppRootViewController()
+            let container = DependencyContainer()
+            let rootViewController = AppRootViewController(factory: container)
+            container.episodePlayerModalPresenter = rootViewController
+
+            window.rootViewController = rootViewController
             window.makeKeyAndVisible()
         }
 

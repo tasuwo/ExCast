@@ -14,10 +14,17 @@ struct EpisodeListViewModel {
     private static let sectionIdentifier = ""
 
     private let feedUrl: URL
-    private(set) var service: PodcastServiceProtocol
+    private let service: PodcastServiceProtocol
 
     private(set) var podcast: BehaviorRelay<Podcast>
     private(set) var episodes: BehaviorRelay<[AnimatableSectionModel<String, Podcast.Episode>]>
+
+    enum State {
+        case normal
+        case progress
+        case error
+    }
+    private(set) var state: BehaviorRelay<State> = BehaviorRelay(value: .normal)
 
     private var disposeBag = DisposeBag()
 
@@ -50,6 +57,17 @@ struct EpisodeListViewModel {
                 }
             }
             .disposed(by: disposeBag)
+
+        self.service.state
+            .map({ state -> State in
+                switch state {
+                case .content(_): return .normal
+                case .error: return .error
+                case .progress: return .progress
+                }
+            })
+            .bind(to: self.state)
+            .disposed(by: self.disposeBag)
 
         self.podcast
             .map { $0.episodes }

@@ -9,11 +9,11 @@
 import Foundation
 
 class NotificationSettingRepositoryImpl /* : NotificationSettingRepository */ {
-    private let repository: LocalRespository
+    private let repository: LocalRespositoryProtocol
 
     private static let key = "Notification"
 
-    init(repository: LocalRespository) {
+    init(repository: LocalRespositoryProtocol) {
         self.repository = repository
     }
 

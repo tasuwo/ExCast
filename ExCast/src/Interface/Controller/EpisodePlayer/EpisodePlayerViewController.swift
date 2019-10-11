@@ -14,12 +14,12 @@ protocol EpisodePlayerPresenterDelegate: AnyObject {
     func didDismissPlayer()
 }
 
-protocol EpisodePlayerPresenter: AnyObject {
+protocol EpisodePlayerModalPresenterProtocol: AnyObject {
     func playingEpisode() -> Podcast.Episode?
 
     func setDelegate(_ delegate: EpisodePlayerPresenterDelegate)
 
-    func show(show: Podcast.Show, episode: Podcast.Episode, configuration: PlayerConfiguration)
+    func show(show: Podcast.Show, episode: Podcast.Episode)
 
     func dismiss()
 
@@ -29,38 +29,36 @@ protocol EpisodePlayerPresenter: AnyObject {
 }
 
 class EpisodePlayerViewController: UIViewController {
-    @IBOutlet var modalView: EpisodePlayerModalView!
+    typealias Factory = ViewControllerFactory & ViewModelFactory & EpisodePlayerModalPresenterFactory
 
-    private unowned var playerPresenter: EpisodePlayerPresenter
+    @IBOutlet var modalView: EpisodePlayerModalView!
 
     var playingEpisode: Podcast.Episode {
         return informationViewModel.episode
     }
 
-    private var modalViewModel: PlayerModalViewModel!
+    private let factory: Factory
+    private lazy var playerModalPresenter = self.factory.makeEpisodePlayerModalPresenter()
+    private let modalViewModel: PlayerModalViewModel
     private var controllerViewModel: PlayerControllerViewModel!
     private var informationViewModel: PlayerInformationViewModel!
 
     private var disposeBag = DisposeBag()
 
-    // MARK: - Initializer
+    // MARK: - Lifecycle
 
-    init(presenter: EpisodePlayerPresenter,
-         viewModel: PlayerControllerViewModel,
-         informationViewModel: PlayerInformationViewModel,
-         modalViewModel: PlayerModalViewModel) {
-        playerPresenter = presenter
-        controllerViewModel = viewModel
-        self.informationViewModel = informationViewModel
-        self.modalViewModel = modalViewModel
+    init(factory: Factory, show: Podcast.Show, episode: Podcast.Episode, viewModel: PlayerModalViewModel) {
+        self.factory = factory
+        self.modalViewModel = viewModel
+        self.controllerViewModel = factory.makePlayerControllerViewModel(show: show, episode: episode)
+        self.informationViewModel = factory.makePlayerInformationViewModel(show: show, episode: episode)
+
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -191,31 +189,31 @@ extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
     // MARK: - EpisodePlayerModalViewDelegate
 
     func shouldDismiss() {
-        playerPresenter.dismiss()
+        self.playerModalPresenter?.dismiss()
     }
 
     func shouldMinimize() {
-        playerPresenter.minimize()
+        self.playerModalPresenter?.minimize()
     }
 
     func shouldExpand() {
-        playerPresenter.expand()
+        self.playerModalPresenter?.expand()
     }
 
     func didTap() {
-        modalViewModel.didTap()
+        self.modalViewModel.didTap()
     }
 
     func didPanned(distance: Float, velocity: Float) {
-        modalViewModel.panState.accept(.changed(lentgh: distance, velocity: velocity))
+        self.modalViewModel.panState.accept(.changed(lentgh: distance, velocity: velocity))
     }
 
     func didEndPanned(distance: Float, velocity: Float) {
-        modalViewModel.panState.accept(.ended(length: distance, velocity: velocity))
-        modalViewModel.panState.accept(.none)
+        self.modalViewModel.panState.accept(.ended(length: distance, velocity: velocity))
+        self.modalViewModel.panState.accept(.none)
     }
 
     func didTapMinimizeButton() {
-        modalViewModel.modalState.accept(.mini)
+        self.modalViewModel.modalState.accept(.mini)
     }
 }

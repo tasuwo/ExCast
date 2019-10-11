@@ -17,12 +17,12 @@ class ShowListViewModel {
         .init(model: ShowListViewModel.sectionIdentifier, items: []),
     ])
 
-    private let service: PodcastService
+    private let service: PodcastServiceProtocol
     private var disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
-    init(service: PodcastService) {
+    init(service: PodcastServiceProtocol) {
         self.service = service
         self.service.command.accept(.refresh)
 

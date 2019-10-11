@@ -11,14 +11,19 @@ import RxSwift
 import UIKit
 
 class EpisodeDetailViewController: UIViewController {
+    typealias Factory = ViewControllerFactory
+
     @IBOutlet var episodeDetailView: EpisodeDetailView!
+
+    private let factory: Factory
     private let viewModel: EpisodeDetailViewModel
 
     private let disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
-    init(viewModel: EpisodeDetailViewModel) {
+    init(factory: Factory, viewModel: EpisodeDetailViewModel) {
+        self.factory = factory
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
