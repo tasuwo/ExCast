@@ -28,6 +28,8 @@
 		2C55EC232350072D00797963 /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C55EC222350072D00797963 /* Factory.swift */; };
 		2C55EC25235037A800797963 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C55EC24235037A800797963 /* DependencyContainer.swift */; };
 		2C55EC2723504A8100797963 /* DataSourceQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C55EC2623504A8100797963 /* DataSourceQuery.swift */; };
+		2C55EC29235083C900797963 /* String+dataForHtml.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C55EC28235083C900797963 /* String+dataForHtml.swift */; };
+		2C55EC2B235083E500797963 /* Data+makeHtmlString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C55EC2A235083E500797963 /* Data+makeHtmlString.swift */; };
 		2C5BD1302301C2FF0096A41C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C546C8822FFDABB00C1BB83 /* UserNotifications.framework */; };
 		2C5BD1312301C2FF0096A41C /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C546C8A22FFDABB00C1BB83 /* UserNotificationsUI.framework */; };
 		2C5BD1342301C2FF0096A41C /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BD1332301C2FF0096A41C /* NotificationViewController.swift */; };
@@ -149,6 +151,8 @@
 		2C55EC222350072D00797963 /* Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factory.swift; sourceTree = "<group>"; };
 		2C55EC24235037A800797963 /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
 		2C55EC2623504A8100797963 /* DataSourceQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceQuery.swift; sourceTree = "<group>"; };
+		2C55EC28235083C900797963 /* String+dataForHtml.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+dataForHtml.swift"; sourceTree = "<group>"; };
+		2C55EC2A235083E500797963 /* Data+makeHtmlString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+makeHtmlString.swift"; sourceTree = "<group>"; };
 		2C5BD12F2301C2FF0096A41C /* ThumbnailNotification.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ThumbnailNotification.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C5BD1332301C2FF0096A41C /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		2C5BD1362301C2FF0096A41C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -271,6 +275,8 @@
 			isa = PBXGroup;
 			children = (
 				2C4D911B2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift */,
+				2C55EC28235083C900797963 /* String+dataForHtml.swift */,
+				2C55EC2A235083E500797963 /* Data+makeHtmlString.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1021,6 +1027,7 @@
 				2C4D911C2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift in Sources */,
 				2CA2E9BB22F1BF9800A6E3A9 /* ThumbnailDownloader.swift in Sources */,
 				2CA13C5C22C8D7D700CC6072 /* FeedUrlInputViewController.swift in Sources */,
+				2C55EC2B235083E500797963 /* Data+makeHtmlString.swift in Sources */,
 				2C122DE922CA619E00011558 /* PodcastShowListViewController.swift in Sources */,
 				2C6391E022E2128700B5EBE0 /* XML.swift in Sources */,
 				2C6391FA22E2C30F00B5EBE0 /* EpisodeListViewModel.swift in Sources */,
@@ -1033,6 +1040,7 @@
 				2C546C9D2301AFE400C1BB83 /* NotificaitonCategory.swift in Sources */,
 				2CCEC3D722E484670055D27A /* PlayerControllerViewModel.swift in Sources */,
 				2C122DF522CCFBA100011558 /* parseRfc822DateString.swift in Sources */,
+				2C55EC29235083C900797963 /* String+dataForHtml.swift in Sources */,
 				2C546C6622FFBA4600C1BB83 /* NotificationSettingRepositoryImpl.swift in Sources */,
 				2C6391DD22E1EB8300B5EBE0 /* PodcastFactory.swift in Sources */,
 				2C6391DA22E1DCAD00B5EBE0 /* FeedUrlInputViewModel.swift in Sources */,
