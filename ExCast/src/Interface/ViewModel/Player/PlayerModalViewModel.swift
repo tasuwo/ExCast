@@ -28,8 +28,8 @@ struct PlayerModalViewModel {
         case none
     }
 
-    var modalState: BehaviorRelay<ModalState> = BehaviorRelay(value: .fullscreen)
-    var panState: BehaviorRelay<PanState> = BehaviorRelay(value: .none)
+    private(set) var modalState: BehaviorRelay<ModalState> = BehaviorRelay(value: .fullscreen)
+    private(set) var panState: BehaviorRelay<PanState> = BehaviorRelay(value: .none)
 
     private var disposeBag = DisposeBag()
 

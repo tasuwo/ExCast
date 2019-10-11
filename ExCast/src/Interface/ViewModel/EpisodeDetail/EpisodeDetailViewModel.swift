@@ -10,14 +10,14 @@ import Foundation
 import RxRelay
 
 class EpisodeDetailViewModel {
-    let show: Podcast.Show
-    let episode: Podcast.Episode
+    private let show: Podcast.Show
+    private let episode: Podcast.Episode
 
-    var title: BehaviorRelay<String>
-    var pubDate: BehaviorRelay<Date?>
-    var duration: BehaviorRelay<Double>
-    var thumbnail: BehaviorRelay<URL?>
-    var description: BehaviorRelay<String>
+    private(set) var title: BehaviorRelay<String>
+    private(set) var pubDate: BehaviorRelay<Date?>
+    private(set) var duration: BehaviorRelay<Double>
+    private(set) var thumbnail: BehaviorRelay<URL?>
+    private(set) var description: BehaviorRelay<String>
 
     init(show: Podcast.Show, episode: Podcast.Episode) {
         self.show = show

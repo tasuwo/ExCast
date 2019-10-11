@@ -18,7 +18,6 @@ struct EpisodeListViewModel {
 
     private(set) var podcast: BehaviorRelay<Podcast>
     private(set) var episodes: BehaviorRelay<[AnimatableSectionModel<String, Podcast.Episode>]>
-
     enum State {
         case normal
         case progress
@@ -26,7 +25,7 @@ struct EpisodeListViewModel {
     }
     private(set) var state: BehaviorRelay<State> = BehaviorRelay(value: .normal)
 
-    private var disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
 
     // MARK: - Initializer
 

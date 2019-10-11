@@ -22,7 +22,7 @@ class FeedUrlInputViewModel {
 
     private let disposeBag = DisposeBag()
 
-    var url = BehaviorRelay<String>(value: "")
+    private(set) var url = BehaviorRelay<String>(value: "")
     var isValid: Observable<Bool> {
         return url.map { url in
             !url.isEmpty

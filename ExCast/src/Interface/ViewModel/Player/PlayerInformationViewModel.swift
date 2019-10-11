@@ -13,9 +13,9 @@ class PlayerInformationViewModel {
     let show: Podcast.Show
     let episode: Podcast.Episode
 
-    var showTitle: BehaviorRelay<String>
-    var episodeTitle: BehaviorRelay<String>
-    var thumbnail: BehaviorRelay<URL?>
+    private(set) var showTitle: BehaviorRelay<String>
+    private(set) var episodeTitle: BehaviorRelay<String>
+    private(set) var thumbnail: BehaviorRelay<URL?>
 
     // MARK: - Lifecycle
 

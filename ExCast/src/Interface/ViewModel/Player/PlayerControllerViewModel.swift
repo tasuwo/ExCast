@@ -11,19 +11,22 @@ import RxRelay
 import RxSwift
 
 class PlayerControllerViewModel {
-    let show: Podcast.Show
-    let episode: Podcast.Episode
+    private let show: Podcast.Show
+    private let episode: Podcast.Episode
     private let commands: ExCastPlayerProtocol
     private let remoteCommands: ExCastPlayerDelegate
     private let configuration: PlayerConfiguration
 
     private var playedAfterLoadingOnce: Bool = false
 
-    var isPlaying: BehaviorRelay<Bool> = BehaviorRelay(value: false)
-    var isPrepared: BehaviorRelay<Bool> = BehaviorRelay(value: false)
-    var currentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
-    var displayCurrentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
-    var isSliderGrabbed: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    private(set) var isPlaying: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    private(set) var isPrepared: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    private(set) var currentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
+    private(set) var displayCurrentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
+    private(set) var isSliderGrabbed: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    var episodeLength: Float {
+        return episode.episodeLength
+    }
 
     private var preventToSyncTime: BehaviorRelay<Bool> = BehaviorRelay(value: false)
 

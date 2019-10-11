@@ -16,8 +16,8 @@ class ShowListViewModel {
     private(set) var podcasts: BehaviorRelay<[AnimatableSectionModel<String, Podcast>]> = BehaviorRelay(value: [
         .init(model: ShowListViewModel.sectionIdentifier, items: []),
     ])
-
     private let service: PodcastServiceProtocol
+    
     private var disposeBag = DisposeBag()
 
     // MARK: - Initializer

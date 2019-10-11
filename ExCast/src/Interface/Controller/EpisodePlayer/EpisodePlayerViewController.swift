@@ -101,7 +101,7 @@ class EpisodePlayerViewController: UIViewController {
     }
 
     private func bindEpisode() {
-        let length = controllerViewModel.episode.episodeLength
+        let length = controllerViewModel.episodeLength
         modalView.seekBar.bar.maximumValue = CGFloat(length)
 
         // Bind
