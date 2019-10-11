@@ -78,7 +78,7 @@ class PodcastShowListViewController: UIViewController {
     @objc private func didTapTabBar() {
         guard let navigationController = self.navigationController else { return }
 
-        let nextViewController = self.factory.makeFeedUrlInputViewController()
+        let nextViewController = factory.makeFeedUrlInputViewController()
         navigationController.pushViewController(nextViewController, animated: true)
     }
 
@@ -86,7 +86,7 @@ class PodcastShowListViewController: UIViewController {
         guard let navigationController = self.navigationController else { return }
 
         let podcast = viewModel.podcasts.value(at: indexPath)
-        let nextViewController = self.factory.makeEpisodeListViewController(podcast: podcast)
+        let nextViewController = factory.makeEpisodeListViewController(podcast: podcast)
         navigationController.pushViewController(nextViewController, animated: true)
     }
 }

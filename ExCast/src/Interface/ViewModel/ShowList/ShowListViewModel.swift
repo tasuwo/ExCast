@@ -17,7 +17,7 @@ class ShowListViewModel {
         .init(model: ShowListViewModel.sectionIdentifier, items: []),
     ])
     private let service: PodcastServiceProtocol
-    
+
     private var disposeBag = DisposeBag()
 
     // MARK: - Initializer
@@ -43,10 +43,10 @@ class ShowListViewModel {
     // MARK: - Methods
 
     func remove(at index: Int) {
-        self.service.command.accept(.delete(self.podcasts.value[0].items[index]))
+        service.command.accept(.delete(podcasts.value[0].items[index]))
     }
 
     func load() {
-        self.service.command.accept(.refresh)
+        service.command.accept(.refresh)
     }
 }

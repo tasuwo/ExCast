@@ -34,19 +34,19 @@ struct EpisodeListViewModel {
         feedUrl = podcast.show.feedUrl
         self.service = service
 
-        self.show = podcast.show
-        self.episodes = BehaviorRelay(value: .contents([
+        show = podcast.show
+        episodes = BehaviorRelay(value: .contents([
             .init(model: EpisodeListViewModel.sectionIdentifier,
-                  items: podcast.episodes.map { ListingEpisode(episode: $0, isPlaying: false) })
+                  items: podcast.episodes.map { ListingEpisode(episode: $0, isPlaying: false) }),
         ]))
-        self.episodesCache = BehaviorRelay(value: [
+        episodesCache = BehaviorRelay(value: [
             .init(model: EpisodeListViewModel.sectionIdentifier,
-                  items: podcast.episodes.map { ListingEpisode(episode: $0, isPlaying: false) })
+                  items: podcast.episodes.map { ListingEpisode(episode: $0, isPlaying: false) }),
         ])
 
         self.service.state
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .map({ [self] query -> DataSourceQuery<ListingEpisode> in
+            .map { [self] query -> DataSourceQuery<ListingEpisode> in
                 switch query {
                 case let .content(podcasts):
                     // TODO: 効率化
@@ -56,18 +56,18 @@ struct EpisodeListViewModel {
                     let items = podcast.episodes.map {
                         ListingEpisode(episode: $0, isPlaying: $0 == self.playingEpisode.value)
                     }
-                    return .contents([ .init(model: EpisodeListViewModel.sectionIdentifier, items: items) ])
+                    return .contents([.init(model: EpisodeListViewModel.sectionIdentifier, items: items)])
                 case .error:
                     return .error
                 case .progress:
                     return .progress
                 }
-            })
-            .bind(to: self.episodes)
-            .disposed(by: self.disposeBag)
+            }
+            .bind(to: episodes)
+            .disposed(by: disposeBag)
 
-        self.playingEpisode
-            .map({ [self] episode -> DataSourceQuery<ListingEpisode> in
+        playingEpisode
+            .map { [self] episode -> DataSourceQuery<ListingEpisode> in
                 switch self.episodes.value {
                 case let .contents(container):
                     if episode == nil {
@@ -93,11 +93,11 @@ struct EpisodeListViewModel {
                 default:
                     return self.episodes.value
                 }
-            })
-            .bind(to: self.episodes)
-            .disposed(by: self.disposeBag)
+            }
+            .bind(to: episodes)
+            .disposed(by: disposeBag)
 
-        self.episodes
+        episodes
             .bind(onNext: { [self] query in
                 switch query {
                 case let .contents(container):
@@ -105,13 +105,13 @@ struct EpisodeListViewModel {
                 default: break
                 }
             })
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
     }
 
     // MARK: - Methods
 
     func fetch(url: URL) {
-        self.service.command.accept(.fetch(url))
+        service.command.accept(.fetch(url))
     }
 }
 
@@ -121,6 +121,6 @@ extension EpisodeListViewModel.ListingEpisode: IdentifiableType {
     typealias Identity = String
 
     var identity: String {
-        return self.episode.title
+        return episode.title
     }
 }

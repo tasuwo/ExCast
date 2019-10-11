@@ -8,7 +8,7 @@
 
 protocol ViewControllerFactory {
     func makeAppRootTabBarController() -> AppRootTabBarController
-    
+
     func makePodcastShowListViewController() -> PodcastShowListViewController
     func makeFeedUrlInputViewController() -> FeedUrlInputViewController
     func makeEpisodeListViewController(podcast: Podcast) -> PodcastEpisodeListViewController

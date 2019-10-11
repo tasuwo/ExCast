@@ -45,7 +45,7 @@ class FeedUrlInputViewModel {
         }
 
         gateway.fetch(feed: url)
-            .subscribe({ [self] event in
+            .subscribe { [self] event in
                 switch event {
                 case .error:
                     self.view?.showMessage(NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: ""))
@@ -55,11 +55,11 @@ class FeedUrlInputViewModel {
                     self.view?.didFetchPodcastSuccessfully()
                 case .completed: break
                 }
-            })
+            }
             .disposed(by: disposeBag)
     }
 
     private func store(_ podcast: Podcast) {
-        self.service.command.accept(.create(podcast))
+        service.command.accept(.create(podcast))
     }
 }

@@ -39,9 +39,9 @@ class EpisodePlayerViewController: UIViewController {
 
     init(factory: Factory, show: Podcast.Show, episode: Podcast.Episode, viewModel: PlayerModalViewModel) {
         self.factory = factory
-        self.modalViewModel = viewModel
-        self.controllerViewModel = factory.makePlayerControllerViewModel(show: show, episode: episode)
-        self.informationViewModel = factory.makePlayerInformationViewModel(show: show, episode: episode)
+        modalViewModel = viewModel
+        controllerViewModel = factory.makePlayerControllerViewModel(show: show, episode: episode)
+        informationViewModel = factory.makePlayerInformationViewModel(show: show, episode: episode)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -173,31 +173,31 @@ extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
     // MARK: - EpisodePlayerModalViewDelegate
 
     func shouldDismiss() {
-        self.playerModalPresenter?.dismiss()
+        playerModalPresenter?.dismiss()
     }
 
     func shouldMinimize() {
-        self.playerModalPresenter?.minimize()
+        playerModalPresenter?.minimize()
     }
 
     func shouldExpand() {
-        self.playerModalPresenter?.expand()
+        playerModalPresenter?.expand()
     }
 
     func didTap() {
-        self.modalViewModel.didTap()
+        modalViewModel.didTap()
     }
 
     func didPanned(distance: Float, velocity: Float) {
-        self.modalViewModel.panState.accept(.changed(lentgh: distance, velocity: velocity))
+        modalViewModel.panState.accept(.changed(lentgh: distance, velocity: velocity))
     }
 
     func didEndPanned(distance: Float, velocity: Float) {
-        self.modalViewModel.panState.accept(.ended(length: distance, velocity: velocity))
-        self.modalViewModel.panState.accept(.none)
+        modalViewModel.panState.accept(.ended(length: distance, velocity: velocity))
+        modalViewModel.panState.accept(.none)
     }
 
     func didTapMinimizeButton() {
-        self.modalViewModel.modalState.accept(.mini)
+        modalViewModel.modalState.accept(.mini)
     }
 }

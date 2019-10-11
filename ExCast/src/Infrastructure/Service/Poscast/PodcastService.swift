@@ -48,7 +48,7 @@ struct PodcastService: PodcastServiceProtocol {
 
         let fetchState = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .filter { if case .fetch(_) = $0 { return true } else { return false } }
+            .filter { if case .fetch = $0 { return true } else { return false } }
             .map { _ in PodcastServiceQuery.progress }
 
         let fetchResultState = command

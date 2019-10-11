@@ -33,17 +33,17 @@ extension DependencyContainer: ViewControllerFactory {
     }
 
     func makePodcastShowListViewController() -> PodcastShowListViewController {
-        let viewModel = ShowListViewModel(service: self.podcastService)
+        let viewModel = ShowListViewModel(service: podcastService)
         return PodcastShowListViewController(factory: self, viewModel: viewModel)
     }
 
     func makeFeedUrlInputViewController() -> FeedUrlInputViewController {
-        let viewModel = FeedUrlInputViewModel(service: self.podcastService, gateway: self.podcastGateway)
+        let viewModel = FeedUrlInputViewModel(service: podcastService, gateway: podcastGateway)
         return FeedUrlInputViewController(factory: self, viewModel: viewModel)
     }
 
     func makeEpisodeListViewController(podcast: Podcast) -> PodcastEpisodeListViewController {
-        let viewModel = EpisodeListViewModel(podcast: podcast, service: self.podcastService)
+        let viewModel = EpisodeListViewModel(podcast: podcast, service: podcastService)
         return PodcastEpisodeListViewController(factory: self, viewModel: viewModel)
     }
 
@@ -56,7 +56,6 @@ extension DependencyContainer: ViewControllerFactory {
         let viewModel = PlayerModalViewModel()
         return EpisodePlayerViewController(factory: self, show: show, episode: episode, viewModel: viewModel)
     }
-
 }
 
 extension DependencyContainer: ViewModelFactory {
@@ -67,12 +66,12 @@ extension DependencyContainer: ViewModelFactory {
         let commandHandler = RemoteCommandHandler(
             show: show,
             episode: episode,
-            commandCenter: self.commandCenter,
+            commandCenter: commandCenter,
             player: player,
-            infoCenter: self.nowPlayingInfoCenter,
-            configuration: self.playerConfiguration
+            infoCenter: nowPlayingInfoCenter,
+            configuration: playerConfiguration
         )
-        return PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler, configuration: self.playerConfiguration)
+        return PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler, configuration: playerConfiguration)
     }
 
     func makePlayerInformationViewModel(show: Podcast.Show, episode: Podcast.Episode) -> PlayerInformationViewModel {
