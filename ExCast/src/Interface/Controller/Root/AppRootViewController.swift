@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxRelay
 
 class AppRootViewController: UIViewController {
     typealias Factory = ViewControllerFactory & ViewModelFactory
@@ -14,8 +15,9 @@ class AppRootViewController: UIViewController {
     private lazy var rootTabBarController = self.factory.makeAppRootTabBarController()
     private var playerModalViewController: EpisodePlayerViewController?
 
+    private var playingEpisode_: BehaviorRelay<Podcast.Episode?> = BehaviorRelay(value: nil)
+
     private let factory: Factory
-    private weak var delegate: EpisodePlayerPresenterDelegate?
 
     // MARK: - Lifecycle
 
@@ -51,12 +53,8 @@ class AppRootViewController: UIViewController {
 extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
     // MARK: - EpisodePlayerModalPresenterProtocol
 
-    func playingEpisode() -> Podcast.Episode? {
-        return playerModalViewController?.playingEpisode
-    }
-
-    func setDelegate(_ delegate: EpisodePlayerPresenterDelegate) {
-        self.delegate = delegate
+    var playingEpisode: BehaviorRelay<Podcast.Episode?> {
+        return self.playingEpisode_
     }
 
     func show(show: Podcast.Show, episode: Podcast.Episode) {
@@ -65,6 +63,7 @@ extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
                 controllerViewModel: self.factory.makePlayerControllerViewModel(show: show, episode: episode),
                 informationViewModel: self.factory.makePlayerInformationViewModel(show: show, episode: episode)
             )
+            self.playingEpisode_.accept(episode)
             return
         }
 
@@ -78,6 +77,8 @@ extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
 
         let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
+
+        self.playingEpisode_.accept(episode)
     }
 
     func dismiss() {
@@ -89,7 +90,7 @@ extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
         let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
 
-        delegate?.didDismissPlayer()
+        self.playingEpisode_.accept(nil)
     }
 
     func minimize() {

@@ -13,17 +13,18 @@ import RxSwift
 struct EpisodeListViewModel {
     private static let sectionIdentifier = ""
 
+    struct ListingEpisode: Equatable {
+        let episode: Podcast.Episode
+        let isPlaying: Bool
+    }
+
+    let show: Podcast.Show
     private let feedUrl: URL
     private let service: PodcastServiceProtocol
 
-    private(set) var podcast: BehaviorRelay<Podcast>
-    private(set) var episodes: BehaviorRelay<[AnimatableSectionModel<String, Podcast.Episode>]>
-    enum State {
-        case normal
-        case progress
-        case error
-    }
-    private(set) var state: BehaviorRelay<State> = BehaviorRelay(value: .normal)
+    let playingEpisode: BehaviorRelay<Podcast.Episode?> = BehaviorRelay(value: nil)
+    private(set) var episodes: BehaviorRelay<DataSourceQuery<ListingEpisode>>
+    private(set) var episodesCache: BehaviorRelay<[AnimatableSectionModel<String, ListingEpisode>]>
 
     private let disposeBag = DisposeBag()
 
@@ -33,46 +34,78 @@ struct EpisodeListViewModel {
         feedUrl = podcast.show.feedUrl
         self.service = service
 
-        self.podcast = BehaviorRelay(value: podcast)
-        episodes = BehaviorRelay(value: [
-            .init(model: EpisodeListViewModel.sectionIdentifier, items: []),
+        self.show = podcast.show
+        self.episodes = BehaviorRelay(value: .contents([
+            .init(model: EpisodeListViewModel.sectionIdentifier,
+                  items: podcast.episodes.map { ListingEpisode(episode: $0, isPlaying: false) })
+        ]))
+        self.episodesCache = BehaviorRelay(value: [
+            .init(model: EpisodeListViewModel.sectionIdentifier,
+                  items: podcast.episodes.map { ListingEpisode(episode: $0, isPlaying: false) })
         ])
 
         self.service.state
-            .compactMap { state -> [Podcast]? in
-                switch state {
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
+            .map({ [self] query -> DataSourceQuery<ListingEpisode> in
+                switch query {
                 case let .content(podcasts):
-                    return podcasts
-                default:
-                    return nil
-                }
-            }
-            .subscribe { [self] event in
-                switch event {
-                case let .next(podcasts):
                     // TODO: 効率化
-                    self.podcast.accept(podcasts.first(where: { $0.show.feedUrl == self.feedUrl })!)
-                default: break
-                }
-            }
-            .disposed(by: disposeBag)
-
-        self.service.state
-            .map({ state -> State in
-                switch state {
-                case .content(_): return .normal
-                case .error: return .error
-                case .progress: return .progress
+                    guard let podcast = podcasts.first(where: { $0.show.feedUrl == self.feedUrl }) else {
+                        return .error
+                    }
+                    let items = podcast.episodes.map {
+                        ListingEpisode(episode: $0, isPlaying: $0 == self.playingEpisode.value)
+                    }
+                    return .contents([ .init(model: EpisodeListViewModel.sectionIdentifier, items: items) ])
+                case .error:
+                    return .error
+                case .progress:
+                    return .progress
                 }
             })
-            .bind(to: self.state)
+            .bind(to: self.episodes)
             .disposed(by: self.disposeBag)
 
-        self.podcast
-            .map { $0.episodes }
-            .map { [.init(model: EpisodeListViewModel.sectionIdentifier, items: $0)] as [AnimatableSectionModel<String, Podcast.Episode>] }
-            .bind(to: episodes)
-            .disposed(by: disposeBag)
+        self.playingEpisode
+            .map({ [self] episode -> DataSourceQuery<ListingEpisode> in
+                switch self.episodes.value {
+                case let .contents(container):
+                    if episode == nil {
+                        guard let firstIndex = container[0].items.firstIndex(where: { $0.isPlaying == true }) else {
+                            return self.episodes.value
+                        }
+                        var episodes = container[0].items
+                        episodes[firstIndex] = .init(episode: episodes[firstIndex].episode, isPlaying: false)
+                        return .contents([.init(model: container[0].identity, items: episodes)])
+                    } else {
+                        var episodes = container[0].items
+
+                        if let firstIndex1 = container[0].items.firstIndex(where: { $0.isPlaying == true }) {
+                            episodes[firstIndex1] = .init(episode: episodes[firstIndex1].episode, isPlaying: false)
+                        }
+
+                        guard let firstIndex2 = container[0].items.firstIndex(where: { $0.episode == episode }) else {
+                            return self.episodes.value
+                        }
+                        episodes[firstIndex2] = .init(episode: episodes[firstIndex2].episode, isPlaying: true)
+                        return .contents([.init(model: container[0].identity, items: episodes)])
+                    }
+                default:
+                    return self.episodes.value
+                }
+            })
+            .bind(to: self.episodes)
+            .disposed(by: self.disposeBag)
+
+        self.episodes
+            .bind(onNext: { [self] query in
+                switch query {
+                case let .contents(container):
+                    self.episodesCache.accept(container)
+                default: break
+                }
+            })
+            .disposed(by: self.disposeBag)
     }
 
     // MARK: - Methods
@@ -86,12 +119,12 @@ struct EpisodeListViewModel {
     }
 }
 
-extension Podcast.Episode: IdentifiableType {
+extension EpisodeListViewModel.ListingEpisode: IdentifiableType {
     // MARK: - IndetifiableType
 
     typealias Identity = String
 
     var identity: String {
-        return title
+        return self.episode.title
     }
 }

@@ -12,7 +12,6 @@ import UIKit
 class PodcastEpisodeListView: UITableView {
     static let identifier = "podcastEpisodeCell"
 
-    private var episodesCache: [Podcast.Episode] = []
     private var cellHeightCache: [IndexPath: CGFloat] = [:]
     var playingEpisode: Podcast.Episode?
 

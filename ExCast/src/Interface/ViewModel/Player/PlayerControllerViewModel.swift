@@ -14,7 +14,6 @@ class PlayerControllerViewModel {
     private let show: Podcast.Show
     private let episode: Podcast.Episode
     private let commands: ExCastPlayerProtocol
-    private let remoteCommands: ExCastPlayerDelegate
     private let configuration: PlayerConfiguration
 
     private var playedAfterLoadingOnce: Bool = false
@@ -42,7 +41,6 @@ class PlayerControllerViewModel {
         self.show = show
         self.episode = episode
         commands = controller
-        self.remoteCommands = remoteCommands
         self.configuration = configuration
 
         currentTime
@@ -63,15 +61,13 @@ class PlayerControllerViewModel {
                 }
             })
             .disposed(by: disposeBag)
-    }
 
-    // MARK: - Methods
-
-    func setup() {
         commands.register(delegate: self)
         commands.register(delegate: remoteCommands)
         commands.prepareToPlay()
     }
+
+    // MARK: - Methods
 
     func playback() {
         if isPlaying.value {

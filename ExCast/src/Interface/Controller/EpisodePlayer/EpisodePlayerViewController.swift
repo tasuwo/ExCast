@@ -10,14 +10,8 @@ import RxCocoa
 import RxSwift
 import UIKit
 
-protocol EpisodePlayerPresenterDelegate: AnyObject {
-    func didDismissPlayer()
-}
-
 protocol EpisodePlayerModalPresenterProtocol: AnyObject {
-    func playingEpisode() -> Podcast.Episode?
-
-    func setDelegate(_ delegate: EpisodePlayerPresenterDelegate)
+    var playingEpisode: BehaviorRelay<Podcast.Episode?> { get }
 
     func show(show: Podcast.Show, episode: Podcast.Episode)
 
@@ -32,10 +26,6 @@ class EpisodePlayerViewController: UIViewController {
     typealias Factory = ViewControllerFactory & ViewModelFactory & EpisodePlayerModalPresenterFactory
 
     @IBOutlet var modalView: EpisodePlayerModalView!
-
-    var playingEpisode: Podcast.Episode {
-        return informationViewModel.episode
-    }
 
     private let factory: Factory
     private lazy var playerModalPresenter = self.factory.makeEpisodePlayerModalPresenter()
@@ -63,13 +53,9 @@ class EpisodePlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Delegate
-
         modalView.delegate = self
         modalView.seekBar.delegate = self
         modalView.playbackButtons.delegate = self
-
-        // Bind
 
         modalViewModel.modalState
             .bind(onNext: { [unowned self] state in
@@ -103,8 +89,6 @@ class EpisodePlayerViewController: UIViewController {
     private func bindEpisode() {
         let length = controllerViewModel.episodeLength
         modalView.seekBar.bar.maximumValue = CGFloat(length)
-
-        // Bind
 
         informationViewModel.showTitle
             .bind(to: modalView.showTitleLabel.rx.text)
@@ -150,8 +134,6 @@ class EpisodePlayerViewController: UIViewController {
             .map { CGFloat($0) }
             .bind(onNext: { [weak self] time in self?.modalView.seekBar.bar.value = time })
             .disposed(by: disposeBag)
-
-        controllerViewModel.setup()
     }
 }
 
@@ -172,6 +154,8 @@ extension EpisodePlayerViewController: EpisodePlayerPlaybackButtonsDelegate {
 }
 
 extension EpisodePlayerViewController: EpisodePlayerSeekBarContainerDelegate {
+    // MARK: - EpisodePlayerSeekBarContainerDelegate
+
     func didStartSeek() {
         controllerViewModel.isSliderGrabbed.accept(true)
     }

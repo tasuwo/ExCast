@@ -7,6 +7,7 @@
 //
 
 import MaterialComponents
+import RxDataSources
 import RxCocoa
 import RxSwift
 import UIKit
@@ -39,11 +40,17 @@ class PodcastEpisodeListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.playerPresenter?.setDelegate(self)
-
         self.dataSourceContainer.delegate = self
 
         self.viewModel.episodes
+            .flatMap({ query -> Single<[AnimatableSectionModel<String, EpisodeListViewModel.ListingEpisode>]> in
+                switch query {
+                case let .contents(episodeContainer):
+                    return Single.just(episodeContainer)
+                case .error, .progress:
+                    return Single.never()
+                }
+            })
             .bind(to: episodeListView.rx.items(dataSource: dataSourceContainer.dataSource))
             .disposed(by: disposeBag)
 
@@ -53,19 +60,23 @@ class PodcastEpisodeListViewController: UIViewController {
 
         self.episodeListView.refreshControl?.rx.controlEvent(.valueChanged)
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .bind(onNext: { [unowned self] _ in self.viewModel.fetch(url: self.viewModel.podcast.value.show.feedUrl) })
+            .bind(onNext: { [unowned self] _ in self.viewModel.fetch(url: self.viewModel.show.feedUrl) })
             .disposed(by: disposeBag)
 
-        self.viewModel.state
+        self.viewModel.episodes
             .observeOn(MainScheduler.instance)
             .bind(onNext: { [self] query in
                 switch query {
-                case .normal, .error:
+                case .contents(_), .error:
                     self.episodeListView.refreshControl?.endRefreshing()
                 case .progress:
                     self.episodeListView.refreshControl?.beginRefreshing()
                 }
             }).disposed(by: disposeBag)
+
+        self.playerPresenter?.playingEpisode
+            .bind(to: self.viewModel.playingEpisode)
+            .disposed(by: self.disposeBag)
 
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
 
@@ -75,7 +86,7 @@ class PodcastEpisodeListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        title = self.viewModel.podcast.value.show.title
+        title = self.viewModel.show.title
 
         if let selectedRow = self.episodeListView.indexPathForSelectedRow {
             self.episodeListView.deselectRow(at: selectedRow, animated: true)
@@ -85,8 +96,8 @@ class PodcastEpisodeListViewController: UIViewController {
     // MARK: - Methods
 
     func didSelectEpisode(at indexPath: IndexPath) {
-        let episode = viewModel.episodes.value(at: indexPath)
-        self.playerPresenter?.show(show: viewModel.podcast.value.show, episode: episode)
+        let episode = self.viewModel.episodesCache.value(at: indexPath).episode
+        self.playerPresenter?.show(show: self.viewModel.show, episode: episode)
     }
 }
 
@@ -96,15 +107,7 @@ extension PodcastEpisodeListViewController: PodcastEpisodeCellDelegate {
     func podcastEpisodeCell(_: UITableViewCell, didSelect episode: Podcast.Episode) {
         guard let navigationController = self.navigationController else { return }
 
-        let nextViewController = self.factory.makeEpisodeDetailViewController(show: self.viewModel.podcast.value.show, episode: episode)
+        let nextViewController = self.factory.makeEpisodeDetailViewController(show: self.viewModel.show, episode: episode)
         navigationController.pushViewController(nextViewController, animated: true)
-    }
-}
-
-extension PodcastEpisodeListViewController: EpisodePlayerPresenterDelegate {
-    // MARK: - EpisodePlayerPresenterDelegate
-
-    func didDismissPlayer() {
-        // self.viewModel.playingEpisode = nil
     }
 }
