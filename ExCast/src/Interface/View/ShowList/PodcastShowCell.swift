@@ -8,11 +8,36 @@
 
 import UIKit
 
-protocol PodcastShowCellProtocol: AnyObject {
-    func layout(artwork: UIImage?, title: String, author: String?)
-}
-
 class PodcastShowCell: UITableViewCell {
+    public var artwork: UIImage? {
+        set {
+            showArtwork.image = newValue != nil ? newValue : emptyThumbnail(by: .gray)
+        }
+        get {
+            return showArtwork.image
+        }
+    }
+
+    public var title: String? {
+        set {
+            showTitle.text = newValue
+        }
+        get {
+            return showTitle.text
+        }
+    }
+
+    public var author: String? {
+        set {
+            showAuthor.text = newValue
+        }
+        get {
+            return showAuthor.text
+        }
+    }
+
+    // MARK: - IBOutlets
+
     @IBOutlet var showArtwork: UIImageView!
     @IBOutlet var showTitle: UILabel!
     @IBOutlet var showAuthor: UILabel!
@@ -25,16 +50,8 @@ class PodcastShowCell: UITableViewCell {
         showArtwork.layer.cornerRadius = 5
         separatorInset = UIEdgeInsets(top: 0, left: 90 + 15 + 10, bottom: 0, right: 0)
     }
-}
 
-extension PodcastShowCell: PodcastShowCellProtocol {
-    // MARK: - PodcastShowCellProtocol
-
-    func layout(artwork: UIImage?, title: String, author: String?) {
-        showArtwork.image = artwork != nil ? artwork : emptyThumbnail(by: .gray)
-        showTitle.text = title
-        showAuthor.text = author
-    }
+    // MARK: - Methods
 
     private func emptyThumbnail(by color: UIColor) -> UIImage? {
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10))

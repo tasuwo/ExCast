@@ -17,26 +17,48 @@ protocol EpisodePlayerPlaybackButtonsDelegate: AnyObject {
     func didTapSkipBackwardButton()
 }
 
-class EpisodePlayerPlaybackButtons: UIView {
+public class EpisodePlayerPlaybackButtons: UIView {
     weak var delegate: EpisodePlayerPlaybackButtonsDelegate!
 
+    public var isEnabled: Bool {
+        set {
+            playbackButton.isEnabled = newValue
+            forwardSkipButton.isEnabled = newValue
+            backwardSkipButton.isEnabled = newValue
+        }
+        get {
+            // TODO:
+            return false
+        }
+    }
+
+    public var isPlaying: Bool {
+        set {
+            if newValue {
+                self.playbackButton.setImage(UIImage(named: "player_pause"), for: .normal)
+            } else {
+                self.playbackButton.setImage(UIImage(named: "player_playback"), for: .normal)
+            }
+        }
+        get {
+            // TODO:
+            return false
+        }
+    }
+
+    // MARK: - IBOutlets
+
     @IBOutlet var baseView: UIView!
-
     @IBOutlet var playbackButton: MDCFloatingButton!
-
     @IBOutlet var forwardSkipButton: MDCFloatingButton!
-
     @IBOutlet var backwardSkipButton: MDCFloatingButton!
-
     @IBOutlet var playbackButtonSizeConstraint: NSLayoutConstraint!
-
     @IBOutlet var forwardSkipButtonSizeConstraint: NSLayoutConstraint!
-
     @IBOutlet var backwardSkipButtonSizeConstraint: NSLayoutConstraint!
-
     @IBOutlet var buttonMarginLeftConstraint: NSLayoutConstraint!
-
     @IBOutlet var buttonMarginRightConstraint: NSLayoutConstraint!
+
+    // MARK: - IBActions
 
     @IBAction func didTapPlaybackButton(_: Any) {
         delegate?.didTapPlaybackButton()
@@ -50,7 +72,7 @@ class EpisodePlayerPlaybackButtons: UIView {
         delegate?.didTapSkipBackwardButton()
     }
 
-    // MARK: - Initializers
+    // MARK: - Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)

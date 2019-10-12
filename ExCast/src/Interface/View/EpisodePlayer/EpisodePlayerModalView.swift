@@ -24,15 +24,77 @@ protocol EpisodePlayerModalViewDelegate: AnyObject {
     func didTapMinimizeButton()
 }
 
-class EpisodePlayerModalView: UIView {
+public class EpisodePlayerModalView: UIView {
     weak var delegate: EpisodePlayerModalViewDelegate?
+
+    public var showTitle: String {
+        set {
+            showTitleLabel.text = newValue
+        }
+        get {
+            return showTitleLabel.text ?? ""
+        }
+    }
+
+    public var episodeTitle: String {
+        set {
+            episodeTitleLabel.text = newValue
+        }
+        get {
+            return episodeTitleLabel.text ?? ""
+        }
+    }
+
+    public var thumbnail: UIImage? {
+        set {
+            thumbnailImageView.image = newValue
+        }
+        get {
+            return thumbnailImageView.image
+        }
+    }
+
+    public var duration: Double {
+        set {
+            seekBar.duration = newValue
+        }
+        get {
+            return seekBar.duration
+        }
+    }
+
+    public var currentTime: Double {
+        set {
+            seekBar.currentTime = newValue
+        }
+        get {
+            return seekBar.currentTime
+        }
+    }
+
+    public var isPlaybackEnabled: Bool {
+        set {
+            playbackButtons.isEnabled = newValue
+        }
+        get {
+            return playbackButtons.isEnabled
+        }
+    }
+
+    public var isPlaying: Bool {
+        set {
+            self.playbackButtons.isPlaying = newValue
+        }
+        get {
+            return self.playbackButtons.isPlaying
+        }
+    }
+
+    // MARK: - IBOutlets
 
     @IBOutlet var baseView: UIView!
 
-    @IBOutlet var minimizeViewButton: UIButton!
-
     @IBOutlet var showTitleLabel: UILabel!
-
     @IBOutlet var episodeTitleLabel: UILabel!
 
     @IBOutlet var thumbnailImageView: UIImageView!
@@ -40,24 +102,24 @@ class EpisodePlayerModalView: UIView {
     @IBOutlet var seekBar: EpisodePlayerSeekBarContainer!
 
     @IBOutlet var playbackButtons: EpisodePlayerPlaybackButtons!
-
+    @IBOutlet var minimizeViewButton: UIButton!
     @IBOutlet var dismissButton: UIButton!
 
+    // MARK: Constraints
+
     @IBOutlet var playbackButtonsHeightConstraint: NSLayoutConstraint!
-
     @IBOutlet var playbackButtonsBottomConstraint: NSLayoutConstraint!
-
     @IBOutlet var thumbnailTopConstraint: NSLayoutConstraint!
-
     @IBOutlet var thumbnailLeftConstraint: NSLayoutConstraint!
-
     @IBOutlet var thumbnailXConstraint: NSLayoutConstraint!
-
     @IBOutlet var thumbnailBottomConstraint: NSLayoutConstraint!
 
-    @IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
+    // MARK: Gesture Recognizers
 
+    @IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
+
+    // MARK: - IBActions
 
     @IBAction func didTapDismissButton(_: Any) {
         delegate?.shouldDismiss()
@@ -104,7 +166,7 @@ class EpisodePlayerModalView: UIView {
         delegate?.didTapMinimizeButton()
     }
 
-    // MARK: - Initializers
+    // MARK: - Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -161,7 +223,7 @@ class EpisodePlayerModalView: UIView {
 extension EpisodePlayerModalView: UIGestureRecognizerDelegate {
     // MARK: - UIGestureRecognizerDelegate
 
-    func gestureRecognizer(_: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    public func gestureRecognizer(_: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return touch.view is UIButton == false
     }
 }

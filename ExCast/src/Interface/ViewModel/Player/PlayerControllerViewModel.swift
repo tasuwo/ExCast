@@ -20,12 +20,10 @@ class PlayerControllerViewModel {
 
     private(set) var isPlaying: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     private(set) var isPrepared: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    private(set) var duration: BehaviorRelay<Double> = BehaviorRelay(value: 0)
     private(set) var currentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
     private(set) var displayCurrentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
     private(set) var isSliderGrabbed: BehaviorRelay<Bool> = BehaviorRelay(value: false)
-    var episodeLength: Float {
-        return episode.episodeLength
-    }
 
     private var preventToSyncTime: BehaviorRelay<Bool> = BehaviorRelay(value: false)
 
@@ -42,6 +40,7 @@ class PlayerControllerViewModel {
         self.episode = episode
         commands = controller
         self.configuration = configuration
+        duration.accept(episode.duration ?? 0)
 
         currentTime
             .filter { [unowned self] _ in self.preventToSyncTime.value == false }

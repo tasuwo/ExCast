@@ -48,7 +48,6 @@ class PodcastShowListViewController: UIViewController {
             .map { $0.row }
             .bind(onNext: viewModel.remove(at:))
             .disposed(by: disposeBag)
-
         showListView.rx.itemSelected
             .bind(onNext: didSelectShow(at:))
             .disposed(by: disposeBag)

@@ -11,7 +11,7 @@ import UIKit
 class PodcastShowListView: UITableView {
     static let identifier = "podcastShowCell"
 
-    // MARK: - Initializers
+    // MARK: - Lifecycle
 
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,11 +14,11 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="154"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mfb-5o-u6a" id="Y6t-jl-Fqg">
-                <rect key="frame" x="0.0" y="0.0" width="414" height="153.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="414" height="154"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="xVz-sG-7YH">
-                        <rect key="frame" x="20" y="8" width="374" height="137.5"/>
+                        <rect key="frame" x="20" y="8" width="374" height="138"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eaK-mL-V4O">
                                 <rect key="frame" x="0.0" y="0.0" width="374" height="15"/>
@@ -48,13 +46,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JzD-0S-LXL" userLabel="Episode Description">
-                                <rect key="frame" x="0.0" y="42.5" width="374" height="62"/>
+                                <rect key="frame" x="0.0" y="42.5" width="374" height="62.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yiX-dS-Q6n">
-                                <rect key="frame" x="0.0" y="108.5" width="374" height="29"/>
+                                <rect key="frame" x="0.0" y="109" width="374" height="29"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9pB-2f-Xa4">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="29"/>
@@ -88,12 +86,12 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="episodeDescription" destination="JzD-0S-LXL" id="bc2-kQ-874"/>
+                <outlet property="episodeDescriptionLabel" destination="JzD-0S-LXL" id="bc2-kQ-874"/>
                 <outlet property="informationButton" destination="9pB-2f-Xa4" id="ccg-Fa-gFb"/>
-                <outlet property="length" destination="rwc-tW-QWL" id="3Ea-dT-d80"/>
+                <outlet property="lengthLabel" destination="rwc-tW-QWL" id="3Ea-dT-d80"/>
                 <outlet property="playingMarkIconView" destination="OLG-WT-NbF" id="7cC-xx-t0O"/>
-                <outlet property="pubDate" destination="BXP-IG-lXM" id="9xZ-sS-5Ag"/>
-                <outlet property="title" destination="861-n8-4od" id="hLu-dG-RuZ"/>
+                <outlet property="publishDateLabel" destination="BXP-IG-lXM" id="9xZ-sS-5Ag"/>
+                <outlet property="titleLabel" destination="861-n8-4od" id="hLu-dG-RuZ"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="186.83035714285714"/>
         </tableViewCell>

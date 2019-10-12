@@ -21,19 +21,20 @@ class PodcastShowListViewDataSourceContainer: NSObject {
 
             let cell = tableView.dequeueReusableCell(withIdentifier: PodcastShowListView.identifier, for: indexPath)
 
-            guard let podcastShowCell = cell as? PodcastShowCellProtocol else {
+            guard let podcastShowCell = cell as? PodcastShowCell else {
                 return cell
             }
 
+            podcastShowCell.title = item.show.title
+            podcastShowCell.author = item.show.author
+
             if let thumbnail = self.thumbnailCache[indexPath] {
-                podcastShowCell.layout(artwork: thumbnail,
-                                       title: item.show.title,
-                                       author: item.show.author)
+                podcastShowCell.artwork = thumbnail
                 return cell
             }
 
             if let _ = self.thumbnailDownloadersInProgress[indexPath] {
-                podcastShowCell.layout(artwork: nil, title: item.show.title, author: item.show.author)
+                podcastShowCell.artwork = nil
                 return cell
             }
 
@@ -45,9 +46,7 @@ class PodcastShowListViewDataSourceContainer: NSObject {
                 switch result {
                 case let .success(image):
                     self.thumbnailCache[indexPath] = image
-                    podcastShowCell.layout(artwork: image,
-                                           title: item.show.title,
-                                           author: item.show.author)
+                    podcastShowCell.artwork = image
                     self.thumbnailDownloadersInProgress.removeValue(forKey: indexPath)
                 case .failure:
                     break
@@ -55,7 +54,8 @@ class PodcastShowListViewDataSourceContainer: NSObject {
             }
             self.thumbnailDownloadersInProgress[indexPath] = downloader
 
-            podcastShowCell.layout(artwork: nil, title: item.show.title, author: item.show.author)
+            podcastShowCell.artwork = nil
+
             return cell
         }, canEditRowAtIndexPath: { _, _ in true }
     )

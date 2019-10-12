@@ -12,10 +12,7 @@ import UIKit
 class PodcastEpisodeListView: UITableView {
     static let identifier = "podcastEpisodeCell"
 
-    private var cellHeightCache: [IndexPath: CGFloat] = [:]
-    var playingEpisode: Podcast.Episode?
-
-    // MARK: - Initializers
+    // MARK: - Lifecycle
 
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)

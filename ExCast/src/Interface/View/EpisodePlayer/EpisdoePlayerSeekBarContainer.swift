@@ -20,13 +20,36 @@ protocol EpisodePlayerSeekBarContainerDelegate: AnyObject {
 class EpisodePlayerSeekBarContainer: UIView {
     weak var delegate: EpisodePlayerSeekBarContainerDelegate!
 
+    public var duration: Double {
+        set {
+            bar.maximumValue = CGFloat(newValue)
+            remainingTimeLabel.text = (currentTime - newValue).asTimeString()
+        }
+        get {
+            return Double(bar.maximumValue)
+        }
+    }
+
+    public var currentTime: Double {
+        set {
+            bar.value = CGFloat(newValue)
+            currentTimeLabel.text = newValue.asTimeString()
+            remainingTimeLabel.text = (newValue - duration).asTimeString()
+        }
+        get {
+            // TODO:
+            return 0
+        }
+    }
+
+    // MARK: - IBOutlets
+
     @IBOutlet var baseView: UIView!
-
     @IBOutlet var bar: MDCSlider!
-
     @IBOutlet var currentTimeLabel: UILabel!
-
     @IBOutlet var remainingTimeLabel: UILabel!
+
+    // MARK: - IBActions
 
     @IBAction func onTouchSeekBar(_: Any) {
         delegate.didStartSeek()
@@ -46,7 +69,7 @@ class EpisodePlayerSeekBarContainer: UIView {
         delegate.didChangeSeekValue(to: TimeInterval(slider.value))
     }
 
-    // MARK: - Initializers
+    // MARK: - Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)

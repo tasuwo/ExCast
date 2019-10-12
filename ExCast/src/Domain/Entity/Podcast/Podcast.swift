@@ -80,14 +80,6 @@ struct Podcast: Codable, Equatable {
 
         /// The episode artwork.
         let artwork: URL?
-
-        var episodeLength: Float {
-            if let duration = self.duration {
-                return Float(duration)
-            }
-
-            return 0
-        }
     }
 
     let show: Show

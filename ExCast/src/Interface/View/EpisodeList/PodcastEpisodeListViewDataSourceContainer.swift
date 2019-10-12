@@ -23,9 +23,14 @@ class PodcastEpisodeListViewDataSourceContainer: NSObject {
                 return cell
             }
 
+            episodeCell.setupAppearences()
+
             let episode = item.episode
             episodeCell.episode = episode
-            episodeCell.layout(title: episode.title, pubDate: episode.pubDate, description: episode.subTitle ?? "", duration: episode.episodeLength)
+            episodeCell.title = episode.title
+            episodeCell.pubDate = episode.pubDate
+            episodeCell.episodeDescription = episode.subTitle
+            episodeCell.duration = episode.duration ?? 0
             episodeCell.delegate = self.delegate
             episodeCell.playingMarkIconView.isHidden = item.isPlaying == false
 

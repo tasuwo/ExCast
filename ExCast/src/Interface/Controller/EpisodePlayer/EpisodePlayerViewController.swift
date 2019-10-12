@@ -87,52 +87,30 @@ class EpisodePlayerViewController: UIViewController {
     }
 
     private func bindEpisode() {
-        let length = controllerViewModel.episodeLength
-        modalView.seekBar.bar.maximumValue = CGFloat(length)
-
         informationViewModel.showTitle
-            .bind(to: modalView.showTitleLabel.rx.text)
+            .bind(to: modalView.rx.showTitle)
             .disposed(by: disposeBag)
         informationViewModel.episodeTitle
-            .bind(to: modalView.episodeTitleLabel.rx.text)
+            .bind(to: modalView.rx.episodeTitle)
             .disposed(by: disposeBag)
         informationViewModel.thumbnail
             .compactMap { $0 }
             .compactMap { try? Data(contentsOf: $0) }
             .compactMap { UIImage(data: $0) }
-            .bind(to: modalView.thumbnailImageView.rx.image)
+            .bind(to: modalView.rx.thumbnail)
             .disposed(by: disposeBag)
 
-        controllerViewModel.isPrepared
-            .bind(to: modalView.playbackButtons.playbackButton.rx.isEnabled)
+        controllerViewModel.duration
+            .bind(to: modalView.rx.duration)
             .disposed(by: disposeBag)
         controllerViewModel.isPrepared
-            .bind(to: modalView.playbackButtons.forwardSkipButton.rx.isEnabled)
-            .disposed(by: disposeBag)
-        controllerViewModel.isPrepared
-            .bind(to: modalView.playbackButtons.backwardSkipButton.rx.isEnabled)
+            .bind(to: modalView.rx.isPlaybackEnabled)
             .disposed(by: disposeBag)
         controllerViewModel.isPlaying
-            .compactMap { isPlaying -> UIImage? in
-                if isPlaying {
-                    return UIImage(named: "player_pause")
-                } else {
-                    return UIImage(named: "player_playback")
-                }
-            }
-            .bind(to: modalView.playbackButtons.playbackButton.rx.image(for: .normal))
+            .bind(to: modalView.rx.isPlaying)
             .disposed(by: disposeBag)
         controllerViewModel.displayCurrentTime
-            .compactMap { $0.asTimeString() }
-            .bind(to: modalView.seekBar.currentTimeLabel.rx.text)
-            .disposed(by: disposeBag)
-        controllerViewModel.displayCurrentTime
-            .compactMap { (Float($0) - length).asTimeString() }
-            .bind(to: modalView.seekBar.remainingTimeLabel.rx.text)
-            .disposed(by: disposeBag)
-        controllerViewModel.displayCurrentTime
-            .map { CGFloat($0) }
-            .bind(onNext: { [weak self] time in self?.modalView.seekBar.bar.value = time })
+            .bind(to: modalView.rx.currentTime)
             .disposed(by: disposeBag)
     }
 }

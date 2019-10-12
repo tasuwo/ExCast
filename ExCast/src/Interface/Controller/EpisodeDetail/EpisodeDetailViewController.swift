@@ -38,30 +38,22 @@ class EpisodeDetailViewController: UIViewController {
         super.viewDidLoad()
 
         viewModel.title
-            .bind(to: episodeDetailView.episodeTitleLabel.rx.text)
+            .bind(to: episodeDetailView.rx.title)
             .disposed(by: disposeBag)
         viewModel.pubDate
-            .map { d in d?.asFormattedString() ?? "" }
-            .bind(to: episodeDetailView.episodePubDateLabel.rx.text)
+            .bind(to: episodeDetailView.rx.publishDate)
             .disposed(by: disposeBag)
         viewModel.duration
-            .map { d in d.asTimeString() ?? "" }
-            .bind(to: episodeDetailView.episodeDurationLabel.rx.text)
+            .bind(to: episodeDetailView.rx.duration)
             .disposed(by: disposeBag)
         viewModel.thumbnail
             .compactMap { $0 }
             .compactMap { try? Data(contentsOf: $0) }
             .compactMap { UIImage(data: $0) }
-            .bind(to: episodeDetailView.episodeThumbnailView.rx.image)
+            .bind(to: episodeDetailView.rx.thumbnail)
             .disposed(by: disposeBag)
-
-        let fontSize = episodeDetailView.episodeDescriptionLabel.font!.pointSize
         viewModel.description
-            .observeOn(MainScheduler.instance)
-            .compactMap { $0.dataForHtml(withFontSize: fontSize) }
-            .observeOn(MainScheduler.instance)
-            .compactMap { $0.makeHtmlString() }
-            .bind(to: episodeDetailView.episodeDescriptionLabel.rx.attributedText)
+            .bind(to: episodeDetailView.rx.episodeDescripiton)
             .disposed(by: disposeBag)
     }
 
