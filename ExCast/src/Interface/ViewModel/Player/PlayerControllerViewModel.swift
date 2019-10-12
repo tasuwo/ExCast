@@ -15,6 +15,7 @@ class PlayerControllerViewModel {
     private let episode: Podcast.Episode
     private let commands: ExCastPlayerProtocol
     private let configuration: PlayerConfiguration
+    private let remoteCommands: ExCastPlayerDelegate
 
     private var playedAfterLoadingOnce: Bool = false
 
@@ -31,15 +32,12 @@ class PlayerControllerViewModel {
 
     // MARK: - Lifecycle
 
-    init(show: Podcast.Show,
-         episode: Podcast.Episode,
-         controller: ExCastPlayerProtocol,
-         remoteCommands: ExCastPlayerDelegate,
-         configuration: PlayerConfiguration) {
+    init(show: Podcast.Show, episode: Podcast.Episode, controller: ExCastPlayerProtocol, remoteCommands: ExCastPlayerDelegate, configuration: PlayerConfiguration) {
         self.show = show
         self.episode = episode
-        commands = controller
+        self.commands = controller
         self.configuration = configuration
+        self.remoteCommands = remoteCommands
         duration.accept(episode.duration ?? 0)
 
         currentTime
