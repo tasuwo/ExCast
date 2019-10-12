@@ -51,5 +51,4 @@ extension Reactive where Base: EpisodePlayerModalView {
             view.isPlaying = value
         }
     }
-
 }

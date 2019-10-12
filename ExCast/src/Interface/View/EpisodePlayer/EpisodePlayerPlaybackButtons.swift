@@ -35,9 +35,9 @@ public class EpisodePlayerPlaybackButtons: UIView {
     public var isPlaying: Bool {
         set {
             if newValue {
-                self.playbackButton.setImage(UIImage(named: "player_pause"), for: .normal)
+                playbackButton.setImage(UIImage(named: "player_pause"), for: .normal)
             } else {
-                self.playbackButton.setImage(UIImage(named: "player_playback"), for: .normal)
+                playbackButton.setImage(UIImage(named: "player_playback"), for: .normal)
             }
         }
         get {

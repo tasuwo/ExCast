@@ -35,7 +35,7 @@ class PlayerControllerViewModel {
     init(show: Podcast.Show, episode: Podcast.Episode, controller: ExCastPlayerProtocol, remoteCommands: ExCastPlayerDelegate, configuration: PlayerConfiguration) {
         self.show = show
         self.episode = episode
-        self.commands = controller
+        commands = controller
         self.configuration = configuration
         self.remoteCommands = remoteCommands
         duration.accept(episode.duration ?? 0)

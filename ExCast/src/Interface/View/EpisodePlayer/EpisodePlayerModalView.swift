@@ -83,10 +83,10 @@ public class EpisodePlayerModalView: UIView {
 
     public var isPlaying: Bool {
         set {
-            self.playbackButtons.isPlaying = newValue
+            playbackButtons.isPlaying = newValue
         }
         get {
-            return self.playbackButtons.isPlaying
+            return playbackButtons.isPlaying
         }
     }
 
