@@ -22,14 +22,14 @@ class EpisodeDetailViewModel {
     init(show: Podcast.Show, episode: Podcast.Episode) {
         self.show = show
         self.episode = episode
-        title = BehaviorRelay(value: episode.title)
-        pubDate = BehaviorRelay(value: episode.pubDate)
-        duration = BehaviorRelay(value: episode.duration ?? 0)
-        thumbnail = BehaviorRelay(value: episode.artwork ?? show.artwork)
-        description = BehaviorRelay(value: episode.description ?? "")
+        title = BehaviorRelay(value: self.episode.meta.title)
+        pubDate = BehaviorRelay(value: self.episode.meta.pubDate)
+        duration = BehaviorRelay(value: self.episode.meta.duration ?? 0)
+        thumbnail = BehaviorRelay(value: self.episode.meta.artwork ?? show.artwork)
+        description = BehaviorRelay(value: self.episode.meta.description ?? "")
     }
 
     func layoutDescription() {
-        description.accept(episode.description ?? "")
+        description.accept(episode.meta.description ?? "")
     }
 }

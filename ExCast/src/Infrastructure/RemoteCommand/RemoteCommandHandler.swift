@@ -45,9 +45,9 @@ class RemoteCommandHandler: NSObject {
         var nowPlayingInfo = [String: Any]()
 
         nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = show.title
-        nowPlayingInfo[MPMediaItemPropertyTitle] = episode.title
+        nowPlayingInfo[MPMediaItemPropertyTitle] = episode.meta.title
 
-        if let pubDate = self.episode.pubDate {
+        if let pubDate = self.episode.meta.pubDate {
             nowPlayingInfo[MPMediaItemPropertyDateAdded] = pubDate
         }
 
@@ -55,11 +55,11 @@ class RemoteCommandHandler: NSObject {
             nowPlayingInfo[MPMediaItemPropertyArtist] = author
         }
 
-        let description = episode.description ?? show.description
+        let description = episode.meta.description ?? show.description
         nowPlayingInfo[MPMediaItemPropertyComments] = description
 
         DispatchQueue.global(qos: .background).async {
-            let artworkUrl = self.episode.artwork ?? self.show.artwork
+            let artworkUrl = self.episode.meta.artwork ?? self.show.artwork
             guard let data = try? Data(contentsOf: artworkUrl), let image = UIImage(data: data) else { return }
             let artwork = MPMediaItemArtwork(boundsSize: image.size) { _ in
                 image
@@ -68,7 +68,7 @@ class RemoteCommandHandler: NSObject {
         }
 
         // TODO: 存在しなかった場合どうするか
-        if let duration = self.episode.duration {
+        if let duration = self.episode.meta.duration {
             nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
         }
 

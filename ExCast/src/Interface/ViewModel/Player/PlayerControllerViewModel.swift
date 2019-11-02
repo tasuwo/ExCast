@@ -38,7 +38,7 @@ class PlayerControllerViewModel {
         commands = controller
         self.configuration = configuration
         self.remoteCommands = remoteCommands
-        duration.accept(episode.duration ?? 0)
+        duration.accept(episode.meta.duration ?? 0)
 
         currentTime
             .filter { [unowned self] _ in self.preventToSyncTime.value == false }

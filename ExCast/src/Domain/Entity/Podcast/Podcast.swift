@@ -50,36 +50,55 @@ struct Podcast: Codable, Equatable {
     }
 
     struct Episode: Codable, Equatable {
-        /// The string that uniquely identifies the episode.
-        let guid: String?
+        /**
+         * メタ情報
+         */
+        struct Meta: Codable, Equatable {
+            /// The string that uniquely identifies the episode.
+            let guid: String?
 
-        /// If this value is false, the guid assumed to be a url.
-        let guidIsPermaLink: Bool?
+            /// If this value is false, the guid assumed to be a url.
+            let guidIsPermaLink: Bool?
 
-        /// An episode title.
-        let title: String
+            /// An episode title.
+            let title: String
 
-        /// An episode subtitle.
-        let subTitle: String?
+            /// An episode subtitle.
+            let subTitle: String?
 
-        /// The episode content, file size, and file type information.
-        let enclosure: Enclosure
+            /// The episode content, file size, and file type information.
+            let enclosure: Enclosure
 
-        /// The date and time when an episode was released.
-        let pubDate: Date?
+            /// The date and time when an episode was released.
+            let pubDate: Date?
 
-        /// An episode description.
-        let description: String?
+            /// An episode description.
+            let description: String?
 
-        /// The duration of an episode.
-        /// Different duration formats are accepted.
-        let duration: Double?
+            /// The duration of an episode.
+            /// Different duration formats are accepted.
+            let duration: Double?
 
-        /// An episode link URL.
-        let link: URL?
+            /// An episode link URL.
+            let link: URL?
 
-        /// The episode artwork.
-        let artwork: URL?
+            /// The episode artwork.
+            let artwork: URL?
+        }
+
+        /**
+         * 再生情報
+         */
+        struct Playback: Codable, Equatable {
+            /// 再生位置. 再生していない, あるいは再生を終えている場合は nil
+            let playbackPositionSec: UInt?
+        }
+
+        /// メタ情報
+        let meta: Meta
+
+        /// 再生情報. 未再生の場合は nil
+        let playback: Playback?
     }
 
     let show: Show

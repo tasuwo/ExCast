@@ -19,9 +19,10 @@ class PodcastFactory: NSObject {
                 return Result.failure(NSError(domain: "", code: -1, userInfo: nil))
             }
 
-            let episodes = (node |> "channel" ||> "item")?.compactMap { [weak self] item in
+            let episodeMetas = (node |> "channel" ||> "item")?.compactMap { [weak self] item in
                 self?.composeItem(by: item)
             }
+            let episodes = episodeMetas?.compactMap { Podcast.Episode(meta: $0, playback: nil) }
 
             return Result.success(Podcast(show: show, episodes: episodes ?? []))
         case let .failure(err):
@@ -64,7 +65,7 @@ class PodcastFactory: NSObject {
         return Podcast.Show(feedUrl: feedUrl, title: title, description: description, artwork: artwork, categories: [], explicit: explicit, language: language, author: author, site: site, owner: owner)
     }
 
-    private func composeItem(by node: XmlNode) -> Podcast.Episode? {
+    private func composeItem(by node: XmlNode) -> Podcast.Episode.Meta? {
         guard
             let title = (node |> "title")?.value,
             let enclosureAttributes = (node |> "enclosure")?.attributes,
@@ -98,7 +99,7 @@ class PodcastFactory: NSObject {
 
         // TODO: duration, artwork
 
-        return Podcast.Episode(guid: guid, guidIsPermaLink: isPermaLink, title: title, subTitle: subTitle, enclosure: enclosure, pubDate: pubDate, description: description, duration: duration, link: link, artwork: nil)
+        return Podcast.Episode.Meta(guid: guid, guidIsPermaLink: isPermaLink, title: title, subTitle: subTitle, enclosure: enclosure, pubDate: pubDate, description: description, duration: duration, link: link, artwork: nil)
     }
 
     // TODO: duration の表現は他にもあるので対応したい

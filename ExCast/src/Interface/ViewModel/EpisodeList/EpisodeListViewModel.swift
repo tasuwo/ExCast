@@ -121,6 +121,6 @@ extension EpisodeListViewModel.ListingEpisode: IdentifiableType {
     typealias Identity = String
 
     var identity: String {
-        return episode.title
+        return episode.meta.title
     }
 }
