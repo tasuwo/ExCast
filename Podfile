@@ -13,6 +13,7 @@ target 'ExCast' do
   pod 'RxCocoa', '~> 5'
   pod 'RxDataSources', '~> 4.0'
   pod 'SwiftFormat/CLI'
+  pod 'RealmSwift'
 
 end
 
