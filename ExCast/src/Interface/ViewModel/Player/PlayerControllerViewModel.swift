@@ -6,13 +6,14 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
 import Foundation
 import RxRelay
 import RxSwift
 
 class PlayerControllerViewModel {
-    private let show: Podcast.Show
-    private let episode: Podcast.Episode
+    private let show: Show
+    private let episode: Episode
     private let commands: ExCastPlayerProtocol
     private let configuration: PlayerConfiguration
     private let remoteCommands: ExCastPlayerDelegate
@@ -32,7 +33,7 @@ class PlayerControllerViewModel {
 
     // MARK: - Lifecycle
 
-    init(show: Podcast.Show, episode: Podcast.Episode, controller: ExCastPlayerProtocol, remoteCommands: ExCastPlayerDelegate, configuration: PlayerConfiguration) {
+    init(show: Show, episode: Episode, controller: ExCastPlayerProtocol, remoteCommands: ExCastPlayerDelegate, configuration: PlayerConfiguration) {
         self.show = show
         self.episode = episode
         commands = controller

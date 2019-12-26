@@ -6,6 +6,7 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
 import MaterialComponents
 import RxCocoa
 import RxDataSources
@@ -60,7 +61,7 @@ class PodcastEpisodeListViewController: UIViewController {
 
         episodeListView.refreshControl?.rx.controlEvent(.valueChanged)
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .bind(onNext: { [unowned self] _ in self.viewModel.fetch(url: self.viewModel.show.feedUrl) })
+            .bind(onNext: { [unowned self] _ in self.viewModel.fetch() })
             .disposed(by: disposeBag)
 
         viewModel.episodes
@@ -86,6 +87,8 @@ class PodcastEpisodeListViewController: UIViewController {
 
         title = viewModel.show.title
 
+        viewModel.fetch()
+
         if let selectedRow = self.episodeListView.indexPathForSelectedRow {
             episodeListView.deselectRow(at: selectedRow, animated: true)
         }
@@ -94,15 +97,15 @@ class PodcastEpisodeListViewController: UIViewController {
     // MARK: - Methods
 
     func didSelectEpisode(at indexPath: IndexPath) {
-        let episode = viewModel.episodesCache.value(at: indexPath).episode
-        playerPresenter?.show(show: viewModel.show, episode: episode)
+        playerPresenter?.show(show: viewModel.show,
+                              episode: viewModel.episodesCache.value(at: indexPath).episode)
     }
 }
 
 extension PodcastEpisodeListViewController: PodcastEpisodeCellDelegate {
     // MARK: - PodcastEpisodeCellDelegate
 
-    func podcastEpisodeCell(_: UITableViewCell, didSelect episode: Podcast.Episode) {
+    func podcastEpisodeCell(_: UITableViewCell, didSelect episode: Episode) {
         guard let navigationController = self.navigationController else { return }
 
         let nextViewController = factory.makeEpisodeDetailViewController(show: viewModel.show, episode: episode)

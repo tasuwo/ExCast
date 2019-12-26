@@ -6,6 +6,7 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
 import RxRelay
 import UIKit
 
@@ -15,7 +16,7 @@ class AppRootViewController: UIViewController {
     private lazy var rootTabBarController = self.factory.makeAppRootTabBarController()
     private var playerModalViewController: EpisodePlayerViewController?
 
-    private var playingEpisode_: BehaviorRelay<Podcast.Episode?> = BehaviorRelay(value: nil)
+    private var playingEpisode_: BehaviorRelay<Episode?> = BehaviorRelay(value: nil)
 
     private let factory: Factory
 
@@ -53,11 +54,11 @@ class AppRootViewController: UIViewController {
 extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
     // MARK: - EpisodePlayerModalPresenterProtocol
 
-    var playingEpisode: BehaviorRelay<Podcast.Episode?> {
+    var playingEpisode: BehaviorRelay<Episode?> {
         return playingEpisode_
     }
 
-    func show(show: Podcast.Show, episode: Podcast.Episode) {
+    func show(show: Show, episode: Episode) {
         if let view = self.playerModalViewController {
             view.reload(
                 controllerViewModel: factory.makePlayerControllerViewModel(show: show, episode: episode),

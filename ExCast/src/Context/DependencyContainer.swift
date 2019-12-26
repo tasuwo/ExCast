@@ -6,16 +6,19 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+// TODO:
+import Domain
 import Foundation
+import Infrastructure
 import MediaPlayer
 
 class DependencyContainer {
-    private lazy var localRepository = LocalRepository(defaults: UserDefaults.standard)
-
-    private lazy var podcastFactory = PodcastFactory()
-    private lazy var podcastRepository = PodcastRepository(factory: self.podcastFactory, repository: self.localRepository)
+    private let podcastFactory = PodcastFactory.self
+    private lazy var podcastRepository = PodcastRepository(factory: self.podcastFactory)
     private lazy var podcastGateway = PodcastGateway(session: URLSession.shared, factory: self.podcastFactory)
     private lazy var podcastService = PodcastService(repository: self.podcastRepository, gateway: self.podcastGateway)
+    private lazy var episodeRepository = EpisodeRepository()
+    private lazy var episodesService: EpisodeServiceProtocol = EpisodeService(repository: self.episodeRepository)
 
     private lazy var commandCenter = MPRemoteCommandCenter.shared()
     private lazy var nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
@@ -42,17 +45,17 @@ extension DependencyContainer: ViewControllerFactory {
         return FeedUrlInputViewController(factory: self, viewModel: viewModel)
     }
 
-    func makeEpisodeListViewController(podcast: Podcast) -> PodcastEpisodeListViewController {
-        let viewModel = EpisodeListViewModel(podcast: podcast, service: podcastService)
+    func makeEpisodeListViewController(show: Show) -> PodcastEpisodeListViewController {
+        let viewModel = EpisodeListViewModel(show: show, service: episodesService)
         return PodcastEpisodeListViewController(factory: self, viewModel: viewModel)
     }
 
-    func makeEpisodeDetailViewController(show: Podcast.Show, episode: Podcast.Episode) -> EpisodeDetailViewController {
+    func makeEpisodeDetailViewController(show: Show, episode: Episode) -> EpisodeDetailViewController {
         let viewModel = EpisodeDetailViewModel(show: show, episode: episode)
         return EpisodeDetailViewController(factory: self, viewModel: viewModel)
     }
 
-    func makeEpisodePlayerViewController(show: Podcast.Show, episode: Podcast.Episode) -> EpisodePlayerViewController {
+    func makeEpisodePlayerViewController(show: Show, episode: Episode) -> EpisodePlayerViewController {
         let viewModel = PlayerModalViewModel()
         return EpisodePlayerViewController(factory: self, show: show, episode: episode, viewModel: viewModel)
     }
@@ -61,7 +64,7 @@ extension DependencyContainer: ViewControllerFactory {
 extension DependencyContainer: ViewModelFactory {
     // MARK: - ViewModelFactory
 
-    func makePlayerControllerViewModel(show: Podcast.Show, episode: Podcast.Episode) -> PlayerControllerViewModel {
+    func makePlayerControllerViewModel(show: Show, episode: Episode) -> PlayerControllerViewModel {
         let player = ExCastPlayer(contentUrl: episode.meta.enclosure.url)
         let commandHandler = RemoteCommandHandler(
             show: show,
@@ -74,7 +77,7 @@ extension DependencyContainer: ViewModelFactory {
         return PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler, configuration: playerConfiguration)
     }
 
-    func makePlayerInformationViewModel(show: Podcast.Show, episode: Podcast.Episode) -> PlayerInformationViewModel {
+    func makePlayerInformationViewModel(show: Show, episode: Episode) -> PlayerInformationViewModel {
         return PlayerInformationViewModel(show: show, episode: episode)
     }
 }

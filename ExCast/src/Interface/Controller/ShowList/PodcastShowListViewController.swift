@@ -85,7 +85,7 @@ class PodcastShowListViewController: UIViewController {
         guard let navigationController = self.navigationController else { return }
 
         let podcast = viewModel.podcasts.value(at: indexPath)
-        let nextViewController = factory.makeEpisodeListViewController(podcast: podcast)
+        let nextViewController = factory.makeEpisodeListViewController(show: podcast.meta)
         navigationController.pushViewController(nextViewController, animated: true)
     }
 }

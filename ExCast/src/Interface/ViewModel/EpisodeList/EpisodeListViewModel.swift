@@ -6,6 +6,7 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
 import RxDataSources
 import RxRelay
 import RxSwift
@@ -14,15 +15,14 @@ struct EpisodeListViewModel {
     private static let sectionIdentifier = ""
 
     struct ListingEpisode: Equatable {
-        let episode: Podcast.Episode
+        let episode: Episode
         let isPlaying: Bool
     }
 
-    let show: Podcast.Show
-    private let feedUrl: URL
-    private let service: PodcastServiceProtocol
+    let show: Show
+    private let service: EpisodeServiceProtocol
 
-    let playingEpisode: BehaviorRelay<Podcast.Episode?> = BehaviorRelay(value: nil)
+    let playingEpisode: BehaviorRelay<Episode?> = BehaviorRelay(value: nil)
     private(set) var episodes: BehaviorRelay<DataSourceQuery<ListingEpisode>>
     private(set) var episodesCache: BehaviorRelay<[AnimatableSectionModel<String, ListingEpisode>]>
 
@@ -30,30 +30,19 @@ struct EpisodeListViewModel {
 
     // MARK: - Initializer
 
-    init(podcast: Podcast, service: PodcastServiceProtocol) {
-        feedUrl = podcast.show.feedUrl
+    init(show: Show, service: EpisodeServiceProtocol) {
+        self.show = show
         self.service = service
 
-        show = podcast.show
-        episodes = BehaviorRelay(value: .contents([
-            .init(model: EpisodeListViewModel.sectionIdentifier,
-                  items: podcast.episodes.map { ListingEpisode(episode: $0, isPlaying: false) }),
-        ]))
-        episodesCache = BehaviorRelay(value: [
-            .init(model: EpisodeListViewModel.sectionIdentifier,
-                  items: podcast.episodes.map { ListingEpisode(episode: $0, isPlaying: false) }),
-        ])
+        episodes = BehaviorRelay(value: .contents([]))
+        episodesCache = BehaviorRelay(value: [])
 
         self.service.state
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .map { [self] query -> DataSourceQuery<ListingEpisode> in
                 switch query {
-                case let .content(podcasts):
-                    // TODO: 効率化
-                    guard let podcast = podcasts.first(where: { $0.show.feedUrl == self.feedUrl }) else {
-                        return .error
-                    }
-                    let items = podcast.episodes.map {
+                case let .content(episodes):
+                    let items = episodes.map {
                         ListingEpisode(episode: $0, isPlaying: $0 == self.playingEpisode.value)
                     }
                     return .contents([.init(model: EpisodeListViewModel.sectionIdentifier, items: items)])
@@ -69,7 +58,7 @@ struct EpisodeListViewModel {
         playingEpisode
             .map { [self] episode -> DataSourceQuery<ListingEpisode> in
                 switch self.episodes.value {
-                case let .contents(container):
+                case let .contents(container) where !container.isEmpty:
                     if episode == nil {
                         guard let firstIndex = container[0].items.firstIndex(where: { $0.isPlaying == true }) else {
                             return self.episodes.value
@@ -110,13 +99,13 @@ struct EpisodeListViewModel {
 
     // MARK: - Methods
 
-    func fetch(url: URL) {
-        service.command.accept(.fetch(url))
+    func fetch() {
+        service.command.accept(.refresh(show.feedUrl))
     }
 }
 
 extension EpisodeListViewModel.ListingEpisode: IdentifiableType {
-    // MARK: - IndetifiableType
+    // MARK: - IndetifiableTyp
 
     typealias Identity = String
 

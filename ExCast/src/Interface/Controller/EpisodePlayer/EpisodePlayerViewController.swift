@@ -6,14 +6,15 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
 import RxCocoa
 import RxSwift
 import UIKit
 
 protocol EpisodePlayerModalPresenterProtocol: AnyObject {
-    var playingEpisode: BehaviorRelay<Podcast.Episode?> { get }
+    var playingEpisode: BehaviorRelay<Episode?> { get }
 
-    func show(show: Podcast.Show, episode: Podcast.Episode)
+    func show(show: Show, episode: Episode)
 
     func dismiss()
 
@@ -37,7 +38,7 @@ class EpisodePlayerViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(factory: Factory, show: Podcast.Show, episode: Podcast.Episode, viewModel: PlayerModalViewModel) {
+    init(factory: Factory, show: Channel, episode: Episode, viewModel: PlayerModalViewModel) {
         self.factory = factory
         modalViewModel = viewModel
         controllerViewModel = factory.makePlayerControllerViewModel(show: show, episode: episode)

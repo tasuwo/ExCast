@@ -6,6 +6,9 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
+// TODO:
+import Infrastructure
 import RxDataSources
 
 class PodcastShowListViewDataSourceContainer: NSObject {
@@ -25,8 +28,8 @@ class PodcastShowListViewDataSourceContainer: NSObject {
                 return cell
             }
 
-            podcastShowCell.title = item.show.title
-            podcastShowCell.author = item.show.author
+            podcastShowCell.title = item.meta.title
+            podcastShowCell.author = item.meta.author
 
             if let thumbnail = self.thumbnailCache[indexPath] {
                 podcastShowCell.artwork = thumbnail
@@ -38,7 +41,7 @@ class PodcastShowListViewDataSourceContainer: NSObject {
                 return cell
             }
 
-            let url = item.show.artwork
+            let url = item.meta.artwork
             let downloader = ThumbnailDownloader(size: 90)
             downloader.startDownload(by: url) { [weak self] result in
                 guard let self = self else { return }

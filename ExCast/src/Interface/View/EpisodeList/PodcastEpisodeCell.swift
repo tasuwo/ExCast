@@ -6,10 +6,11 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
 import UIKit
 
 protocol PodcastEpisodeCellDelegate: AnyObject {
-    func podcastEpisodeCell(_ cell: UITableViewCell, didSelect episode: Podcast.Episode)
+    func podcastEpisodeCell(_ cell: UITableViewCell, didSelect episode: Episode)
 }
 
 class PodcastEpisodeCell: UITableViewCell {
@@ -72,7 +73,7 @@ class PodcastEpisodeCell: UITableViewCell {
         }
     }
 
-    var episode: Podcast.Episode?
+    var episode: Episode?
 
     weak var delegate: PodcastEpisodeCellDelegate?
 

@@ -1,0 +1,220 @@
+<%_ 
+func defaultValueString(_ variable: Variable) -> String {
+    if variable.isModel {
+        return variable.typeName.isOptional ? "nil" : "\(variable.unwrappedRealmTypeName)()"
+    }
+
+    if variable.typeName.isRealmOptional {
+        return "\(variable.realmTypeName)()"
+    } else if variable.typeName.isOptional {
+        return "nil"    
+    } else if variable.typeName.isArray {
+        return "List<\(variable.typeName.array!.elementTypeName.unwrappedTypeName)>()"
+    } else if variable.realmTypeName == "String" {
+        return "\"\""
+    } else if variable.realmTypeName == "Bool" {
+        return "false"
+    } else if variable.realmTypeName == "Int" {
+        return "0"
+    } else if variable.realmTypeName == "TimeInterval" {
+        return "0"
+    }
+
+    return variable.typeName.name
+}
+
+func decode(_ src: String, _ variable: Variable) -> String {
+    if variable.isModel {
+        let baseTypeName = variable.modelTypeName!.replacingOccurrences(of: "Object", with: "")
+        if variable.isArray {
+            return variable.typeName.isOptional 
+                ? "\(src).\(variable.name) != nil ? \(src).\(variable.name).map { \(baseTypeName).makePersistable(managedObject: $0) } : nil"
+                : "\(src).\(variable.name).map { \(baseTypeName).makePersistable(managedObject: $0) }"
+        } else {
+            let baseTypeName = variable.typeName.unwrappedTypeName.replacingOccurrences(of: "Object", with: "")
+            return variable.typeName.isOptional 
+                ? "\(src).\(variable.name) != nil ? \(baseTypeName).makePersistable(managedObject: \(src).\(variable.name)!) : nil"
+                : "\(baseTypeName).makePersistable(managedObject: \(src).\(variable.name)!)"
+        }
+    } else if variable.typeName.isRealmOptional {
+        return "\(src).\(variable.name).value"
+    } else if variable.isArray {
+        return "Array(\(src).\(variable.name))"
+    } else if variable.isUrl {
+        return variable.typeName.isOptional 
+            ? "\(src).\(variable.name) != nil ? URL(string: \(src).\(variable.name)!)! : nil" 
+            : "URL(string: \(src).\(variable.name))!" 
+    } else if variable.isEnum {
+        return variable.typeName.isOptional 
+            ? "\(src).\(variable.name) != nil ? \(variable.typeName)(rawValue: \(src).\(variable.name)!) : nil" 
+            : "\(variable.typeName)(rawValue: \(src).\(variable.name))!"
+    } else {
+        return "\(src).\(variable.name)"
+    }
+}
+
+/**
+ *
+ */
+func encode(_ src: String, _ dst: String, _ variable: Variable) -> String {
+    if variable.isModel && variable.isArray {
+        return "\(src).\(variable.name).forEach { \(dst).\(variable.name).append($0.asManagedObject()) }"
+    } else if variable.isModel {
+        return "\(dst).\(variable.name) = \(src).\(variable.name)\(variable.typeName.isOptional ? "?" : "").asManagedObject()"
+    } else if variable.typeName.isRealmOptional {
+        return "\(dst).\(variable.name).value = \(src).\(variable.name)"
+    } else if variable.isUrl {
+        return "\(dst).\(variable.name) = \(src).\(variable.name)\(variable.typeName.isOptional ? "?" : "").absoluteString"
+    } else if variable.isEnum {
+        return "\(dst).\(variable.name) = \(src).\(variable.name)\(variable.typeName.isOptional ? "?" : "").rawValue"
+    } else if variable.isArray {
+        return "\(src).\(variable.name).forEach { \(dst).\(variable.name).append($0) }"
+    } else {
+        return "\(dst).\(variable.name) = \(src).\(variable.name)"
+    }
+}
+
+/**
+ * - seeAlso: https://realm.io/docs/swift/latest/#property-cheatsheet/
+ */
+func propertyDefinition(_ variable: Variable) -> String {
+    if (variable.isModel && variable.isArray) || variable.isArray || variable.typeName.isRealmOptional {
+        return "let \(variable.name): \(variable.realmTypeName) = \(defaultValueString(variable))"
+    } else {
+        return "@objc dynamic var \(variable.name): \(variable.realmTypeName) = \(defaultValueString(variable))"
+    }
+}
+
+extension Variable {
+    /// モデルとして扱われる型かどうか
+    var isModel: Bool {
+        if self.type?.annotations["model"] != nil {
+            return true
+        } else if self.typeName.isArray && self.typeName.array?.elementType?.annotations["model"] != nil {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    var isUrl: Bool {
+        return self.typeName.unwrappedTypeName == "URL"
+    }
+
+    var isEnum: Bool {
+        return self.type?.kind == "enum"
+    }
+
+    /// モデルであった場合、その型名. Generics 等で指定されていた場合も、アンラップされてモデルの型名が返される
+    var modelTypeName: String? {
+        guard self.isModel else { return nil }
+
+        if self.typeName.isArray {
+            return self.typeName.array!.elementTypeName.unwrappedTypeName
+        } else {
+            return self.typeName.unwrappedTypeName
+        }
+    }
+
+    /// Realm に保存する場合に採用する型
+    var realmTypeName: String {
+        if self.isModel && self.typeName.isArray {
+            // NOTE: List は必ず non-optional で保持する
+            return "List<\(self.typeName.array!.elementTypeName.unwrappedTypeName)Object>" 
+        } else if self.isModel {
+            // NOTE: Object は必ず optional で保持する
+            return "\(self.unwrappedTypeName)Object?" 
+        } else if self.typeName.isArray {
+            return "List<\(self.typeName.array!.elementTypeName.unwrappedTypeName)>" 
+        }
+
+        let unwrappedTypeName = { () -> String in
+            if self.typeName.unwrappedTypeName == "URL" {
+                return "String"
+            } else if self.type?.kind == "enum" {
+                return "String"
+            } else {
+                return self.unwrappedTypeName
+            }
+        }()
+
+        if self.typeName.isRealmOptional {
+            return "RealmOptional<\(unwrappedTypeName)>"
+        } else if self.typeName.isOptional {
+            return "\(unwrappedTypeName)?"
+        } else {
+            return unwrappedTypeName
+        }
+    }
+
+    /// Optional を除いた型
+    /// - attention: RealmOptional はアンラップしない
+    var unwrappedRealmTypeName: String {
+        return self.realmTypeName.replacingOccurrences(of: "?", with: "")
+    }
+}
+
+extension TypeName {
+    /// Realm を使用する上で、RealmOptional でラップする必要があるか
+    var isRealmOptional: Bool {
+        guard self.isOptional else {
+            return false
+        }
+
+        switch self.unwrappedTypeName {
+        case "Int":
+            fallthrough
+        case "Float":
+            fallthrough
+        case "Double":
+            fallthrough
+        case "TimeInterval":
+            fallthrough
+        case "Bool":
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+-%>
+<% for type in types.all.filter({ $0.annotations["model"] != nil }) { -%>
+// sourcery:file:<%= type.name %>Object.swift
+
+import RealmSwift
+@testable import Domain
+
+extension <%= type.name %>: Persistable {
+    // MARK: - Persistable
+
+    static func makePersistable(managedObject: <%= type.name %>Object) -> Self {
+        return .init(
+        <%_ for (index, variable) in type.storedVariables.enumerated() { -%>
+            <%= variable.name %>: <%= decode("managedObject", variable) %><%_ if index < type.storedVariables.count - 1 { -%>,<% } %>
+        <%_ } -%>
+        )
+    }
+
+    func asManagedObject() -> <%= type.name %>Object {
+        let obj = <%= type.name %>Object()
+        <%_ for variable in type.storedVariables { -%>
+            <%= encode("self", "obj", variable) %>
+        <%_ } -%>
+        return obj
+    }
+}
+
+final class <%= type.name %>Object: Object {
+    <%_ for variable in type.storedVariables { -%>
+        <%= propertyDefinition(variable) %>
+    <%_ } -%>
+
+    <%_ if let primaryKeyVariable = type.allVariables.first(where: { $0.annotations["primaryKey"] != nil }) { -%>
+        override static func primaryKey() -> String? {
+            return "<%= primaryKeyVariable.name %>"
+        }
+    <%_ } -%>
+} 
+// sourcery:end
+<%_ } -%>

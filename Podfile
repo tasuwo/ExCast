@@ -1,20 +1,29 @@
-# Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '12.2'
 
-target 'ExCast' do
-  # Comment the next line if you don't want to use dynamic frameworks
+abstract_target 'All' do
   use_frameworks!
 
-  # Pods for ExCast
-  pod 'MaterialComponents'
-  pod 'AWSSNS'
-  pod 'ObjectMapper', '~> 3.4'
-  pod 'RxSwift', '~> 5'
-  pod 'RxCocoa', '~> 5'
-  pod 'RxDataSources', '~> 4.0'
-  pod 'SwiftFormat/CLI'
-  pod 'RealmSwift'
+  target 'ExCast' do
+    pod 'MaterialComponents'
+    pod 'ObjectMapper', '~> 3.4'
+    pod 'RxSwift', '~> 5.0.0'
+    pod 'RxCocoa', '~> 5.0.0'
+    pod 'RxDataSources', '~> 4.0'
+    pod 'SwiftFormat/CLI'
+  end
 
+  target 'Domain' do
+    pod 'RxDataSources', '~> 4.0'
+  end
+
+  target 'Infrastructure' do
+    pod 'AWSSNS'
+    pod 'RxSwift', '~> 5.0.0'
+    pod 'RxCocoa', '~> 5.0.0'
+    pod 'RealmSwift'
+
+    pod 'Sourcery'
+  end
 end
 
 plugin 'cocoapods-keys', {

@@ -6,12 +6,13 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
 import Foundation
 import RxRelay
 
 class EpisodeDetailViewModel {
-    private let show: Podcast.Show
-    private let episode: Podcast.Episode
+    private let show: Show
+    private let episode: Episode
 
     private(set) var title: BehaviorRelay<String>
     private(set) var pubDate: BehaviorRelay<Date?>
@@ -19,17 +20,17 @@ class EpisodeDetailViewModel {
     private(set) var thumbnail: BehaviorRelay<URL?>
     private(set) var description: BehaviorRelay<String>
 
-    init(show: Podcast.Show, episode: Podcast.Episode) {
+    init(show: Show, episode: Episode) {
         self.show = show
         self.episode = episode
         title = BehaviorRelay(value: self.episode.meta.title)
         pubDate = BehaviorRelay(value: self.episode.meta.pubDate)
         duration = BehaviorRelay(value: self.episode.meta.duration ?? 0)
         thumbnail = BehaviorRelay(value: self.episode.meta.artwork ?? show.artwork)
-        description = BehaviorRelay(value: self.episode.meta.description ?? "")
+        description = BehaviorRelay(value: self.episode.meta.itemDescription ?? "")
     }
 
     func layoutDescription() {
-        description.accept(episode.meta.description ?? "")
+        description.accept(episode.meta.itemDescription ?? "")
     }
 }

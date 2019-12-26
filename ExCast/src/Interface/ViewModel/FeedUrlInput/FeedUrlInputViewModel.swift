@@ -6,6 +6,7 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
 import RxRelay
 import RxSwift
 
@@ -50,16 +51,13 @@ class FeedUrlInputViewModel {
                 case .error:
                     self.view?.showMessage(NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: ""))
                 case let .next(podcast):
-                    self.view?.showMessage(String(format: NSLocalizedString("FeedUrlInputView.success.fetchPodcast", comment: ""), podcast.show.title))
-                    self.store(podcast)
+                    self.view?.showMessage(String(format: NSLocalizedString("FeedUrlInputView.success.fetchPodcast", comment: ""), podcast.meta.title))
+                    self.service.command.accept(.create(podcast))
+                    // TODO: 成功を検知したい
                     self.view?.didFetchPodcastSuccessfully()
                 case .completed: break
                 }
             }
             .disposed(by: disposeBag)
-    }
-
-    private func store(_ podcast: Podcast) {
-        service.command.accept(.create(podcast))
     }
 }

@@ -6,20 +6,23 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
+import Foundation
+
 protocol ViewControllerFactory {
     func makeAppRootTabBarController() -> AppRootTabBarController
 
     func makePodcastShowListViewController() -> PodcastShowListViewController
     func makeFeedUrlInputViewController() -> FeedUrlInputViewController
-    func makeEpisodeListViewController(podcast: Podcast) -> PodcastEpisodeListViewController
+    func makeEpisodeListViewController(show: Show) -> PodcastEpisodeListViewController
 
-    func makeEpisodeDetailViewController(show: Podcast.Show, episode: Podcast.Episode) -> EpisodeDetailViewController
-    func makeEpisodePlayerViewController(show: Podcast.Show, episode: Podcast.Episode) -> EpisodePlayerViewController
+    func makeEpisodeDetailViewController(show: Show, episode: Episode) -> EpisodeDetailViewController
+    func makeEpisodePlayerViewController(show: Show, episode: Episode) -> EpisodePlayerViewController
 }
 
 protocol ViewModelFactory {
-    func makePlayerControllerViewModel(show: Podcast.Show, episode: Podcast.Episode) -> PlayerControllerViewModel
-    func makePlayerInformationViewModel(show: Podcast.Show, episode: Podcast.Episode) -> PlayerInformationViewModel
+    func makePlayerControllerViewModel(show: Show, episode: Episode) -> PlayerControllerViewModel
+    func makePlayerInformationViewModel(show: Show, episode: Episode) -> PlayerInformationViewModel
 }
 
 protocol EpisodePlayerModalPresenterFactory {

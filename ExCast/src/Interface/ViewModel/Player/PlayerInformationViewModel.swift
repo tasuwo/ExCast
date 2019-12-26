@@ -6,12 +6,13 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
 import Foundation
 import RxRelay
 
 class PlayerInformationViewModel {
-    let show: Podcast.Show
-    let episode: Podcast.Episode
+    let show: Show
+    let episode: Episode
 
     private(set) var showTitle: BehaviorRelay<String>
     private(set) var episodeTitle: BehaviorRelay<String>
@@ -19,7 +20,7 @@ class PlayerInformationViewModel {
 
     // MARK: - Lifecycle
 
-    init(show: Podcast.Show, episode: Podcast.Episode) {
+    init(show: Show, episode: Episode) {
         self.show = show
         self.episode = episode
 

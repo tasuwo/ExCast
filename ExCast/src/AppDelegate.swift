@@ -8,6 +8,7 @@
 
 import AVFoundation
 import AWSSNS
+import Domain
 import Keys
 import MediaPlayer
 import UIKit
@@ -28,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // AWS
-        AWSServiceManager.default()?.defaultServiceConfiguration = AWSServiceConfiguration(region: .APNortheast1, credentialsProvider: self)
+        // AWSServiceManager.default()?.defaultServiceConfiguration = AWSServiceConfiguration(region: .APNortheast1, credentialsProvider: self)
 
         // Notification
         // let notificationCenter = UNUserNotificationCenter.current()
