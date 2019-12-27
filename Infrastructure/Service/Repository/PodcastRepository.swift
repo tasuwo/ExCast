@@ -11,70 +11,64 @@ import RealmSwift
 import RxSwift
 
 public protocol PodcastRepositoryProtocol {
-    func getAll() -> Observable<Result<[Podcast], Error>>
-    func add(_ podcast: Podcast) -> Observable<Result<Podcast, Error>>
-    func update(_ podcast: Podcast) -> Observable<Result<Podcast, Error>>
-    func remove(_ podcast: Podcast) -> Observable<Result<Podcast, Error>>
+    func getAll() -> Single<[Podcast]>
+    func add(_ podcast: Podcast) -> Completable
+    func update(_ podcast: Podcast) -> Completable
+    func remove(_ podcast: Podcast) -> Completable
 }
 
 public struct PodcastRepository: PodcastRepositoryProtocol {
     private let factory: PodcastFactoryProtocol.Type
+    private let queue: DispatchQueue = .init(label: "net.tasuwo.ExCast.Infrastructure.PodcastRepository")
 
     public init(factory: PodcastFactoryProtocol.Type) {
         self.factory = factory
     }
 
-    public func getAll() -> Observable<Result<[Podcast], Error>> {
-        return Observable.create { observer in
-            DispatchQueue.main.async {
+    public func getAll() -> Single<[Podcast]> {
+        return Single.create(subscribe: { observer in
+            self.queue.async {
                 let realm = try! Realm()
                 let podcasts = Array(realm.objects(PodcastObject.self)).map { Podcast.make(by: $0) }
-
-                observer.onNext(.success(podcasts))
-                observer.onCompleted()
+                observer(.success(podcasts))
             }
             return Disposables.create()
-        }
+        })
     }
 
-    public func add(_ podcast: Podcast) -> Observable<Result<Podcast, Error>> {
-        return Observable.create { observer in
-            DispatchQueue.main.async {
+    public func add(_ podcast: Podcast) -> Completable {
+        return Completable.create(subscribe: { observer in
+            self.queue.async {
                 let realm = try! Realm()
                 try! realm.write {
                     realm.add(podcast.asManagedObject())
-
-                    observer.onNext(.success(podcast))
-                    observer.onCompleted()
+                    observer(.completed)
                 }
             }
             return Disposables.create()
-        }
+        })
     }
 
-    public func update(_ podcast: Podcast) -> Observable<Result<Podcast, Error>> {
-        return Observable.create { observer in
-            DispatchQueue.main.async {
+    public func update(_ podcast: Podcast) -> Completable {
+        return Completable.create(subscribe: { obserber in
+            self.queue.async {
                 let realm = try! Realm()
                 try! realm.write {
                     realm.add(podcast.asManagedObject())
-
-                    observer.onNext(.success(podcast))
-                    observer.onCompleted()
+                    obserber(.completed)
                 }
             }
             return Disposables.create()
-        }
+        })
     }
 
-    public func remove(_ podcast: Podcast) -> Observable<Result<Podcast, Error>> {
-        return Observable.create { observer in
-            DispatchQueue.main.async {
+    public func remove(_ podcast: Podcast) -> Completable {
+        return Completable.create(subscribe: { observer in
+            self.queue.async {
                 let realm = try! Realm()
                 try! realm.write {
                     guard let target = realm.object(ofType: PodcastObject.self, forPrimaryKey: podcast.feedUrl.absoluteString) else {
-                        observer.onNext(.success(podcast))
-                        observer.onCompleted()
+                        observer(.completed)
                         return
                     }
 
@@ -91,11 +85,10 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
 
                     realm.delete(target)
 
-                    observer.onNext(.success(podcast))
-                    observer.onCompleted()
+                    observer(.completed)
                 }
             }
             return Disposables.create()
-        }
+        })
     }
 }

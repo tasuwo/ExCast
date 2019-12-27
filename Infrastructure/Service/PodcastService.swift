@@ -30,22 +30,16 @@ public struct PodcastService: PodcastServiceProtocol {
 
         let refreshResultState = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .flatMapLatest { [self] command -> Observable<Result<[Podcast], Error>> in
+            .filter { if case .refresh = $0 { return true } else { return false } }
+            .flatMapLatest { [self] command -> Single<[Podcast]> in
                 switch command {
                 case .refresh:
                     return self.repository.getAll()
                 default:
-                    return Observable.never()
+                    return Single.never()
                 }
             }
-            .map { result -> PodcastServiceQuery in
-                switch result {
-                case let .success(podcasts):
-                    return .content(podcasts)
-                case .failure:
-                    return .error
-                }
-            }
+            .map { result -> PodcastServiceQuery in .content(result) }
 
         let fetchState = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
@@ -53,6 +47,7 @@ public struct PodcastService: PodcastServiceProtocol {
             .map { _ in PodcastServiceQuery.progress }
 
         let fetchResultState = command
+            .filter { if case .fetch(_) = $0 { return true } else { return false } }
             .flatMapLatest { [self] command -> Observable<Podcast> in
                 switch command {
                 case let .fetch(url):
@@ -61,60 +56,40 @@ public struct PodcastService: PodcastServiceProtocol {
                     return Observable.never()
                 }
             }
-            .flatMap { [self] i in self.repository.update(i) }
-            .flatMap { [self] result -> Observable<Result<[Podcast], Error>> in
-                switch result {
-                case .success:
-                    return self.repository.getAll()
-                default:
-                    return Observable.never()
-                }
+            .map { [self] fetchedPodcast in self.repository.update(fetchedPodcast) }
+            .flatMap { [self] _ -> Single<[Podcast]> in
+                return self.repository.getAll()
             }
-            .map { result -> PodcastServiceQuery in
-                switch result {
-                case let .success(podcasts):
-                    return .content(podcasts)
-                case .failure:
-                    return .error
-                }
-            }
+            .map { result -> PodcastServiceQuery in .content(result) }
 
         let createResultCommand = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .flatMapLatest { [self] command -> Observable<Result<Podcast, Error>> in
+            .filter { if case .create(_) = $0 { return true } else { return false } }
+            .map { [self] command -> Completable in
                 switch command {
                 case let .create(podcast):
                     return self.repository.add(podcast)
                 default:
-                    return Observable.never()
+                    return Completable.never()
                 }
             }
-            .flatMap { result -> Single<PodcastServiceCommand> in
-                switch result {
-                case .success:
-                    return Single.just(PodcastServiceCommand.refresh)
-                default:
-                    return Single.never()
-                }
+            .flatMap { _ -> Single<PodcastServiceCommand> in
+                return Single.just(PodcastServiceCommand.refresh)
             }
 
         let deleteResultCommand = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .flatMapLatest { [self] command -> Observable<Result<Podcast, Error>> in
+            .filter { if case .delete(_) = $0 { return true } else { return false } }
+            .map { [self] command -> Completable in
                 switch command {
                 case let .delete(podcast):
                     return self.repository.remove(podcast)
                 default:
-                    return Observable.never()
+                    return Completable.never()
                 }
             }
-            .flatMap { result -> Single<PodcastServiceCommand> in
-                switch result {
-                case .success:
-                    return Single.just(PodcastServiceCommand.refresh)
-                default:
-                    return Single.never()
-                }
+            .flatMap { _ -> Single<PodcastServiceCommand> in
+                return Single.just(PodcastServiceCommand.refresh)
             }
 
         Observable

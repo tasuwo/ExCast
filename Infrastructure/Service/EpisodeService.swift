@@ -28,22 +28,14 @@ public struct EpisodeService: EpisodeServiceProtocol {
 
         let refreshResultState = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .flatMapLatest { [self] command -> Observable<Result<[Episode], Error>> in
+            .filter { if case .refresh = $0 { return true } else { return false } }
+            .flatMapLatest { [self] command -> Single<[Episode]> in
                 switch command {
                 case let .refresh(feedUrl):
                     return self.repository.getAll(feedUrl)
-                default:
-                    return Observable.never()
                 }
             }
-            .map { result -> EpisodeServiceQuery in
-                switch result {
-                case let .success(episodes):
-                    return .content(episodes)
-                case .failure:
-                    return .error
-                }
-            }
+            .map { episodes -> EpisodeServiceQuery in .content(episodes) }
 
         Observable
             .merge(refreshState, refreshResultState)

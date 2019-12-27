@@ -11,38 +11,41 @@ import RealmSwift
 import RxSwift
 
 public protocol EpisodeRepositoryProtocol {
-    func getAll(_ feedUrl: URL) -> Observable<Result<[Episode], Error>>
-    func update(_ episode: Episode) -> Observable<Result<Episode, Error>>
+    func getAll(_ feedUrl: URL) -> Single<[Episode]>
+    func update(_ episode: Episode) -> Completable
 }
 
 public struct EpisodeRepository: EpisodeRepositoryProtocol {
+    private let queue: DispatchQueue = .init(label: "net.tasuwo.ExCast.Infrastructure.EpisodeRepository")
+
+    // MARK: - Lifecycle
+
     public init() {}
 
-    public func getAll(_ feedUrl: URL) -> Observable<Result<[Episode], Error>> {
-        return Observable.create { observer in
-            DispatchQueue.main.async {
+    // MARK: - EpisodeRepositoryProtocol
+
+    public func getAll(_ feedUrl: URL) -> Single<[Episode]> {
+        return Single.create { observer in
+            self.queue.async {
                 let realm = try! Realm()
                 guard let podcast = realm.object(ofType: PodcastObject.self, forPrimaryKey: feedUrl.absoluteString) else {
-                    observer.onNext(.success([]))
-                    observer.onCompleted()
+                    observer(.success([]))
                     return
                 }
-
-                observer.onNext(.success(Array(podcast.episodes).map { Episode.make(by: $0) }))
-                observer.onCompleted()
+                observer(.success(Array(podcast.episodes).map { Episode.make(by: $0) }))
             }
             return Disposables.create()
         }
     }
 
-    public func update(_ episode: Episode) -> Observable<Result<Episode, Error>> {
-        return Observable.create { observer in
-            DispatchQueue.main.async {
+    public func update(_ episode: Episode) -> Completable {
+        return Completable.create { observer in
+            self.queue.async {
                 let realm = try! Realm()
 
                 guard let target = realm.object(ofType: EpisodeObject.self, forPrimaryKey: episode.id) else {
                     // TODO:
-                    observer.onCompleted()
+                    observer(.completed)
                     return
                 }
 
@@ -51,8 +54,7 @@ public struct EpisodeRepository: EpisodeRepositoryProtocol {
                     target.playback = episode.playback?.asManagedObject()
                     realm.add(target, update: .modified)
 
-                    observer.onNext(.success(episode))
-                    observer.onCompleted()
+                    observer(.completed)
                 }
             }
             return Disposables.create()
