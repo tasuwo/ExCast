@@ -6,13 +6,16 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import RealmSwift
 import Nimble
+import RealmSwift
 
-func waitUntil(on queue: DispatchQueue, with transaction: Realm, action: @escaping (Realm, () -> Void) -> Void) {
-    waitUntil(on: queue) { done in
-        try! transaction.write {
-            action(transaction, done)
+func waitUntil(on queue: DispatchQueue, action: @escaping (Realm, () -> Void) -> Void) {
+    waitUntil { done in
+        queue.async {
+            let realm = try! Realm()
+            try! realm.write {
+                action(realm, done)
+            }
         }
     }
 }

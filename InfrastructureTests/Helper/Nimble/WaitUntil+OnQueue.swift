@@ -9,5 +9,9 @@
 import Nimble
 
 func waitUntil(on queue: DispatchQueue, action: @escaping (() -> Void) -> Void) {
-    waitUntil(action: action)
+    waitUntil { done in
+        queue.sync {
+            action(done)
+        }
+    }
 }
