@@ -28,7 +28,7 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
         return Observable.create { observer in
             DispatchQueue.main.async {
                 let realm = try! Realm()
-                let podcasts = Array(realm.objects(PodcastObject.self)).map { Podcast.makePersistable(managedObject: $0) }
+                let podcasts = Array(realm.objects(PodcastObject.self)).map { Podcast.make(by: $0) }
 
                 observer.onNext(.success(podcasts))
                 observer.onCompleted()

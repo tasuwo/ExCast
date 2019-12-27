@@ -1,13 +1,13 @@
 // Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
+import Domain
 import RealmSwift
-@testable import Domain
 
 extension Channel: Persistable {
     // MARK: - Persistable
 
-    static func makePersistable(managedObject: ChannelObject) -> Self {
+    static func make(by managedObject: ChannelObject) -> Self {
         return .init(
             feedUrl: URL(string: managedObject.feedUrl)!,
             title: managedObject.title,
@@ -18,7 +18,7 @@ extension Channel: Persistable {
             language: Language(rawValue: managedObject.language)!,
             author: managedObject.author,
             site: managedObject.site != nil ? URL(string: managedObject.site!)! : nil,
-            owner: managedObject.owner != nil ? ChannelOwner.makePersistable(managedObject: managedObject.owner!) : nil
+            owner: managedObject.owner != nil ? ChannelOwner.make(by: managedObject.owner!) : nil
         )
     }
 

@@ -28,7 +28,7 @@ public struct EpisodeRepository: EpisodeRepositoryProtocol {
                     return
                 }
 
-                observer.onNext(.success(Array(podcast.episodes).map { Episode.makePersistable(managedObject: $0) }))
+                observer.onNext(.success(Array(podcast.episodes).map { Episode.make(by: $0) }))
                 observer.onCompleted()
             }
             return Disposables.create()

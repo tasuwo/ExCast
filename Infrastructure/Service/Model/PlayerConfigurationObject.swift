@@ -1,13 +1,13 @@
 // Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
+import Domain
 import RealmSwift
-@testable import Domain
 
 extension PlayerConfiguration: Persistable {
     // MARK: - Persistable
 
-    static func makePersistable(managedObject: PlayerConfigurationObject) -> Self {
+    static func make(by managedObject: PlayerConfigurationObject) -> Self {
         return .init(
             forwardSkipTime: managedObject.forwardSkipTime,
             backwardSkipTime: managedObject.backwardSkipTime

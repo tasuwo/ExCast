@@ -28,13 +28,13 @@ func decode(_ src: String, _ variable: Variable) -> String {
         let baseTypeName = variable.modelTypeName!.replacingOccurrences(of: "Object", with: "")
         if variable.isArray {
             return variable.typeName.isOptional 
-                ? "\(src).\(variable.name) != nil ? \(src).\(variable.name).map { \(baseTypeName).makePersistable(managedObject: $0) } : nil"
-                : "\(src).\(variable.name).map { \(baseTypeName).makePersistable(managedObject: $0) }"
+                ? "\(src).\(variable.name) != nil ? \(src).\(variable.name).map { \(baseTypeName).make(by: $0) } : nil"
+                : "\(src).\(variable.name).map { \(baseTypeName).make(by: $0) }"
         } else {
             let baseTypeName = variable.typeName.unwrappedTypeName.replacingOccurrences(of: "Object", with: "")
             return variable.typeName.isOptional 
-                ? "\(src).\(variable.name) != nil ? \(baseTypeName).makePersistable(managedObject: \(src).\(variable.name)!) : nil"
-                : "\(baseTypeName).makePersistable(managedObject: \(src).\(variable.name)!)"
+                ? "\(src).\(variable.name) != nil ? \(baseTypeName).make(by: \(src).\(variable.name)!) : nil"
+                : "\(baseTypeName).make(by: \(src).\(variable.name)!)"
         }
     } else if variable.typeName.isRealmOptional {
         return "\(src).\(variable.name).value"
@@ -183,12 +183,12 @@ extension TypeName {
 // sourcery:file:<%= type.name %>Object.swift
 
 import RealmSwift
-@testable import Domain
+import Domain
 
 extension <%= type.name %>: Persistable {
     // MARK: - Persistable
 
-    static func makePersistable(managedObject: <%= type.name %>Object) -> Self {
+    static func make(by managedObject: <%= type.name %>Object) -> Self {
         return .init(
         <%_ for (index, variable) in type.storedVariables.enumerated() { -%>
             <%= variable.name %>: <%= decode("managedObject", variable) %><%_ if index < type.storedVariables.count - 1 { -%>,<% } %>

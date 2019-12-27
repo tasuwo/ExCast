@@ -1,17 +1,17 @@
 // Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
+import Domain
 import RealmSwift
-@testable import Domain
 
 extension Episode: Persistable {
     // MARK: - Persistable
 
-    static func makePersistable(managedObject: EpisodeObject) -> Self {
+    static func make(by managedObject: EpisodeObject) -> Self {
         return .init(
             id: managedObject.id,
-            meta: Item.makePersistable(managedObject: managedObject.meta!),
-            playback: managedObject.playback != nil ? Playback.makePersistable(managedObject: managedObject.playback!) : nil
+            meta: Item.make(by: managedObject.meta!),
+            playback: managedObject.playback != nil ? Playback.make(by: managedObject.playback!) : nil
         )
     }
 
