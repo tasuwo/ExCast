@@ -122,6 +122,9 @@
 		2CB6E63F23B6250800182DA4 /* PlayerConfiguration+DefaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB6E63723B6250800182DA4 /* PlayerConfiguration+DefaultValue.swift */; };
 		2CB6E64023B6250800182DA4 /* Channel+DefaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB6E63823B6250800182DA4 /* Channel+DefaultValue.swift */; };
 		2CB6E64123B6250800182DA4 /* Playback+DefaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB6E63923B6250800182DA4 /* Playback+DefaultValue.swift */; };
+		2CB6E64423B6326100182DA4 /* RealmTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB6E64323B6326100182DA4 /* RealmTestHelper.swift */; };
+		2CB6E64723B633EC00182DA4 /* WaitUntil+OnQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB6E64623B633EC00182DA4 /* WaitUntil+OnQueue.swift */; };
+		2CB6E64923B634F200182DA4 /* WaitUntil+OnTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB6E64823B634F200182DA4 /* WaitUntil+OnTransaction.swift */; };
 		2CCEC3D722E484670055D27A /* PlayerControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D622E484670055D27A /* PlayerControllerViewModel.swift */; };
 		2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D922E4847F0055D27A /* EpisodePlayerViewController.swift */; };
 		2CCEC3DC22E485720055D27A /* EpisodePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CCEC3DB22E485720055D27A /* EpisodePlayerViewController.xib */; };
@@ -362,6 +365,9 @@
 		2CB6E63723B6250800182DA4 /* PlayerConfiguration+DefaultValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PlayerConfiguration+DefaultValue.swift"; sourceTree = "<group>"; };
 		2CB6E63823B6250800182DA4 /* Channel+DefaultValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Channel+DefaultValue.swift"; sourceTree = "<group>"; };
 		2CB6E63923B6250800182DA4 /* Playback+DefaultValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Playback+DefaultValue.swift"; sourceTree = "<group>"; };
+		2CB6E64323B6326100182DA4 /* RealmTestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmTestHelper.swift; sourceTree = "<group>"; };
+		2CB6E64623B633EC00182DA4 /* WaitUntil+OnQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WaitUntil+OnQueue.swift"; sourceTree = "<group>"; };
+		2CB6E64823B634F200182DA4 /* WaitUntil+OnTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WaitUntil+OnTransaction.swift"; sourceTree = "<group>"; };
 		2CCEC3D122E47D140055D27A /* EpisodePlayerPlaybackButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerPlaybackButtons.swift; sourceTree = "<group>"; };
 		2CCEC3D322E47D220055D27A /* EpisodePlayerPlaybackButtons.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodePlayerPlaybackButtons.xib; sourceTree = "<group>"; };
 		2CCEC3D622E484670055D27A /* PlayerControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControllerViewModel.swift; sourceTree = "<group>"; };
@@ -992,6 +998,8 @@
 		2CB6E63023B6250800182DA4 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				2CB6E64523B633DD00182DA4 /* Nimble */,
+				2CB6E64223B6324D00182DA4 /* Realm */,
 				2CB6E63123B6250800182DA4 /* Model */,
 			);
 			path = Helper;
@@ -1010,6 +1018,23 @@
 				2CB6E63923B6250800182DA4 /* Playback+DefaultValue.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		2CB6E64223B6324D00182DA4 /* Realm */ = {
+			isa = PBXGroup;
+			children = (
+				2CB6E64323B6326100182DA4 /* RealmTestHelper.swift */,
+				2CB6E64823B634F200182DA4 /* WaitUntil+OnTransaction.swift */,
+			);
+			path = Realm;
+			sourceTree = "<group>";
+		};
+		2CB6E64523B633DD00182DA4 /* Nimble */ = {
+			isa = PBXGroup;
+			children = (
+				2CB6E64623B633EC00182DA4 /* WaitUntil+OnQueue.swift */,
+			);
+			path = Nimble;
 			sourceTree = "<group>";
 		};
 		2CCEC3D022E47CFA0055D27A /* EpisodePlayer */ = {
@@ -1544,9 +1569,12 @@
 				2CB6E63A23B6250800182DA4 /* Enclosure+DefaultValue.swift in Sources */,
 				2CB6E63B23B6250800182DA4 /* Episode+DefaultValue.swift in Sources */,
 				2CB6E64023B6250800182DA4 /* Channel+DefaultValue.swift in Sources */,
+				2CB6E64723B633EC00182DA4 /* WaitUntil+OnQueue.swift in Sources */,
 				2CB6E63F23B6250800182DA4 /* PlayerConfiguration+DefaultValue.swift in Sources */,
 				2C8FEF4C23B5A3CE007B8D4D /* EpisodeRepositorySpec.swift in Sources */,
+				2CB6E64923B634F200182DA4 /* WaitUntil+OnTransaction.swift in Sources */,
 				2CB6E63C23B6250800182DA4 /* ChannelOwner+DefaultValue.swift in Sources */,
+				2CB6E64423B6326100182DA4 /* RealmTestHelper.swift in Sources */,
 				2CB6E63D23B6250800182DA4 /* Podcast+DefaultValue.swift in Sources */,
 				2CB6E64123B6250800182DA4 /* Playback+DefaultValue.swift in Sources */,
 			);
