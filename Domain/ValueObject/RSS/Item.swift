@@ -45,6 +45,32 @@ public struct Item: Codable, Equatable {
 
     /// The episode artwork.
     public let artwork: URL?
+
+    // MARK: - Lifecycle
+
+    public init(
+        guid: String,
+        guidIsPermaLink: Bool?,
+        title: String,
+        subTitle: String?,
+        enclosure: Enclosure,
+        pubDate: Date?,
+        itemDescription: String?,
+        duration: Double?,
+        link: URL?,
+        artwork: URL?
+    ) {
+        self.guid = guid
+        self.guidIsPermaLink = guidIsPermaLink
+        self.title = title
+        self.subTitle = subTitle
+        self.enclosure = enclosure
+        self.pubDate = pubDate
+        self.itemDescription = itemDescription
+        self.duration = duration
+        self.link = link
+        self.artwork = artwork
+    }
 }
 
 extension Item {

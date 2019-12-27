@@ -42,6 +42,32 @@ public struct Channel: Codable, Equatable {
 
     /// The podcast owner contact information.
     public let owner: ChannelOwner?
+
+    // MARK: - Lifecycle
+
+    public init(
+        feedUrl: URL,
+        title: String,
+        showDescription: String,
+        artwork: URL,
+        categories: [String],
+        explicit: Bool,
+        language: Language,
+        author: String?,
+        site: URL?,
+        owner: ChannelOwner?
+    ) {
+        self.feedUrl = feedUrl
+        self.title = title
+        self.showDescription = showDescription
+        self.artwork = artwork
+        self.categories = categories
+        self.explicit = explicit
+        self.language = language
+        self.author = author
+        self.site = site
+        self.owner = owner
+    }
 }
 
 extension Channel {

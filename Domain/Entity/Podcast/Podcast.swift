@@ -20,6 +20,18 @@ public struct Podcast: Entity {
     public let meta: Channel
 
     public var episodes: [Episode]
+
+    // MARK: - Lifecycle
+
+    public init(
+        feedUrl: URL,
+        meta: Channel,
+        episodes: [Episode]
+    ) {
+        self.feedUrl = feedUrl
+        self.meta = meta
+        self.episodes = episodes
+    }
 }
 
 extension Podcast: IdentifiableType {

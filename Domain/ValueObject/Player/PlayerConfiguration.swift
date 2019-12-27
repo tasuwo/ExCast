@@ -14,4 +14,14 @@ public struct PlayerConfiguration {
     public let backwardSkipTime: TimeInterval
 
     public static let `default` = PlayerConfiguration(forwardSkipTime: 15, backwardSkipTime: 15)
+
+    // MARK: - Lifecycle
+
+    public init(
+        forwardSkipTime: TimeInterval,
+        backwardSkipTime: TimeInterval
+    ) {
+        self.forwardSkipTime = forwardSkipTime
+        self.backwardSkipTime = backwardSkipTime
+    }
 }

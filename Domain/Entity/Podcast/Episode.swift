@@ -17,6 +17,18 @@ public struct Episode: Entity {
     public let meta: Item
     /// 再生情報. 未再生の場合は nil
     public let playback: Playback?
+
+    // MARK: - Lifecycle
+
+    public init(
+        id: String,
+        meta: Item,
+        playback: Playback?
+    ) {
+        self.id = id
+        self.meta = meta
+        self.playback = playback
+    }
 }
 
 extension Episode: IdentifiableType {

@@ -13,6 +13,12 @@
 public struct Playback: Codable, Equatable {
     /// 再生位置. 再生していない, あるいは再生を終えている場合は nil
     public let playbackPositionSec: Int?
+
+    // MARK: - Lifecycle
+
+    public init(playbackPositionSec: Int?) {
+        self.playbackPositionSec = playbackPositionSec
+    }
 }
 
 extension Playback {

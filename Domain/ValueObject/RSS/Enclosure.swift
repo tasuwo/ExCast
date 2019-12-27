@@ -73,6 +73,18 @@ public struct Enclosure: Codable, Equatable {
 
     /// The correct category for the type of file.
     public let type: FileFormat
+
+    // MARK: - Lifecycle
+
+    public init(
+        url: URL,
+        length: Int,
+        type: FileFormat
+    ) {
+        self.url = url
+        self.length = length
+        self.type = type
+    }
 }
 
 extension Enclosure {

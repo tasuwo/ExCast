@@ -10,9 +10,19 @@
 /// The podcast owner contact information.
 public struct ChannelOwner: Codable, Equatable {
     /// The name the owner.
-    let name: String
+    public let name: String
     /// The email address of the owner.
-    let email: String
+    public let email: String
+
+    // MARK: - Lifecycle
+
+    public init(
+        name: String,
+        email: String
+    ) {
+        self.name = name
+        self.email = email
+    }
 }
 
 extension ChannelOwner {
