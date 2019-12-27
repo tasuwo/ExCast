@@ -80,14 +80,14 @@ class PodcastEpisodeListViewController: UIViewController {
             .disposed(by: disposeBag)
 
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
+
+        viewModel.fetch()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         title = viewModel.show.title
-
-        viewModel.fetch()
 
         if let selectedRow = self.episodeListView.indexPathForSelectedRow {
             episodeListView.deselectRow(at: selectedRow, animated: true)
