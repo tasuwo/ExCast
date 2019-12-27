@@ -610,12 +610,16 @@ PODS:
     - MotionInterchange (~> 1.6)
   - MotionInterchange (1.6.0)
   - MotionTransitioning (5.0.0)
+  - Nimble (8.0.4)
   - ObjectMapper (3.5.1)
+  - Quick (2.2.0)
   - Realm (3.20.0):
     - Realm/Headers (= 3.20.0)
   - Realm/Headers (3.20.0)
   - RealmSwift (3.20.0):
     - Realm (= 3.20.0)
+  - RxBlocking (5.0.1):
+    - RxSwift (~> 5)
   - RxCocoa (5.0.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
@@ -626,6 +630,8 @@ PODS:
   - RxRelay (5.0.1):
     - RxSwift (~> 5)
   - RxSwift (5.0.1)
+  - RxTest (5.0.1):
+    - RxSwift (~> 5)
   - Sourcery (0.17.0)
   - SwiftFormat/CLI (0.40.10)
 
@@ -633,11 +639,15 @@ DEPENDENCIES:
   - AWSSNS
   - Keys (from `Pods/CocoaPodsKeys`)
   - MaterialComponents
+  - Nimble (~> 8.0.4)
   - ObjectMapper (~> 3.4)
+  - Quick (~> 2.2.0)
   - RealmSwift
+  - RxBlocking (~> 5.0.0)
   - RxCocoa (~> 5.0.0)
   - RxDataSources (~> 4.0)
   - RxSwift (~> 5.0.0)
+  - RxTest (~> 5.0.0)
   - Sourcery
   - SwiftFormat/CLI
 
@@ -652,13 +662,17 @@ SPEC REPOS:
     - MotionAnimator
     - MotionInterchange
     - MotionTransitioning
+    - Nimble
     - ObjectMapper
+    - Quick
     - Realm
     - RealmSwift
+    - RxBlocking
     - RxCocoa
     - RxDataSources
     - RxRelay
     - RxSwift
+    - RxTest
     - Sourcery
     - SwiftFormat
 
@@ -677,16 +691,20 @@ SPEC CHECKSUMS:
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   MotionTransitioning: 23d25edc2f4606efb922403cbac6d81af37aa33a
+  Nimble: 18d5360282923225d62b09d781f63abc1a0111fc
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
+  Quick: 7fb19e13be07b5dfb3b90d4f9824c855a11af40e
   Realm: 8b2ca5bc6479a91f379b6b42b5922e396cd5ba5a
   RealmSwift: 1949ef26a279e1845bd51d591b9103adfcd121df
+  RxBlocking: c5e090f42d046df8b0e7752742510f349963710f
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
+  RxTest: 0132f952a61da82d5233abedaa559df91e5330e5
   Sourcery: 3ed61be7c8a1218fce349266139379dba477efe0
   SwiftFormat: d0e2118da5bfccc0158f0b8eff80c476c5acd984
 
-PODFILE CHECKSUM: 01c658d1a36ec1fa2ea072cfeef15050bc37f1b1
+PODFILE CHECKSUM: 66038062d403b83f19ac37eea586524dc08aef52
 
 COCOAPODS: 1.7.1

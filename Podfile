@@ -24,6 +24,14 @@ abstract_target 'All' do
 
     pod 'Sourcery'
   end
+
+  target 'InfrastructureTests' do
+    pod 'Quick',  '~> 2.2.0'
+    pod 'Nimble', '~> 8.0.4'
+
+    pod 'RxTest', '~> 5.0.0'
+    pod 'RxBlocking', '~> 5.0.0'
+  end
 end
 
 plugin 'cocoapods-keys', {

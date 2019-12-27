@@ -47,7 +47,7 @@ public struct PodcastService: PodcastServiceProtocol {
             .map { _ in PodcastServiceQuery.progress }
 
         let fetchResultState = command
-            .filter { if case .fetch(_) = $0 { return true } else { return false } }
+            .filter { if case .fetch = $0 { return true } else { return false } }
             .flatMapLatest { [self] command -> Observable<Podcast> in
                 switch command {
                 case let .fetch(url):
@@ -58,13 +58,13 @@ public struct PodcastService: PodcastServiceProtocol {
             }
             .map { [self] fetchedPodcast in self.repository.update(fetchedPodcast) }
             .flatMap { [self] _ -> Single<[Podcast]> in
-                return self.repository.getAll()
+                self.repository.getAll()
             }
             .map { result -> PodcastServiceQuery in .content(result) }
 
         let createResultCommand = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .filter { if case .create(_) = $0 { return true } else { return false } }
+            .filter { if case .create = $0 { return true } else { return false } }
             .map { [self] command -> Completable in
                 switch command {
                 case let .create(podcast):
@@ -74,12 +74,12 @@ public struct PodcastService: PodcastServiceProtocol {
                 }
             }
             .flatMap { _ -> Single<PodcastServiceCommand> in
-                return Single.just(PodcastServiceCommand.refresh)
+                Single.just(PodcastServiceCommand.refresh)
             }
 
         let deleteResultCommand = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .filter { if case .delete(_) = $0 { return true } else { return false } }
+            .filter { if case .delete = $0 { return true } else { return false } }
             .map { [self] command -> Completable in
                 switch command {
                 case let .delete(podcast):
@@ -89,7 +89,7 @@ public struct PodcastService: PodcastServiceProtocol {
                 }
             }
             .flatMap { _ -> Single<PodcastServiceCommand> in
-                return Single.just(PodcastServiceCommand.refresh)
+                Single.just(PodcastServiceCommand.refresh)
             }
 
         Observable

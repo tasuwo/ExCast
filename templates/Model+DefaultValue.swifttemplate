@@ -1,0 +1,52 @@
+<%_ 
+func defaultValue(_ variable: Variable) -> String {
+    if variable.typeName.isOptional {
+        return "nil"    
+    } else if variable.isModel {
+        return "\(variable.typeName.name).makeDefault()"
+    } else if variable.type?.kind == "enum" {
+        return ".\((variable.type as! Enum).cases.first!.name)"
+    } else if variable.typeName.isArray {
+        return "[]"
+    } else if variable.typeName.name == "URL" {
+        return "URL(string: \"http://example.com\")!"
+    } else if variable.typeName.name == "String" {
+        return "\"\""
+    } else if variable.typeName.name == "Bool" {
+        return "false"
+    } else if variable.typeName.name == "Int" {
+        return "0"
+    } else if variable.typeName.name == "TimeInterval" {
+        return "0"
+    }
+
+    return variable.typeName.name
+}
+
+extension Variable {
+    /// モデルとして扱われる型かどうか
+    var isModel: Bool {
+        return self.type?.annotations["model"] != nil
+    }
+}
+-%>
+<% for type in types.all.filter({ $0.annotations["model"] != nil }) { -%>
+// sourcery:file:<%= type.name %>+DefaultValue.swift
+import RealmSwift
+import Domain
+
+extension <%= type.name %> {
+    static func makeDefault(
+        <%_ for (index, variable) in type.storedVariables.enumerated() { -%>
+            <%= variable.name %>: <%= variable.typeName %> = <%= defaultValue(variable) %><%_ if index < type.storedVariables.count - 1 { -%>,<% } %>
+        <%_ } -%>
+    ) -> Self {
+        return .init(
+        <%_ for (index, variable) in type.storedVariables.enumerated() { -%>
+            <%= variable.name %>: <%= variable.name %><%_ if index < type.storedVariables.count - 1 { -%>,<% } %>
+        <%_ } -%>
+        )
+    }
+}
+// sourcery:end
+<%_ } -%>
