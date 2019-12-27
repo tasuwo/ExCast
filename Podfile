@@ -18,11 +18,11 @@ abstract_target 'All' do
 
   target 'Infrastructure' do
     pod 'AWSSNS'
+
     pod 'RxSwift', '~> 5.0.0'
     pod 'RxCocoa', '~> 5.0.0'
-    pod 'RealmSwift'
 
-    pod 'Sourcery'
+    pod 'RealmSwift'
   end
 
   target 'InfrastructureTests' do
@@ -31,6 +31,8 @@ abstract_target 'All' do
 
     pod 'RxTest', '~> 5.0.0'
     pod 'RxBlocking', '~> 5.0.0'
+
+    pod 'Sourcery'
   end
 end
 

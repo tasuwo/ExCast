@@ -18,11 +18,9 @@ public protocol PodcastRepositoryProtocol {
 }
 
 public struct PodcastRepository: PodcastRepositoryProtocol {
-    private let factory: PodcastFactoryProtocol.Type
     private let queue: DispatchQueue
 
-    public init(factory: PodcastFactoryProtocol.Type, queue: DispatchQueue = DispatchQueue(label: "net.tasuwo.ExCast.Infrastructure.PodcastRepository")) {
-        self.factory = factory
+    public init(queue: DispatchQueue = DispatchQueue(label: "net.tasuwo.ExCast.Infrastructure.PodcastRepository")) {
         self.queue = queue
     }
 
@@ -41,6 +39,13 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
         return Completable.create(subscribe: { observer in
             self.queue.async {
                 let realm = try! Realm()
+
+                guard realm.object(ofType: PodcastObject.self, forPrimaryKey: podcast.feedUrl.absoluteString) == nil else {
+                    // TODO:
+                    observer(.completed)
+                    return
+                }
+
                 try! realm.write {
                     realm.add(podcast.asManagedObject())
                     observer(.completed)
@@ -51,12 +56,19 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
     }
 
     public func update(_ podcast: Podcast) -> Completable {
-        return Completable.create(subscribe: { obserber in
+        return Completable.create(subscribe: { observer in
             self.queue.async {
                 let realm = try! Realm()
+
+                guard let _ = realm.object(ofType: PodcastObject.self, forPrimaryKey: podcast.feedUrl.absoluteString) else {
+                    // TODO:
+                    observer(.completed)
+                    return
+                }
+
                 try! realm.write {
-                    realm.add(podcast.asManagedObject())
-                    obserber(.completed)
+                    realm.add(podcast.asManagedObject(), update: .modified)
+                    observer(.completed)
                 }
             }
             return Disposables.create()
@@ -73,16 +85,25 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
                         return
                     }
 
-                    realm.delete(target.meta!.owner!)
-                    realm.delete(target.meta!)
+                    if let meta = target.meta {
+                        if let owner = meta.owner {
+                            realm.delete(owner)
+                        }
+                        realm.delete(meta)
+                    }
 
                     for episode in target.episodes {
-                        realm.delete(episode.meta!.enclosure!)
-                        realm.delete(episode.meta!)
-                        realm.delete(episode.playback!)
+                        if let meta = episode.meta {
+                            if let enclosure = meta.enclosure {
+                                realm.delete(enclosure)
+                            }
+                            realm.delete(meta)
+                        }
+                        if let playback = episode.playback {
+                            realm.delete(playback)
+                        }
                         realm.delete(episode)
                     }
-                    realm.delete(target.episodes)
 
                     realm.delete(target)
 

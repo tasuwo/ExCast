@@ -14,7 +14,7 @@ import MediaPlayer
 
 class DependencyContainer {
     private let podcastFactory = PodcastFactory.self
-    private lazy var podcastRepository = PodcastRepository(factory: self.podcastFactory)
+    private lazy var podcastRepository = PodcastRepository()
     private lazy var podcastGateway = PodcastGateway(session: URLSession.shared, factory: self.podcastFactory)
     private lazy var podcastService = PodcastService(repository: self.podcastRepository, gateway: self.podcastGateway)
     private lazy var episodeRepository = EpisodeRepository()
