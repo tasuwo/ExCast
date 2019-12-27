@@ -16,11 +16,13 @@ public protocol EpisodeRepositoryProtocol {
 }
 
 public struct EpisodeRepository: EpisodeRepositoryProtocol {
-    private let queue: DispatchQueue = .init(label: "net.tasuwo.ExCast.Infrastructure.EpisodeRepository")
+    private let queue: DispatchQueue
 
     // MARK: - Lifecycle
 
-    public init() {}
+    public init(queue: DispatchQueue = DispatchQueue(label: "net.tasuwo.ExCast.Infrastructure.EpisodeRepository")) {
+        self.queue = queue
+    }
 
     // MARK: - EpisodeRepositoryProtocol
 

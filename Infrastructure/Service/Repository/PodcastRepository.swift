@@ -19,10 +19,11 @@ public protocol PodcastRepositoryProtocol {
 
 public struct PodcastRepository: PodcastRepositoryProtocol {
     private let factory: PodcastFactoryProtocol.Type
-    private let queue: DispatchQueue = .init(label: "net.tasuwo.ExCast.Infrastructure.PodcastRepository")
+    private let queue: DispatchQueue
 
-    public init(factory: PodcastFactoryProtocol.Type) {
+    public init(factory: PodcastFactoryProtocol.Type, queue: DispatchQueue = DispatchQueue(label: "net.tasuwo.ExCast.Infrastructure.PodcastRepository")) {
         self.factory = factory
+        self.queue = queue
     }
 
     public func getAll() -> Single<[Podcast]> {
