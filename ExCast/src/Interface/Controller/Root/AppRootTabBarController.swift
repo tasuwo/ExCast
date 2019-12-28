@@ -27,7 +27,7 @@ class AppRootTabBarController: UITabBarController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
-        let showListViewController = factory.makePodcastShowListViewController()
+        let showListViewController = factory.makeShowListViewController()
 
         showListViewController.tabBarItem = UITabBarItem(title: NSLocalizedString("Tabbar.library", comment: ""), image: UIImage(named: "tabbar_library_black"), tag: 0)
         let showListNavigationViewController = UINavigationController(rootViewController: showListViewController)

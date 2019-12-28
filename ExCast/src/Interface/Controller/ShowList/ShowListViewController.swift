@@ -13,11 +13,11 @@ import RxSwift
 import UIKit
 import Common
 
-class PodcastShowListViewController: UIViewController {
+class ShowListViewController: UIViewController {
     typealias Factory = ViewControllerFactory
 
-    @IBOutlet var showListView: PodcastShowListView!
-    private let dataSourceContainer = PodcastShowListViewDataSourceContainer()
+    @IBOutlet var showListView: ShowListView!
+    private let dataSourceContainer = ShowListViewDataSourceContainer()
 
     private let factory: Factory
     private let viewModel: ShowListViewModel
@@ -72,7 +72,7 @@ class PodcastShowListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        title = NSLocalizedString("PodcastShowListView.title", comment: "")
+        title = NSLocalizedString("ShowListView.title", comment: "")
 
         if let selectedRow = self.showListView.indexPathForSelectedRow {
             showListView.deselectRow(at: selectedRow, animated: true)

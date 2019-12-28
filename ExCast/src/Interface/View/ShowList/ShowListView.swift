@@ -1,5 +1,5 @@
 //
-//  PodcastShowListView.swift
+//  ShowListView.swift
 //  ExCast
 //
 //  Created by Tasuku Tozawa on 2019/07/03.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-class PodcastShowListView: UITableView {
-    static let identifier = "podcastShowCell"
+class ShowListView: UITableView {
+    static let identifier = "showCell"
 
     // MARK: - Lifecycle
 
@@ -26,7 +26,7 @@ class PodcastShowListView: UITableView {
     // MARK: - Methods
 
     private func loadFromNib() {
-        let nib = UINib(nibName: "PodcastShowCell", bundle: nil)
-        register(nib, forCellReuseIdentifier: PodcastShowListView.identifier)
+        let nib = UINib(nibName: "ShowCell", bundle: nil)
+        register(nib, forCellReuseIdentifier: type(of: self).identifier)
     }
 }

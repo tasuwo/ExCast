@@ -33,9 +33,9 @@ extension DependencyContainer: ViewControllerFactory {
         return AppRootTabBarController(factory: self)
     }
 
-    func makePodcastShowListViewController() -> PodcastShowListViewController {
+    func makeShowListViewController() -> ShowListViewController {
         let viewModel = ShowListViewModel(service: podcastService)
-        return PodcastShowListViewController(factory: self, viewModel: viewModel)
+        return ShowListViewController(factory: self, viewModel: viewModel)
     }
 
     func makeFeedUrlInputViewController() -> FeedUrlInputViewController {

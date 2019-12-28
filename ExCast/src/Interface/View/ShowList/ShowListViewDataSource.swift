@@ -1,5 +1,5 @@
 //
-//  PodcastShowListViewDataSource.swift
+//  ShowListViewDataSource.swift
 //  ExCast
 //
 //  Created by Tasuku Tozawa on 2019/09/29.
@@ -11,7 +11,7 @@ import Domain
 import Infrastructure
 import RxDataSources
 
-class PodcastShowListViewDataSourceContainer: NSObject {
+class ShowListViewDataSourceContainer: NSObject {
     private var thumbnailCache: [IndexPath: UIImage] = [:]
     private var thumbnailDownloadersInProgress: [IndexPath: ThumbnailDownloader] = [:]
 
@@ -22,22 +22,22 @@ class PodcastShowListViewDataSourceContainer: NSObject {
         configureCell: { [weak self] _, tableView, indexPath, item in
             guard let self = self else { return UITableViewCell() }
 
-            let cell = tableView.dequeueReusableCell(withIdentifier: PodcastShowListView.identifier, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: ShowListView.identifier, for: indexPath)
 
-            guard let podcastShowCell = cell as? PodcastShowCell else {
+            guard let showCell = cell as? ShowCell else {
                 return cell
             }
 
-            podcastShowCell.title = item.meta.title
-            podcastShowCell.author = item.meta.author
+            showCell.title = item.meta.title
+            showCell.author = item.meta.author
 
             if let thumbnail = self.thumbnailCache[indexPath] {
-                podcastShowCell.artwork = thumbnail
+                showCell.artwork = thumbnail
                 return cell
             }
 
             if let _ = self.thumbnailDownloadersInProgress[indexPath] {
-                podcastShowCell.artwork = nil
+                showCell.artwork = nil
                 return cell
             }
 
@@ -49,7 +49,7 @@ class PodcastShowListViewDataSourceContainer: NSObject {
                 switch result {
                 case let .success(image):
                     self.thumbnailCache[indexPath] = image
-                    podcastShowCell.artwork = image
+                    showCell.artwork = image
                     self.thumbnailDownloadersInProgress.removeValue(forKey: indexPath)
                 case .failure:
                     break
@@ -57,7 +57,7 @@ class PodcastShowListViewDataSourceContainer: NSObject {
             }
             self.thumbnailDownloadersInProgress[indexPath] = downloader
 
-            podcastShowCell.artwork = nil
+            showCell.artwork = nil
 
             return cell
         }, canEditRowAtIndexPath: { _, _ in true }

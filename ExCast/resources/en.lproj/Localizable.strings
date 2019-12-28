@@ -11,7 +11,7 @@
 
 "Tabbar.library" = "Library";
 
-"PodcastShowListView.title" = "Library";
+"ShowListView.title" = "Library";
 
 "FeedUrlInputView.title" = "Add New Podcast";
 "FeedUrlInputView.fetchButton" = "Fetch";
@@ -19,5 +19,5 @@
 "FeedUrlInputView.error.failedToFindPodcast" = "Could not find podcast feed at this url.";
 "FeedUrlInputView.success.fetchPodcast" = "New podcast feed %@ is successfully added.";
 
-"PodcastShowListView.error" = "Failed to load episodes.";
+"ShowListView.error" = "Failed to load episodes.";
 "EpisodeListView.cell.detail" = "Detail";

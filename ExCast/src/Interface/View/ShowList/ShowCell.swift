@@ -1,5 +1,5 @@
 //
-//  PodcastShowCell.swift
+//  ShowCell.swift
 //  ExCast
 //
 //  Created by Tasuku Tozawa on 2019/07/03.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PodcastShowCell: UITableViewCell {
+class ShowCell: UITableViewCell {
     public var artwork: UIImage? {
         set {
             showArtwork.image = newValue != nil ? newValue : emptyThumbnail(by: .gray)

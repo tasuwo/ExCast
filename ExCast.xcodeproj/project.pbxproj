@@ -15,17 +15,17 @@
 		2C01F326239CCEF300EF009E /* Domain.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C01F316239CCEF300EF009E /* Domain.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2C01F329239CCEF300EF009E /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C01F314239CCEF300EF009E /* Domain.framework */; };
 		2C01F32A239CCEF300EF009E /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2C01F314239CCEF300EF009E /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		2C122DE922CA619E00011558 /* PodcastShowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DE822CA619E00011558 /* PodcastShowListViewController.swift */; };
-		2C122DEB22CA6BB300011558 /* PodcastShowListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C122DEA22CA6BB300011558 /* PodcastShowListViewController.xib */; };
-		2C122DED22CBAD4D00011558 /* PodcastShowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C122DEC22CBAD4D00011558 /* PodcastShowCell.xib */; };
-		2C122DEF22CBAFC300011558 /* PodcastShowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DEE22CBAFC300011558 /* PodcastShowCell.swift */; };
-		2C122DF322CBB42700011558 /* PodcastShowListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DF222CBB42700011558 /* PodcastShowListView.swift */; };
+		2C122DE922CA619E00011558 /* ShowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DE822CA619E00011558 /* ShowListViewController.swift */; };
+		2C122DEB22CA6BB300011558 /* ShowListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C122DEA22CA6BB300011558 /* ShowListViewController.xib */; };
+		2C122DED22CBAD4D00011558 /* ShowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C122DEC22CBAD4D00011558 /* ShowCell.xib */; };
+		2C122DEF22CBAFC300011558 /* ShowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DEE22CBAFC300011558 /* ShowCell.swift */; };
+		2C122DF322CBB42700011558 /* ShowListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DF222CBB42700011558 /* ShowListView.swift */; };
 		2C24AD5C23B6808E00E80EA4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD5B23B6808E00E80EA4 /* Logger.swift */; };
 		2C24AD5F23B6820400E80EA4 /* LoggerConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD5E23B6820400E80EA4 /* LoggerConfigurationManager.swift */; };
 		2C24AD6123B6825A00E80EA4 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */; };
 		2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */; };
 		2C3AAE3323517E6900A78A02 /* EpisodePlayerModalView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */; };
-		2C4D9117234075A100895CD7 /* PodcastShowListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D9116234075A100895CD7 /* PodcastShowListViewDataSource.swift */; };
+		2C4D9117234075A100895CD7 /* ShowListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */; };
 		2C4D911C2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D911B2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift */; };
 		2C4D91662348265A00895CD7 /* EpisodeListViewDataSourceContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D91652348265A00895CD7 /* EpisodeListViewDataSourceContainer.swift */; };
 		2C55EC232350072D00797963 /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C55EC222350072D00797963 /* Factory.swift */; };
@@ -316,17 +316,17 @@
 		2C01F317239CCEF300EF009E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C01F31C239CCEF300EF009E /* DomainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DomainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C01F325239CCEF300EF009E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2C122DE822CA619E00011558 /* PodcastShowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowListViewController.swift; sourceTree = "<group>"; };
-		2C122DEA22CA6BB300011558 /* PodcastShowListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastShowListViewController.xib; sourceTree = "<group>"; };
-		2C122DEC22CBAD4D00011558 /* PodcastShowCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastShowCell.xib; sourceTree = "<group>"; };
-		2C122DEE22CBAFC300011558 /* PodcastShowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowCell.swift; sourceTree = "<group>"; };
-		2C122DF222CBB42700011558 /* PodcastShowListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowListView.swift; sourceTree = "<group>"; };
+		2C122DE822CA619E00011558 /* ShowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowListViewController.swift; sourceTree = "<group>"; };
+		2C122DEA22CA6BB300011558 /* ShowListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowListViewController.xib; sourceTree = "<group>"; };
+		2C122DEC22CBAD4D00011558 /* ShowCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowCell.xib; sourceTree = "<group>"; };
+		2C122DEE22CBAFC300011558 /* ShowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCell.swift; sourceTree = "<group>"; };
+		2C122DF222CBB42700011558 /* ShowListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowListView.swift; sourceTree = "<group>"; };
 		2C24AD5B23B6808E00E80EA4 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		2C24AD5E23B6820400E80EA4 /* LoggerConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerConfigurationManager.swift; sourceTree = "<group>"; };
 		2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerConfiguration.swift; sourceTree = "<group>"; };
 		2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+rgbString.swift"; sourceTree = "<group>"; };
 		2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpisodePlayerModalView+Rx.swift"; sourceTree = "<group>"; };
-		2C4D9116234075A100895CD7 /* PodcastShowListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastShowListViewDataSource.swift; sourceTree = "<group>"; };
+		2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowListViewDataSource.swift; sourceTree = "<group>"; };
 		2C4D911B2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BehaviorRelay+ValueAt.swift"; sourceTree = "<group>"; };
 		2C4D91652348265A00895CD7 /* EpisodeListViewDataSourceContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeListViewDataSourceContainer.swift; sourceTree = "<group>"; };
 		2C546C5722FF279F00C1BB83 /* ExCast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExCast.entitlements; sourceTree = "<group>"; };
@@ -600,10 +600,10 @@
 		2C122DE722CA60D600011558 /* ShowList */ = {
 			isa = PBXGroup;
 			children = (
-				2C122DEE22CBAFC300011558 /* PodcastShowCell.swift */,
-				2C122DEC22CBAD4D00011558 /* PodcastShowCell.xib */,
-				2C122DF222CBB42700011558 /* PodcastShowListView.swift */,
-				2C4D9116234075A100895CD7 /* PodcastShowListViewDataSource.swift */,
+				2C122DEE22CBAFC300011558 /* ShowCell.swift */,
+				2C122DEC22CBAD4D00011558 /* ShowCell.xib */,
+				2C122DF222CBB42700011558 /* ShowListView.swift */,
+				2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */,
 			);
 			path = ShowList;
 			sourceTree = "<group>";
@@ -883,8 +883,8 @@
 		2C6391CD22E1BD4900B5EBE0 /* ShowList */ = {
 			isa = PBXGroup;
 			children = (
-				2C122DE822CA619E00011558 /* PodcastShowListViewController.swift */,
-				2C122DEA22CA6BB300011558 /* PodcastShowListViewController.xib */,
+				2C122DE822CA619E00011558 /* ShowListViewController.swift */,
+				2C122DEA22CA6BB300011558 /* ShowListViewController.xib */,
 			);
 			path = ShowList;
 			sourceTree = "<group>";
@@ -1603,10 +1603,10 @@
 				2CA13C6422C8D7D800CC6072 /* LaunchScreen.storyboard in Resources */,
 				2CA13C6122C8D7D800CC6072 /* Assets.xcassets in Resources */,
 				2CA13C8922C8FE7200CC6072 /* FeedUrlInputViewController.xib in Resources */,
-				2C122DEB22CA6BB300011558 /* PodcastShowListViewController.xib in Resources */,
+				2C122DEB22CA6BB300011558 /* ShowListViewController.xib in Resources */,
 				2C6391F022E2BB0300B5EBE0 /* EpisodeCell.xib in Resources */,
 				2CA2E9C022F34BAB00A6E3A9 /* EpisodeDetailView.xib in Resources */,
-				2C122DED22CBAD4D00011558 /* PodcastShowCell.xib in Resources */,
+				2C122DED22CBAD4D00011558 /* ShowCell.xib in Resources */,
 				2CA2E9E622F66CEF00A6E3A9 /* Localizable.strings in Resources */,
 				2C6391FC22E2C56300B5EBE0 /* EpisodeListViewController.xib in Resources */,
 				2CA2E9C522F3517100A6E3A9 /* EpisodeDetailViewController.xib in Resources */,
@@ -1893,7 +1893,7 @@
 				2C55EC2723504A8100797963 /* DataSourceQuery.swift in Sources */,
 				2CA2E9B822F0A26100A6E3A9 /* EpisodePlayerPlaybackButtons.swift in Sources */,
 				2CA13C8F22C9100B00CC6072 /* FeedUrlInputView.swift in Sources */,
-				2C4D9117234075A100895CD7 /* PodcastShowListViewDataSource.swift in Sources */,
+				2C4D9117234075A100895CD7 /* ShowListViewDataSource.swift in Sources */,
 				2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */,
 				2CA2E9C322F3515D00A6E3A9 /* EpisodeDetailViewController.swift in Sources */,
 				2C6391F722E2C28400B5EBE0 /* EpisodeListViewController.swift in Sources */,
@@ -1901,7 +1901,7 @@
 				2CA13C9122CA5AF500CC6072 /* AppRootTabBarController.swift in Sources */,
 				2C4D911C2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift in Sources */,
 				2CA13C5C22C8D7D700CC6072 /* FeedUrlInputViewController.swift in Sources */,
-				2C122DE922CA619E00011558 /* PodcastShowListViewController.swift in Sources */,
+				2C122DE922CA619E00011558 /* ShowListViewController.swift in Sources */,
 				2C6391FA22E2C30F00B5EBE0 /* EpisodeListViewModel.swift in Sources */,
 				2C6391F222E2BE2600B5EBE0 /* EpisodeCell.swift in Sources */,
 				2C6391D422E1C16900B5EBE0 /* ShowListViewModel.swift in Sources */,
@@ -1912,7 +1912,7 @@
 				2CA2E9D922F5C2A900A6E3A9 /* Float+asTimeString.swift in Sources */,
 				2C8D688022EB6B2E00CE9660 /* EpisodePlayerModalView.swift in Sources */,
 				2C55EC232350072D00797963 /* Factory.swift in Sources */,
-				2C122DF322CBB42700011558 /* PodcastShowListView.swift in Sources */,
+				2C122DF322CBB42700011558 /* ShowListView.swift in Sources */,
 				2CA2E9BE22F34B9C00A6E3A9 /* EpisodeDetailView.swift in Sources */,
 				2CA2E9DB22F5C2D300A6E3A9 /* Date+asFormattedString.swift in Sources */,
 				2C3AAE3323517E6900A78A02 /* EpisodePlayerModalView+Rx.swift in Sources */,
@@ -1923,7 +1923,7 @@
 				2C6391F422E2C04F00B5EBE0 /* EpisodeListView.swift in Sources */,
 				2C8D687822EB5CDC00CE9660 /* AppRootViewController.swift in Sources */,
 				2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */,
-				2C122DEF22CBAFC300011558 /* PodcastShowCell.swift in Sources */,
+				2C122DEF22CBAFC300011558 /* ShowCell.swift in Sources */,
 				2CDF07A422ED7F83002F8F5C /* Double+asTimeString.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

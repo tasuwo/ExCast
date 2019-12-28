@@ -11,7 +11,7 @@
 
 "Tabbar.library" = "ライブラリ";
 
-"PodcastShowListView.title" = "ライブラリ";
+"ShowListView.title" = "ライブラリ";
 
 "FeedUrlInputView.title" = "新しい Podcast を追加";
 "FeedUrlInputView.fetchButton" = "取得";
@@ -19,5 +19,5 @@
 "FeedUrlInputView.error.failedToFindPodcast" = "指定されたURLのPodcastフィードが見つかりません";
 "FeedUrlInputView.success.fetchPodcast" = "新しい Podcast %@ を追加しました";
 
-"PodcastShowListView.error" = "エピソードの取得に失敗しました";
+"ShowListView.error" = "エピソードの取得に失敗しました";
 "EpisodeListView.cell.detail" = "詳細";

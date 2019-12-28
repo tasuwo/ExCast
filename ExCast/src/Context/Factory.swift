@@ -12,7 +12,7 @@ import Foundation
 protocol ViewControllerFactory {
     func makeAppRootTabBarController() -> AppRootTabBarController
 
-    func makePodcastShowListViewController() -> PodcastShowListViewController
+    func makeShowListViewController() -> ShowListViewController
     func makeFeedUrlInputViewController() -> FeedUrlInputViewController
     func makeEpisodeListViewController(show: Show) -> EpisodeListViewController
 
