@@ -65,12 +65,12 @@ public struct PodcastService: PodcastServiceProtocol {
         let createResultCommand = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .filter { if case .create = $0 { return true } else { return false } }
-            .map { [self] command -> Completable in
+            .flatMap { [self] command -> Observable<Void> in
                 switch command {
                 case let .create(podcast):
-                    return self.repository.add(podcast)
+                    return self.repository.add(podcast).andThen(.just(Void()))
                 default:
-                    return Completable.never()
+                    return .just(Void())
                 }
             }
             .flatMap { _ -> Single<PodcastServiceCommand> in
@@ -80,12 +80,12 @@ public struct PodcastService: PodcastServiceProtocol {
         let deleteResultCommand = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .filter { if case .delete = $0 { return true } else { return false } }
-            .map { [self] command -> Completable in
+            .flatMap { [self] command -> Observable<Void> in
                 switch command {
                 case let .delete(podcast):
-                    return self.repository.remove(podcast)
+                    return self.repository.remove(podcast).andThen(.just(Void()))
                 default:
-                    return Completable.never()
+                    return .just(Void())
                 }
             }
             .flatMap { _ -> Single<PodcastServiceCommand> in
