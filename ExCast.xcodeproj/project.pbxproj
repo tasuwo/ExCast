@@ -620,11 +620,18 @@
 			path = Logger;
 			sourceTree = "<group>";
 		};
+		2C2BE13223B762CD00FAF87C /* ValueObject */ = {
+			isa = PBXGroup;
+			children = (
+				2C55EC2623504A8100797963 /* DataSourceQuery.swift */,
+			);
+			path = ValueObject;
+			sourceTree = "<group>";
+		};
 		2C4D91192340C4B700895CD7 /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				2C4D911A2340C4BC00895CD7 /* Extension */,
-				2C55EC2623504A8100797963 /* DataSourceQuery.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1179,6 +1186,7 @@
 		2CC79D4923B75A06009A5430 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2C2BE13223B762CD00FAF87C /* ValueObject */,
 				2CC79D4623B75943009A5430 /* Entity */,
 			);
 			path = Model;
