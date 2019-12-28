@@ -634,6 +634,7 @@ PODS:
     - RxSwift (~> 5)
   - Sourcery (0.17.0)
   - SwiftFormat/CLI (0.40.10)
+  - SwiftyBeaver (1.8.4)
 
 DEPENDENCIES:
   - AWSSNS
@@ -650,6 +651,7 @@ DEPENDENCIES:
   - RxTest (~> 5.0.0)
   - Sourcery
   - SwiftFormat/CLI
+  - SwiftyBeaver (~> 1.8.4)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -675,6 +677,7 @@ SPEC REPOS:
     - RxTest
     - Sourcery
     - SwiftFormat
+    - SwiftyBeaver
 
 EXTERNAL SOURCES:
   Keys:
@@ -704,7 +707,8 @@ SPEC CHECKSUMS:
   RxTest: 0132f952a61da82d5233abedaa559df91e5330e5
   Sourcery: 3ed61be7c8a1218fce349266139379dba477efe0
   SwiftFormat: d0e2118da5bfccc0158f0b8eff80c476c5acd984
+  SwiftyBeaver: f9a9aba96a6a6166e21682377804d728b0d20b95
 
-PODFILE CHECKSUM: b7057d8b44db350bbf1c9f5aaf4fbab05744be1a
+PODFILE CHECKSUM: 18c5f48ccf5cb09a75d902b2e119b3ff7d918793
 
 COCOAPODS: 1.7.1
