@@ -577,13 +577,12 @@
 		2C01F315239CCEF300EF009E /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				2C5614D5239CD64600A1B06D /* Entity */,
+				2C2BE13323B763C700FAF87C /* Model */,
 				2C5614DA239CD64600A1B06D /* Factory */,
 				2C5614DD239CD64600A1B06D /* Gateway */,
 				2C56151E239CF52200A1B06D /* Player */,
 				2C561534239FE5AF00A1B06D /* RemoteCommand */,
 				2C5614F7239CD64D00A1B06D /* Service */,
-				2C5614E7239CD64D00A1B06D /* ValueObject */,
 				2C01F316239CCEF300EF009E /* Domain.h */,
 				2C01F317239CCEF300EF009E /* Info.plist */,
 			);
@@ -626,6 +625,15 @@
 				2C55EC2623504A8100797963 /* DataSourceQuery.swift */,
 			);
 			path = ValueObject;
+			sourceTree = "<group>";
+		};
+		2C2BE13323B763C700FAF87C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2C5614D5239CD64600A1B06D /* Entity */,
+				2C5614E7239CD64D00A1B06D /* ValueObject */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		2C4D91192340C4B700895CD7 /* Common */ = {
