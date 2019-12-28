@@ -11,7 +11,7 @@ import RxRelay
 import RxSwift
 
 public struct PodcastService: PodcastServiceProtocol {
-    public var state: BehaviorRelay<PodcastServiceQuery> = BehaviorRelay(value: .content([]))
+    public var state: BehaviorRelay<PodcastServiceQuery> = BehaviorRelay(value: .notLoaded)
     public var command: PublishRelay<PodcastServiceCommand> = PublishRelay()
 
     private let repository: PodcastRepositoryProtocol

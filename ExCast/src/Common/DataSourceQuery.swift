@@ -10,6 +10,7 @@ import RxDataSources
 import RxRelay
 
 enum DataSourceQuery<T: Equatable & IdentifiableType> {
+    case notLoaded
     case contents([AnimatableSectionModel<String, T>])
     case progress
     case error

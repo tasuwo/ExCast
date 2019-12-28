@@ -35,13 +35,16 @@ class EpisodeListViewModel {
         self.show = show
         self.service = service
 
-        episodes = BehaviorRelay(value: .contents([]))
+        episodes = BehaviorRelay(value: .notLoaded)
         episodesCache = BehaviorRelay(value: [])
 
         self.service.state
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .map { [unowned self] query -> DataSourceQuery<ListingEpisode> in
                 switch query {
+                case .notLoaded:
+                    debugLog("The \(show.title)'s episodes state is `notLoaded`.")
+                    return .notLoaded
                 case let .content(episodes):
                     debugLog("The \(show.title)'s episodes state chaned to `content`.")
                     let items = episodes.map {
@@ -60,6 +63,8 @@ class EpisodeListViewModel {
             .disposed(by: disposeBag)
 
         playingEpisode
+            // NOTE: 初期値は無視する
+            .skip(1)
             .map { [unowned self] episode -> DataSourceQuery<ListingEpisode> in
                 switch self.episodes.value {
                 case let .contents(container) where !container.isEmpty:

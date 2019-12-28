@@ -6,9 +6,12 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Domain
+import RxDataSources
 import RxCocoa
 import RxSwift
 import UIKit
+import Common
 
 class PodcastShowListViewController: UIViewController {
     typealias Factory = ViewControllerFactory
@@ -41,6 +44,15 @@ class PodcastShowListViewController: UIViewController {
         setupNavigationBar()
 
         viewModel.podcasts
+            .flatMap { query -> Single<[AnimatableSectionModel<String, Podcast>]> in
+                switch query {
+                case let .contents(container):
+                    debugLog("The show list is updated.")
+                    return .just(container)
+                default:
+                    return .never()
+                }
+            }
             .bind(to: showListView.rx.items(dataSource: dataSourceContainer.dataSource))
             .disposed(by: disposeBag)
 
@@ -84,7 +96,7 @@ class PodcastShowListViewController: UIViewController {
     private func didSelectShow(at indexPath: IndexPath) {
         guard let navigationController = self.navigationController else { return }
 
-        let podcast = viewModel.podcasts.value(at: indexPath)
+        let podcast = viewModel.podcastsCache.value(at: indexPath)
         let nextViewController = factory.makeEpisodeListViewController(show: podcast.meta)
         navigationController.pushViewController(nextViewController, animated: true)
     }

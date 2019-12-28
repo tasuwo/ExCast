@@ -10,6 +10,7 @@ import RxRelay
 import RxSwift
 
 public enum PodcastServiceQuery {
+    case notLoaded
     case progress
     case error
     case content([Podcast])

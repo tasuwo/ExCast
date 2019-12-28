@@ -17,8 +17,6 @@ class DependencyContainer {
     private lazy var podcastRepository = PodcastRepository()
     private lazy var podcastGateway = PodcastGateway(session: URLSession.shared, factory: self.podcastFactory)
     private lazy var podcastService = PodcastService(repository: self.podcastRepository, gateway: self.podcastGateway)
-    private lazy var episodeRepository = EpisodeRepository()
-    private lazy var episodesService: EpisodeServiceProtocol = EpisodeService(repository: self.episodeRepository)
 
     private lazy var commandCenter = MPRemoteCommandCenter.shared()
     private lazy var nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
@@ -46,7 +44,7 @@ extension DependencyContainer: ViewControllerFactory {
     }
 
     func makeEpisodeListViewController(show: Show) -> EpisodeListViewController {
-        let viewModel = EpisodeListViewModel(show: show, service: episodesService)
+        let viewModel = EpisodeListViewModel(show: show, service: EpisodeService(repository: EpisodeRepository()))
         return EpisodeListViewController(factory: self, viewModel: viewModel)
     }
 

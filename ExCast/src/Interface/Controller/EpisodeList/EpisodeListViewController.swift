@@ -47,11 +47,11 @@ class EpisodeListViewController: UIViewController {
         viewModel.episodes
             .flatMap { [unowned self] query -> Single<[AnimatableSectionModel<String, EpisodeListViewModel.ListingEpisode>]> in
                 switch query {
-                case let .contents(episodeContainer):
-                    debugLog("The \(self.viewModel.show.title)'s episodes list updated.")
-                    return Single.just(episodeContainer)
-                case .error, .progress:
-                    return Single.never()
+                case let .contents(container):
+                    debugLog("The \(self.viewModel.show.title)'s episodes list is updated.")
+                    return .just(container)
+                default:
+                    return .never()
                 }
             }
             .bind(to: episodeListView.rx.items(dataSource: dataSourceContainer.dataSource))
@@ -76,13 +76,13 @@ class EpisodeListViewController: UIViewController {
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .bind(onNext: { [unowned self] query in
                 switch query {
-                case .contents(_), .error:
-                    DispatchQueue.main.async {
-                        self.episodeListView.refreshControl?.endRefreshing()
-                    }
                 case .progress:
                     DispatchQueue.main.async {
                         self.episodeListView.refreshControl?.beginRefreshing()
+                    }
+                default:
+                    DispatchQueue.main.async {
+                        self.episodeListView.refreshControl?.endRefreshing()
                     }
                 }
             }).disposed(by: disposeBag)
