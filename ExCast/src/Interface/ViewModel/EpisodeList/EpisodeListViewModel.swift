@@ -40,7 +40,7 @@ class EpisodeListViewModel {
                 case .notLoaded:
                     debugLog("The \(show.title)'s episodes state is `notLoaded`.")
                     return .notLoaded
-                case let .content(episodes):
+                case let .content(_, episodes):
                     debugLog("The \(show.title)'s episodes state chaned to `content`.")
                     let items = episodes.map {
                         ListingEpisode(episode: $0, isPlaying: $0 == self.playingEpisode.value)
@@ -52,6 +52,9 @@ class EpisodeListViewModel {
                 case .progress:
                     debugLog("The \(show.title)'s episodes state chaned to `progress`.")
                     return .progress
+                case .clear:
+                    debugLog("The \(show.title)'s episodes state chaned to `clear`.")
+                    return .notLoaded
                 }
             }
             .bind(to: episodes)
@@ -88,6 +91,10 @@ class EpisodeListViewModel {
                 }
             })
             .disposed(by: disposeBag)
+    }
+
+    deinit {
+        self.service.command.accept(.clear)
     }
 
     // MARK: - Methods

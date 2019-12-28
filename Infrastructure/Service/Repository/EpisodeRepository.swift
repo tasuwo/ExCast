@@ -12,6 +12,7 @@ import RxSwift
 
 public protocol EpisodeRepositoryProtocol {
     func getAll(_ feedUrl: URL) -> Single<[Episode]>
+    func update(_ id: Episode.Identity, playback: Playback?) -> Completable
     func update(_ episode: Episode) -> Completable
 }
 
@@ -35,6 +36,28 @@ public struct EpisodeRepository: EpisodeRepositoryProtocol {
                     return
                 }
                 observer(.success(Array(podcast.episodes).map { Episode.make(by: $0) }))
+            }
+            return Disposables.create()
+        }
+    }
+
+    public func update(_ id: Episode.Identity, playback: Playback?) -> Completable {
+        return Completable.create { observer in
+            self.queue.async {
+                let realm = try! Realm()
+
+                guard let target = realm.object(ofType: EpisodeObject.self, forPrimaryKey: id) else {
+                    // TODO:
+                    observer(.completed)
+                    return
+                }
+
+                try! realm.write {
+                    target.playback = playback?.asManagedObject()
+                    realm.add(target, update: .modified)
+
+                    observer(.completed)
+                }
             }
             return Disposables.create()
         }

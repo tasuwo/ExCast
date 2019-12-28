@@ -13,11 +13,14 @@ public enum EpisodeServiceQuery {
     case notLoaded
     case progress
     case error
-    case content([Episode])
+    case content(Podcast.Identity, [Episode])
+    case clear
 }
 
 public enum EpisodeServiceCommand {
+    case clear
     case refresh(Podcast.Identity)
+    case update(Episode.Identity, Playback?)
 }
 
 public protocol EpisodeServiceProtocol {
