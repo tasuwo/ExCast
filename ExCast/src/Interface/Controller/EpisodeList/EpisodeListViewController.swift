@@ -65,13 +65,17 @@ class EpisodeListViewController: UIViewController {
             .disposed(by: disposeBag)
 
         viewModel.episodes
-            .observeOn(MainScheduler.instance)
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .bind(onNext: { [self] query in
                 switch query {
                 case .contents(_), .error:
-                    self.episodeListView.refreshControl?.endRefreshing()
+                    DispatchQueue.main.async {
+                        self.episodeListView.refreshControl?.endRefreshing()
+                    }
                 case .progress:
-                    self.episodeListView.refreshControl?.beginRefreshing()
+                    DispatchQueue.main.async {
+                        self.episodeListView.refreshControl?.beginRefreshing()
+                    }
                 }
             }).disposed(by: disposeBag)
 
