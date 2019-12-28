@@ -12,6 +12,7 @@ import RxCocoa
 import RxDataSources
 import RxSwift
 import UIKit
+import Common
 
 class EpisodeListViewController: UIViewController {
     typealias Factory = ViewControllerFactory & EpisodePlayerModalPresenterFactory
@@ -44,9 +45,10 @@ class EpisodeListViewController: UIViewController {
         dataSourceContainer.delegate = self
 
         viewModel.episodes
-            .flatMap { query -> Single<[AnimatableSectionModel<String, EpisodeListViewModel.ListingEpisode>]> in
+            .flatMap { [unowned self] query -> Single<[AnimatableSectionModel<String, EpisodeListViewModel.ListingEpisode>]> in
                 switch query {
                 case let .contents(episodeContainer):
+                    debugLog("The \(self.viewModel.show.title)'s episodes list updated.")
                     return Single.just(episodeContainer)
                 case .error, .progress:
                     return Single.never()
@@ -56,17 +58,23 @@ class EpisodeListViewController: UIViewController {
             .disposed(by: disposeBag)
 
         episodeListView.rx.itemSelected
-            .bind(onNext: didSelectEpisode(at:))
+            .bind(onNext: { [unowned self] indexPath in
+                debugLog("selected")
+                self.didSelectEpisode(at: indexPath)
+            })
             .disposed(by: disposeBag)
 
         episodeListView.refreshControl?.rx.controlEvent(.valueChanged)
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .bind(onNext: { [unowned self] _ in self.viewModel.fetch() })
+            .bind(onNext: { [unowned self] _ in
+                debugLog("refresh")
+                self.viewModel.fetch()
+            })
             .disposed(by: disposeBag)
 
         viewModel.episodes
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .bind(onNext: { [self] query in
+            .bind(onNext: { [unowned self] query in
                 switch query {
                 case .contents(_), .error:
                     DispatchQueue.main.async {

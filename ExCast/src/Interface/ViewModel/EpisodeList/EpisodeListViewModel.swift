@@ -10,8 +10,9 @@ import Domain
 import RxDataSources
 import RxRelay
 import RxSwift
+import Common
 
-struct EpisodeListViewModel {
+class EpisodeListViewModel {
     private static let sectionIdentifier = ""
 
     struct ListingEpisode: Equatable {
@@ -39,16 +40,19 @@ struct EpisodeListViewModel {
 
         self.service.state
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .map { [self] query -> DataSourceQuery<ListingEpisode> in
+            .map { [unowned self] query -> DataSourceQuery<ListingEpisode> in
                 switch query {
                 case let .content(episodes):
+                    debugLog("The \(show.title)'s episodes state chaned to `content`.")
                     let items = episodes.map {
                         ListingEpisode(episode: $0, isPlaying: $0 == self.playingEpisode.value)
                     }
                     return .contents([.init(model: EpisodeListViewModel.sectionIdentifier, items: items)])
                 case .error:
+                    debugLog("The \(show.title)'s episodes state chaned to `error`.")
                     return .error
                 case .progress:
+                    debugLog("The \(show.title)'s episodes state chaned to `progress`.")
                     return .progress
                 }
             }
@@ -56,7 +60,7 @@ struct EpisodeListViewModel {
             .disposed(by: disposeBag)
 
         playingEpisode
-            .map { [self] episode -> DataSourceQuery<ListingEpisode> in
+            .map { [unowned self] episode -> DataSourceQuery<ListingEpisode> in
                 switch self.episodes.value {
                 case let .contents(container) where !container.isEmpty:
                     if episode == nil {
@@ -87,7 +91,7 @@ struct EpisodeListViewModel {
             .disposed(by: disposeBag)
 
         episodes
-            .bind(onNext: { [self] query in
+            .bind(onNext: { [unowned self] query in
                 switch query {
                 case let .contents(container):
                     self.episodesCache.accept(container)
