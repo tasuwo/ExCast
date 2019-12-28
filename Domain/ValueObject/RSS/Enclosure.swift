@@ -6,6 +6,7 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Common
 import Foundation
 
 // sourcery: model
@@ -69,7 +70,7 @@ public struct Enclosure: Codable, Equatable {
     public let url: URL
 
     /// The file size in bytes.
-    public let length: Int
+    public let length: Int?
 
     /// The correct category for the type of file.
     public let type: FileFormat
@@ -78,7 +79,7 @@ public struct Enclosure: Codable, Equatable {
 
     public init(
         url: URL,
-        length: Int,
+        length: Int?,
         type: FileFormat
     ) {
         self.url = url
@@ -91,15 +92,36 @@ extension Enclosure {
     // MARK: - Lifecycle
 
     public init?(node: XmlNode) {
-        guard
-            let attributes = (node |> "enclosure")?.attributes,
-            let url = URL(string: attributes["url"] ?? ""),
-            let type = Enclosure.FileFormat.from(attributes["type"] ?? ""),
-            let length = Int(attributes["length"] ?? "") else {
+        guard let attributes = (node |> "enclosure")?.attributes else {
+            errorLog("Failed to initialize Enclosure. No `enclosure` element.")
             return nil
         }
+
+        guard let urlString = attributes["url"] else {
+            errorLog("Failed to initialize Enclosure. No `url` attribute in `enclosure` element.")
+            return nil
+        }
+        guard let url = URL(string: urlString) else {
+            errorLog("Failed to initialize Enclosure. Invalid `url` (\(urlString)) in `enclosure` element.")
+            return nil
+        }
+
+        guard let typeString = attributes["type"] else {
+            errorLog("Failed to initialize Enclosure. No `type` attribute in `enclosure` element.")
+            return nil
+        }
+        guard let type = Enclosure.FileFormat.from(typeString) else {
+            errorLog("Failed to initialize Enclosure. Invalid `type` attribute (\(typeString)) in `enclosure` element.")
+            return nil
+        }
+
+        guard let lengthString = attributes["length"] else {
+            errorLog("Failed to initialize Enclosure. No `length` attribute in `enclosure` element.")
+            return nil
+        }
+
         self.url = url
-        self.length = length
+        length = Int(lengthString)
         self.type = type
     }
 }

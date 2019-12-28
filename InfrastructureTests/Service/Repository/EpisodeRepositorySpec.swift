@@ -17,7 +17,7 @@ class EpisodeRepositorySpec: QuickSpec {
     private let queue = DispatchQueue(label: "net.tasuwo.ExCast.Infrastructure.EpisodeRepositorySpec")
 
     override func spec() {
-        let repository = EpisodeRepository(queue: self.queue)
+        let repository = EpisodeRepository(queue: queue)
 
         describe("getAll") {
             context("Podcastがひとつもない") {

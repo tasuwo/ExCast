@@ -6,6 +6,7 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Common
 import Foundation
 
 // sourcery: model
@@ -78,6 +79,7 @@ extension Item {
 
     public init?(node: XmlNode) {
         guard let enclosure = Enclosure(node: node) else {
+            errorLog("Failed to initialize Item because of failure of initializing enclosure.")
             return nil
         }
         self.enclosure = enclosure
@@ -99,6 +101,7 @@ extension Item {
         }()
 
         guard let title = (node |> "title")?.value else {
+            errorLog("Failed to initialize Item. No `title` element.")
             return nil
         }
         self.title = title

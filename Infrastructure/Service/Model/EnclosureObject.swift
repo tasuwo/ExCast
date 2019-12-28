@@ -10,7 +10,7 @@ extension Enclosure: Persistable {
     static func make(by managedObject: EnclosureObject) -> Self {
         return .init(
             url: URL(string: managedObject.url)!,
-            length: managedObject.length,
+            length: managedObject.length.value,
             type: FileFormat(rawValue: managedObject.type)!
         )
     }
@@ -18,7 +18,7 @@ extension Enclosure: Persistable {
     func asManagedObject() -> EnclosureObject {
         let obj = EnclosureObject()
         obj.url = url.absoluteString
-        obj.length = length
+        obj.length.value = length
         obj.type = type.rawValue
         return obj
     }
@@ -26,6 +26,6 @@ extension Enclosure: Persistable {
 
 final class EnclosureObject: Object {
     @objc dynamic var url: String = ""
-    @objc dynamic var length: Int = 0
+    let length: RealmOptional<Int> = RealmOptional<Int>()
     @objc dynamic var type: String = ""
 }

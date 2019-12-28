@@ -17,7 +17,7 @@ class PodcastRepositorySpec: QuickSpec {
     private let queue = DispatchQueue(label: "net.tasuwo.ExCast.Infrastructure.PodcastRepositorySpec")
 
     override func spec() {
-        let repository = PodcastRepository(queue: self.queue)
+        let repository = PodcastRepository(queue: queue)
 
         describe("getAll") {
             context("Podcastがひとつもない") {
@@ -54,7 +54,7 @@ class PodcastRepositorySpec: QuickSpec {
                         Episode.makeDefault(id: "3-1", meta: Item.makeDefault(), playback: nil),
                         Episode.makeDefault(id: "3-2", meta: Item.makeDefault(), playback: nil),
                         Episode.makeDefault(id: "3-3", meta: Item.makeDefault(), playback: nil),
-                    ])
+                    ]),
                 ]
 
                 beforeEach {
@@ -106,7 +106,7 @@ class PodcastRepositorySpec: QuickSpec {
                         Episode.makeDefault(id: "3-2", meta: Item.makeDefault(), playback: nil),
                         Episode.makeDefault(id: "3-3", meta: Item.makeDefault(), playback: nil),
                     ])
-                    let _ = repository.add(addedPodcast).toBlocking().materialize()
+                    _ = repository.add(addedPodcast).toBlocking().materialize()
                 }
 
                 it("正常に追加できる") {
@@ -128,7 +128,7 @@ class PodcastRepositorySpec: QuickSpec {
                         Episode.makeDefault(id: "999-2", meta: Item.makeDefault(), playback: nil),
                         Episode.makeDefault(id: "999-3", meta: Item.makeDefault(), playback: nil),
                     ])
-                    let _ = repository.add(addedPodcast).toBlocking().materialize()
+                    _ = repository.add(addedPodcast).toBlocking().materialize()
                 }
 
                 it("何も起きない") {
@@ -159,7 +159,7 @@ class PodcastRepositorySpec: QuickSpec {
                     Episode.makeDefault(id: "3-1", meta: Item.makeDefault(), playback: nil),
                     Episode.makeDefault(id: "3-2", meta: Item.makeDefault(), playback: nil),
                     Episode.makeDefault(id: "3-3", meta: Item.makeDefault(), playback: nil),
-                ])
+                ]),
             ]
             var updatedPodcast: Podcast!
 
@@ -188,7 +188,7 @@ class PodcastRepositorySpec: QuickSpec {
                             Episode.makeDefault(id: "2-3", meta: Item.makeDefault(), playback: nil),
                             Episode.makeDefault(id: "2-4", meta: Item.makeDefault(), playback: nil),
                         ])
-                        let _ = repository.update(updatedPodcast).toBlocking().materialize()
+                        _ = repository.update(updatedPodcast).toBlocking().materialize()
                     }
 
                     it("データを更新する") {
@@ -209,7 +209,7 @@ class PodcastRepositorySpec: QuickSpec {
                             Episode.makeDefault(id: "2-1", meta: Item.makeDefault(), playback: nil),
                             Episode.makeDefault(id: "2-3", meta: Item.makeDefault(), playback: nil),
                         ])
-                        let _ = repository.update(updatedPodcast).toBlocking().materialize()
+                        _ = repository.update(updatedPodcast).toBlocking().materialize()
                     }
 
                     it("データを更新する") {
@@ -231,7 +231,7 @@ class PodcastRepositorySpec: QuickSpec {
                             Episode.makeDefault(id: "2-2", meta: Item.makeDefault(title: "TITLE"), playback: nil),
                             Episode.makeDefault(id: "2-3", meta: Item.makeDefault(), playback: nil),
                         ])
-                        let _ = repository.update(updatedPodcast).toBlocking().materialize()
+                        _ = repository.update(updatedPodcast).toBlocking().materialize()
                     }
 
                     it("データを更新する") {
@@ -254,7 +254,7 @@ class PodcastRepositorySpec: QuickSpec {
                         Episode.makeDefault(id: "999-2", meta: Item.makeDefault(title: "TITLE"), playback: nil),
                         Episode.makeDefault(id: "999-3", meta: Item.makeDefault(), playback: nil),
                     ])
-                    let _ = repository.update(updatedPodcast).toBlocking().materialize()
+                    _ = repository.update(updatedPodcast).toBlocking().materialize()
                 }
 
                 it("データを更新しない") {
@@ -296,7 +296,7 @@ class PodcastRepositorySpec: QuickSpec {
             context("存在しているPodcastのfeedUrlを指定する") {
                 beforeEach {
                     deletedPodcast = podcasts[0]
-                    let _ = repository.remove(deletedPodcast).toBlocking().materialize()
+                    _ = repository.remove(deletedPodcast).toBlocking().materialize()
                 }
 
                 it("関連するデータを全て削除する") {
@@ -316,7 +316,7 @@ class PodcastRepositorySpec: QuickSpec {
                         Episode.makeDefault(id: "999-2", meta: Item.makeDefault(), playback: nil),
                         Episode.makeDefault(id: "999-3", meta: Item.makeDefault(), playback: nil),
                     ])
-                    let _ = repository.remove(deletedPodcast).toBlocking().materialize()
+                    _ = repository.remove(deletedPodcast).toBlocking().materialize()
                 }
 
                 it("関連するデータを全て削除する") {
@@ -328,7 +328,6 @@ class PodcastRepositorySpec: QuickSpec {
                         done()
                     }
                 }
-
             }
         }
     }

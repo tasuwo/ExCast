@@ -9,6 +9,7 @@
 import Domain
 import Foundation
 import RxSwift
+import Common
 
 public class PodcastGateway: PodcastGatewayProtocol {
     private let session: URLSession

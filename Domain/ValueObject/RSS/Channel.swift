@@ -6,6 +6,7 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Common
 import Foundation
 
 // sourcery: model
@@ -75,28 +76,43 @@ extension Channel {
 
     public init?(node: XmlNode) {
         guard let feedUrlCandidates = node ||> "atom:link" else {
+            errorLog("Failed to initialize Channel. No `atom:link` element.")
             return nil
         }
-        let feedUrlNode = feedUrlCandidates.first { $0.attributes["rel"] == "self" }
+        guard let feedUrlNode = feedUrlCandidates.first(where: { $0.attributes["rel"] == "self" }) else {
+            errorLog("Failed to initialize Channel. No `rel` attricute in `atom:link` element.")
+            return nil
+        }
 
-        guard let feedUrlStr = feedUrlNode?.attributes["href"],
+        guard let feedUrlStr = feedUrlNode.attributes["href"],
             let feedUrl = URL(string: feedUrlStr) else {
+            errorLog("Failed to initialize Channel. No `href`.")
             return nil
         }
         self.feedUrl = feedUrl
 
         guard let title = (node |> "title")?.value else {
+            errorLog("Failed to initialize Channel. No `title` element.")
             return nil
         }
         self.title = title
 
         guard let description = (node |> "description")?.value else {
+            errorLog("Failed to initialize Channel. No `description` element.")
             return nil
         }
         showDescription = description
 
-        guard let artworkUrlStr = (node |> "itunes:image")?.attributes["href"],
-            let artwork = URL(string: artworkUrlStr) else {
+        guard let artworkElement = (node |> "itunes:image") else {
+            errorLog("Failed to initialize Channel. No `itunes:image` element.")
+            return nil
+        }
+        guard let hrefAttribute = artworkElement.attributes["href"] else {
+            errorLog("Failed to initialize Channel. No `href` attribute in `itunes:image` element.")
+            return nil
+        }
+        guard let artwork = URL(string: hrefAttribute) else {
+            errorLog("Failed to initialize Channel. Invalid `href` attribute (\(hrefAttribute)) in `itunes:image` element.")
             return nil
         }
         self.artwork = artwork
@@ -105,12 +121,17 @@ extension Channel {
         categories = []
 
         guard let explicitStr = (node |> "itunes:explicit")?.value else {
+            errorLog("Failed to initialize Channel. No `itunes:explicit` element.")
             return nil
         }
         explicit = explicitStr == "yes" ? true : false
 
-        guard let languageStr = (node |> "language")?.value,
-            let language = Language(languageStr) else {
+        guard let languageStr = (node |> "language")?.value else {
+            errorLog("Failed to initialize Channel. No `language` element.")
+            return nil
+        }
+        guard let language = Language(languageStr) else {
+            errorLog("Failed to initialize Channel. Invalid value of `language` element (\(languageStr)).")
             return nil
         }
         self.language = language
@@ -121,6 +142,7 @@ extension Channel {
             if let link = (node |> "link")?.value {
                 return URL(string: link)
             } else {
+                errorLog("Failed to initialize Channel. No `link` element.")
                 return nil
             }
         }()

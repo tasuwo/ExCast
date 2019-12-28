@@ -13,7 +13,7 @@ public class LoggerConfigurationManager {
 
     public var configuration: LoggerConfiguration {
         didSet {
-            SwiftyBeaver.self.addDestination(self.configuration.destination.dest)
+            SwiftyBeaver.addDestination(configuration.destination.dest)
         }
     }
 
@@ -22,7 +22,7 @@ public class LoggerConfigurationManager {
     // MARK: - Lifecycle
 
     private init() {
-        self.configuration = LoggerConfiguration(destination: .console)
-        SwiftyBeaver.self.addDestination(ConsoleDestination())
+        configuration = LoggerConfiguration(destination: .console)
+        SwiftyBeaver.addDestination(ConsoleDestination())
     }
 }

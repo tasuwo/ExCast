@@ -7,7 +7,7 @@ import RealmSwift
 extension Enclosure {
     static func makeDefault(
         url: URL = URL(string: "http://example.com")!,
-        length: Int = 0,
+        length: Int? = nil,
         type: FileFormat = .M4A
     ) -> Self {
         return .init(
