@@ -78,6 +78,10 @@ extension DependencyContainer: ViewModelFactory {
     func makePlayerInformationViewModel(show: Show, episode: Episode) -> PlayerInformationViewModel {
         return PlayerInformationViewModel(show: show, episode: episode)
     }
+
+    func makePlayingEpisodeViewModel() -> PlayingEpisodeViewModel {
+        return PlayingEpisodeViewModel()
+    }
 }
 
 extension DependencyContainer: EpisodePlayerModalPresenterFactory {

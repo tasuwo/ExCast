@@ -23,6 +23,7 @@
 		2C24AD5C23B6808E00E80EA4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD5B23B6808E00E80EA4 /* Logger.swift */; };
 		2C24AD5F23B6820400E80EA4 /* LoggerConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD5E23B6820400E80EA4 /* LoggerConfigurationManager.swift */; };
 		2C24AD6123B6825A00E80EA4 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */; };
+		2C2BE13623B7A98200FAF87C /* PlayingEpisodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2BE13523B7A98200FAF87C /* PlayingEpisodeViewModel.swift */; };
 		2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */; };
 		2C3AAE3323517E6900A78A02 /* EpisodePlayerModalView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */; };
 		2C4D9117234075A100895CD7 /* ShowListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */; };
@@ -325,6 +326,7 @@
 		2C24AD5B23B6808E00E80EA4 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		2C24AD5E23B6820400E80EA4 /* LoggerConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerConfigurationManager.swift; sourceTree = "<group>"; };
 		2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerConfiguration.swift; sourceTree = "<group>"; };
+		2C2BE13523B7A98200FAF87C /* PlayingEpisodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingEpisodeViewModel.swift; sourceTree = "<group>"; };
 		2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+rgbString.swift"; sourceTree = "<group>"; };
 		2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpisodePlayerModalView+Rx.swift"; sourceTree = "<group>"; };
 		2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowListViewDataSource.swift; sourceTree = "<group>"; };
@@ -634,6 +636,14 @@
 				2C5614E7239CD64D00A1B06D /* ValueObject */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		2C2BE13423B7A95F00FAF87C /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				2C2BE13523B7A98200FAF87C /* PlayingEpisodeViewModel.swift */,
+			);
+			path = Root;
 			sourceTree = "<group>";
 		};
 		2C4D91192340C4B700895CD7 /* Common */ = {
@@ -1097,6 +1107,7 @@
 		2CA13C7D22C8F1D500CC6072 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				2C2BE13423B7A95F00FAF87C /* Root */,
 				2CA2E9C622F351BB00A6E3A9 /* EpisodeDetail */,
 				2C6391F822E2C30000B5EBE0 /* EpisodeList */,
 				2C6391D822E1DC9C00B5EBE0 /* FeedUrlInput */,
@@ -1957,6 +1968,7 @@
 				2CA13C5A22C8D7D700CC6072 /* AppDelegate.swift in Sources */,
 				2C6391F422E2C04F00B5EBE0 /* EpisodeListView.swift in Sources */,
 				2CC79D4823B75958009A5430 /* ListingEpisode.swift in Sources */,
+				2C2BE13623B7A98200FAF87C /* PlayingEpisodeViewModel.swift in Sources */,
 				2C8D687822EB5CDC00CE9660 /* AppRootViewController.swift in Sources */,
 				2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */,
 				2C122DEF22CBAFC300011558 /* ShowCell.swift in Sources */,

@@ -13,10 +13,10 @@ import UIKit
 class AppRootViewController: UIViewController {
     typealias Factory = ViewControllerFactory & ViewModelFactory
 
-    private lazy var rootTabBarController = self.factory.makeAppRootTabBarController()
+    private let rootTabBarController: AppRootTabBarController
     private var playerModalViewController: EpisodePlayerViewController?
 
-    private var playingEpisode_: BehaviorRelay<Episode?> = BehaviorRelay(value: nil)
+    private let playingEpisodeViewModel: PlayingEpisodeViewModel
 
     private let factory: Factory
 
@@ -24,6 +24,9 @@ class AppRootViewController: UIViewController {
 
     init(factory: Factory) {
         self.factory = factory
+        self.rootTabBarController = factory.makeAppRootTabBarController()
+        self.playingEpisodeViewModel = factory.makePlayingEpisodeViewModel()
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -55,7 +58,7 @@ extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
     // MARK: - EpisodePlayerModalPresenterProtocol
 
     var playingEpisode: BehaviorRelay<Episode?> {
-        return playingEpisode_
+        return self.playingEpisodeViewModel.playingEpisode
     }
 
     func show(show: Show, episode: Episode) {
@@ -64,7 +67,7 @@ extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
                 controllerViewModel: factory.makePlayerControllerViewModel(show: show, episode: episode),
                 informationViewModel: factory.makePlayerInformationViewModel(show: show, episode: episode)
             )
-            playingEpisode_.accept(episode)
+            self.playingEpisodeViewModel.set(episode)
             return
         }
 
@@ -79,7 +82,7 @@ extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
         let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
 
-        playingEpisode_.accept(episode)
+        self.playingEpisodeViewModel.set(episode)
     }
 
     func dismiss() {
@@ -91,7 +94,7 @@ extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
         let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
 
-        playingEpisode_.accept(nil)
+        self.playingEpisodeViewModel.clear()
     }
 
     func minimize() {

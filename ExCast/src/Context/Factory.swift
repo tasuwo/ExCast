@@ -23,6 +23,7 @@ protocol ViewControllerFactory {
 protocol ViewModelFactory {
     func makePlayerControllerViewModel(show: Show, episode: Episode) -> PlayerControllerViewModel
     func makePlayerInformationViewModel(show: Show, episode: Episode) -> PlayerInformationViewModel
+    func makePlayingEpisodeViewModel() -> PlayingEpisodeViewModel
 }
 
 protocol EpisodePlayerModalPresenterFactory {
