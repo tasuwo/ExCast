@@ -10,7 +10,7 @@ import RxDataSources
 
 class EpisodeListViewDataSourceContainer: NSObject {
     weak var delegate: EpisodeCellDelegate?
-    lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AnimatableSectionModel<String, EpisodeListViewModel.ListingEpisode>> = .init(
+    lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AnimatableSectionModel<String, ListingEpisode>> = .init(
         animationConfiguration: AnimationConfiguration(insertAnimation: .automatic,
                                                        reloadAnimation: .none,
                                                        deleteAnimation: .none),

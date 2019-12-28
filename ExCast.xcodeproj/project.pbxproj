@@ -138,6 +138,7 @@
 		2CB6E64123B6250800182DA4 /* Playback+DefaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB6E63923B6250800182DA4 /* Playback+DefaultValue.swift */; };
 		2CB6E64723B633EC00182DA4 /* WaitUntil+OnQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB6E64623B633EC00182DA4 /* WaitUntil+OnQueue.swift */; };
 		2CB6E64923B634F200182DA4 /* WaitUntil+OnTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB6E64823B634F200182DA4 /* WaitUntil+OnTransaction.swift */; };
+		2CC79D4823B75958009A5430 /* ListingEpisode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC79D4723B75958009A5430 /* ListingEpisode.swift */; };
 		2CCEC3D722E484670055D27A /* PlayerControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D622E484670055D27A /* PlayerControllerViewModel.swift */; };
 		2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D922E4847F0055D27A /* EpisodePlayerViewController.swift */; };
 		2CCEC3DC22E485720055D27A /* EpisodePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CCEC3DB22E485720055D27A /* EpisodePlayerViewController.xib */; };
@@ -440,6 +441,7 @@
 		2CB6E63923B6250800182DA4 /* Playback+DefaultValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Playback+DefaultValue.swift"; sourceTree = "<group>"; };
 		2CB6E64623B633EC00182DA4 /* WaitUntil+OnQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WaitUntil+OnQueue.swift"; sourceTree = "<group>"; };
 		2CB6E64823B634F200182DA4 /* WaitUntil+OnTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WaitUntil+OnTransaction.swift"; sourceTree = "<group>"; };
+		2CC79D4723B75958009A5430 /* ListingEpisode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingEpisode.swift; sourceTree = "<group>"; };
 		2CCEC3D122E47D140055D27A /* EpisodePlayerPlaybackButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerPlaybackButtons.swift; sourceTree = "<group>"; };
 		2CCEC3D322E47D220055D27A /* EpisodePlayerPlaybackButtons.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodePlayerPlaybackButtons.xib; sourceTree = "<group>"; };
 		2CCEC3D622E484670055D27A /* PlayerControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControllerViewModel.swift; sourceTree = "<group>"; };
@@ -1048,6 +1050,7 @@
 				2C6391CC22E1BD2400B5EBE0 /* Controller */,
 				2CA13C7C22C8F1A500CC6072 /* View */,
 				2CA13C7D22C8F1D500CC6072 /* ViewModel */,
+				2CC79D4923B75A06009A5430 /* Model */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1163,6 +1166,22 @@
 				2CB6E64623B633EC00182DA4 /* WaitUntil+OnQueue.swift */,
 			);
 			path = Nimble;
+			sourceTree = "<group>";
+		};
+		2CC79D4623B75943009A5430 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				2CC79D4723B75958009A5430 /* ListingEpisode.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		2CC79D4923B75A06009A5430 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2CC79D4623B75943009A5430 /* Entity */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		2CCEC3D022E47CFA0055D27A /* EpisodePlayer */ = {
@@ -1921,6 +1940,7 @@
 				2C55EC38235179A600797963 /* EpisodeDetailView+Rx.swift in Sources */,
 				2CA13C5A22C8D7D700CC6072 /* AppDelegate.swift in Sources */,
 				2C6391F422E2C04F00B5EBE0 /* EpisodeListView.swift in Sources */,
+				2CC79D4823B75958009A5430 /* ListingEpisode.swift in Sources */,
 				2C8D687822EB5CDC00CE9660 /* AppRootViewController.swift in Sources */,
 				2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */,
 				2C122DEF22CBAFC300011558 /* ShowCell.swift in Sources */,

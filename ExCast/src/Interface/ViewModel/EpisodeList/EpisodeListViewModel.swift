@@ -15,17 +15,12 @@ import Common
 class EpisodeListViewModel {
     private static let sectionIdentifier = ""
 
-    struct ListingEpisode: Equatable {
-        let episode: Episode
-        let isPlaying: Bool
-    }
-
     let show: Show
     private let service: EpisodeServiceProtocol
 
     let playingEpisode: BehaviorRelay<Episode?> = BehaviorRelay(value: nil)
     private(set) var episodes: BehaviorRelay<DataSourceQuery<ListingEpisode>>
-    private(set) var episodesCache: BehaviorRelay<[AnimatableSectionModel<String, ListingEpisode>]>
+    private(set) var episodesCache: BehaviorRelay<[ListingEpisode]>
 
     private let disposeBag = DisposeBag()
 
@@ -63,31 +58,20 @@ class EpisodeListViewModel {
             .disposed(by: disposeBag)
 
         playingEpisode
-            // NOTE: 初期値は無視する
-            .skip(1)
-            .map { [unowned self] episode -> DataSourceQuery<ListingEpisode> in
-                switch self.episodes.value {
-                case let .contents(container) where !container.isEmpty:
-                    if episode == nil {
-                        guard let firstIndex = container[0].items.firstIndex(where: { $0.isPlaying == true }) else {
-                            return self.episodes.value
-                        }
-                        var episodes = container[0].items
-                        episodes[firstIndex] = .init(episode: episodes[firstIndex].episode, isPlaying: false)
-                        return .contents([.init(model: container[0].identity, items: episodes)])
-                    } else {
-                        var episodes = container[0].items
-
-                        if let firstIndex1 = container[0].items.firstIndex(where: { $0.isPlaying == true }) {
-                            episodes[firstIndex1] = .init(episode: episodes[firstIndex1].episode, isPlaying: false)
-                        }
-
-                        guard let firstIndex2 = container[0].items.firstIndex(where: { $0.episode == episode }) else {
-                            return self.episodes.value
-                        }
-                        episodes[firstIndex2] = .init(episode: episodes[firstIndex2].episode, isPlaying: true)
-                        return .contents([.init(model: container[0].identity, items: episodes)])
+            .map { [unowned self] playingEpisode -> DataSourceQuery<ListingEpisode> in
+                switch (playingEpisode, self.episodes.value) {
+                case (.none, let .contents(container)) where container.isEmpty == false:
+                    let items = container.first!.items.map { episode in
+                        episode.isPlaying ? episode.finishedPlay() : episode
                     }
+                    return .contents([.init(model: EpisodeListViewModel.sectionIdentifier, items: items)])
+                case (let .some(targetEpisode), let .contents(container)) where container.isEmpty == false:
+                    let items = container.first!.items.map { episode in
+                        episode.isPlaying ? episode.finishedPlay() : episode
+                    }.map { episode in
+                        episode.identity == targetEpisode.identity ? episode.startedPlay() : episode
+                    }
+                    return .contents([.init(model: EpisodeListViewModel.sectionIdentifier, items: items)])
                 default:
                     return self.episodes.value
                 }
@@ -98,8 +82,8 @@ class EpisodeListViewModel {
         episodes
             .bind(onNext: { [unowned self] query in
                 switch query {
-                case let .contents(container):
-                    self.episodesCache.accept(container)
+                case let .contents(container) where container.isEmpty == false:
+                    self.episodesCache.accept(container.first!.items)
                 default: break
                 }
             })
@@ -113,12 +97,3 @@ class EpisodeListViewModel {
     }
 }
 
-extension EpisodeListViewModel.ListingEpisode: IdentifiableType {
-    // MARK: - IndetifiableTyp
-
-    typealias Identity = String
-
-    var identity: String {
-        return episode.meta.title
-    }
-}

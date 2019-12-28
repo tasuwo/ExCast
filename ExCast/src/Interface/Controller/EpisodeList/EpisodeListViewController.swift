@@ -45,7 +45,7 @@ class EpisodeListViewController: UIViewController {
         dataSourceContainer.delegate = self
 
         viewModel.episodes
-            .flatMap { [unowned self] query -> Single<[AnimatableSectionModel<String, EpisodeListViewModel.ListingEpisode>]> in
+            .flatMap { [unowned self] query -> Single<[AnimatableSectionModel<String, ListingEpisode>]> in
                 switch query {
                 case let .contents(container):
                     debugLog("The \(self.viewModel.show.title)'s episodes list is updated.")
@@ -110,7 +110,7 @@ class EpisodeListViewController: UIViewController {
 
     func didSelectEpisode(at indexPath: IndexPath) {
         playerPresenter?.show(show: viewModel.show,
-                              episode: viewModel.episodesCache.value(at: indexPath).episode)
+                              episode: viewModel.episodesCache.value[indexPath.row].episode)
     }
 }
 
