@@ -1,5 +1,5 @@
 //
-//  PodcastEpisodeListViewController.swift
+//  EpisodeListViewController.swift
 //  ExCast
 //
 //  Created by Tasuku Tozawa on 2019/07/20.
@@ -13,11 +13,11 @@ import RxDataSources
 import RxSwift
 import UIKit
 
-class PodcastEpisodeListViewController: UIViewController {
+class EpisodeListViewController: UIViewController {
     typealias Factory = ViewControllerFactory & EpisodePlayerModalPresenterFactory
 
-    @IBOutlet var episodeListView: PodcastEpisodeListView!
-    private let dataSourceContainer = PodcastEpisodeListViewDataSourceContainer()
+    @IBOutlet var episodeListView: EpisodeListView!
+    private let dataSourceContainer = EpisodeListViewDataSourceContainer()
 
     private let factory: Factory
     private let viewModel: EpisodeListViewModel
@@ -102,8 +102,8 @@ class PodcastEpisodeListViewController: UIViewController {
     }
 }
 
-extension PodcastEpisodeListViewController: PodcastEpisodeCellDelegate {
-    // MARK: - PodcastEpisodeCellDelegate
+extension EpisodeListViewController: EpisodeCellDelegate {
+    // MARK: - EpisodeCellDelegate
 
     func podcastEpisodeCell(_: UITableViewCell, didSelect episode: Episode) {
         guard let navigationController = self.navigationController else { return }

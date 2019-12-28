@@ -14,7 +14,7 @@ protocol ViewControllerFactory {
 
     func makePodcastShowListViewController() -> PodcastShowListViewController
     func makeFeedUrlInputViewController() -> FeedUrlInputViewController
-    func makeEpisodeListViewController(show: Show) -> PodcastEpisodeListViewController
+    func makeEpisodeListViewController(show: Show) -> EpisodeListViewController
 
     func makeEpisodeDetailViewController(show: Show, episode: Episode) -> EpisodeDetailViewController
     func makeEpisodePlayerViewController(show: Show, episode: Episode) -> EpisodePlayerViewController

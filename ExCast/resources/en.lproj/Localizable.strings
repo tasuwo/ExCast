@@ -20,4 +20,4 @@
 "FeedUrlInputView.success.fetchPodcast" = "New podcast feed %@ is successfully added.";
 
 "PodcastShowListView.error" = "Failed to load episodes.";
-"PodcastEpisodeListView.cell.detail" = "Detail";
+"EpisodeListView.cell.detail" = "Detail";

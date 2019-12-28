@@ -20,4 +20,4 @@
 "FeedUrlInputView.success.fetchPodcast" = "新しい Podcast %@ を追加しました";
 
 "PodcastShowListView.error" = "エピソードの取得に失敗しました";
-"PodcastEpisodeListView.cell.detail" = "詳細";
+"EpisodeListView.cell.detail" = "詳細";

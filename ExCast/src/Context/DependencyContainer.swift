@@ -45,9 +45,9 @@ extension DependencyContainer: ViewControllerFactory {
         return FeedUrlInputViewController(factory: self, viewModel: viewModel)
     }
 
-    func makeEpisodeListViewController(show: Show) -> PodcastEpisodeListViewController {
+    func makeEpisodeListViewController(show: Show) -> EpisodeListViewController {
         let viewModel = EpisodeListViewModel(show: show, service: episodesService)
-        return PodcastEpisodeListViewController(factory: self, viewModel: viewModel)
+        return EpisodeListViewController(factory: self, viewModel: viewModel)
     }
 
     func makeEpisodeDetailViewController(show: Show, episode: Episode) -> EpisodeDetailViewController {

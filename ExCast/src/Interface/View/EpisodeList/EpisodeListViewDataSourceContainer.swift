@@ -8,8 +8,8 @@
 
 import RxDataSources
 
-class PodcastEpisodeListViewDataSourceContainer: NSObject {
-    weak var delegate: PodcastEpisodeCellDelegate?
+class EpisodeListViewDataSourceContainer: NSObject {
+    weak var delegate: EpisodeCellDelegate?
     lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AnimatableSectionModel<String, EpisodeListViewModel.ListingEpisode>> = .init(
         animationConfiguration: AnimationConfiguration(insertAnimation: .automatic,
                                                        reloadAnimation: .none,
@@ -17,9 +17,9 @@ class PodcastEpisodeListViewDataSourceContainer: NSObject {
         configureCell: { [weak self] _, tableView, indexPath, item in
             guard let self = self else { return UITableViewCell() }
 
-            let cell = tableView.dequeueReusableCell(withIdentifier: PodcastEpisodeListView.identifier, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeListView.identifier, for: indexPath)
 
-            guard let episodeCell = cell as? PodcastEpisodeCell else {
+            guard let episodeCell = cell as? EpisodeCell else {
                 return cell
             }
 

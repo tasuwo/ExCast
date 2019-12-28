@@ -9,11 +9,11 @@
 import Domain
 import UIKit
 
-protocol PodcastEpisodeCellDelegate: AnyObject {
+protocol EpisodeCellDelegate: AnyObject {
     func podcastEpisodeCell(_ cell: UITableViewCell, didSelect episode: Episode)
 }
 
-class PodcastEpisodeCell: UITableViewCell {
+class EpisodeCell: UITableViewCell {
     private static var durationFormatter: DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .positional
@@ -75,7 +75,7 @@ class PodcastEpisodeCell: UITableViewCell {
 
     var episode: Episode?
 
-    weak var delegate: PodcastEpisodeCellDelegate?
+    weak var delegate: EpisodeCellDelegate?
 
     // MARK: - IBOutlets
 
@@ -96,7 +96,7 @@ class PodcastEpisodeCell: UITableViewCell {
     // MARK: - Methods
 
     public func setupAppearences() {
-        informationButton.setTitle(NSLocalizedString("PodcastEpisodeListView.cell.detail", comment: ""), for: .normal)
+        informationButton.setTitle(NSLocalizedString("EpisodeListView.cell.detail", comment: ""), for: .normal)
         playingMarkIconView.image = generatePlayingMark()
         playingMarkIconView.isHidden = true
     }

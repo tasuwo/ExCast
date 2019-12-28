@@ -9,7 +9,7 @@
 import MaterialComponents
 import UIKit
 
-class PodcastEpisodeListView: UITableView {
+class EpisodeListView: UITableView {
     static let identifier = "podcastEpisodeCell"
 
     // MARK: - Lifecycle
@@ -29,7 +29,7 @@ class PodcastEpisodeListView: UITableView {
     // MARK: - Methods
 
     private func loadFromNib() {
-        let nib = UINib(nibName: "PodcastEpisodeCell", bundle: nil)
-        register(nib, forCellReuseIdentifier: PodcastEpisodeListView.identifier)
+        let nib = UINib(nibName: "EpisodeCell", bundle: nil)
+        register(nib, forCellReuseIdentifier: EpisodeListView.identifier)
     }
 }
