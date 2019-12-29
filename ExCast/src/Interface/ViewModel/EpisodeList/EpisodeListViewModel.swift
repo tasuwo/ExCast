@@ -82,6 +82,26 @@ class EpisodeListViewModel {
             .bind(to: episodes)
             .disposed(by: disposeBag)
 
+        Observable
+            .zip(self.playingEpisode, self.playingEpisode.skip(1))
+            .flatMap { diff -> Single<EpisodeServiceCommand> in
+                switch diff {
+                case let (.none, .some(current)) where current.show == self.show:
+                    // TODO: Podcast の Identity を参照する
+                    return .just(.refresh(self.show.feedUrl))
+                case let (.some(prev), .some(current)) where prev.show == self.show || current.show == self.show:
+                    // TODO: Podcast の Identity を参照する
+                    return .just(.refresh(self.show.feedUrl))
+                case let (.some(prev), .none) where prev.show == self.show:
+                    // TODO: Podcast の Identity を参照する
+                    return .just(.refresh(self.show.feedUrl))
+                default:
+                    return .never()
+                }
+            }
+            .bind(to: self.service.command)
+            .disposed(by: self.disposeBag)
+
         episodes
             .bind(onNext: { [unowned self] query in
                 switch query {
