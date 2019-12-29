@@ -49,7 +49,7 @@ class EpisodeListViewModel {
                 case let .content(_, episodes):
                     debugLog("The \(show.title)'s episodes state chaned to `content`.")
                     let items = episodes.map {
-                        ListingEpisode(episode: $0, isPlaying: $0 == self.playingEpisode.value?.episode)
+                        ListingEpisode(episode: $0, isPlaying: $0.identity == self.playingEpisode.value?.episode.identity)
                     }
                     return .contents([.init(model: EpisodeListViewModel.sectionIdentifier, items: items)])
                 case .error:
