@@ -130,13 +130,10 @@ extension EpisodeListViewController: EpisodeListViewProtocol {
             return
         }
 
-        CATransaction.begin()
-        self.episodeListView.beginUpdates()
-
-        CATransaction.setCompletionBlock(completion)
-        self.episodeListView.deselectRow(at: selectedRow, animated: true)
-
-        self.episodeListView.endUpdates()
-        CATransaction.commit()
+        UIView.animate(withDuration: 0.25, animations: {
+            self.episodeListView.beginUpdates()
+            self.episodeListView.deselectRow(at: selectedRow, animated: true)
+            self.episodeListView.endUpdates()
+        }, completion: { _ in completion() })
     }
 }
