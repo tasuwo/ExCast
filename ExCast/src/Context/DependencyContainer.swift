@@ -74,7 +74,7 @@ extension DependencyContainer: ViewModelFactory {
             infoCenter: nowPlayingInfoCenter,
             configuration: playerConfiguration
         )
-        return PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler, configuration: playerConfiguration)
+        return PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler, configuration: playerConfiguration, episodeService: self.episodeService)
     }
 
     func makePlayerInformationViewModel(show: Show, episode: Episode) -> PlayerInformationViewModel {

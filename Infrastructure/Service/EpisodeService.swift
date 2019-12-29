@@ -11,8 +11,6 @@ import RxRelay
 import RxSwift
 
 public class EpisodeService: EpisodeServiceProtocol {
-    private var lastFetchedPodcastId: Podcast.Identity? = nil
-
     public var state: BehaviorRelay<EpisodeServiceQuery> = BehaviorRelay(value: .notLoaded)
     public var command: PublishRelay<EpisodeServiceCommand> = PublishRelay()
 
@@ -34,7 +32,6 @@ public class EpisodeService: EpisodeServiceProtocol {
             .flatMapLatest { [unowned self] command -> Single<(Podcast.Identity, [Episode])> in
                 switch command {
                 case let .refresh(feedUrl):
-                    self.lastFetchedPodcastId = feedUrl
                     return self.repository.getAll(feedUrl).map { (feedUrl, $0) }
                 default:
                     return .never()
@@ -53,10 +50,6 @@ public class EpisodeService: EpisodeServiceProtocol {
                     return .just(Void())
                 }
             }
-            .flatMap { [unowned self] _ -> Single<EpisodeServiceCommand> in
-                // TODO: Error handling
-                .just(.refresh(self.lastFetchedPodcastId!))
-            }
 
         let clearResultState = self.command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
@@ -69,7 +62,7 @@ public class EpisodeService: EpisodeServiceProtocol {
             .disposed(by: disposeBag)
 
         updateResultCommand
-            .bind(to: self.command)
+            .subscribe()
             .disposed(by: self.disposeBag)
 
         clearResultState

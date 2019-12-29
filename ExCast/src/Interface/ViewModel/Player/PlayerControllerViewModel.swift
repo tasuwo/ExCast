@@ -17,6 +17,7 @@ class PlayerControllerViewModel {
     private let commands: ExCastPlayerProtocol
     private let configuration: PlayerConfiguration
     private let remoteCommands: ExCastPlayerDelegate
+    private let episodeService: EpisodeServiceProtocol
 
     private var playedAfterLoadingOnce: Bool = false
 
@@ -33,13 +34,14 @@ class PlayerControllerViewModel {
 
     // MARK: - Lifecycle
 
-    init(show: Show, episode: Episode, controller: ExCastPlayerProtocol, remoteCommands: ExCastPlayerDelegate, configuration: PlayerConfiguration) {
+    init(show: Show, episode: Episode, controller: ExCastPlayerProtocol, remoteCommands: ExCastPlayerDelegate, configuration: PlayerConfiguration, episodeService: EpisodeServiceProtocol) {
         self.show = show
         self.episode = episode
         commands = controller
         self.configuration = configuration
         self.remoteCommands = remoteCommands
         duration.accept(episode.meta.duration ?? 0)
+        self.episodeService = episodeService
 
         currentTime
             .filter { [unowned self] _ in self.preventToSyncTime.value == false }
@@ -57,6 +59,12 @@ class PlayerControllerViewModel {
                         self.preventToSyncTime.accept(false)
                     }
                 }
+            })
+            .disposed(by: disposeBag)
+
+        self.currentTime
+            .bind(onNext: { [unowned self] time in
+                self.episodeService.command.accept(.update(self.episode.identity, .init(playbackPositionSec: Int(time))))
             })
             .disposed(by: disposeBag)
 
@@ -88,9 +96,16 @@ extension PlayerControllerViewModel: ExCastPlayerDelegate {
     // MARK: - AudioPlayerDelegate
 
     func didFinishPrepare() {
-        isPrepared.accept(true)
+        self.isPrepared.accept(true)
+        guard self.playedAfterLoadingOnce == false else { return }
 
-        if playedAfterLoadingOnce == false {
+        // 再生位置が保存されていた場合は、resume再生する
+        if let playbackPosition = self.episode.playback?.playbackPositionSec {
+            commands.seek(to: TimeInterval(playbackPosition)) { [unowned self] _ in
+                self.commands.play()
+                self.playedAfterLoadingOnce = true
+            }
+        } else {
             commands.play()
             playedAfterLoadingOnce = true
         }
