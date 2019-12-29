@@ -13,8 +13,12 @@ import RxSwift
 import Common
 
 protocol EpisodeListViewProtocol: AnyObject {
+
     func expandPlayer()
+
     func presentPlayer(of episode: Episode)
+
+    func deselectRow(completion: @escaping () -> Void)
 }
 
 class EpisodeListViewModel {
@@ -25,8 +29,11 @@ class EpisodeListViewModel {
     weak var view: EpisodeListViewProtocol?
 
     let playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> = BehaviorRelay(value: nil)
+    
     private(set) var episodes: BehaviorRelay<DataSourceQuery<ListingEpisode>>
-    private(set) var episodesCache: BehaviorRelay<[ListingEpisode]>
+    private var episodes_: BehaviorRelay<DataSourceQuery<ListingEpisode>>
+
+    private var deselectngRow: BehaviorRelay<Bool> = BehaviorRelay(value: false)
 
     private let disposeBag = DisposeBag()
 
@@ -36,8 +43,8 @@ class EpisodeListViewModel {
         self.show = show
         self.service = service
 
-        episodes = BehaviorRelay(value: .notLoaded)
-        episodesCache = BehaviorRelay(value: [])
+        self.episodes = BehaviorRelay(value: .notLoaded)
+        self.episodes_ = BehaviorRelay(value: .notLoaded)
 
         self.service.state
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
@@ -63,12 +70,12 @@ class EpisodeListViewModel {
                     return .notLoaded
                 }
             }
-            .bind(to: episodes)
+            .bind(to: episodes_)
             .disposed(by: disposeBag)
 
         playingEpisode
             .map { [unowned self] playingEpisode -> DataSourceQuery<ListingEpisode> in
-                switch (playingEpisode, self.episodes.value) {
+                switch (playingEpisode, self.episodes_.value) {
                 case (.none, let .contents(container)) where container.isEmpty == false:
                     let items = container.first!.items.map { episode in
                         episode.isPlaying ? episode.finishedPlay() : episode
@@ -82,10 +89,10 @@ class EpisodeListViewModel {
                     }
                     return .contents([.init(model: EpisodeListViewModel.sectionIdentifier, items: items)])
                 default:
-                    return self.episodes.value
+                    return self.episodes_.value
                 }
             }
-            .bind(to: episodes)
+            .bind(to: episodes_)
             .disposed(by: disposeBag)
 
         Observable
@@ -108,14 +115,11 @@ class EpisodeListViewModel {
             .bind(to: self.service.command)
             .disposed(by: self.disposeBag)
 
-        episodes
-            .bind(onNext: { [unowned self] query in
-                switch query {
-                case let .contents(container) where container.isEmpty == false:
-                    self.episodesCache.accept(container.first!.items)
-                default: break
-                }
-            })
+        Observable
+            .combineLatest(self.episodes_, self.deselectngRow)
+            .filter { (_, isDeselecting) in isDeselecting == false }
+            .map { (episodes, _) in episodes }
+            .bind(to: self.episodes)
             .disposed(by: disposeBag)
     }
 
@@ -130,12 +134,20 @@ class EpisodeListViewModel {
     }
 
     func didSelectEpisode(at indexPath: IndexPath) {
-        let episode = self.episodesCache.value[indexPath.row].episode
+        guard let view = self.view else { return }
+        guard case let .contents(container) = self.episodes.value, let episodes = container.first else { return }
+
+        let episode = episodes.items[indexPath.row].episode
+
+        self.deselectngRow.accept(true)
+        view.deselectRow {
+            self.deselectngRow.accept(false)
+        }
 
         if self.playingEpisode.value?.episode.identity == episode.identity {
-            self.view?.expandPlayer()
+            view.expandPlayer()
         } else {
-            self.view?.presentPlayer(of: episode)
+            view.presentPlayer(of: episode)
         }
     }
 }

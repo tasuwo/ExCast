@@ -99,10 +99,6 @@ class EpisodeListViewController: UIViewController {
         super.viewWillAppear(animated)
 
         title = viewModel.show.title
-
-        if let selectedRow = self.episodeListView.indexPathForSelectedRow {
-            episodeListView.deselectRow(at: selectedRow, animated: true)
-        }
     }
 }
 
@@ -126,5 +122,21 @@ extension EpisodeListViewController: EpisodeListViewProtocol {
 
     func presentPlayer(of episode: Episode) {
         self.playerModalContainerView?.presentPlayerModal(show: viewModel.show, episode: episode)
+    }
+
+    func deselectRow(completion: @escaping () -> Void) {
+        guard let selectedRow = self.episodeListView.indexPathForSelectedRow else {
+            completion()
+            return
+        }
+
+        CATransaction.begin()
+        self.episodeListView.beginUpdates()
+
+        CATransaction.setCompletionBlock(completion)
+        self.episodeListView.deselectRow(at: selectedRow, animated: true)
+
+        self.episodeListView.endUpdates()
+        CATransaction.commit()
     }
 }
