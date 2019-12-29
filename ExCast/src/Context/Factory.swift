@@ -26,6 +26,10 @@ protocol ViewModelFactory {
     func makePlayingEpisodeViewModel() -> PlayingEpisodeViewModel
 }
 
-protocol EpisodePlayerModalPresenterFactory {
-    func makeEpisodePlayerModalPresenter() -> EpisodePlayerModalPresenterProtocol?
+protocol EpisodePlayerModalContainerFactory {
+    func makeEpisodePlayerModalContainerView() -> EpisodePlayerModalContainerViewProtocol?
+}
+
+protocol EpisodePlayerModalBaseViewFactory {
+    func makeEpisodePlayerModalBaseView() -> EpisodePlayerModalBaseViewProtocol?
 }

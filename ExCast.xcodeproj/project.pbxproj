@@ -23,6 +23,7 @@
 		2C24AD5C23B6808E00E80EA4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD5B23B6808E00E80EA4 /* Logger.swift */; };
 		2C24AD5F23B6820400E80EA4 /* LoggerConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD5E23B6820400E80EA4 /* LoggerConfigurationManager.swift */; };
 		2C24AD6123B6825A00E80EA4 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */; };
+		2C279A8523B8759900011279 /* AppRootViewController+EpisodePlayerModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C279A8423B8759900011279 /* AppRootViewController+EpisodePlayerModalContainerView.swift */; };
 		2C2BE13623B7A98200FAF87C /* PlayingEpisodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2BE13523B7A98200FAF87C /* PlayingEpisodeViewModel.swift */; };
 		2C2BE13A23B8589B00FAF87C /* EpisodeBelongsToShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2BE13923B8589A00FAF87C /* EpisodeBelongsToShow.swift */; };
 		2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */; };
@@ -327,6 +328,7 @@
 		2C24AD5B23B6808E00E80EA4 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		2C24AD5E23B6820400E80EA4 /* LoggerConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerConfigurationManager.swift; sourceTree = "<group>"; };
 		2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerConfiguration.swift; sourceTree = "<group>"; };
+		2C279A8423B8759900011279 /* AppRootViewController+EpisodePlayerModalContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppRootViewController+EpisodePlayerModalContainerView.swift"; sourceTree = "<group>"; };
 		2C2BE13523B7A98200FAF87C /* PlayingEpisodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingEpisodeViewModel.swift; sourceTree = "<group>"; };
 		2C2BE13923B8589A00FAF87C /* EpisodeBelongsToShow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeBelongsToShow.swift; sourceTree = "<group>"; };
 		2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+rgbString.swift"; sourceTree = "<group>"; };
@@ -995,6 +997,7 @@
 			children = (
 				2CA13C9022CA5AF400CC6072 /* AppRootTabBarController.swift */,
 				2C8D687722EB5CDC00CE9660 /* AppRootViewController.swift */,
+				2C279A8423B8759900011279 /* AppRootViewController+EpisodePlayerModalContainerView.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -1976,6 +1979,7 @@
 				2C8D687822EB5CDC00CE9660 /* AppRootViewController.swift in Sources */,
 				2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */,
 				2C122DEF22CBAFC300011558 /* ShowCell.swift in Sources */,
+				2C279A8523B8759900011279 /* AppRootViewController+EpisodePlayerModalContainerView.swift in Sources */,
 				2CDF07A422ED7F83002F8F5C /* Double+asTimeString.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

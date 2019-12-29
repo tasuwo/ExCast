@@ -9,11 +9,11 @@
 import UIKit
 
 protocol EpisodePlayerModalViewDelegate: AnyObject {
-    func shouldDismiss()
+    func dismissPlayerBaseView()
 
-    func shouldMinimize()
+    func minimizePlayerBaseView()
 
-    func shouldExpand()
+    func expandPlayerBaseView()
 
     func didTap()
 
@@ -122,7 +122,7 @@ public class EpisodePlayerModalView: UIView {
     // MARK: - IBActions
 
     @IBAction func didTapDismissButton(_: Any) {
-        delegate?.shouldDismiss()
+        delegate?.dismissPlayerBaseView()
     }
 
     var lastYLocation: CGFloat = 0
@@ -265,7 +265,7 @@ extension EpisodePlayerModalView {
 
             self.layoutIfNeeded()
 
-            self.delegate?.shouldMinimize()
+            self.delegate?.minimizePlayerBaseView()
         }) { _ in
             if #available(iOS 13.0, *) {
                 self.traitCollection.performAsCurrent {
@@ -304,7 +304,7 @@ extension EpisodePlayerModalView {
 
             self.layoutIfNeeded()
 
-            self.delegate?.shouldExpand()
+            self.delegate?.expandPlayerBaseView()
         }) { _ in
             // SeekBar
             self.seekBar.isHidden = false

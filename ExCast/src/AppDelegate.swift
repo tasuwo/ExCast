@@ -45,7 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let window = window {
             let container = DependencyContainer()
             let rootViewController = AppRootViewController(factory: container)
-            container.episodePlayerModalPresenter = rootViewController
+            container.episodePlayerModalContainerView = rootViewController
+            container.episodePlayerModalBaseView = rootViewController
 
             window.rootViewController = rootViewController
             window.makeKeyAndVisible()

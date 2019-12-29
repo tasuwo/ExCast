@@ -15,14 +15,14 @@ import UIKit
 import Common
 
 class EpisodeListViewController: UIViewController {
-    typealias Factory = ViewControllerFactory & EpisodePlayerModalPresenterFactory
+    typealias Factory = ViewControllerFactory & EpisodePlayerModalContainerFactory
 
     @IBOutlet var episodeListView: EpisodeListView!
     private let dataSourceContainer = EpisodeListViewDataSourceContainer()
 
     private let factory: Factory
     private let viewModel: EpisodeListViewModel
-    private lazy var playerPresenter = self.factory.makeEpisodePlayerModalPresenter()
+    private lazy var playerModalContainerView = self.factory.makeEpisodePlayerModalContainerView()
 
     private let disposeBag = DisposeBag()
 
@@ -59,8 +59,7 @@ class EpisodeListViewController: UIViewController {
 
         episodeListView.rx.itemSelected
             .bind(onNext: { [unowned self] indexPath in
-                debugLog("selected")
-                self.didSelectEpisode(at: indexPath)
+                self.viewModel.didSelectEpisode(at: indexPath)
             })
             .disposed(by: disposeBag)
 
@@ -87,7 +86,7 @@ class EpisodeListViewController: UIViewController {
                 }
             }).disposed(by: disposeBag)
 
-        playerPresenter?.playingEpisode
+        playerModalContainerView?.playingEpisode
             .bind(to: viewModel.playingEpisode)
             .disposed(by: disposeBag)
 
@@ -105,13 +104,6 @@ class EpisodeListViewController: UIViewController {
             episodeListView.deselectRow(at: selectedRow, animated: true)
         }
     }
-
-    // MARK: - Methods
-
-    func didSelectEpisode(at indexPath: IndexPath) {
-        playerPresenter?.show(show: viewModel.show,
-                              episode: viewModel.episodesCache.value[indexPath.row].episode)
-    }
 }
 
 extension EpisodeListViewController: EpisodeCellDelegate {
@@ -122,5 +114,17 @@ extension EpisodeListViewController: EpisodeCellDelegate {
 
         let nextViewController = factory.makeEpisodeDetailViewController(show: viewModel.show, episode: episode)
         navigationController.pushViewController(nextViewController, animated: true)
+    }
+}
+
+extension EpisodeListViewController: EpisodeListViewProtocol {
+    // MARK: - EpisodeListViewProtocol
+
+    func expandPlayer() {
+        self.playerModalContainerView?.playerModal?.changeToFullScreenIfPossible()
+    }
+
+    func presentPlayer(of episode: Episode) {
+        self.playerModalContainerView?.presentPlayerModal(show: viewModel.show, episode: episode)
     }
 }

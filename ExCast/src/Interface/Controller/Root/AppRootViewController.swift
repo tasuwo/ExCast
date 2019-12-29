@@ -13,12 +13,12 @@ import UIKit
 class AppRootViewController: UIViewController {
     typealias Factory = ViewControllerFactory & ViewModelFactory
 
-    private let rootTabBarController: AppRootTabBarController
-    private var playerModalViewController: EpisodePlayerViewController?
+    let rootTabBarController: AppRootTabBarController
+    var playerModalViewController: EpisodePlayerViewController?
 
-    private let playingEpisodeViewModel: PlayingEpisodeViewModel
+    let playingEpisodeViewModel: PlayingEpisodeViewModel
 
-    private let factory: Factory
+    let factory: Factory
 
     // MARK: - Lifecycle
 
@@ -54,36 +54,8 @@ class AppRootViewController: UIViewController {
     }
 }
 
-extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
-    // MARK: - EpisodePlayerModalPresenterProtocol
-
-    var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> {
-        return self.playingEpisodeViewModel.playingEpisode
-    }
-
-    func show(show: Show, episode: Episode) {
-        if let view = self.playerModalViewController {
-            view.reload(
-                controllerViewModel: factory.makePlayerControllerViewModel(show: show, episode: episode),
-                informationViewModel: factory.makePlayerInformationViewModel(show: show, episode: episode)
-            )
-            self.playingEpisodeViewModel.set(episode, belongsTo: show)
-            return
-        }
-
-        let playerViewController = factory.makeEpisodePlayerViewController(show: show, episode: episode)
-        playerViewController.modalPresentationStyle = .formSheet
-        playerViewController.modalTransitionStyle = .coverVertical
-
-        displayContentController(playerViewController)
-
-        playerModalViewController = playerViewController
-
-        let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
-        rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
-
-        self.playingEpisodeViewModel.set(episode, belongsTo: show)
-    }
+extension AppRootViewController: EpisodePlayerModalBaseViewProtocol {
+    // MARK: - EpisodePlayerModalBaseViewProtocol
 
     func dismiss() {
         guard let playerViewController = self.playerModalViewController else { return }

@@ -12,11 +12,17 @@ import RxRelay
 import RxSwift
 import Common
 
+protocol EpisodeListViewProtocol: AnyObject {
+    func expandPlayer()
+    func presentPlayer(of episode: Episode)
+}
+
 class EpisodeListViewModel {
     private static let sectionIdentifier = ""
 
     let show: Show
     private let service: EpisodeServiceProtocol
+    weak var view: EpisodeListViewProtocol?
 
     let playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> = BehaviorRelay(value: nil)
     private(set) var episodes: BehaviorRelay<DataSourceQuery<ListingEpisode>>
@@ -121,6 +127,16 @@ class EpisodeListViewModel {
 
     func fetch() {
         service.command.accept(.refresh(show.feedUrl))
+    }
+
+    func didSelectEpisode(at indexPath: IndexPath) {
+        let episode = self.episodesCache.value[indexPath.row].episode
+
+        if self.playingEpisode.value?.episode.identity == episode.identity {
+            self.view?.expandPlayer()
+        } else {
+            self.view?.presentPlayer(of: episode)
+        }
     }
 }
 

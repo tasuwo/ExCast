@@ -25,7 +25,8 @@ class DependencyContainer {
 
     private lazy var playerConfiguration = PlayerConfiguration.default
 
-    weak var episodePlayerModalPresenter: EpisodePlayerModalPresenterProtocol?
+    weak var episodePlayerModalContainerView: EpisodePlayerModalContainerViewProtocol?
+    weak var episodePlayerModalBaseView: EpisodePlayerModalBaseViewProtocol?
 }
 
 extension DependencyContainer: ViewControllerFactory {
@@ -47,7 +48,9 @@ extension DependencyContainer: ViewControllerFactory {
 
     func makeEpisodeListViewController(show: Show) -> EpisodeListViewController {
         let viewModel = EpisodeListViewModel(show: show, service: self.episodeService)
-        return EpisodeListViewController(factory: self, viewModel: viewModel)
+        let viewController = EpisodeListViewController(factory: self, viewModel: viewModel)
+        viewModel.view = viewController
+        return viewController
     }
 
     func makeEpisodeDetailViewController(show: Show, episode: Episode) -> EpisodeDetailViewController {
@@ -86,10 +89,18 @@ extension DependencyContainer: ViewModelFactory {
     }
 }
 
-extension DependencyContainer: EpisodePlayerModalPresenterFactory {
+extension DependencyContainer: EpisodePlayerModalContainerFactory {
     // MARK: - EpisodePlayerModalPresenterFactory
 
-    func makeEpisodePlayerModalPresenter() -> EpisodePlayerModalPresenterProtocol? {
-        return episodePlayerModalPresenter
+    func makeEpisodePlayerModalContainerView() -> EpisodePlayerModalContainerViewProtocol? {
+        return self.episodePlayerModalContainerView
+    }
+}
+
+extension DependencyContainer: EpisodePlayerModalBaseViewFactory {
+    // MARK: - EpisodePlayerModalBaseViewFactory
+
+    func makeEpisodePlayerModalBaseView() -> EpisodePlayerModalBaseViewProtocol? {
+        return self.episodePlayerModalBaseView
     }
 }

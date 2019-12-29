@@ -11,25 +11,19 @@ import RxCocoa
 import RxSwift
 import UIKit
 
-protocol EpisodePlayerModalPresenterProtocol: AnyObject {
-    var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> { get }
-
-    func show(show: Show, episode: Episode)
-
+protocol EpisodePlayerModalBaseViewProtocol: AnyObject {
     func dismiss()
-
     func minimize()
-
     func expand()
 }
 
 class EpisodePlayerViewController: UIViewController {
-    typealias Factory = ViewControllerFactory & ViewModelFactory & EpisodePlayerModalPresenterFactory
+    typealias Factory = ViewControllerFactory & ViewModelFactory & EpisodePlayerModalBaseViewFactory
 
     @IBOutlet var modalView: EpisodePlayerModalView!
 
     private let factory: Factory
-    private lazy var playerModalPresenter = self.factory.makeEpisodePlayerModalPresenter()
+    private lazy var playerBaseView = self.factory.makeEpisodePlayerModalBaseView()
     private let modalViewModel: PlayerModalViewModel
     private var controllerViewModel: PlayerControllerViewModel!
     private var informationViewModel: PlayerInformationViewModel!
@@ -66,7 +60,7 @@ class EpisodePlayerViewController: UIViewController {
                 case .mini:
                     self.modalView.minimize()
                 case .hide:
-                    self.shouldDismiss()
+                    self.dismissPlayerBaseView()
                 default:
                     break
                 }
@@ -151,16 +145,16 @@ extension EpisodePlayerViewController: EpisodePlayerSeekBarContainerDelegate {
 extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
     // MARK: - EpisodePlayerModalViewDelegate
 
-    func shouldDismiss() {
-        playerModalPresenter?.dismiss()
+    func dismissPlayerBaseView() {
+        self.playerBaseView?.dismiss()
     }
 
-    func shouldMinimize() {
-        playerModalPresenter?.minimize()
+    func minimizePlayerBaseView() {
+        self.playerBaseView?.minimize()
     }
 
-    func shouldExpand() {
-        playerModalPresenter?.expand()
+    func expandPlayerBaseView() {
+        self.playerBaseView?.expand()
     }
 
     func didTap() {
@@ -178,5 +172,17 @@ extension EpisodePlayerViewController: EpisodePlayerModalViewDelegate {
 
     func didTapMinimizeButton() {
         modalViewModel.modalState.accept(.mini)
+    }
+}
+
+extension EpisodePlayerViewController: EpisodePlayerModalProtocol {
+    // MARK: - EpisodePlayerViewProtocol
+
+    func changeToFullScreenIfPossible() {
+        self.modalViewModel.modalState.accept(.fullscreen)
+    }
+
+    func changeToMinimizeIfPossible() {
+        self.modalViewModel.modalState.accept(.mini)
     }
 }
