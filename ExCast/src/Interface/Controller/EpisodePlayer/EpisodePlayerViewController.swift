@@ -12,7 +12,7 @@ import RxSwift
 import UIKit
 
 protocol EpisodePlayerModalPresenterProtocol: AnyObject {
-    var playingEpisode: BehaviorRelay<Episode?> { get }
+    var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> { get }
 
     func show(show: Show, episode: Episode)
 

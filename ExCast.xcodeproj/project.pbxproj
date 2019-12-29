@@ -24,6 +24,7 @@
 		2C24AD5F23B6820400E80EA4 /* LoggerConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD5E23B6820400E80EA4 /* LoggerConfigurationManager.swift */; };
 		2C24AD6123B6825A00E80EA4 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */; };
 		2C2BE13623B7A98200FAF87C /* PlayingEpisodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2BE13523B7A98200FAF87C /* PlayingEpisodeViewModel.swift */; };
+		2C2BE13A23B8589B00FAF87C /* EpisodeBelongsToShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2BE13923B8589A00FAF87C /* EpisodeBelongsToShow.swift */; };
 		2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */; };
 		2C3AAE3323517E6900A78A02 /* EpisodePlayerModalView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */; };
 		2C4D9117234075A100895CD7 /* ShowListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */; };
@@ -327,6 +328,7 @@
 		2C24AD5E23B6820400E80EA4 /* LoggerConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerConfigurationManager.swift; sourceTree = "<group>"; };
 		2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerConfiguration.swift; sourceTree = "<group>"; };
 		2C2BE13523B7A98200FAF87C /* PlayingEpisodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingEpisodeViewModel.swift; sourceTree = "<group>"; };
+		2C2BE13923B8589A00FAF87C /* EpisodeBelongsToShow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeBelongsToShow.swift; sourceTree = "<group>"; };
 		2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+rgbString.swift"; sourceTree = "<group>"; };
 		2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpisodePlayerModalView+Rx.swift"; sourceTree = "<group>"; };
 		2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowListViewDataSource.swift; sourceTree = "<group>"; };
@@ -579,9 +581,9 @@
 		2C01F315239CCEF300EF009E /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				2C2BE13323B763C700FAF87C /* Model */,
 				2C5614DA239CD64600A1B06D /* Factory */,
 				2C5614DD239CD64600A1B06D /* Gateway */,
+				2C2BE13323B763C700FAF87C /* Model */,
 				2C56151E239CF52200A1B06D /* Player */,
 				2C561534239FE5AF00A1B06D /* RemoteCommand */,
 				2C5614F7239CD64D00A1B06D /* Service */,
@@ -615,8 +617,8 @@
 			isa = PBXGroup;
 			children = (
 				2C24AD5B23B6808E00E80EA4 /* Logger.swift */,
-				2C24AD5E23B6820400E80EA4 /* LoggerConfigurationManager.swift */,
 				2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */,
+				2C24AD5E23B6820400E80EA4 /* LoggerConfigurationManager.swift */,
 			);
 			path = Logger;
 			sourceTree = "<group>";
@@ -686,8 +688,8 @@
 			children = (
 				2C56154223A51FF300A1B06D /* Model */,
 				2C5614C6239CD63700A1B06D /* Repository */,
-				2C5614C4239CD63600A1B06D /* PodcastService.swift */,
 				2C8FEF4723B50BD6007B8D4D /* EpisodeService.swift */,
+				2C5614C4239CD63600A1B06D /* PodcastService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -695,9 +697,9 @@
 		2C5614C6239CD63700A1B06D /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				2C8FEF4523B50996007B8D4D /* EpisodeRepository.swift */,
 				2C561530239FE4C300A1B06D /* NotificationSettingRepository.swift */,
 				2C56153A239FED8D00A1B06D /* PodcastRepository.swift */,
-				2C8FEF4523B50996007B8D4D /* EpisodeRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -868,9 +870,9 @@
 				2CA253EB23B4988000D98122 /* EpisodeObject.swift */,
 				2CA253EA23B4988000D98122 /* ItemObject.swift */,
 				2C56154023A51F1400A1B06D /* Persistable.swift */,
-				2C56154323A5201800A1B06D /* PodcastObject.swift */,
 				2CA253F223B4988700D98122 /* PlaybackObject.swift */,
 				2CA253F123B4988700D98122 /* PlayerConfigurationObject.swift */,
+				2C56154323A5201800A1B06D /* PodcastObject.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -888,8 +890,8 @@
 		2C6391C022E1995000B5EBE0 /* ExCastTests */ = {
 			isa = PBXGroup;
 			children = (
-				2C6391C322E1995000B5EBE0 /* Info.plist */,
 				2C7DA02623B65975000CD2E4 /* ExCastTests.swift */,
+				2C6391C322E1995000B5EBE0 /* Info.plist */,
 			);
 			path = ExCastTests;
 			sourceTree = "<group>";
@@ -1017,12 +1019,12 @@
 		2CA13C4D22C8D7D600CC6072 = {
 			isa = PBXGroup;
 			children = (
+				2C7DA03023B67F25000CD2E4 /* Common */,
+				2C7DA03D23B67F25000CD2E4 /* CommonTests */,
 				2C01F315239CCEF300EF009E /* Domain */,
 				2C01F322239CCEF300EF009E /* DomainTests */,
 				2CA13C5822C8D7D700CC6072 /* ExCast */,
 				2C6391C022E1995000B5EBE0 /* ExCastTests */,
-				2C7DA03023B67F25000CD2E4 /* Common */,
-				2C7DA03D23B67F25000CD2E4 /* CommonTests */,
 				490B0DF8FD02A7DD13AE2ACB /* Frameworks */,
 				2C01F2F2239CCEC900EF009E /* Infrastructure */,
 				2C01F2FF239CCEC900EF009E /* InfrastructureTests */,
@@ -1073,9 +1075,9 @@
 			isa = PBXGroup;
 			children = (
 				2C6391CC22E1BD2400B5EBE0 /* Controller */,
+				2CC79D4923B75A06009A5430 /* Model */,
 				2CA13C7C22C8F1A500CC6072 /* View */,
 				2CA13C7D22C8F1D500CC6072 /* ViewModel */,
-				2CC79D4923B75A06009A5430 /* Model */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1107,11 +1109,11 @@
 		2CA13C7D22C8F1D500CC6072 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				2C2BE13423B7A95F00FAF87C /* Root */,
 				2CA2E9C622F351BB00A6E3A9 /* EpisodeDetail */,
 				2C6391F822E2C30000B5EBE0 /* EpisodeList */,
 				2C6391D822E1DC9C00B5EBE0 /* FeedUrlInput */,
 				2CCEC3D522E484550055D27A /* Player */,
+				2C2BE13423B7A95F00FAF87C /* Root */,
 				2C6391D222E1C14800B5EBE0 /* ShowList */,
 			);
 			path = ViewModel;
@@ -1156,9 +1158,9 @@
 		2CB6E63023B6250800182DA4 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				2CB6E63123B6250800182DA4 /* Model */,
 				2CB6E64523B633DD00182DA4 /* Nimble */,
 				2CB6E64223B6324D00182DA4 /* Realm */,
-				2CB6E63123B6250800182DA4 /* Model */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1166,14 +1168,14 @@
 		2CB6E63123B6250800182DA4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2CB6E63823B6250800182DA4 /* Channel+DefaultValue.swift */,
+				2CB6E63423B6250800182DA4 /* ChannelOwner+DefaultValue.swift */,
 				2CB6E63223B6250800182DA4 /* Enclosure+DefaultValue.swift */,
 				2CB6E63323B6250800182DA4 /* Episode+DefaultValue.swift */,
-				2CB6E63423B6250800182DA4 /* ChannelOwner+DefaultValue.swift */,
-				2CB6E63523B6250800182DA4 /* Podcast+DefaultValue.swift */,
 				2CB6E63623B6250800182DA4 /* Item+DefaultValue.swift */,
-				2CB6E63723B6250800182DA4 /* PlayerConfiguration+DefaultValue.swift */,
-				2CB6E63823B6250800182DA4 /* Channel+DefaultValue.swift */,
 				2CB6E63923B6250800182DA4 /* Playback+DefaultValue.swift */,
+				2CB6E63723B6250800182DA4 /* PlayerConfiguration+DefaultValue.swift */,
+				2CB6E63523B6250800182DA4 /* Podcast+DefaultValue.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1197,6 +1199,7 @@
 		2CC79D4623B75943009A5430 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				2C2BE13923B8589A00FAF87C /* EpisodeBelongsToShow.swift */,
 				2CC79D4723B75958009A5430 /* ListingEpisode.swift */,
 			);
 			path = Entity;
@@ -1205,8 +1208,8 @@
 		2CC79D4923B75A06009A5430 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2C2BE13223B762CD00FAF87C /* ValueObject */,
 				2CC79D4623B75943009A5430 /* Entity */,
+				2C2BE13223B762CD00FAF87C /* ValueObject */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1939,6 +1942,7 @@
 				2C55EC2723504A8100797963 /* DataSourceQuery.swift in Sources */,
 				2CA2E9B822F0A26100A6E3A9 /* EpisodePlayerPlaybackButtons.swift in Sources */,
 				2CA13C8F22C9100B00CC6072 /* FeedUrlInputView.swift in Sources */,
+				2C2BE13A23B8589B00FAF87C /* EpisodeBelongsToShow.swift in Sources */,
 				2C4D9117234075A100895CD7 /* ShowListViewDataSource.swift in Sources */,
 				2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */,
 				2CA2E9C322F3515D00A6E3A9 /* EpisodeDetailViewController.swift in Sources */,

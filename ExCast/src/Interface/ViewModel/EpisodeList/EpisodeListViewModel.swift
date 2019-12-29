@@ -18,7 +18,7 @@ class EpisodeListViewModel {
     let show: Show
     private let service: EpisodeServiceProtocol
 
-    let playingEpisode: BehaviorRelay<Episode?> = BehaviorRelay(value: nil)
+    let playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> = BehaviorRelay(value: nil)
     private(set) var episodes: BehaviorRelay<DataSourceQuery<ListingEpisode>>
     private(set) var episodesCache: BehaviorRelay<[ListingEpisode]>
 
@@ -43,7 +43,7 @@ class EpisodeListViewModel {
                 case let .content(_, episodes):
                     debugLog("The \(show.title)'s episodes state chaned to `content`.")
                     let items = episodes.map {
-                        ListingEpisode(episode: $0, isPlaying: $0 == self.playingEpisode.value)
+                        ListingEpisode(episode: $0, isPlaying: $0 == self.playingEpisode.value?.episode)
                     }
                     return .contents([.init(model: EpisodeListViewModel.sectionIdentifier, items: items)])
                 case .error:
@@ -72,7 +72,7 @@ class EpisodeListViewModel {
                     let items = container.first!.items.map { episode in
                         episode.isPlaying ? episode.finishedPlay() : episode
                     }.map { episode in
-                        episode.identity == targetEpisode.identity ? episode.startedPlay() : episode
+                        episode.identity == targetEpisode.episode.identity ? episode.startedPlay() : episode
                     }
                     return .contents([.init(model: EpisodeListViewModel.sectionIdentifier, items: items)])
                 default:

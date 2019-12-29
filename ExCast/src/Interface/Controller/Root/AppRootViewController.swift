@@ -57,7 +57,7 @@ class AppRootViewController: UIViewController {
 extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
     // MARK: - EpisodePlayerModalPresenterProtocol
 
-    var playingEpisode: BehaviorRelay<Episode?> {
+    var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> {
         return self.playingEpisodeViewModel.playingEpisode
     }
 
@@ -67,7 +67,7 @@ extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
                 controllerViewModel: factory.makePlayerControllerViewModel(show: show, episode: episode),
                 informationViewModel: factory.makePlayerInformationViewModel(show: show, episode: episode)
             )
-            self.playingEpisodeViewModel.set(episode)
+            self.playingEpisodeViewModel.set(episode, belongsTo: show)
             return
         }
 
@@ -82,7 +82,7 @@ extension AppRootViewController: EpisodePlayerModalPresenterProtocol {
         let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
 
-        self.playingEpisodeViewModel.set(episode)
+        self.playingEpisodeViewModel.set(episode, belongsTo: show)
     }
 
     func dismiss() {

@@ -10,10 +10,10 @@ import Domain
 import RxRelay
 
 struct PlayingEpisodeViewModel {
-    private(set) var playingEpisode: BehaviorRelay<Episode?> = BehaviorRelay(value: nil)
+    private(set) var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> = BehaviorRelay(value: nil)
 
-    func set(_ episode: Episode) {
-        self.playingEpisode.accept(episode)
+    func set(_ episode: Episode, belongsTo show: Show) {
+        self.playingEpisode.accept(EpisodeBelongsToShow(episode: episode, show: show))
     }
 
     func clear() {
