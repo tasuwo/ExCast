@@ -97,7 +97,7 @@ class EpisodeListViewModel {
 
         Observable
             .zip(self.playingEpisode, self.playingEpisode.skip(1))
-            .flatMap { diff -> Single<EpisodeServiceCommand> in
+            .flatMap { [unowned self] diff -> Single<EpisodeServiceCommand> in
                 switch diff {
                 case let (.none, .some(current)) where current.show == self.show:
                     // TODO: Podcast の Identity を参照する
