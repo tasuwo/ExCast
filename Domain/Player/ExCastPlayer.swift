@@ -7,6 +7,8 @@
 //
 
 import AVFoundation
+import RxRelay
+import RxSwift
 
 private var kAudioPlayerContext: UInt8 = 0
 
@@ -15,27 +17,55 @@ private class DelegateWrapper {
     init(_ d: ExCastPlayerDelegate) { delegate = d }
 }
 
-public class ExCastPlayer: NSObject {
-    private let contentUrl: URL
-
-    private weak var playerItem: AVPlayerItem!
+public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
     private var player: AVPlayer!
+    private let playerItem: AVPlayerItem
 
     private var timeObserverToken: Any?
     fileprivate var delegates: [DelegateWrapper] = []
 
     // MARK: - Lifecycle
 
-    public init(contentUrl: URL) {
-        self.contentUrl = contentUrl
+    public init(contentUrl: URL, startPlayAutomatically: Bool, playbackSec: Int) {
+        let asset = AVAsset(url: contentUrl)
+        self.playerItem = AVPlayerItem(asset: asset)
+        super.init()
+
+        self.playerItem.addObserver(self,
+                                    forKeyPath: #keyPath(AVPlayerItem.status),
+                                    options: [.old, .new],
+                                    context: &kAudioPlayerContext)
+
+        asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.isPlayable)]) {
+            var error: NSError? = nil
+            let status = asset.statusOfValue(forKey: #keyPath(AVAsset.isPlayable), error: &error)
+            switch status {
+            case .loaded:
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+
+                    // NOTE: AVPlayerItemに事前に設定
+                    let duration  = CMTimeMakeWithSeconds(Float64(playbackSec), preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+                    self.playerItem.seek(to: duration, completionHandler: nil)
+
+                    self.player = AVPlayer(playerItem: self.playerItem)
+                    self.player.automaticallyWaitsToMinimizeStalling = false
+                    if startPlayAutomatically {
+                        self.player.playImmediately(atRate: 1)
+                    }
+                    self.createdPlayer.accept(true)
+
+                    self.addPeriodicTimeObserver()
+                }
+            default:
+                break
+                // TODO:
+            }
+        }
     }
 
     deinit {
-        if let player = self.player {
-            player.pause()
-        }
-        self.playerItem = nil
-        self.player = nil
+        self.removePeriodicTimeObserver()
     }
 
     // MARK: - Methods
@@ -73,10 +103,9 @@ public class ExCastPlayer: NSObject {
     }
 
     private func addPeriodicTimeObserver() {
-        let timeScale = CMTimeScale(NSEC_PER_SEC)
-        let time = CMTime(seconds: 0.1, preferredTimescale: timeScale)
+        let time = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
 
-        timeObserverToken = player.addPeriodicTimeObserver(forInterval: time, queue: .main) { [weak self] time in
+        self.timeObserverToken = self.player.addPeriodicTimeObserver(forInterval: time, queue: .main) { [weak self] time in
             guard let self = self else { return }
             self.delegates.forEach { $0.delegate?.didChangePlaybackTime(to: time.seconds) }
         }
@@ -84,51 +113,14 @@ public class ExCastPlayer: NSObject {
 
     private func removePeriodicTimeObserver() {
         if let timeObserverToken = timeObserverToken {
-            player.removeTimeObserver(timeObserverToken)
+            self.player.removeTimeObserver(timeObserverToken)
             self.timeObserverToken = nil
         }
     }
-}
 
-extension ExCastPlayer: ExCastPlayerProtocol {
     // MARK: - ExCastPlayerProtocol
 
-    public func prepareToPlay() {
-        DispatchQueue.global(qos: .background).async {
-            let asset = AVAsset(url: self.contentUrl)
-            let playerItem = AVPlayerItem(asset: asset)
-            self.playerItem = playerItem
-
-            asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.isPlayable)]) { [weak self] in
-                guard let self = self else { return }
-
-                var error: NSError?
-                let status = asset.statusOfValue(forKey: #keyPath(AVAsset.isPlayable), error: &error)
-
-                switch status {
-                case .loaded:
-                    DispatchQueue.main.async {
-                        self.player = AVPlayer(playerItem: playerItem)
-                        self.player.automaticallyWaitsToMinimizeStalling = false
-                        self.addPeriodicTimeObserver()
-                        playerItem.addObserver(self,
-                                               forKeyPath: #keyPath(AVPlayerItem.status),
-                                               options: [.old, .new],
-                                               context: &kAudioPlayerContext)
-                    }
-                case .failed:
-                    // TODO:
-                    break
-                case .cancelled:
-                    // TODO:
-                    break
-                default:
-                    // TODO:
-                    break
-                }
-            }
-        }
-    }
+    private(set) public var createdPlayer: BehaviorRelay<Bool> = BehaviorRelay(value: false)
 
     public func play() {
         player.play()

@@ -10,17 +10,19 @@ import Domain
 import Foundation
 import RxRelay
 import RxSwift
+import MediaPlayer
 
 class PlayerControllerViewModel {
     private let show: Show
     private let episode: Episode
-    private let commands: ExCastPlayerProtocol
+    private var player: ExCastPlayerProtocol!
     private let configuration: PlayerConfiguration
-    private let remoteCommands: ExCastPlayerDelegate
+    private let remoteCommands: RemoteCommandHandler
     private let episodeService: EpisodeServiceProtocol
 
     private var playedAfterLoadingOnce: Bool = false
 
+    private(set) var createdPlayer: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     private(set) var isPlaying: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     private(set) var isPrepared: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     private(set) var duration: BehaviorRelay<Double> = BehaviorRelay(value: 0)
@@ -34,26 +36,26 @@ class PlayerControllerViewModel {
 
     // MARK: - Lifecycle
 
-    init(show: Show, episode: Episode, controller: ExCastPlayerProtocol, remoteCommands: ExCastPlayerDelegate, configuration: PlayerConfiguration, episodeService: EpisodeServiceProtocol) {
+    init(show: Show, episode: Episode, remoteCommands: RemoteCommandHandler, configuration: PlayerConfiguration, episodeService: EpisodeServiceProtocol) {
         self.show = show
         self.episode = episode
-        commands = controller
-        self.configuration = configuration
         self.remoteCommands = remoteCommands
-        duration.accept(episode.meta.duration ?? 0)
+        self.configuration = configuration
+        self.duration.accept(episode.meta.duration ?? 0)
         self.episodeService = episodeService
 
-        currentTime
+        self.currentTime
             .filter { [unowned self] _ in self.preventToSyncTime.value == false }
             .bind(to: displayCurrentTime)
             .disposed(by: disposeBag)
-        isSliderGrabbed
+
+        self.isSliderGrabbed
             .filter { [unowned self] _ in self.isPrepared.value }
             .bind(onNext: { [unowned self] grabbed in
                 if grabbed {
                     self.preventToSyncTime.accept(true)
                 } else {
-                    self.commands.seek(to: self.displayCurrentTime.value) { isSucceeded in
+                    self.player.seek(to: self.displayCurrentTime.value) { isSucceeded in
                         guard isSucceeded else { return }
                         self.displayCurrentTime.accept(self.currentTime.value)
                         self.preventToSyncTime.accept(false)
@@ -68,27 +70,41 @@ class PlayerControllerViewModel {
             })
             .disposed(by: disposeBag)
 
-        commands.register(delegate: self)
-        commands.register(delegate: remoteCommands)
-        commands.prepareToPlay()
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self = self else { return }
+
+            self.player = ExCastPlayer(contentUrl: self.episode.meta.enclosure.url,
+                                       startPlayAutomatically: true,
+                                       // 再生位置が保存されていた場合は、resume再生する
+                                       playbackSec: self.episode.playback?.playbackPositionSec ?? 0)
+            self.player.register(delegate: self)
+
+            self.remoteCommands.player = self.player
+            self.player.register(delegate: self.remoteCommands)
+
+            self.player.createdPlayer
+                .bind(to: self.createdPlayer)
+                .disposed(by: self.disposeBag)
+
+        }
     }
 
     // MARK: - Methods
 
     func playback() {
         if isPlaying.value {
-            commands.pause()
+            player.pause()
         } else {
-            commands.play()
+            player.play()
         }
     }
 
     func skipForward() {
-        commands.skipForward(duration: configuration.forwardSkipTime) { _ in }
+        player.skipForward(duration: configuration.forwardSkipTime) { _ in }
     }
 
     func skipBackward() {
-        commands.skipBackward(duration: configuration.backwardSkipTime) { _ in }
+        player.skipBackward(duration: configuration.backwardSkipTime) { _ in }
     }
 }
 
@@ -96,19 +112,8 @@ extension PlayerControllerViewModel: ExCastPlayerDelegate {
     // MARK: - AudioPlayerDelegate
 
     func didFinishPrepare() {
+        self.isPlaying.accept(true)
         self.isPrepared.accept(true)
-        guard self.playedAfterLoadingOnce == false else { return }
-
-        // 再生位置が保存されていた場合は、resume再生する
-        if let playbackPosition = self.episode.playback?.playbackPositionSec {
-            commands.seek(to: TimeInterval(playbackPosition)) { [unowned self] _ in
-                self.commands.play()
-                self.playedAfterLoadingOnce = true
-            }
-        } else {
-            commands.play()
-            playedAfterLoadingOnce = true
-        }
     }
 
     func didChangePlayingState(to state: ExCastPlayerState) {

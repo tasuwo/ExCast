@@ -10,10 +10,10 @@ import MediaPlayer
 import UIKit
 
 public class RemoteCommandHandler: NSObject {
+    public weak var player: ExCastPlayerProtocol?
     private let show: Show
     private let episode: Episode
     private let commandCenter: MPRemoteCommandCenter
-    private weak var player: ExCastPlayerProtocol?
     private unowned var infoCenter: MPNowPlayingInfoCenter
 
     private let configuration: PlayerConfiguration
@@ -21,11 +21,10 @@ public class RemoteCommandHandler: NSObject {
 
     // MARK: - Lifecycle
 
-    public init(show: Show, episode: Episode, commandCenter: MPRemoteCommandCenter, player: ExCastPlayerProtocol, infoCenter: MPNowPlayingInfoCenter, configuration: PlayerConfiguration) {
+    public init(show: Show, episode: Episode, commandCenter: MPRemoteCommandCenter, infoCenter: MPNowPlayingInfoCenter, configuration: PlayerConfiguration) {
         self.show = show
         self.episode = episode
         self.commandCenter = commandCenter
-        self.player = player
         self.infoCenter = infoCenter
         self.configuration = configuration
     }

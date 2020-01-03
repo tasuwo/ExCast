@@ -68,16 +68,14 @@ extension DependencyContainer: ViewModelFactory {
     // MARK: - ViewModelFactory
 
     func makePlayerControllerViewModel(show: Show, episode: Episode) -> PlayerControllerViewModel {
-        let player = ExCastPlayer(contentUrl: episode.meta.enclosure.url)
         let commandHandler = RemoteCommandHandler(
             show: show,
             episode: episode,
             commandCenter: commandCenter,
-            player: player,
             infoCenter: nowPlayingInfoCenter,
             configuration: playerConfiguration
         )
-        return PlayerControllerViewModel(show: show, episode: episode, controller: player, remoteCommands: commandHandler, configuration: playerConfiguration, episodeService: self.episodeService)
+        return PlayerControllerViewModel(show: show, episode: episode, remoteCommands: commandHandler, configuration: playerConfiguration, episodeService: self.episodeService)
     }
 
     func makePlayerInformationViewModel(show: Show, episode: Episode) -> PlayerInformationViewModel {
