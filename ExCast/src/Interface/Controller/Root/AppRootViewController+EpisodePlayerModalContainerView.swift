@@ -42,11 +42,12 @@ extension AppRootViewController: EpisodePlayerModalContainerViewProtocol {
                 controllerViewModel: self.factory.makePlayerControllerViewModel(show: show, episode: episode),
                 informationViewModel: self.factory.makePlayerInformationViewModel(show: show, episode: episode)
             )
-            self.playingEpisodeViewModel.set(episode, belongsTo: show)
             return
         }
 
-        let playerViewController = self.factory.makeEpisodePlayerViewController(show: show, episode: episode)
+        let playerViewController = self.factory.makeEpisodePlayerViewController(show: show,
+                                                                                episode: episode,
+                                                                                playingEpisodeViewModel: self.playingEpisodeViewModel)
         playerViewController.modalPresentationStyle = .formSheet
         playerViewController.modalTransitionStyle = .coverVertical
 
@@ -56,7 +57,5 @@ extension AppRootViewController: EpisodePlayerModalContainerViewProtocol {
 
         let newSafeArea = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         self.rootTabBarController.viewControllers?.forEach { $0.additionalSafeAreaInsets = newSafeArea }
-
-        self.playingEpisodeViewModel.set(episode, belongsTo: show)
     }
 }

@@ -58,9 +58,9 @@ extension DependencyContainer: ViewControllerFactory {
         return EpisodeDetailViewController(factory: self, viewModel: viewModel)
     }
 
-    func makeEpisodePlayerViewController(show: Show, episode: Episode) -> EpisodePlayerViewController {
+    func makeEpisodePlayerViewController(show: Show, episode: Episode, playingEpisodeViewModel: PlayingEpisodeViewModel) -> EpisodePlayerViewController {
         let viewModel = PlayerModalViewModel()
-        return EpisodePlayerViewController(factory: self, show: show, episode: episode, viewModel: viewModel)
+        return EpisodePlayerViewController(factory: self, show: show, episode: episode, viewModel: viewModel, playingEpisodeViewModel: playingEpisodeViewModel)
     }
 }
 

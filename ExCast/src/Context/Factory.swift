@@ -17,7 +17,7 @@ protocol ViewControllerFactory {
     func makeEpisodeListViewController(show: Show) -> EpisodeListViewController
 
     func makeEpisodeDetailViewController(show: Show, episode: Episode) -> EpisodeDetailViewController
-    func makeEpisodePlayerViewController(show: Show, episode: Episode) -> EpisodePlayerViewController
+    func makeEpisodePlayerViewController(show: Show, episode: Episode, playingEpisodeViewModel: PlayingEpisodeViewModel) -> EpisodePlayerViewController
 }
 
 protocol ViewModelFactory {

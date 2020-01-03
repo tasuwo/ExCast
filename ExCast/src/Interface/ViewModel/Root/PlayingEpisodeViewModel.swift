@@ -9,8 +9,11 @@
 import Domain
 import RxRelay
 
-struct PlayingEpisodeViewModel {
+class PlayingEpisodeViewModel {
     private(set) var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> = BehaviorRelay(value: nil)
+
+    private(set) var isLoading: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    private(set) var currentDuration: BehaviorRelay<Double?> = BehaviorRelay(value: nil)
 
     func set(_ episode: Episode, belongsTo show: Show) {
         self.playingEpisode.accept(EpisodeBelongsToShow(episode: episode, show: show))

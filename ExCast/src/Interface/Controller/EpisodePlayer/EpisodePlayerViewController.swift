@@ -27,16 +27,19 @@ class EpisodePlayerViewController: UIViewController {
     private let modalViewModel: PlayerModalViewModel
     private var controllerViewModel: PlayerControllerViewModel!
     private var informationViewModel: PlayerInformationViewModel!
+    private weak var playingEpisodeViewModel: PlayingEpisodeViewModel?
 
     private var disposeBag = DisposeBag()
 
     // MARK: - Lifecycle
 
-    init(factory: Factory, show: Channel, episode: Episode, viewModel: PlayerModalViewModel) {
+    init(factory: Factory, show: Channel, episode: Episode, viewModel: PlayerModalViewModel, playingEpisodeViewModel: PlayingEpisodeViewModel) {
         self.factory = factory
         modalViewModel = viewModel
         controllerViewModel = factory.makePlayerControllerViewModel(show: show, episode: episode)
         informationViewModel = factory.makePlayerInformationViewModel(show: show, episode: episode)
+        self.playingEpisodeViewModel = playingEpisodeViewModel
+        self.playingEpisodeViewModel?.isLoading.accept(true)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -82,6 +85,16 @@ class EpisodePlayerViewController: UIViewController {
     }
 
     private func bindEpisode() {
+        self.playingEpisodeViewModel?.set(self.informationViewModel.episode,
+                                          belongsTo: self.informationViewModel.show)
+        self.controllerViewModel.createdPlayer
+            .map { !$0 }
+            .bind(to: self.playingEpisodeViewModel!.isLoading)
+            .disposed(by: self.disposeBag)
+        self.controllerViewModel.currentTime
+            .bind(to: self.playingEpisodeViewModel!.currentDuration)
+            .disposed(by: self.disposeBag)
+
         informationViewModel.showTitle
             .bind(to: modalView.rx.showTitle)
             .disposed(by: disposeBag)
