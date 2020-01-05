@@ -31,11 +31,6 @@ public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
         self.playerItem = AVPlayerItem(asset: asset)
         super.init()
 
-        self.playerItem.addObserver(self,
-                                    forKeyPath: #keyPath(AVPlayerItem.status),
-                                    options: [.old, .new],
-                                    context: &kAudioPlayerContext)
-
         asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.isPlayable)]) {
             var error: NSError? = nil
             let status = asset.statusOfValue(forKey: #keyPath(AVAsset.isPlayable), error: &error)
@@ -53,10 +48,17 @@ public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
                     if startPlayAutomatically {
                         self.player.playImmediately(atRate: 1)
                     }
-                    self.createdPlayer.accept(true)
 
                     self.addPeriodicTimeObserver()
+
+                    self.playerItem.addObserver(self,
+                                                forKeyPath: #keyPath(AVPlayerItem.status),
+                                                options: [.old, .new],
+                                                context: &kAudioPlayerContext)
+
+                    self.createdPlayer.accept(true)
                 }
+                break
             default:
                 break
                 // TODO:
@@ -65,6 +67,10 @@ public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
     }
 
     deinit {
+        // HACK: addObserver される前に removeObserver してしまうとクラッシュするので、player が生成されている場合のみ removeObserver する
+        if self.createdPlayer.value {
+            self.playerItem.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status))
+        }
         self.removePeriodicTimeObserver()
     }
 

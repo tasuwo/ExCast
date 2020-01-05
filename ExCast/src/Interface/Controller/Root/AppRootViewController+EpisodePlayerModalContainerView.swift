@@ -13,6 +13,8 @@ protocol EpisodePlayerModalContainerViewProtocol: AnyObject {
 
     var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> { get }
 
+    var currentEpisodeDuration: BehaviorRelay<Double?> { get }
+
     var playerModal: EpisodePlayerModalProtocol? { get }
 
     func presentPlayerModal(show: Show, episode: Episode)
@@ -30,6 +32,10 @@ extension AppRootViewController: EpisodePlayerModalContainerViewProtocol {
 
     var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> {
         return self.playingEpisodeViewModel.playingEpisode
+    }
+
+    var currentEpisodeDuration: BehaviorRelay<Double?> {
+        return self.playingEpisodeViewModel.currentDuration
     }
 
     var playerModal: EpisodePlayerModalProtocol? {
