@@ -16,13 +16,15 @@ class EpisodeListView: UITableView {
 
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
-        loadFromNib()
+        self.applyAppearance()
+        self.loadFromNib()
         refreshControl = UIRefreshControl()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        loadFromNib()
+        self.applyAppearance()
+        self.loadFromNib()
         refreshControl = UIRefreshControl()
     }
 
@@ -31,5 +33,9 @@ class EpisodeListView: UITableView {
     private func loadFromNib() {
         let nib = UINib(nibName: "EpisodeCell", bundle: nil)
         register(nib, forCellReuseIdentifier: EpisodeListView.identifier)
+    }
+
+    private func applyAppearance() {
+        self.rowHeight = 130
     }
 }
