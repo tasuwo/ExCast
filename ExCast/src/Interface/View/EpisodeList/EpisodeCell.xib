@@ -20,7 +20,7 @@
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="xVz-sG-7YH">
                         <rect key="frame" x="20" y="8" width="374" height="138"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eaK-mL-V4O">
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eaK-mL-V4O" userLabel="Header Stack View">
                                 <rect key="frame" x="0.0" y="0.0" width="374" height="15"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BXP-IG-lXM" userLabel="Episode PubDate">
@@ -46,16 +46,16 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JzD-0S-LXL" userLabel="Episode Description">
-                                <rect key="frame" x="0.0" y="42.5" width="374" height="62.5"/>
+                                <rect key="frame" x="0.0" y="42.5" width="374" height="72.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yiX-dS-Q6n">
-                                <rect key="frame" x="0.0" y="109" width="374" height="29"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yiX-dS-Q6n" userLabel="Footer Stack View">
+                                <rect key="frame" x="0.0" y="119" width="374" height="19"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9pB-2f-Xa4">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="29"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="19"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="s8r-Km-BM2"/>
                                         </constraints>
@@ -65,8 +65,15 @@
                                             <action selector="didTapInformationIcon:" destination="Mfb-5o-u6a" eventType="touchUpInside" id="n3f-BO-x8C"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pvR-VC-o6E" userLabel="current duration">
+                                        <rect key="frame" x="166" y="4" width="31" height="15"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwc-tW-QWL" userLabel="Episode Length">
-                                        <rect key="frame" x="58" y="0.0" width="316" height="29"/>
+                                        <rect key="frame" x="205" y="0.0" width="169" height="19"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -79,13 +86,14 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="right" secondItem="xVz-sG-7YH" secondAttribute="right" constant="20" id="78h-Ba-6PE"/>
                     <constraint firstItem="xVz-sG-7YH" firstAttribute="top" secondItem="Y6t-jl-Fqg" secondAttribute="top" constant="8" id="Jl9-qB-9Gu"/>
                     <constraint firstAttribute="bottom" secondItem="xVz-sG-7YH" secondAttribute="bottom" constant="8" id="kyZ-3E-2jD"/>
+                    <constraint firstAttribute="trailing" secondItem="xVz-sG-7YH" secondAttribute="trailing" constant="20" id="mJL-Ct-Kxh"/>
                     <constraint firstItem="xVz-sG-7YH" firstAttribute="leading" secondItem="Y6t-jl-Fqg" secondAttribute="leading" constant="20" id="xTo-K2-ozN"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="currentDurationLabel" destination="pvR-VC-o6E" id="Vlb-vb-T8H"/>
                 <outlet property="episodeDescriptionLabel" destination="JzD-0S-LXL" id="bc2-kQ-874"/>
                 <outlet property="informationButton" destination="9pB-2f-Xa4" id="ccg-Fa-gFb"/>
                 <outlet property="lengthLabel" destination="rwc-tW-QWL" id="3Ea-dT-d80"/>

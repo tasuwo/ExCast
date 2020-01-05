@@ -63,6 +63,27 @@ class EpisodeCell: UITableViewCell {
         }
     }
 
+    public var currentDuration: Double? {
+        set {
+            guard let value = newValue else {
+                self.currentDurationLabel.isHidden = true
+                self.currentDurationLabel.text = ""
+                return
+            }
+            if value == 0 {
+                self.currentDurationLabel.isHidden = true
+                self.currentDurationLabel.text = ""
+            } else {
+                self.currentDurationLabel.isHidden = false
+                self.currentDurationLabel.text = type(of: self).durationFormatter.string(from: value)
+            }
+        }
+        get {
+            // TODO:
+            return 0
+        }
+    }
+
     public var duration: Double {
         set {
             lengthLabel.text = type(of: self).durationFormatter.string(from: newValue)
@@ -82,6 +103,7 @@ class EpisodeCell: UITableViewCell {
     @IBOutlet var publishDateLabel: UILabel!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var episodeDescriptionLabel: UILabel!
+    @IBOutlet var currentDurationLabel: UILabel!
     @IBOutlet var lengthLabel: UILabel!
     @IBOutlet var informationButton: UIButton!
     @IBOutlet var playingMarkIconView: UIImageView!

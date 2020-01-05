@@ -31,6 +31,13 @@ class EpisodeListViewDataSourceContainer: NSObject {
             episodeCell.pubDate = episode.meta.pubDate
             episodeCell.episodeDescription = episode.meta.subTitle
             episodeCell.duration = episode.meta.duration ?? 0
+            episodeCell.currentDuration = {
+                if let sec = episode.playback?.playbackPositionSec {
+                    return Double(sec)
+                } else {
+                    return nil
+                }
+            }()
             episodeCell.delegate = self.delegate
             episodeCell.playingMarkIconView.isHidden = item.isPlaying == false
 
