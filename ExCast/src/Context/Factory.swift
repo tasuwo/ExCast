@@ -14,15 +14,15 @@ protocol ViewControllerFactory {
 
     func makeShowListViewController() -> ShowListViewController
     func makeFeedUrlInputViewController() -> FeedUrlInputViewController
-    func makeEpisodeListViewController(show: Show) -> EpisodeListViewController
+    func makeEpisodeListViewController(id: Podcast.Identity, show: Show) -> EpisodeListViewController
 
     func makeEpisodeDetailViewController(show: Show, episode: Episode) -> EpisodeDetailViewController
-    func makeEpisodePlayerViewController(show: Show, episode: Episode, playingEpisodeViewModel: PlayingEpisodeViewModel) -> EpisodePlayerViewController
+    func makeEpisodePlayerViewController(id: Podcast.Identity, show: Show, episode: Episode, playbackSec: Double?, playingEpisodeViewModel: PlayingEpisodeViewModel) -> EpisodePlayerViewController
 }
 
 protocol ViewModelFactory {
-    func makePlayerControllerViewModel(show: Show, episode: Episode) -> PlayerControllerViewModel
-    func makePlayerInformationViewModel(show: Show, episode: Episode) -> PlayerInformationViewModel
+    func makePlayerControllerViewModel(show: Show, episode: Episode, playbackSec: Double?) -> PlayerControllerViewModel
+    func makePlayerInformationViewModel(id: Podcast.Identity, show: Show, episode: Episode) -> PlayerInformationViewModel
     func makePlayingEpisodeViewModel() -> PlayingEpisodeViewModel
 }
 

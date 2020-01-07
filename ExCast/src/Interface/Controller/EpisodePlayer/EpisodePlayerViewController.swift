@@ -33,11 +33,11 @@ class EpisodePlayerViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(factory: Factory, show: Channel, episode: Episode, viewModel: PlayerModalViewModel, playingEpisodeViewModel: PlayingEpisodeViewModel) {
+    init(factory: Factory, id: Podcast.Identity, show: Channel, episode: Episode, playbackSec: Double?, viewModel: PlayerModalViewModel, playingEpisodeViewModel: PlayingEpisodeViewModel) {
         self.factory = factory
         modalViewModel = viewModel
-        controllerViewModel = factory.makePlayerControllerViewModel(show: show, episode: episode)
-        informationViewModel = factory.makePlayerInformationViewModel(show: show, episode: episode)
+        controllerViewModel = factory.makePlayerControllerViewModel(show: show, episode: episode, playbackSec: playbackSec)
+        informationViewModel = factory.makePlayerInformationViewModel(id: id, show: show, episode: episode)
         self.playingEpisodeViewModel = playingEpisodeViewModel
         self.playingEpisodeViewModel?.isLoading.accept(true)
 
@@ -85,7 +85,8 @@ class EpisodePlayerViewController: UIViewController {
     }
 
     private func bindEpisode() {
-        self.playingEpisodeViewModel?.set(self.informationViewModel.episode,
+        self.playingEpisodeViewModel?.set(id: self.informationViewModel.id,
+                                          episode: self.informationViewModel.episode,
                                           belongsTo: self.informationViewModel.show)
         self.controllerViewModel.createdPlayer
             .map { !$0 }

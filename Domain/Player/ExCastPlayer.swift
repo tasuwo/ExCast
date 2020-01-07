@@ -26,7 +26,7 @@ public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
 
     // MARK: - Lifecycle
 
-    public init(contentUrl: URL, startPlayAutomatically: Bool, playbackSec: Int) {
+    public init(contentUrl: URL, startPlayAutomatically: Bool, playbackSec: Double) {
         let asset = AVAsset(url: contentUrl)
         self.playerItem = AVPlayerItem(asset: asset)
         super.init()

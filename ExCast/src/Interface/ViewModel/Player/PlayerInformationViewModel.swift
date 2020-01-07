@@ -11,6 +11,7 @@ import Foundation
 import RxRelay
 
 class PlayerInformationViewModel {
+    let id: Podcast.Identity
     let show: Show
     let episode: Episode
 
@@ -20,7 +21,8 @@ class PlayerInformationViewModel {
 
     // MARK: - Lifecycle
 
-    init(show: Show, episode: Episode) {
+    init(id: Podcast.Identity, show: Show, episode: Episode) {
+        self.id = id
         self.show = show
         self.episode = episode
 

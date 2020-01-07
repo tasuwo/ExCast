@@ -7,14 +7,16 @@
 //
 
 import RxDataSources
+import Domain
 
 class EpisodeListViewDataSourceContainer: NSObject {
+    weak var episodeListViewModel: EpisodeListViewModel?
     weak var delegate: EpisodeCellDelegate?
-    lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AnimatableSectionModel<String, ListingEpisode>> = .init(
+    lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AnimatableSectionModel<String, Episode>> = .init(
         animationConfiguration: AnimationConfiguration(insertAnimation: .automatic,
                                                        reloadAnimation: .none,
                                                        deleteAnimation: .none),
-        configureCell: { [weak self] _, tableView, indexPath, item in
+        configureCell: { [weak self] _, tableView, indexPath, episode in
             guard let self = self else { return UITableViewCell() }
 
             let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeListView.identifier, for: indexPath)
@@ -25,7 +27,6 @@ class EpisodeListViewDataSourceContainer: NSObject {
 
             episodeCell.setupAppearences()
 
-            let episode = item.episode
             episodeCell.episode = episode
             episodeCell.title = episode.meta.title
             episodeCell.pubDate = episode.meta.pubDate
@@ -39,7 +40,11 @@ class EpisodeListViewDataSourceContainer: NSObject {
                 }
             }()
             episodeCell.delegate = self.delegate
-            episodeCell.playingMarkIconView.isHidden = item.isPlaying == false
+
+            // NOTE: 再生中のセルを再描画する場合、状態を引き継ぐ
+            if let playingEpisodeCell = self.episodeListViewModel?.playingEpisodeCell.value, playingEpisodeCell.indexPath == indexPath {
+                episodeCell.playingMarkIconView.isHidden = false
+            }
 
             return cell
         }, canEditRowAtIndexPath: { _, _ in false }

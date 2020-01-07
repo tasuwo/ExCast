@@ -13,11 +13,11 @@ protocol EpisodePlayerModalContainerViewProtocol: AnyObject {
 
     var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> { get }
 
-    var currentEpisodeDuration: BehaviorRelay<Double?> { get }
+    var playingEpisodesPlaybackSec: BehaviorRelay<Double?> { get }
 
     var playerModal: EpisodePlayerModalProtocol? { get }
 
-    func presentPlayerModal(show: Show, episode: Episode)
+    func presentPlayerModal(id: Podcast.Identity, show: Show, episode: Episode, playbackSec: Double?)
 }
 
 protocol EpisodePlayerModalProtocol {
@@ -34,7 +34,7 @@ extension AppRootViewController: EpisodePlayerModalContainerViewProtocol {
         return self.playingEpisodeViewModel.playingEpisode
     }
 
-    var currentEpisodeDuration: BehaviorRelay<Double?> {
+    var playingEpisodesPlaybackSec: BehaviorRelay<Double?> {
         return self.playingEpisodeViewModel.currentDuration
     }
 
@@ -42,17 +42,19 @@ extension AppRootViewController: EpisodePlayerModalContainerViewProtocol {
         return self.playerModalViewController
     }
 
-    func presentPlayerModal(show: Show, episode: Episode) {
+    func presentPlayerModal(id: Podcast.Identity, show: Show, episode: Episode, playbackSec: Double?) {
         if let view = self.playerModalViewController {
             view.reload(
-                controllerViewModel: self.factory.makePlayerControllerViewModel(show: show, episode: episode),
-                informationViewModel: self.factory.makePlayerInformationViewModel(show: show, episode: episode)
+                controllerViewModel: self.factory.makePlayerControllerViewModel(show: show, episode: episode, playbackSec: playbackSec),
+                informationViewModel: self.factory.makePlayerInformationViewModel(id: id, show: show, episode: episode)
             )
             return
         }
 
-        let playerViewController = self.factory.makeEpisodePlayerViewController(show: show,
+        let playerViewController = self.factory.makeEpisodePlayerViewController(id: id,
+                                                                                show: show,
                                                                                 episode: episode,
+                                                                                playbackSec: playbackSec,
                                                                                 playingEpisodeViewModel: self.playingEpisodeViewModel)
         playerViewController.modalPresentationStyle = .formSheet
         playerViewController.modalTransitionStyle = .coverVertical

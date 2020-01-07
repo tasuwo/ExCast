@@ -46,8 +46,8 @@ extension DependencyContainer: ViewControllerFactory {
         return FeedUrlInputViewController(factory: self, viewModel: viewModel)
     }
 
-    func makeEpisodeListViewController(show: Show) -> EpisodeListViewController {
-        let viewModel = EpisodeListViewModel(show: show, service: self.episodeService)
+    func makeEpisodeListViewController(id: Podcast.Identity, show: Show) -> EpisodeListViewController {
+        let viewModel = EpisodeListViewModel(id: id, show: show, service: self.episodeService)
         let viewController = EpisodeListViewController(factory: self, viewModel: viewModel)
         viewModel.view = viewController
         return viewController
@@ -58,16 +58,16 @@ extension DependencyContainer: ViewControllerFactory {
         return EpisodeDetailViewController(factory: self, viewModel: viewModel)
     }
 
-    func makeEpisodePlayerViewController(show: Show, episode: Episode, playingEpisodeViewModel: PlayingEpisodeViewModel) -> EpisodePlayerViewController {
+    func makeEpisodePlayerViewController(id: Podcast.Identity, show: Show, episode: Episode, playbackSec: Double?, playingEpisodeViewModel: PlayingEpisodeViewModel) -> EpisodePlayerViewController {
         let viewModel = PlayerModalViewModel()
-        return EpisodePlayerViewController(factory: self, show: show, episode: episode, viewModel: viewModel, playingEpisodeViewModel: playingEpisodeViewModel)
+        return EpisodePlayerViewController(factory: self, id: id, show: show, episode: episode, playbackSec: playbackSec, viewModel: viewModel, playingEpisodeViewModel: playingEpisodeViewModel)
     }
 }
 
 extension DependencyContainer: ViewModelFactory {
     // MARK: - ViewModelFactory
 
-    func makePlayerControllerViewModel(show: Show, episode: Episode) -> PlayerControllerViewModel {
+    func makePlayerControllerViewModel(show: Show, episode: Episode, playbackSec: Double?) -> PlayerControllerViewModel {
         let commandHandler = RemoteCommandHandler(
             show: show,
             episode: episode,
@@ -75,11 +75,11 @@ extension DependencyContainer: ViewModelFactory {
             infoCenter: nowPlayingInfoCenter,
             configuration: playerConfiguration
         )
-        return PlayerControllerViewModel(show: show, episode: episode, remoteCommands: commandHandler, configuration: playerConfiguration, episodeService: self.episodeService)
+        return PlayerControllerViewModel(show: show, episode: episode, playbackSec: playbackSec, remoteCommands: commandHandler, configuration: playerConfiguration, episodeService: self.episodeService)
     }
 
-    func makePlayerInformationViewModel(show: Show, episode: Episode) -> PlayerInformationViewModel {
-        return PlayerInformationViewModel(show: show, episode: episode)
+    func makePlayerInformationViewModel(id: Podcast.Identity, show: Show, episode: Episode) -> PlayerInformationViewModel {
+        return PlayerInformationViewModel(id: id, show: show, episode: episode)
     }
 
     func makePlayingEpisodeViewModel() -> PlayingEpisodeViewModel {

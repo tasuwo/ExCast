@@ -36,7 +36,7 @@ class PlayerControllerViewModel {
 
     // MARK: - Lifecycle
 
-    init(show: Show, episode: Episode, remoteCommands: RemoteCommandHandler, configuration: PlayerConfiguration, episodeService: EpisodeServiceProtocol) {
+    init(show: Show, episode: Episode, playbackSec: Double?, remoteCommands: RemoteCommandHandler, configuration: PlayerConfiguration, episodeService: EpisodeServiceProtocol) {
         self.show = show
         self.episode = episode
         self.remoteCommands = remoteCommands
@@ -75,8 +75,8 @@ class PlayerControllerViewModel {
 
             self.player = ExCastPlayer(contentUrl: self.episode.meta.enclosure.url,
                                        startPlayAutomatically: true,
-                                       // 再生位置が保存されていた場合は、resume再生する
-                                       playbackSec: self.episode.playback?.playbackPositionSec ?? 0)
+                                       // 指定された再生位置から再生を開始する
+                                       playbackSec: playbackSec ?? 0)
             self.player.register(delegate: self)
 
             self.remoteCommands.player = self.player

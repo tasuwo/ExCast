@@ -97,7 +97,7 @@ class ShowListViewController: UIViewController {
         guard let navigationController = self.navigationController else { return }
 
         let podcast = viewModel.podcastsCache.value(at: indexPath)
-        let nextViewController = factory.makeEpisodeListViewController(show: podcast.meta)
+        let nextViewController = factory.makeEpisodeListViewController(id: podcast.identity, show: podcast.meta)
         navigationController.pushViewController(nextViewController, animated: true)
     }
 }

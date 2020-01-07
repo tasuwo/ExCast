@@ -10,6 +10,7 @@ import Foundation
 import Domain
 
 struct EpisodeBelongsToShow {
+    let id: Podcast.Identity
     let episode: Episode
     let show: Show
 }
