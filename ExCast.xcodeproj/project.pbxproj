@@ -25,7 +25,7 @@
 		2C24AD6123B6825A00E80EA4 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */; };
 		2C279A8523B8759900011279 /* AppRootViewController+EpisodePlayerModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C279A8423B8759900011279 /* AppRootViewController+EpisodePlayerModalContainerView.swift */; };
 		2C2BE13623B7A98200FAF87C /* PlayingEpisodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2BE13523B7A98200FAF87C /* PlayingEpisodeViewModel.swift */; };
-		2C2BE13A23B8589B00FAF87C /* EpisodeBelongsToShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2BE13923B8589A00FAF87C /* EpisodeBelongsToShow.swift */; };
+		2C2BE13A23B8589B00FAF87C /* PlayingEpisode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2BE13923B8589A00FAF87C /* PlayingEpisode.swift */; };
 		2C2F454F22F8997F00EE9913 /* UIColor+rgbString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */; };
 		2C35315A23C4EEC60032D61D /* PlayingEpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35315923C4EEC60032D61D /* PlayingEpisodeCell.swift */; };
 		2C3AAE3323517E6900A78A02 /* EpisodePlayerModalView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */; };
@@ -331,7 +331,7 @@
 		2C24AD6023B6825A00E80EA4 /* LoggerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerConfiguration.swift; sourceTree = "<group>"; };
 		2C279A8423B8759900011279 /* AppRootViewController+EpisodePlayerModalContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppRootViewController+EpisodePlayerModalContainerView.swift"; sourceTree = "<group>"; };
 		2C2BE13523B7A98200FAF87C /* PlayingEpisodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingEpisodeViewModel.swift; sourceTree = "<group>"; };
-		2C2BE13923B8589A00FAF87C /* EpisodeBelongsToShow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeBelongsToShow.swift; sourceTree = "<group>"; };
+		2C2BE13923B8589A00FAF87C /* PlayingEpisode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayingEpisode.swift; sourceTree = "<group>"; };
 		2C2F454E22F8997F00EE9913 /* UIColor+rgbString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+rgbString.swift"; sourceTree = "<group>"; };
 		2C35315923C4EEC60032D61D /* PlayingEpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingEpisodeCell.swift; sourceTree = "<group>"; };
 		2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpisodePlayerModalView+Rx.swift"; sourceTree = "<group>"; };
@@ -1204,7 +1204,7 @@
 		2CC79D4623B75943009A5430 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				2C2BE13923B8589A00FAF87C /* EpisodeBelongsToShow.swift */,
+				2C2BE13923B8589A00FAF87C /* PlayingEpisode.swift */,
 				2CC79D4723B75958009A5430 /* ListingEpisode.swift */,
 				2C35315923C4EEC60032D61D /* PlayingEpisodeCell.swift */,
 			);
@@ -1948,7 +1948,7 @@
 				2C55EC2723504A8100797963 /* DataSourceQuery.swift in Sources */,
 				2CA2E9B822F0A26100A6E3A9 /* EpisodePlayerPlaybackButtons.swift in Sources */,
 				2CA13C8F22C9100B00CC6072 /* FeedUrlInputView.swift in Sources */,
-				2C2BE13A23B8589B00FAF87C /* EpisodeBelongsToShow.swift in Sources */,
+				2C2BE13A23B8589B00FAF87C /* PlayingEpisode.swift in Sources */,
 				2C4D9117234075A100895CD7 /* ShowListViewDataSource.swift in Sources */,
 				2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */,
 				2CA2E9C322F3515D00A6E3A9 /* EpisodeDetailViewController.swift in Sources */,

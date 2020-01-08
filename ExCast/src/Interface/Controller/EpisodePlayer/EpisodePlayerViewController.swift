@@ -87,13 +87,18 @@ class EpisodePlayerViewController: UIViewController {
     private func bindEpisode() {
         self.playingEpisodeViewModel?.set(id: self.informationViewModel.id,
                                           episode: self.informationViewModel.episode,
-                                          belongsTo: self.informationViewModel.show)
+                                          belongsTo: self.informationViewModel.show,
+                                          playbackSec: self.controllerViewModel.initialPlaybackSec)
         self.controllerViewModel.createdPlayer
             .map { !$0 }
             .bind(to: self.playingEpisodeViewModel!.isLoading)
             .disposed(by: self.disposeBag)
         self.controllerViewModel.currentTime
-            .bind(to: self.playingEpisodeViewModel!.currentDuration)
+            .compactMap { [weak self] currentTime in
+                guard let self = self else { return nil }
+                return self.playingEpisodeViewModel?.playingEpisode.value?.updated(playbackSec: currentTime)
+            }
+            .bind(to: self.playingEpisodeViewModel!.playingEpisode)
             .disposed(by: self.disposeBag)
 
         informationViewModel.showTitle

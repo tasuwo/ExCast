@@ -11,9 +11,7 @@ import RxRelay
 
 protocol EpisodePlayerModalContainerViewProtocol: AnyObject {
 
-    var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> { get }
-
-    var playingEpisodesPlaybackSec: BehaviorRelay<Double?> { get }
+    var playingEpisode: BehaviorRelay<PlayingEpisode?> { get }
 
     var playerModal: EpisodePlayerModalProtocol? { get }
 
@@ -30,12 +28,8 @@ protocol EpisodePlayerModalProtocol {
 extension AppRootViewController: EpisodePlayerModalContainerViewProtocol {
     // MARK: - EpisodePlayerModalPresenterProtocol
 
-    var playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> {
+    var playingEpisode: BehaviorRelay<PlayingEpisode?> {
         return self.playingEpisodeViewModel.playingEpisode
-    }
-
-    var playingEpisodesPlaybackSec: BehaviorRelay<Double?> {
-        return self.playingEpisodeViewModel.currentDuration
     }
 
     var playerModal: EpisodePlayerModalProtocol? {

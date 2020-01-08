@@ -34,6 +34,8 @@ class PlayerControllerViewModel {
 
     var disposeBag = DisposeBag()
 
+    let initialPlaybackSec: Double?
+
     // MARK: - Lifecycle
 
     init(show: Show, episode: Episode, playbackSec: Double?, remoteCommands: RemoteCommandHandler, configuration: PlayerConfiguration, episodeService: EpisodeServiceProtocol) {
@@ -43,6 +45,7 @@ class PlayerControllerViewModel {
         self.configuration = configuration
         self.duration.accept(episode.meta.duration ?? 0)
         self.episodeService = episodeService
+        self.initialPlaybackSec = playbackSec
 
         self.currentTime
             .filter { [unowned self] _ in self.preventToSyncTime.value == false }
@@ -76,7 +79,7 @@ class PlayerControllerViewModel {
             self.player = ExCastPlayer(contentUrl: self.episode.meta.enclosure.url,
                                        startPlayAutomatically: true,
                                        // 指定された再生位置から再生を開始する
-                                       playbackSec: playbackSec ?? 0)
+                                       playbackSec: self.initialPlaybackSec ?? 0)
             self.player.register(delegate: self)
 
             self.remoteCommands.player = self.player

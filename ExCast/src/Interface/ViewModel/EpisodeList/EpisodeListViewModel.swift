@@ -29,8 +29,7 @@ class EpisodeListViewModel {
     private let service: EpisodeServiceProtocol
     weak var view: EpisodeListViewProtocol?
 
-    let playingEpisode: BehaviorRelay<EpisodeBelongsToShow?> = BehaviorRelay(value: nil)
-    let playingEpisodesPlaybackSec: BehaviorRelay<Double?> = BehaviorRelay(value: nil)
+    let playingEpisode: BehaviorRelay<PlayingEpisode?> = BehaviorRelay(value: nil)
 
     /// 表示中のエピソード群
     private let listingEpisodes: BehaviorRelay<Dictionary<Episode.Identity, ListingEpisode>?>
@@ -110,12 +109,12 @@ class EpisodeListViewModel {
             .disposed(by: disposeBag)
 
         Observable
-            .combineLatest(self.episodeIndexPathById, self.playingEpisode, self.playingEpisodesPlaybackSec)
-            .map { dic, playingEpisode, playbackSec -> PlayingEpisodeCell? in
+            .combineLatest(self.episodeIndexPathById, self.playingEpisode)
+            .map { dic, playingEpisode -> PlayingEpisodeCell? in
                 guard let dic = dic, let playingEpisode = playingEpisode, let indexPath = dic[playingEpisode.episode.id] else { return nil }
                 return .init(id: playingEpisode.episode.identity,
                              indexPath: indexPath,
-                             currentPlaybackSec: playbackSec)
+                             currentPlaybackSec: playingEpisode.currentPlaybackSec)
             }
             .bind(to: self.playingEpisodeCell)
             .disposed(by: self.disposeBag)

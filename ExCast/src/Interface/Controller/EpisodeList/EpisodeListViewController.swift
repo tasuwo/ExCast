@@ -136,11 +136,6 @@ class EpisodeListViewController: UIViewController {
             .bind(to: viewModel.playingEpisode)
             .disposed(by: disposeBag)
 
-        self.playerModalContainerView?.playingEpisodesPlaybackSec
-            .bind(to: self.viewModel.playingEpisodesPlaybackSec)
-            .disposed(by: self.disposeBag)
-
-
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
 
         viewModel.fetch()

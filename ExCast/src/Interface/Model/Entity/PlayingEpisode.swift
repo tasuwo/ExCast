@@ -9,8 +9,13 @@
 import Foundation
 import Domain
 
-struct EpisodeBelongsToShow {
+struct PlayingEpisode {
     let id: Podcast.Identity
     let episode: Episode
     let show: Show
+    let currentPlaybackSec: Double?
+
+    func updated(playbackSec: Double?) -> Self {
+        return .init(id: self.id, episode: self.episode, show: self.show, currentPlaybackSec: playbackSec)
+    }
 }
