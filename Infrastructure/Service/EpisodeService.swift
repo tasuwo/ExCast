@@ -14,12 +14,16 @@ public class EpisodeService: EpisodeServiceProtocol {
     public var state: BehaviorRelay<EpisodeServiceQuery> = BehaviorRelay(value: .notLoaded)
     public var command: PublishRelay<EpisodeServiceCommand> = PublishRelay()
 
-    private let repository: EpisodeRepositoryProtocol
+    private let podcastRepository: PodcastRepositoryProtocol
+    private let episodeRepository: EpisodeRepositoryProtocol
+    private let gateway: PodcastGatewayProtocol
 
     private let disposeBag = DisposeBag()
 
-    public init(repository: EpisodeRepositoryProtocol) {
-        self.repository = repository
+    public init(podcastRepository: PodcastRepositoryProtocol, episodeRepository: EpisodeRepositoryProtocol, gateway: PodcastGatewayProtocol) {
+        self.podcastRepository = podcastRepository
+        self.episodeRepository = episodeRepository
+        self.gateway = gateway
 
         let refreshState = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
@@ -32,10 +36,34 @@ public class EpisodeService: EpisodeServiceProtocol {
             .flatMapLatest { [unowned self] command -> Single<(Podcast.Identity, [Episode])> in
                 switch command {
                 case let .refresh(feedUrl):
-                    return self.repository.getAll(feedUrl).map { (feedUrl, $0) }
+                    return self.episodeRepository.getAll(feedUrl).map { (feedUrl, $0) }
                 default:
                     return .never()
                 }
+            }
+            .map { (id, episodes) -> EpisodeServiceQuery in .content(id, episodes) }
+
+        let fetchState = command
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
+            .filter { if case .fetch = $0 { return true } else { return false } }
+            .map { _ in EpisodeServiceQuery.progress }
+
+        let fetchResultState = command
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
+            .filter { if case .fetch = $0 { return true } else { return false } }
+            .flatMapLatest { [self] command -> Observable<Podcast> in
+                switch command {
+                case let .fetch(feedUrl):
+                    return self.gateway.fetch(feed: feedUrl)
+                default:
+                    return Observable.never()
+                }
+            }
+            .flatMap { [self] fetchedPodcast -> Observable<Podcast.Identity> in
+                self.podcastRepository.update(fetchedPodcast).andThen(.just(fetchedPodcast.identity))
+            }
+            .flatMapLatest { [unowned self] feedUrl -> Single<(Podcast.Identity, [Episode])> in
+                return self.episodeRepository.getAll(feedUrl).map { (feedUrl, $0) }
             }
             .map { (id, episodes) -> EpisodeServiceQuery in .content(id, episodes) }
 
@@ -45,7 +73,7 @@ public class EpisodeService: EpisodeServiceProtocol {
             .flatMap { [unowned self] command -> Observable<Void> in
                 switch command {
                 case let .update(id, playback):
-                    return self.repository.update(id, playback: playback).andThen(.just(Void()))
+                    return self.episodeRepository.update(id, playback: playback).andThen(.just(Void()))
                 default:
                     return .just(Void())
                 }
@@ -58,6 +86,11 @@ public class EpisodeService: EpisodeServiceProtocol {
 
         Observable
             .merge(refreshState, refreshResultState)
+            .bind(to: state)
+            .disposed(by: disposeBag)
+
+        Observable
+            .merge(fetchState, fetchResultState)
             .bind(to: state)
             .disposed(by: disposeBag)
 

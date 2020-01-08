@@ -20,6 +20,7 @@ public enum EpisodeServiceQuery {
 public enum EpisodeServiceCommand {
     case clear
     case refresh(Podcast.Identity)
+    case fetch(Podcast.Identity)
     case update(Episode.Identity, Playback?)
 }
 

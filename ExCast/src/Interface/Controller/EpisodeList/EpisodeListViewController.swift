@@ -124,7 +124,6 @@ class EpisodeListViewController: UIViewController {
         self.episodeListView.refreshControl?.rx.controlEvent(.valueChanged)
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .bind(onNext: { [unowned self] _ in
-                debugLog("refresh")
                 self.viewModel.fetch()
             })
             .disposed(by: disposeBag)
@@ -138,7 +137,7 @@ class EpisodeListViewController: UIViewController {
 
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
 
-        viewModel.fetch()
+        viewModel.refresh()
     }
 
     override func viewWillAppear(_ animated: Bool) {

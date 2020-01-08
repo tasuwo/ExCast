@@ -18,7 +18,7 @@ class DependencyContainer {
     private lazy var podcastGateway = PodcastGateway(session: URLSession.shared, factory: self.podcastFactory)
     private lazy var podcastService = PodcastService(repository: self.podcastRepository, gateway: self.podcastGateway)
     private lazy var episodeRepository = EpisodeRepository()
-    private lazy var episodeService = EpisodeService(repository: self.episodeRepository)
+    private lazy var episodeService = EpisodeService(podcastRepository: self.podcastRepository, episodeRepository: self.episodeRepository, gateway: self.podcastGateway)
 
     private lazy var commandCenter = MPRemoteCommandCenter.shared()
     private lazy var nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()

@@ -126,8 +126,12 @@ class EpisodeListViewModel {
 
     // MARK: - Methods
 
-    func fetch() {
+    func refresh() {
         service.command.accept(.refresh(show.feedUrl))
+    }
+
+    func fetch() {
+        service.command.accept(.fetch(show.feedUrl))
     }
 
     func didSelectEpisode(at indexPath: IndexPath) {
