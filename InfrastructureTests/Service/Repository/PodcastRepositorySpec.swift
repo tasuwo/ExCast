@@ -270,6 +270,124 @@ class PodcastRepositorySpec: QuickSpec {
             }
         }
 
+        describe("updateEpisodesMeta") {
+            let playbacks = [
+                Playback(playbackPositionSec: 10),
+                Playback(playbackPositionSec: 100),
+                Playback(playbackPositionSec: 1000),
+            ]
+            let podcast = Podcast.makeDefault(feedUrl: URL(string: "http://example.com")!, episodes: [
+                Episode.makeDefault(id: "1", meta: Item.makeDefault(), playback: playbacks[0]),
+                Episode.makeDefault(id: "2", meta: Item.makeDefault(), playback: playbacks[1]),
+                Episode.makeDefault(id: "3", meta: Item.makeDefault(), playback: playbacks[2]),
+            ])
+
+            var updatedPodcast: Podcast!
+
+            beforeEach {
+                waitUntil(on: self.queue) { realm, done in
+                    realm.deleteAll()
+                    realm.add(podcast.asManagedObject())
+                    done()
+                }
+            }
+
+            context("存在しているPodcastを更新する") {
+                beforeEach {
+                    waitUntil(on: self.queue) { realm, done in
+                        realm.deleteAll()
+                        realm.add(podcast.asManagedObject())
+                        done()
+                    }
+                }
+
+                context("Episodeを追加") {
+                    beforeEach {
+                        updatedPodcast = Podcast.makeDefault(feedUrl: URL(string: "http://example.com")!, episodes: [
+                            Episode.makeDefault(id: "1", meta: Item.makeDefault(), playback: nil),
+                            Episode.makeDefault(id: "2", meta: Item.makeDefault(), playback: nil),
+                            Episode.makeDefault(id: "3", meta: Item.makeDefault(), playback: nil),
+                            Episode.makeDefault(id: "4", meta: Item.makeDefault(), playback: nil),
+                        ])
+                        _ = repository.updateEpisodesMeta(updatedPodcast).toBlocking().materialize()
+                    }
+
+                    it("データを更新が更新され、既存のEpisodeのplaybackが引き継がれる") {
+                        waitUntil(on: self.queue) { realm, done in
+                            let storedItems = realm.objects(PodcastObject.self)
+                            expect(storedItems.count).to(equal(1))
+                            expect(Podcast.make(by: storedItems[0]).meta).to(equal(podcast.meta))
+                            expect(Podcast.make(by: storedItems[0]).episodes.count).to(equal(4))
+                            expect(Podcast.make(by: storedItems[0]).episodes[0]).to(equal(podcast.episodes[0]))
+                            expect(Podcast.make(by: storedItems[0]).episodes[1]).to(equal(podcast.episodes[1]))
+                            expect(Podcast.make(by: storedItems[0]).episodes[2]).to(equal(podcast.episodes[2]))
+                            expect(Podcast.make(by: storedItems[0]).episodes[3]).to(equal(updatedPodcast.episodes[3]))
+
+                            let storedEpisodes = realm.objects(EpisodeObject.self)
+                            expect(storedEpisodes.count).to(equal(4))
+
+                            done()
+                        }
+                    }
+                }
+
+                context("Episodeを削除") {
+                    beforeEach {
+                        updatedPodcast = Podcast.makeDefault(feedUrl: URL(string: "http://example.com")!, episodes: [
+                            Episode.makeDefault(id: "1", meta: Item.makeDefault(), playback: nil),
+                            Episode.makeDefault(id: "3", meta: Item.makeDefault(), playback: nil),
+                        ])
+                        _ = repository.updateEpisodesMeta(updatedPodcast).toBlocking().materialize()
+                    }
+
+                    it("データが削除され、既存のEpisodeのplaybackが引き継がれる") {
+                        waitUntil(on: self.queue) { realm, done in
+                            let storedItems = realm.objects(PodcastObject.self)
+                            expect(storedItems.count).to(be(1))
+                            expect(Podcast.make(by: storedItems[0]).meta).to(equal(podcast.meta))
+                            expect(Podcast.make(by: storedItems[0]).episodes.count).to(equal(2))
+                            expect(Podcast.make(by: storedItems[0]).episodes[0]).to(equal(podcast.episodes[0]))
+                            expect(Podcast.make(by: storedItems[0]).episodes[1]).to(equal(podcast.episodes[2]))
+
+                            let storedEpisodes = realm.objects(EpisodeObject.self)
+                            expect(storedEpisodes.count).to(equal(2))
+
+                            done()
+                        }
+                    }
+                }
+
+                context("metaを編集する") {
+                    beforeEach {
+                        updatedPodcast = Podcast.makeDefault(feedUrl: URL(string: "http://example.com")!, episodes: [
+                            Episode.makeDefault(id: "1", meta: Item.makeDefault(), playback: nil),
+                            Episode.makeDefault(id: "2", meta: Item.makeDefault(title: "TITLE"), playback: nil),
+                            Episode.makeDefault(id: "3", meta: Item.makeDefault(), playback: nil),
+                        ])
+                        _ = repository.updateEpisodesMeta(updatedPodcast).toBlocking().materialize()
+                    }
+
+                    it("データが更新され、既存のEpisodeのplaybackが引き継がれる") {
+                        waitUntil(on: self.queue) { realm, done in
+                            let storedItems = realm.objects(PodcastObject.self)
+                            expect(storedItems.count).to(equal(1))
+                            expect(Podcast.make(by: storedItems[0]).meta).to(equal(podcast.meta))
+                            expect(Podcast.make(by: storedItems[0]).episodes.count).to(equal(3))
+                            expect(Podcast.make(by: storedItems[0]).episodes[0]).to(equal(podcast.episodes[0]))
+                            expect(Podcast.make(by: storedItems[0]).episodes[1].meta).to(equal(updatedPodcast.episodes[1].meta))
+                            expect(Podcast.make(by: storedItems[0]).episodes[1].playback).to(equal(podcast.episodes[1].playback))
+                            expect(Podcast.make(by: storedItems[0]).episodes[2]).to(equal(podcast.episodes[2]))
+
+                            let storedEpisodes = realm.objects(EpisodeObject.self)
+                            expect(storedEpisodes.count).to(equal(3))
+
+                            done()
+                        }
+                    }
+                }
+            }
+        }
+
         describe("remove") {
             let podcasts = [
                 Podcast.makeDefault(feedUrl: URL(string: "http://example.1.com")!, episodes: [

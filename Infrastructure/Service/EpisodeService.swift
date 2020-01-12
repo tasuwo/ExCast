@@ -60,7 +60,7 @@ public class EpisodeService: EpisodeServiceProtocol {
                 }
             }
             .flatMap { [self] fetchedPodcast -> Observable<Podcast.Identity> in
-                self.podcastRepository.update(fetchedPodcast).andThen(.just(fetchedPodcast.identity))
+                self.podcastRepository.updateEpisodesMeta(fetchedPodcast).andThen(.just(fetchedPodcast.identity))
             }
             .flatMapLatest { [unowned self] feedUrl -> Single<(Podcast.Identity, [Episode])> in
                 return self.episodeRepository.getAll(feedUrl).map { (feedUrl, $0) }
