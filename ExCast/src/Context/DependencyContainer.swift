@@ -69,8 +69,6 @@ extension DependencyContainer: ViewModelFactory {
 
     func makePlayerControllerViewModel(show: Show, episode: Episode, playbackSec: Double?) -> PlayerControllerViewModel {
         let commandHandler = RemoteCommandHandler(
-            show: show,
-            episode: episode,
             commandCenter: commandCenter,
             infoCenter: nowPlayingInfoCenter,
             configuration: playerConfiguration

@@ -33,7 +33,7 @@ public enum ExCastPlayerState {
 }
 
 public protocol ExCastPlayerDelegate: AnyObject {
-    func didFinishPrepare()
+    func didPrepare(duration: TimeInterval)
 
     func didChangePlayingState(to state: ExCastPlayerState)
 

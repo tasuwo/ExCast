@@ -9,10 +9,14 @@
 import MediaPlayer
 import UIKit
 
+public protocol RemoteCommandHandlerProtocol {
+    func register(delegate player: ExCastPlayerProtocol)
+    func setup(show: Show, episode: Episode, duration: Double, currentTime: Double, currentRate: Double)
+    func sync(currentTime: Double, currentRate: Double)
+}
+
 public class RemoteCommandHandler: NSObject {
     public weak var player: ExCastPlayerProtocol?
-    private let show: Show
-    private let episode: Episode
     private let commandCenter: MPRemoteCommandCenter
     private unowned var infoCenter: MPNowPlayingInfoCenter
 
@@ -21,9 +25,7 @@ public class RemoteCommandHandler: NSObject {
 
     // MARK: - Lifecycle
 
-    public init(show: Show, episode: Episode, commandCenter: MPRemoteCommandCenter, infoCenter: MPNowPlayingInfoCenter, configuration: PlayerConfiguration) {
-        self.show = show
-        self.episode = episode
+    public init(commandCenter: MPRemoteCommandCenter, infoCenter: MPNowPlayingInfoCenter, configuration: PlayerConfiguration) {
         self.commandCenter = commandCenter
         self.infoCenter = infoCenter
         self.configuration = configuration
@@ -40,17 +42,17 @@ public class RemoteCommandHandler: NSObject {
 
     // MARK: - Methods
 
-    private func setupNowPlayingInfo() {
+    private func setupNowPlayingInfo(show: Show, episode: Episode, duration: Double, currentTime: Double, currentRate: Double) {
         var nowPlayingInfo = [String: Any]()
 
         nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = show.title
         nowPlayingInfo[MPMediaItemPropertyTitle] = episode.meta.title
 
-        if let pubDate = self.episode.meta.pubDate {
+        if let pubDate = episode.meta.pubDate {
             nowPlayingInfo[MPMediaItemPropertyDateAdded] = pubDate
         }
 
-        if let author = self.show.author {
+        if let author = show.author {
             nowPlayingInfo[MPMediaItemPropertyArtist] = author
         }
 
@@ -58,7 +60,7 @@ public class RemoteCommandHandler: NSObject {
         nowPlayingInfo[MPMediaItemPropertyComments] = description
 
         DispatchQueue.global(qos: .background).async {
-            let artworkUrl = self.episode.meta.artwork ?? self.show.artwork
+            let artworkUrl = episode.meta.artwork ?? show.artwork
             guard let data = try? Data(contentsOf: artworkUrl), let image = UIImage(data: data) else { return }
             let artwork = MPMediaItemArtwork(boundsSize: image.size) { _ in
                 image
@@ -66,14 +68,9 @@ public class RemoteCommandHandler: NSObject {
             self.infoCenter.nowPlayingInfo?[MPMediaItemPropertyArtwork] = artwork
         }
 
-        // TODO: 存在しなかった場合どうするか
-        if let duration = self.episode.meta.duration {
-            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
-        }
-
-        // TODO: 途中から再生の場合どうするか
-        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0
-        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = currentRate
 
         infoCenter.nowPlayingInfo = nowPlayingInfo
     }
@@ -132,25 +129,20 @@ public class RemoteCommandHandler: NSObject {
     }
 }
 
-extension RemoteCommandHandler: ExCastPlayerDelegate {
-    public func didFinishPrepare() {
-        setupNowPlayingInfo()
-        setupRemoteTransportControls()
+extension RemoteCommandHandler: RemoteCommandHandlerProtocol {
+    // MARK: - RemoteCommandHandlerProtocol
+
+    public func register(delegate player: ExCastPlayerProtocol) {
+        self.player = player
     }
 
-    public func didChangePlayingState(to _: ExCastPlayerState) {
-        infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
+    public func setup(show: Show, episode: Episode, duration: Double, currentTime: Double, currentRate: Double) {
+        self.setupNowPlayingInfo(show: show, episode: episode, duration: duration, currentTime: currentTime, currentRate: currentRate)
+        self.setupRemoteTransportControls()
     }
 
-    public func didSeek(to _: TimeInterval) {
-        infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
-    }
-
-    public func didChangePlaybackRate(to rate: Double) {
-        infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = rate
-    }
-
-    public func didChangePlaybackTime(to time: TimeInterval) {
-        currentTime = time
+    public func sync(currentTime: Double, currentRate: Double) {
+        self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
+        self.infoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = currentRate
     }
 }

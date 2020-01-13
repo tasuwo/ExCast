@@ -26,7 +26,7 @@ public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
 
     // MARK: - Lifecycle
 
-    public init(contentUrl: URL, startPlayAutomatically: Bool, playbackSec: Double) {
+    public init(contentUrl: URL, playImmediatedly: Bool, initialPlaybackPositionSec: Double) {
         let asset = AVAsset(url: contentUrl)
         self.playerItem = AVPlayerItem(asset: asset)
         super.init()
@@ -40,12 +40,12 @@ public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
                     guard let self = self else { return }
 
                     // NOTE: AVPlayerItemに事前に設定
-                    let duration  = CMTimeMakeWithSeconds(Float64(playbackSec), preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+                    let duration  = CMTimeMakeWithSeconds(Float64(initialPlaybackPositionSec), preferredTimescale: CMTimeScale(NSEC_PER_SEC))
                     self.playerItem.seek(to: duration, completionHandler: nil)
 
                     self.player = AVPlayer(playerItem: self.playerItem)
                     self.player.automaticallyWaitsToMinimizeStalling = false
-                    if startPlayAutomatically {
+                    if playImmediatedly {
                         self.player.playImmediately(atRate: 1)
                     }
 
@@ -96,7 +96,7 @@ public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
 
             switch status {
             case .readyToPlay:
-                self.delegates.forEach { $0.delegate?.didFinishPrepare() }
+                self.delegates.forEach { $0.delegate?.didPrepare(duration: self.playerItem.duration.seconds) }
             case .failed:
                 // TODO:
                 break

@@ -17,7 +17,7 @@ class PlayerControllerViewModel {
     private let episode: Episode
     private var player: ExCastPlayerProtocol!
     private let configuration: PlayerConfiguration
-    private let remoteCommands: RemoteCommandHandler
+    private let remoteCommands: RemoteCommandHandlerProtocol
     private let episodeService: EpisodeServiceProtocol
 
     private var playedAfterLoadingOnce: Bool = false
@@ -27,6 +27,7 @@ class PlayerControllerViewModel {
     private(set) var isPrepared: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     private(set) var duration: BehaviorRelay<Double> = BehaviorRelay(value: 0)
     private(set) var currentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
+    private(set) var currentRate: BehaviorRelay<Double> = BehaviorRelay(value: 0)
     private(set) var displayCurrentTime: BehaviorRelay<Double> = BehaviorRelay(value: 0)
     private(set) var isSliderGrabbed: BehaviorRelay<Bool> = BehaviorRelay(value: false)
 
@@ -38,7 +39,7 @@ class PlayerControllerViewModel {
 
     // MARK: - Lifecycle
 
-    init(show: Show, episode: Episode, playbackSec: Double?, remoteCommands: RemoteCommandHandler, configuration: PlayerConfiguration, episodeService: EpisodeServiceProtocol) {
+    init(show: Show, episode: Episode, playbackSec: Double?, remoteCommands: RemoteCommandHandlerProtocol, configuration: PlayerConfiguration, episodeService: EpisodeServiceProtocol) {
         self.show = show
         self.episode = episode
         self.remoteCommands = remoteCommands
@@ -77,13 +78,11 @@ class PlayerControllerViewModel {
             guard let self = self else { return }
 
             self.player = ExCastPlayer(contentUrl: self.episode.meta.enclosure.url,
-                                       startPlayAutomatically: true,
+                                       playImmediatedly: true,
                                        // 指定された再生位置から再生を開始する
-                                       playbackSec: self.initialPlaybackSec ?? 0)
+                                       initialPlaybackPositionSec: self.initialPlaybackSec ?? 0)
             self.player.register(delegate: self)
-
-            self.remoteCommands.player = self.player
-            self.player.register(delegate: self.remoteCommands)
+            self.remoteCommands.register(delegate: self.player)
 
             self.player.createdPlayer
                 .bind(to: self.createdPlayer)
@@ -114,9 +113,11 @@ class PlayerControllerViewModel {
 extension PlayerControllerViewModel: ExCastPlayerDelegate {
     // MARK: - AudioPlayerDelegate
 
-    func didFinishPrepare() {
+    func didPrepare(duration: TimeInterval) {
         self.isPlaying.accept(true)
         self.isPrepared.accept(true)
+
+        self.remoteCommands.setup(show: self.show, episode: self.episode, duration: duration, currentTime: self.initialPlaybackSec ?? 0, currentRate: 1)
     }
 
     func didChangePlayingState(to state: ExCastPlayerState) {
@@ -129,14 +130,15 @@ extension PlayerControllerViewModel: ExCastPlayerDelegate {
     }
 
     func didChangePlaybackTime(to time: TimeInterval) {
-        currentTime.accept(time)
+        self.currentTime.accept(time)
     }
 
-    func didChangePlaybackRate(to _: Double) {
-        // NOP:
+    func didChangePlaybackRate(to rate: Double) {
+        self.currentRate.accept(rate)
+        self.remoteCommands.sync(currentTime: self.currentTime.value, currentRate: rate)
     }
 
     func didSeek(to _: TimeInterval) {
-        // NOP:
+        self.remoteCommands.sync(currentTime: self.currentTime.value, currentRate: self.currentRate.value)
     }
 }
