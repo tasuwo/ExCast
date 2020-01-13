@@ -6,13 +6,13 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Common
 import Domain
 import MaterialComponents
 import RxCocoa
 import RxDataSources
 import RxSwift
 import UIKit
-import Common
 
 class EpisodeListViewController: UIViewController {
     typealias Factory = ViewControllerFactory & EpisodePlayerModalContainerFactory
@@ -94,7 +94,7 @@ class EpisodeListViewController: UIViewController {
         Observable
             .zip(self.viewModel.playingEpisodeCell, self.viewModel.playingEpisodeCell.skip(1))
             .observeOn(ConcurrentMainScheduler.instance)
-            .subscribe(onNext: { [unowned self] diff  in
+            .subscribe(onNext: { [unowned self] diff in
                 switch diff {
                 case let (.none, .some(current)):
                     guard let cell = self.episodeListView.cellForRow(at: current.indexPath) as? EpisodeCell else { return }
@@ -127,7 +127,6 @@ class EpisodeListViewController: UIViewController {
                 self.viewModel.fetch()
             })
             .disposed(by: disposeBag)
-
 
         // MARK: PlayerModalContainerView > ViewModel
 

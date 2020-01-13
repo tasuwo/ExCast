@@ -6,11 +6,11 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Common
 import Domain
 import RxDataSources
 import RxRelay
 import RxSwift
-import Common
 
 class ShowListViewModel {
     private static let sectionIdentifier = ""

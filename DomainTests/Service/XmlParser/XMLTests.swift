@@ -6,8 +6,8 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import XCTest
 @testable import Domain
+import XCTest
 
 class XMLTests: XCTestCase {
     override func setUp() {}

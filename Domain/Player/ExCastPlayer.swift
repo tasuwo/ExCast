@@ -38,7 +38,7 @@ public class ExCastPlayer: NSObject {
                                                object: nil)
 
         asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.isPlayable)]) {
-            var error: NSError? = nil
+            var error: NSError?
             let status = asset.statusOfValue(forKey: #keyPath(AVAsset.isPlayable), error: &error)
             switch status {
             case .loaded:
@@ -46,7 +46,7 @@ public class ExCastPlayer: NSObject {
                     guard let self = self else { return }
 
                     // NOTE: AVPlayerItemに事前に設定
-                    let duration  = CMTimeMakeWithSeconds(Float64(initialPlaybackPositionSec), preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+                    let duration = CMTimeMakeWithSeconds(Float64(initialPlaybackPositionSec), preferredTimescale: CMTimeScale(NSEC_PER_SEC))
                     self.playerItem.seek(to: duration, completionHandler: nil)
 
                     self.player = AVPlayer(playerItem: self.playerItem)
@@ -64,7 +64,6 @@ public class ExCastPlayer: NSObject {
 
                     self.createdPlayer.accept(true)
                 }
-                break
             default:
                 break
                 // TODO:
@@ -86,7 +85,7 @@ public class ExCastPlayer: NSObject {
         guard let userInfo = notification.userInfo,
             let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
             let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
-                return
+            return
         }
 
         switch type {

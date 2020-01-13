@@ -6,8 +6,8 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import RxDataSources
 import Domain
+import RxDataSources
 
 class EpisodeListViewDataSourceContainer: NSObject {
     weak var episodeListViewModel: EpisodeListViewModel?

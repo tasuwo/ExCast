@@ -6,12 +6,12 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Common
 import Domain
-import RxDataSources
 import RxCocoa
+import RxDataSources
 import RxSwift
 import UIKit
-import Common
 
 class ShowListViewController: UIViewController {
     typealias Factory = ViewControllerFactory

@@ -8,9 +8,9 @@
 
 import Domain
 import Foundation
+import MediaPlayer
 import RxRelay
 import RxSwift
-import MediaPlayer
 
 class PlayerControllerViewModel {
     private let show: Show
@@ -87,7 +87,6 @@ class PlayerControllerViewModel {
             self.player.createdPlayer
                 .bind(to: self.createdPlayer)
                 .disposed(by: self.disposeBag)
-
         }
     }
 

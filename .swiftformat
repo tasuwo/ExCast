@@ -1,38 +1,12 @@
-# file options
-
---exclude Tests/XCTestManifests.swift,Snapshots
-
-# format options
-
---allman false
---binarygrouping 4,8
---commas always
+--binarygrouping none
 --comments indent
---decimalgrouping 3,6
---elseposition same-line
+--decimalgrouping none
+--disable emptyBraces,fileHeader,redundantInit,redundantPattern,redundantRawValues,redundantReturn,redundantSelf,specifiers,trailingClosures,unusedArguments
 --empty void
---exponentcase lowercase
---exponentgrouping disabled
---fractiongrouping disabled
---header ignore
---hexgrouping 4,8
---hexliteralcase uppercase
---ifdef indent
---indent 4
---indentcase false
---importgrouping testable-bottom
---linebreaks lf
---octalgrouping 4,8
---operatorfunc spaced
---patternlet hoist
---ranges spaced
---self remove
---semicolons inline
---stripunusedargs always
---trimwhitespace always
---wraparguments preserve
---wrapcollections preserve
+--hexgrouping none
+--hexliteralcase lowercase
+--octalgrouping none
+--self insert
+--stripunusedargs closure-only
+--wrapcollections beforefirst
 
-# rules
-
---enable isEmpty

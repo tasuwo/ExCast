@@ -10,7 +10,6 @@ import Domain
 import RxRelay
 
 protocol EpisodePlayerModalContainerViewProtocol: AnyObject {
-
     var playingEpisode: BehaviorRelay<PlayingEpisode?> { get }
 
     var playerModal: EpisodePlayerModalProtocol? { get }
@@ -19,7 +18,6 @@ protocol EpisodePlayerModalContainerViewProtocol: AnyObject {
 }
 
 protocol EpisodePlayerModalProtocol {
-
     func changeToFullScreenIfPossible()
 
     func changeToMinimizeIfPossible()

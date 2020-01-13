@@ -6,8 +6,8 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import Foundation
 import Domain
+import Foundation
 
 struct PlayingEpisode {
     let id: Podcast.Identity

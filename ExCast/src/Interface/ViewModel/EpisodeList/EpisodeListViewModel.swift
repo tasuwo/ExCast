@@ -6,14 +6,13 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Common
 import Domain
 import RxDataSources
 import RxRelay
 import RxSwift
-import Common
 
 protocol EpisodeListViewProtocol: AnyObject {
-
     func expandPlayer()
 
     func presentPlayer(of listingEpisode: ListingEpisode)
@@ -32,14 +31,14 @@ class EpisodeListViewModel {
     let playingEpisode: BehaviorRelay<PlayingEpisode?> = BehaviorRelay(value: nil)
 
     /// 表示中のエピソード群
-    private let listingEpisodes: BehaviorRelay<Dictionary<Episode.Identity, ListingEpisode>?>
+    private let listingEpisodes: BehaviorRelay<[Episode.Identity: ListingEpisode]?>
 
     /// エピソードリスト内の各エピソードの表示状態
     let episodeCells: BehaviorRelay<DataSourceQuery<Episode>>
     /// 再生中のエピソード特有の表示状態
     let playingEpisodeCell: BehaviorRelay<PlayingEpisodeCell?>
 
-    private var episodeIndexPathById: BehaviorRelay<Dictionary<Episode.Identity, IndexPath>?> = BehaviorRelay(value: nil)
+    private var episodeIndexPathById: BehaviorRelay<[Episode.Identity: IndexPath]?> = BehaviorRelay(value: nil)
 
     private let disposeBag = DisposeBag()
 
@@ -56,7 +55,7 @@ class EpisodeListViewModel {
 
         Observable
             .combineLatest(self.episodeCells, self.playingEpisodeCell)
-            .map { [unowned self] episodes, playingEpisodeCell -> Dictionary<Episode.Identity, ListingEpisode>? in
+            .map { [unowned self] episodes, playingEpisodeCell -> [Episode.Identity: ListingEpisode]? in
                 switch episodes {
                 case let .contents(models):
                     let episodes = models[0].items
@@ -68,7 +67,7 @@ class EpisodeListViewModel {
                                 return ListingEpisode(episode: episode, isPlaying: false, currentPlaybackSec: playbackSec)
                             }
                         }
-                    return episodes.reduce(into: Dictionary<Episode.Identity, ListingEpisode>()) { dic, episode in
+                    return episodes.reduce(into: [Episode.Identity: ListingEpisode]()) { dic, episode in
                         dic[episode.identity] = episode
                     }
                 default:
@@ -89,7 +88,7 @@ class EpisodeListViewModel {
                 case let .content(_, episodes):
                     debugLog("The \(show.title)'s episodes state chaned to `content`.")
 
-                    self.episodeIndexPathById.accept(episodes.enumerated().reduce(into: Dictionary<String, IndexPath>(), { dic, item in
+                    self.episodeIndexPathById.accept(episodes.enumerated().reduce(into: [String: IndexPath](), { dic, item in
                         return dic[item.element.id] = IndexPath(item: item.offset, section: 0)
                     }))
 
@@ -150,4 +149,3 @@ class EpisodeListViewModel {
         }
     }
 }
-

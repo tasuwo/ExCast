@@ -6,10 +6,10 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import Common
 import Domain
 import Foundation
 import RxSwift
-import Common
 
 public class PodcastGateway: PodcastGatewayProtocol {
     private let session: URLSession

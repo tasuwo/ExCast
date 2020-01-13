@@ -6,8 +6,8 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import XCTest
 @testable import Domain
+import XCTest
 
 class parseRfc822DateStringTests: XCTestCase {
     var formatter: ISO8601DateFormatter!

@@ -6,8 +6,8 @@
 //  Copyright © 2020 Tasuku Tozawa. All rights reserved.
 //
 
-import RxDataSources
 import Domain
+import RxDataSources
 
 struct PlayingEpisodeCell: Equatable {
     let id: Episode.Identity
@@ -24,4 +24,3 @@ extension PlayingEpisodeCell: IdentifiableType {
         return self.id
     }
 }
-

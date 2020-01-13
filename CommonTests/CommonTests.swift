@@ -6,8 +6,8 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
-import XCTest
 @testable import Common
+import XCTest
 
 class CommonTests: XCTestCase {
     override func setUp() {

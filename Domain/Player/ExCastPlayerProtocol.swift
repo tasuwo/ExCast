@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import RxSwift
 import RxRelay
+import RxSwift
 
 public protocol ExCastPlayerProtocol: AnyObject {
     var createdPlayer: BehaviorRelay<Bool> { get }
