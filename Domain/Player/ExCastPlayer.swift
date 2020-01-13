@@ -17,7 +17,8 @@ private class DelegateWrapper {
     init(_ d: ExCastPlayerDelegate) { delegate = d }
 }
 
-public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
+public class ExCastPlayer: NSObject {
+    private var createdPlayer_: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     private var player: AVPlayer!
     private let playerItem: AVPlayerItem
 
@@ -30,6 +31,11 @@ public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
         let asset = AVAsset(url: contentUrl)
         self.playerItem = AVPlayerItem(asset: asset)
         super.init()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleInterruption(notification:)),
+                                               name: AVAudioSession.interruptionNotification,
+                                               object: nil)
 
         asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.isPlayable)]) {
             var error: NSError? = nil
@@ -74,7 +80,48 @@ public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
         self.removePeriodicTimeObserver()
     }
 
-    // MARK: - Methods
+    // MARK: - Private Methods
+
+    @objc private func handleInterruption(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+            let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+                return
+        }
+
+        switch type {
+        case .began:
+            self.delegates.forEach {
+                $0.delegate?.didChangePlayingState(to: .pause)
+                $0.delegate?.didChangePlaybackRate(to: 0)
+            }
+        case .ended:
+            guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+            let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+            if options.contains(.shouldResume) {
+                self.play()
+            }
+        default: ()
+        }
+    }
+
+    private func addPeriodicTimeObserver() {
+        let time = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+
+        self.timeObserverToken = self.player.addPeriodicTimeObserver(forInterval: time, queue: .main) { [weak self] time in
+            guard let self = self else { return }
+            self.delegates.forEach { $0.delegate?.didChangePlaybackTime(to: time.seconds) }
+        }
+    }
+
+    private func removePeriodicTimeObserver() {
+        if let timeObserverToken = timeObserverToken {
+            self.player.removeTimeObserver(timeObserverToken)
+            self.timeObserverToken = nil
+        }
+    }
+
+    // MARK: - NSObject (override)
 
     public override func observeValue(forKeyPath keyPath: String?,
                                       of object: Any?,
@@ -107,26 +154,14 @@ public class ExCastPlayer: NSObject, ExCastPlayerProtocol {
             }
         }
     }
+}
 
-    private func addPeriodicTimeObserver() {
-        let time = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-
-        self.timeObserverToken = self.player.addPeriodicTimeObserver(forInterval: time, queue: .main) { [weak self] time in
-            guard let self = self else { return }
-            self.delegates.forEach { $0.delegate?.didChangePlaybackTime(to: time.seconds) }
-        }
-    }
-
-    private func removePeriodicTimeObserver() {
-        if let timeObserverToken = timeObserverToken {
-            self.player.removeTimeObserver(timeObserverToken)
-            self.timeObserverToken = nil
-        }
-    }
-
+extension ExCastPlayer: ExCastPlayerProtocol {
     // MARK: - ExCastPlayerProtocol
 
-    private(set) public var createdPlayer: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    public var createdPlayer: BehaviorRelay<Bool> {
+        return self.createdPlayer_
+    }
 
     public func play() {
         player.play()
