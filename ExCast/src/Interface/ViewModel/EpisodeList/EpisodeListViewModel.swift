@@ -8,144 +8,215 @@
 
 import Common
 import Domain
+import RxCocoa
 import RxDataSources
 import RxRelay
 import RxSwift
 
-protocol EpisodeListViewProtocol: AnyObject {
-    func expandPlayer()
-
-    func presentPlayer(of listingEpisode: ListingEpisode)
-
-    func deselectRow()
+protocol EpisodeListViewModelType {
+    var inputs: EpisodeListViewModelInputs { get }
+    var outputs: EpisodeListViewModelOutputs { get }
 }
 
-class EpisodeListViewModel {
-    private static let sectionIdentifier = ""
+protocol EpisodeListViewModelInputs {
+    var episodePlayed: PublishRelay<PlayingEpisode?> { get }
+    var episodeSelected: PublishRelay<IndexPath> { get }
+    var episodesLoaded: PublishRelay<Void> { get }
+    var episodesFetched: PublishRelay<Void> { get }
+}
+
+protocol EpisodeListViewModelOutputs {
+    var id: Podcast.Identity { get }
+    var show: Show { get }
+
+    var episodes: Driver<[AnimatableSectionModel<String, Episode>]> { get }
+    var playingEpisode: Driver<ListingEpisode?> { get }
+    var isLoading: Driver<Bool> { get }
+
+    var rowDeselected: Signal<Void> { get }
+    var playerExpanded: Signal<Void> { get }
+    var playerPresented: Signal<ListingEpisode> { get }
+}
+
+final class EpisodeListViewModel: EpisodeListViewModelType, EpisodeListViewModelInputs, EpisodeListViewModelOutputs {
+    private static let sectionIdentifier = "EpisodeListViewModel"
+
+    // MARK: - EpisodeListViewModelType
+
+    var inputs: EpisodeListViewModelInputs { return self }
+    var outputs: EpisodeListViewModelOutputs { return self }
+
+    // MARK: - EpisodeListViewModelInputs
+
+    let episodePlayed: PublishRelay<PlayingEpisode?>
+    let episodeSelected: PublishRelay<IndexPath>
+    let episodesLoaded: PublishRelay<Void>
+    let episodesFetched: PublishRelay<Void>
+
+    // MARK: - EpisodeListViewModelOutputs
 
     let id: Podcast.Identity
     let show: Show
+    let episodes: Driver<[AnimatableSectionModel<String, Episode>]>
+
+    let playingEpisode: Driver<ListingEpisode?>
+    let isLoading: Driver<Bool>
+
+    let rowDeselected: Signal<Void>
+    let playerExpanded: Signal<Void>
+    let playerPresented: Signal<ListingEpisode>
+
+    // MARK: - Privates
+
+    private let _listingEpisodes: BehaviorRelay<[Episode.Identity: ListingEpisode]> = .init(value: [:])
+    private let _episodes: BehaviorRelay<[Episode]> = .init(value: [])
+    private let _playingEpisode: BehaviorRelay<ListingEpisode?> = .init(value: nil)
+    private let _isLoading: BehaviorRelay<Bool> = .init(value: false)
+
+    private let _newEpisodeSelected: PublishRelay<ListingEpisode>
+    private let _playingEpisodeSelected: PublishRelay<ListingEpisode>
+
     private let service: EpisodeServiceProtocol
-    weak var view: EpisodeListViewProtocol?
-
-    let playingEpisode: BehaviorRelay<PlayingEpisode?> = BehaviorRelay(value: nil)
-
-    /// 表示中のエピソード群
-    private let listingEpisodes: BehaviorRelay<[Episode.Identity: ListingEpisode]?>
-
-    /// エピソードリスト内の各エピソードの表示状態
-    let episodeCells: BehaviorRelay<DataSourceQuery<Episode>>
-    /// 再生中のエピソード特有の表示状態
-    let playingEpisodeCell: BehaviorRelay<PlayingEpisodeCell?>
-
-    private var episodeIndexPathById: BehaviorRelay<[Episode.Identity: IndexPath]?> = BehaviorRelay(value: nil)
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - Initializer
+    // MARK: - Lifecycle
 
     init(id: Podcast.Identity, show: Show, service: EpisodeServiceProtocol) {
-        self.id = id
-        self.show = show
+        // MARK: Privates
+
+        self._newEpisodeSelected = PublishRelay<ListingEpisode>()
+        self._playingEpisodeSelected = PublishRelay<ListingEpisode>()
         self.service = service
 
-        self.listingEpisodes = BehaviorRelay(value: nil)
-        self.episodeCells = BehaviorRelay(value: .notLoaded)
-        self.playingEpisodeCell = BehaviorRelay(value: nil)
+        // MARK: Inputs
 
-        Observable
-            .combineLatest(self.episodeCells, self.playingEpisodeCell)
-            .map { [unowned self] episodes, playingEpisodeCell -> [Episode.Identity: ListingEpisode]? in
-                switch episodes {
-                case let .contents(models):
-                    let episodes = models[0].items
-                        .map { episode -> ListingEpisode in
-                            if episode.id == playingEpisodeCell?.id {
-                                return ListingEpisode(episode: episode, isPlaying: true, currentPlaybackSec: playingEpisodeCell?.currentPlaybackSec)
-                            } else {
-                                let playbackSec = self.listingEpisodes.value?[episode.identity]?.currentPlaybackSec
-                                return ListingEpisode(episode: episode, isPlaying: false, currentPlaybackSec: playbackSec)
-                            }
-                        }
-                    return episodes.reduce(into: [Episode.Identity: ListingEpisode]()) { dic, episode in
-                        dic[episode.identity] = episode
-                    }
-                default:
-                    // TODO:
-                    return self.listingEpisodes.value
-                }
-            }
-            .bind(to: self.listingEpisodes)
-            .disposed(by: self.disposeBag)
+        self.episodePlayed = PublishRelay<PlayingEpisode?>()
+        self.episodeSelected = PublishRelay<IndexPath>()
+        self.episodesLoaded = PublishRelay<Void>()
+        self.episodesFetched = PublishRelay<Void>()
+
+        // MARK: Outputs
+
+        self.id = id
+        self.show = show
+        self.episodes = self._episodes
+            .map { [AnimatableSectionModel(model: EpisodeListViewModel.sectionIdentifier, items: $0)] }
+            .asDriver(onErrorDriveWith: .empty())
+        self.playingEpisode = self._playingEpisode.asDriver()
+        self.isLoading = self._isLoading
+            .asDriver(onErrorDriveWith: .empty())
+        self.rowDeselected = self.episodeSelected
+            .map { _ in () }
+            .asSignal(onErrorJustReturn: ())
+        self.playerExpanded = self._playingEpisodeSelected
+            .map { _ in () }
+            .asSignal(onErrorSignalWith: .empty())
+        self.playerPresented = self._newEpisodeSelected
+            .asSignal(onErrorSignalWith: .empty())
+
+        // MARK: Binding
+
+        // Apply loaded/fetched episodes
 
         self.service.state
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .map { [unowned self] query -> DataSourceQuery<Episode> in
-                switch query {
-                case .notLoaded:
-                    debugLog("The \(show.title)'s episodes state is `notLoaded`.")
-                    return .notLoaded
-                case let .content(_, episodes):
-                    debugLog("The \(show.title)'s episodes state chaned to `content`.")
-
-                    self.episodeIndexPathById.accept(episodes.enumerated().reduce(into: [String: IndexPath](), { dic, item in
-                        return dic[item.element.id] = IndexPath(item: item.offset, section: 0)
-                    }))
-
-                    return .contents([.init(model: EpisodeListViewModel.sectionIdentifier, items: episodes)])
-                case .error:
-                    debugLog("The \(show.title)'s episodes state chaned to `error`.")
-                    return .error
-                case .progress:
-                    debugLog("The \(show.title)'s episodes state chaned to `progress`.")
-                    return .progress
-                case .clear:
-                    debugLog("The \(show.title)'s episodes state chaned to `clear`.")
-                    return .notLoaded
-                }
+            .compactMap { query -> [Episode]? in
+                guard case let .content(_, episodes) = query else { return nil }
+                return episodes
             }
-            .bind(to: episodeCells)
+            .bind(to: self._episodes)
             .disposed(by: disposeBag)
 
-        Observable
-            .combineLatest(self.episodeIndexPathById, self.playingEpisode)
-            .map { dic, playingEpisode -> PlayingEpisodeCell? in
-                guard let dic = dic, let playingEpisode = playingEpisode, let indexPath = dic[playingEpisode.episode.id] else { return nil }
-                return .init(id: playingEpisode.episode.identity,
-                             indexPath: indexPath,
-                             currentPlaybackSec: playingEpisode.currentPlaybackSec)
+        self.service.state
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
+            .compactMap { query -> Bool? in
+                guard case .progress = query else { return false }
+                return true
             }
-            .bind(to: self.playingEpisodeCell)
+            .bind(to: self._isLoading)
+            .disposed(by: disposeBag)
+
+        // Apply playing episode
+
+        self.episodePlayed
+            .map { [weak self] playingEpisode -> ListingEpisode? in
+                // TODO: パフォーマンスを向上させる
+                return self?._listingEpisodes.value
+                    .first(where: { $0.value.episode.id == playingEpisode?.episode.id })?.value
+                    .updated(playbackSec: playingEpisode?.currentPlaybackSec)
+            }
+            .bind(to: self._playingEpisode)
+            .disposed(by: self.disposeBag)
+
+        // Store listing episodes' models
+
+        Observable
+            .combineLatest(self._episodes, self._playingEpisode)
+            .compactMap { [weak self] episodes, playingEpisode -> [Episode.Identity: ListingEpisode]? in
+                guard let self = self else { return nil }
+                return type(of: self).buildListingEpisodes(by: episodes, with: playingEpisode, for: self._listingEpisodes.value)
+            }
+            .bind(to: self._listingEpisodes)
+            .disposed(by: self.disposeBag)
+
+        // Handling inputs
+
+        let selectedEpisode = self.episodeSelected
+            .compactMap { [weak self] indexPath -> ListingEpisode? in
+                // TODO: パフォーマンスを向上させる
+                return self?._listingEpisodes.value.first(where: { $0.value.indexPath == indexPath })?.value
+            }
+        selectedEpisode
+            .filter { [weak self] e in e.identity == self?._playingEpisode.value?.episode.identity }
+            .bind(to: self._playingEpisodeSelected)
+            .disposed(by: self.disposeBag)
+        selectedEpisode
+            .filter { [weak self] e in e.identity != self?._playingEpisode.value?.episode.identity }
+            .bind(to: self._newEpisodeSelected)
+            .disposed(by: self.disposeBag)
+
+        self.episodesLoaded
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self._isLoading.accept(true)
+                self.service.command.accept(.refresh(self.show.feedUrl))
+            })
+            .disposed(by: self.disposeBag)
+
+        self.episodesFetched
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self._isLoading.accept(true)
+                self.service.command.accept(.fetch(self.show.feedUrl))
+            })
             .disposed(by: self.disposeBag)
     }
 
     deinit {
         self.service.command.accept(.clear)
     }
+}
 
-    // MARK: - Methods
-
-    func refresh() {
-        service.command.accept(.refresh(show.feedUrl))
-    }
-
-    func fetch() {
-        service.command.accept(.fetch(show.feedUrl))
-    }
-
-    func didSelectEpisode(at indexPath: IndexPath) {
-        guard let view = self.view else { return }
-        guard case let .contents(container) = self.episodeCells.value, let episodes = container.first else { return }
-
-        let episodeIdentity = episodes.items[indexPath.row].identity
-        guard let listingEpisode = self.listingEpisodes.value?[episodeIdentity] else { return }
-
-        view.deselectRow()
-
-        if self.playingEpisode.value?.episode.identity == episodeIdentity {
-            view.expandPlayer()
-        } else {
-            view.presentPlayer(of: listingEpisode)
+extension EpisodeListViewModel {
+    static func buildListingEpisodes(by episodes: [Episode],
+                                     with playingEpisode: ListingEpisode?,
+                                     for currentEpisodes: [Episode.Identity: ListingEpisode]) -> [Episode.Identity: ListingEpisode] {
+        return episodes.enumerated().map { index, episode -> ListingEpisode in
+            if episode.id == playingEpisode?.identity {
+                return ListingEpisode(indexPath: .init(row: index, section: 0),
+                                      episode: episode,
+                                      isPlaying: true,
+                                      currentPlaybackSec: playingEpisode?.currentPlaybackSec)
+            } else {
+                let playbackSec = currentEpisodes[episode.identity]?.currentPlaybackSec
+                return ListingEpisode(indexPath: .init(row: index, section: 0),
+                                      episode: episode,
+                                      isPlaying: false,
+                                      currentPlaybackSec: playbackSec)
+            }
+        }.reduce(into: [Episode.Identity: ListingEpisode]()) { dic, episode in
+            dic[episode.identity] = episode
         }
     }
 }

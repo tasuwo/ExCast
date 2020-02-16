@@ -16,24 +16,25 @@ import UIKit
 
 class EpisodeListViewController: UIViewController {
     typealias Factory = ViewControllerFactory & EpisodePlayerModalContainerFactory
+    typealias Dependency = EpisodeListViewModelType
 
     @IBOutlet var episodeListView: EpisodeListView!
-    private let dataSourceContainer = EpisodeListViewDataSourceContainer()
+    private lazy var playerModalContainerView = self.factory.makeEpisodePlayerModalContainerView()
 
     private let factory: Factory
-    private let viewModel: EpisodeListViewModel
-    private lazy var playerModalContainerView = self.factory.makeEpisodePlayerModalContainerView()
+    private let viewModel: EpisodeListViewModelType
+    private let dataSourceContainer = EpisodeListViewDataSourceContainer()
 
     private let disposeBag = DisposeBag()
 
     // MARK: - Lifecycle
 
-    init(factory: Factory, viewModel: EpisodeListViewModel) {
+    init(factory: Factory, viewModel: EpisodeListViewModelType) {
         self.factory = factory
         self.viewModel = viewModel
-        self.dataSourceContainer.episodeListViewModel = self.viewModel
-
         super.init(nibName: nil, bundle: nil)
+
+        self.dataSourceContainer.delegate = self
     }
 
     required init?(coder _: NSCoder) {
@@ -43,106 +44,16 @@ class EpisodeListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataSourceContainer.delegate = self
+        self.bind(to: self.viewModel)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
 
-        // MARK: ViewModel > EpisodeListView
-
-        self.viewModel.episodeCells
-            .flatMap { [unowned self] query -> Single<[AnimatableSectionModel<String, Episode>]> in
-                switch query {
-                case let .contents(container):
-                    debugLog("The \(self.viewModel.show.title)'s episodes list is updated.")
-                    return .just(container)
-                default:
-                    return .never()
-                }
-            }
-            .bind(to: episodeListView.rx.items(dataSource: dataSourceContainer.dataSource))
-            .disposed(by: disposeBag)
-
-        self.viewModel.episodeCells
-            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .bind(onNext: { [weak self] query in
-                guard let self = self else { return }
-
-                switch query {
-                case .progress:
-                    DispatchQueue.main.async {
-                        self.episodeListView.refreshControl?.beginRefreshing()
-                    }
-                default:
-                    DispatchQueue.main.async {
-                        if self.episodeListView.refreshControl?.isRefreshing == true {
-                            self.episodeListView.refreshControl?.endRefreshing()
-                        }
-                    }
-                }
-            }).disposed(by: disposeBag)
-
-        self.viewModel.playingEpisodeCell
-            .observeOn(ConcurrentMainScheduler.instance)
-            .subscribe(onNext: { [unowned self] playingEpisode in
-                if let indexPath = playingEpisode?.indexPath,
-                    let cell = self.episodeListView.cellForRow(at: indexPath) as? EpisodeCell,
-                    let currentPlaybackSec = playingEpisode?.currentPlaybackSec,
-                    currentPlaybackSec > 0 {
-                    cell.currentDuration = currentPlaybackSec
-                }
-            })
-            .disposed(by: self.disposeBag)
-
-        Observable
-            .zip(self.viewModel.playingEpisodeCell, self.viewModel.playingEpisodeCell.skip(1))
-            .observeOn(ConcurrentMainScheduler.instance)
-            .subscribe(onNext: { [unowned self] diff in
-                switch diff {
-                case let (.none, .some(current)):
-                    guard let cell = self.episodeListView.cellForRow(at: current.indexPath) as? EpisodeCell else { return }
-                    cell.playingMarkIconView.isHidden = false
-                case let (.some(prev), .some(current)):
-                    guard let currentCell = self.episodeListView.cellForRow(at: current.indexPath) as? EpisodeCell,
-                        let prevCell = self.episodeListView.cellForRow(at: prev.indexPath) as? EpisodeCell else { return }
-                    prevCell.playingMarkIconView.isHidden = true
-                    currentCell.playingMarkIconView.isHidden = false
-                case let (.some(prev), .none):
-                    guard let cell = self.episodeListView.cellForRow(at: prev.indexPath) as? EpisodeCell else { return }
-                    cell.playingMarkIconView.isHidden = true
-                default:
-                    break
-                }
-            })
-            .disposed(by: self.disposeBag)
-
-        // MARK: EpisodeListView > ViewModel
-
-        self.episodeListView.rx.itemSelected
-            .bind(onNext: { [unowned self] indexPath in
-                self.viewModel.didSelectEpisode(at: indexPath)
-            })
-            .disposed(by: disposeBag)
-
-        self.episodeListView.refreshControl?.rx.controlEvent(.valueChanged)
-            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .bind(onNext: { [unowned self] _ in
-                self.viewModel.fetch()
-            })
-            .disposed(by: disposeBag)
-
-        // MARK: PlayerModalContainerView > ViewModel
-
-        self.playerModalContainerView?.playingEpisode
-            .bind(to: viewModel.playingEpisode)
-            .disposed(by: disposeBag)
-
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
-
-        viewModel.refresh()
+        self.viewModel.inputs.episodesLoaded.accept(())
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        title = viewModel.show.title
+        title = self.viewModel.outputs.show.title
     }
 }
 
@@ -152,28 +63,106 @@ extension EpisodeListViewController: EpisodeCellDelegate {
     func podcastEpisodeCell(_: UITableViewCell, didSelect episode: Episode) {
         guard let navigationController = self.navigationController else { return }
 
-        let nextViewController = factory.makeEpisodeDetailViewController(show: viewModel.show, episode: episode)
+        let nextViewController = factory.makeEpisodeDetailViewController(show: self.viewModel.outputs.show, episode: episode)
         navigationController.pushViewController(nextViewController, animated: true)
     }
 }
 
-extension EpisodeListViewController: EpisodeListViewProtocol {
-    // MARK: - EpisodeListViewProtocol
+extension EpisodeListViewController {
+    // MARK: - Binding
 
-    func expandPlayer() {
-        self.playerModalContainerView?.playerModal?.changeToFullScreenIfPossible()
-    }
+    func bind(to dependency: Dependency) {
+        // MARK: Outputs
 
-    func presentPlayer(of listingEpisode: ListingEpisode) {
-        self.playerModalContainerView?.presentPlayerModal(id: self.viewModel.id, show: self.viewModel.show, episode: listingEpisode.episode, playbackSec: listingEpisode.displayingPlaybackSec)
-    }
+        dependency.outputs.episodes
+            .skip(1)
+            .drive(self.episodeListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
+            .disposed(by: disposeBag)
 
-    func deselectRow() {
-        guard let selectedRow = self.episodeListView.indexPathForSelectedRow else { return }
-        UIView.animate(withDuration: 0.3, animations: {
-            self.episodeListView.beginUpdates()
-            self.episodeListView.deselectRow(at: selectedRow, animated: true)
-            self.episodeListView.endUpdates()
-        }, completion: { _ in })
+        Driver
+            .zip(dependency.outputs.isLoading, dependency.outputs.isLoading.skip(1))
+            .drive(onNext: { [weak self] diff in
+                switch diff {
+                case (false, true):
+                    self?.episodeListView.refreshControl?.beginRefreshing()
+                case (true, false):
+                    self?.episodeListView.refreshControl?.endRefreshing()
+                default:
+                    break
+                }
+            })
+            .disposed(by: self.disposeBag)
+
+        dependency.outputs.playingEpisode
+            .drive(onNext: { [weak self] episode in
+                guard let indexPath = episode?.indexPath else { return }
+                self?.episodeListView.update(episode?.currentPlaybackSec, at: indexPath)
+            })
+            .disposed(by: self.disposeBag)
+
+        dependency.outputs.playingEpisode
+            .drive(onNext: { [weak self] episode in
+                self?.dataSourceContainer.currentPlayingEpisodeIndex.accept(episode?.indexPath)
+            })
+            .disposed(by: self.disposeBag)
+
+        Driver
+            .zip(dependency.outputs.playingEpisode, dependency.outputs.playingEpisode.skip(1))
+            .drive(onNext: { [weak self] diff in
+                switch diff {
+                case let (.none, .some(current)):
+                    self?.episodeListView.showPlayingMarkIcon(at: current.indexPath)
+                case let (.some(prev), .some(current)):
+                    self?.episodeListView.hidePlayingMarkIcon(at: prev.indexPath)
+                    self?.episodeListView.showPlayingMarkIcon(at: current.indexPath)
+                case let (.some(prev), .none):
+                    self?.episodeListView.hidePlayingMarkIcon(at: prev.indexPath)
+                default:
+                    break
+                }
+            })
+            .disposed(by: self.disposeBag)
+
+        dependency.outputs.playerExpanded
+            .emit(onNext: { [weak self] in
+                self?.playerModalContainerView?.playerModal?.changeToFullScreenIfPossible()
+            })
+            .disposed(by: self.disposeBag)
+
+        dependency.outputs.playerPresented
+            .emit(onNext: { [weak self] listingEpisode in
+                guard let self = self else { return }
+                self.playerModalContainerView?.presentPlayerModal(id: self.viewModel.outputs.id,
+                                                                  show: self.viewModel.outputs.show,
+                                                                  episode: listingEpisode.episode,
+                                                                  playbackSec: listingEpisode.displayingPlaybackSec)
+            })
+            .disposed(by: self.disposeBag)
+
+        dependency.outputs.rowDeselected
+            .emit(onNext: { [weak self] in
+                guard let self = self,
+                    let selectedRow = self.episodeListView.indexPathForSelectedRow else { return }
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.episodeListView.beginUpdates()
+                    self.episodeListView.deselectRow(at: selectedRow, animated: true)
+                    self.episodeListView.endUpdates()
+                }, completion: { _ in })
+            })
+            .disposed(by: self.disposeBag)
+
+        // MARK: Inputs
+
+        self.episodeListView.rx.itemSelected.asSignal()
+            .emit(to: dependency.inputs.episodeSelected)
+            .disposed(by: disposeBag)
+
+        self.episodeListView.refreshControl?.rx.controlEvent(.valueChanged).asSignal()
+            .emit(to: dependency.inputs.episodesFetched)
+            .disposed(by: self.disposeBag)
+
+        self.playerModalContainerView?.playingEpisode
+            .bind(to: dependency.inputs.episodePlayed)
+            .disposed(by: self.disposeBag)
     }
 }

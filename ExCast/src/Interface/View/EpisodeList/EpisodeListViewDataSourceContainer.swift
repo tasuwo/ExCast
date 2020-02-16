@@ -8,10 +8,11 @@
 
 import Domain
 import RxDataSources
+import RxRelay
 
 class EpisodeListViewDataSourceContainer: NSObject {
-    weak var episodeListViewModel: EpisodeListViewModel?
     weak var delegate: EpisodeCellDelegate?
+    var currentPlayingEpisodeIndex: BehaviorRelay<IndexPath?> = .init(value: nil)
     lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AnimatableSectionModel<String, Episode>> = .init(
         animationConfiguration: AnimationConfiguration(insertAnimation: .automatic,
                                                        reloadAnimation: .none,
@@ -42,7 +43,7 @@ class EpisodeListViewDataSourceContainer: NSObject {
             episodeCell.delegate = self.delegate
 
             // NOTE: 再生中のセルを再描画する場合、状態を引き継ぐ
-            if let playingEpisodeCell = self.episodeListViewModel?.playingEpisodeCell.value, playingEpisodeCell.indexPath == indexPath {
+            if self.currentPlayingEpisodeIndex.value == indexPath {
                 episodeCell.playingMarkIconView.isHidden = false
             }
 

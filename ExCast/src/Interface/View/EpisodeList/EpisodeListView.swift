@@ -30,6 +30,24 @@ class EpisodeListView: UITableView {
 
     // MARK: - Methods
 
+    func update(_ playbackSec: Double?, at indexPath: IndexPath) {
+        guard let cell = self.cellForRow(at: indexPath) as? EpisodeCell,
+            let currentPlaybackSec = playbackSec else { return }
+        cell.currentDuration = currentPlaybackSec
+    }
+
+    func showPlayingMarkIcon(at indexPath: IndexPath) {
+        guard let cell = self.cellForRow(at: indexPath) as? EpisodeCell else { return }
+        cell.playingMarkIconView.isHidden = false
+    }
+
+    func hidePlayingMarkIcon(at indexPath: IndexPath) {
+        guard let cell = self.cellForRow(at: indexPath) as? EpisodeCell else { return }
+        cell.playingMarkIconView.isHidden = true
+    }
+
+    // MARK: - Private Methods
+
     private func loadFromNib() {
         let nib = UINib(nibName: "EpisodeCell", bundle: nil)
         register(nib, forCellReuseIdentifier: EpisodeListView.identifier)

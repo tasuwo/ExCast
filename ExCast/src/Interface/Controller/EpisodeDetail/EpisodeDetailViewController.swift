@@ -12,17 +12,18 @@ import UIKit
 
 class EpisodeDetailViewController: UIViewController {
     typealias Factory = ViewControllerFactory
+    typealias Dependency = EpisodeDetailViewModelType
 
     @IBOutlet var episodeDetailView: EpisodeDetailView!
 
     private let factory: Factory
-    private let viewModel: EpisodeDetailViewModel
+    private let viewModel: EpisodeDetailViewModelType
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - Initializer
+    // MARK: - Lifecycle
 
-    init(factory: Factory, viewModel: EpisodeDetailViewModel) {
+    init(factory: Factory, viewModel: EpisodeDetailViewModelType) {
         self.factory = factory
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -32,29 +33,9 @@ class EpisodeDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        viewModel.title
-            .bind(to: episodeDetailView.rx.title)
-            .disposed(by: disposeBag)
-        viewModel.pubDate
-            .bind(to: episodeDetailView.rx.publishDate)
-            .disposed(by: disposeBag)
-        viewModel.duration
-            .bind(to: episodeDetailView.rx.duration)
-            .disposed(by: disposeBag)
-        viewModel.thumbnail
-            .compactMap { $0 }
-            .compactMap { try? Data(contentsOf: $0) }
-            .compactMap { UIImage(data: $0) }
-            .bind(to: episodeDetailView.rx.thumbnail)
-            .disposed(by: disposeBag)
-        viewModel.description
-            .bind(to: episodeDetailView.rx.episodeDescripiton)
-            .disposed(by: disposeBag)
+        self.bind(to: self.viewModel)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -64,8 +45,35 @@ class EpisodeDetailViewController: UIViewController {
 
         if #available(iOS 13.0, *) {
             if previousTraitCollection.hasDifferentColorAppearance(comparedTo: self.traitCollection) {
-                self.viewModel.layoutDescription()
+                self.viewModel.inputs.layoutDescription()
             }
         }
+    }
+}
+
+extension EpisodeDetailViewController {
+    // MARK: - Binding
+
+    func bind(to dependency: Dependency) {
+        dependency.outputs.title
+            .drive(self.episodeDetailView.rx.title)
+            .disposed(by: self.disposeBag)
+        dependency.outputs.pubDate
+            .drive(self.episodeDetailView.rx.publishDate)
+            .disposed(by: self.disposeBag)
+        dependency.outputs.duration
+            .drive(self.episodeDetailView.rx.duration)
+            .disposed(by: self.disposeBag)
+        dependency.outputs.thumbnail
+            .drive(onNext: { thumbnail in
+                guard let thumbnail = thumbnail,
+                    let data = try? Data(contentsOf: thumbnail),
+                    let image = UIImage(data: data) else { return }
+                self.episodeDetailView.thumbnail = image
+            })
+            .disposed(by: self.disposeBag)
+        dependency.outputs.description
+            .drive(episodeDetailView.rx.episodeDescripiton)
+            .disposed(by: self.disposeBag)
     }
 }

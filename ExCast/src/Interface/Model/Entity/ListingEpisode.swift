@@ -10,6 +10,7 @@ import Domain
 import RxDataSources
 
 struct ListingEpisode: Equatable {
+    let indexPath: IndexPath
     let episode: Episode
     /// 再生中かどうか
     let isPlaying: Bool
@@ -30,11 +31,15 @@ struct ListingEpisode: Equatable {
     }
 
     func startedPlay() -> ListingEpisode {
-        return .init(episode: self.episode, isPlaying: true, currentPlaybackSec: self.currentPlaybackSec)
+        return .init(indexPath: self.indexPath, episode: self.episode, isPlaying: true, currentPlaybackSec: self.currentPlaybackSec)
     }
 
     func finishedPlay() -> ListingEpisode {
-        return .init(episode: self.episode, isPlaying: false, currentPlaybackSec: self.currentPlaybackSec)
+        return .init(indexPath: self.indexPath, episode: self.episode, isPlaying: false, currentPlaybackSec: self.currentPlaybackSec)
+    }
+
+    func updated(playbackSec: Double?) -> ListingEpisode {
+        return .init(indexPath: self.indexPath, episode: self.episode, isPlaying: false, currentPlaybackSec: playbackSec)
     }
 }
 
