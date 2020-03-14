@@ -7,23 +7,12 @@ import Quick
 import RxBlocking
 import RxSwift
 import RxTest
+import SharedTestHelper
 
 @testable import Domain
 @testable import Infrastructure
 
 class PodcastGatewaySpec: QuickSpec {
-    class PodcastFactoryProtocolMock: PodcastFactoryProtocol {
-        static var makeHandler: ((Data) -> Podcast?)?
-        static var makeCallCount = 0
-        static func make(by data: Data) -> Podcast? {
-            guard let handler = makeHandler else {
-                fatalError("makeHandler is unavailable.")
-            }
-            makeCallCount += 1
-            return handler(data)
-        }
-    }
-
     override func spec() {
         let disposeBag = DisposeBag()
 
