@@ -19,6 +19,7 @@ public enum PodcastGatewayCommand {
     case fetch(URL)
 }
 
+/// @mockable
 public protocol PodcastGatewayProtocol {
     var state: BehaviorRelay<PodcastGatewayQuery> { get }
     var command: PublishRelay<PodcastGatewayCommand> { get }

@@ -10,6 +10,7 @@ import Domain
 import RealmSwift
 import RxSwift
 
+/// @mockable
 public protocol EpisodeRepositoryProtocol {
     func getAll(_ feedUrl: URL) -> Single<[Episode]>
     func update(_ id: Episode.Identity, playback: Playback?) -> Completable

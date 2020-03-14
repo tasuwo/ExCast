@@ -23,6 +23,7 @@ public enum PodcastServiceCommand {
     case delete(Podcast)
 }
 
+/// @mockable
 public protocol PodcastServiceProtocol {
     var state: BehaviorRelay<PodcastServiceQuery> { get }
     var command: PublishRelay<PodcastServiceCommand> { get set }

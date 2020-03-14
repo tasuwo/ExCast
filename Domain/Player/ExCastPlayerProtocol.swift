@@ -10,6 +10,7 @@ import Foundation
 import RxRelay
 import RxSwift
 
+/// @mockable
 public protocol ExCastPlayerProtocol: AnyObject {
     var createdPlayer: BehaviorRelay<Bool> { get }
 
@@ -32,6 +33,7 @@ public enum ExCastPlayerState {
     case finish
 }
 
+/// @mockable
 public protocol ExCastPlayerDelegate: AnyObject {
     func didPrepare(duration: TimeInterval)
 

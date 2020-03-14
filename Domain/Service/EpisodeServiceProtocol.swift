@@ -24,6 +24,7 @@ public enum EpisodeServiceCommand {
     case update(Episode.Identity, Playback?)
 }
 
+/// @mockable
 public protocol EpisodeServiceProtocol {
     var state: BehaviorRelay<EpisodeServiceQuery> { get }
     var command: PublishRelay<EpisodeServiceCommand> { get set }

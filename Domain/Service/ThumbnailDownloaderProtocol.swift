@@ -13,6 +13,7 @@ public enum ThumbnailDownloadError: Error {
     case invalidUrl
 }
 
+/// @mockable
 public protocol ThumbnailDowloaderProtocol {
     func startDownload(by url: URL, completion: @escaping (Result<UIImage, Error>) -> Void)
     func cancelDownload()

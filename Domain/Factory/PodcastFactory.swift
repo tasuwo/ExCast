@@ -9,6 +9,7 @@
 import Common
 import Foundation
 
+/// @mockable
 public protocol PodcastFactoryProtocol {
     static func make(by data: Data) -> Podcast?
 }

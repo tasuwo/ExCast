@@ -10,6 +10,7 @@ import Domain
 import RealmSwift
 import RxSwift
 
+/// @mockable
 public protocol PodcastRepositoryProtocol {
     func getAll() -> Single<[Podcast]>
     func add(_ podcast: Podcast) -> Completable

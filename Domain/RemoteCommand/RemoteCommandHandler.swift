@@ -9,6 +9,7 @@
 import MediaPlayer
 import UIKit
 
+/// @mockable
 public protocol RemoteCommandHandlerProtocol {
     func register(delegate player: ExCastPlayerProtocol)
     func setup(show: Show, episode: Episode, duration: Double, currentTime: Double, currentRate: Double)

@@ -39,6 +39,12 @@ abstract_target 'All' do
   target 'Common' do
     pod 'SwiftyBeaver',    '~> 1.8.4'
   end
+
+  target 'SharedTestHelper' do
+    pod 'RxSwift',        '~> 5.0.0'
+    pod 'RxCocoa',        '~> 5.0.0'
+    pod 'RealmSwift'
+  end
 end
 
 plugin 'cocoapods-keys', {

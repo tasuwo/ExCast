@@ -16,6 +16,7 @@ public enum PushNotificationProviderGatewayError: Error {
 
 public typealias ProviderKey = String
 
+/// @mockable
 public protocol PushNotificationProviderGatewayProtocol {
     func register(_ token: Data, context: NotificationContext, completion: @escaping (Result<ProviderKey, PushNotificationProviderGatewayError>) -> Void)
 
