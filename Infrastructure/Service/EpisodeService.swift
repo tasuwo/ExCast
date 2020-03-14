@@ -18,6 +18,8 @@ public class EpisodeService: EpisodeServiceProtocol {
 
     // MARK: - Privates
 
+    private let refreshedState: PublishRelay<EpisodeServiceQuery> = .init()
+
     private let podcastRepository: PodcastRepositoryProtocol
     private let episodeRepository: EpisodeRepositoryProtocol
     private let gateway: PodcastGatewayProtocol
@@ -37,24 +39,31 @@ public class EpisodeService: EpisodeServiceProtocol {
 
         let refreshState = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .filter { if case .refresh = $0 { return true } else { return false } }
+            .filter { $0.isRefresh }
             .map { _ in EpisodeServiceQuery.progress }
 
-        let refreshResultState = command
+        command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .filter { if case .refresh = $0 { return true } else { return false } }
-            .flatMapLatest { [unowned self] command -> Single<(Podcast.Identity, [Episode])> in
-                switch command {
-                case let .refresh(feedUrl):
-                    return self.episodeRepository.getAll(feedUrl).map { (feedUrl, $0) }
+            .filter { $0.isRefresh }
+            .compactMap { command -> Podcast.Identity? in
+                guard case let .refresh(id) = command else { return nil }
+                return id
+            }
+            .concatMap { [unowned self] id in self.episodeRepository.getAll(id).map { (id, $0) } }
+            .subscribe { event in
+                switch event {
+                case let .next((id, episodes)):
+                    self.refreshedState.accept(.content(id, episodes))
+                case .error:
+                    self.refreshedState.accept(.error)
                 default:
-                    return .never()
+                    break
                 }
             }
-            .map { (id, episodes) -> EpisodeServiceQuery in .content(id, episodes) }
+            .disposed(by: self.disposeBag)
 
         Observable
-            .merge(refreshState, refreshResultState)
+            .merge(refreshState, self.refreshedState.asObservable())
             .bind(to: state)
             .disposed(by: disposeBag)
 
@@ -131,5 +140,11 @@ public class EpisodeService: EpisodeServiceProtocol {
         clearResultState
             .bind(to: state)
             .disposed(by: disposeBag)
+    }
+}
+
+private extension EpisodeServiceCommand {
+    var isRefresh: Bool {
+        if case .refresh = self { return true } else { return false }
     }
 }

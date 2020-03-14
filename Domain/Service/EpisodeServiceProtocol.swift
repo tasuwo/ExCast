@@ -9,7 +9,7 @@
 import RxRelay
 import RxSwift
 
-public enum EpisodeServiceQuery {
+public enum EpisodeServiceQuery: Equatable {
     case notLoaded
     case progress
     case error

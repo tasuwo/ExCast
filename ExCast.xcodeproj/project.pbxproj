@@ -41,6 +41,7 @@
 		2C354D11241D0A54007BCB00 /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2C7DA02F23B67F25000CD2E4 /* Common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2C354D17241D0BA2007BCB00 /* InfrastructureMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C354D16241D0BA2007BCB00 /* InfrastructureMocks.swift */; };
 		2C354D19241D0BAD007BCB00 /* DomainMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C354D18241D0BAD007BCB00 /* DomainMocks.swift */; };
+		2C354D1B241D10C5007BCB00 /* EpisodeServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C354D1A241D10C5007BCB00 /* EpisodeServiceSpec.swift */; };
 		2C3AAE3323517E6900A78A02 /* EpisodePlayerModalView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */; };
 		2C4D9117234075A100895CD7 /* ShowListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */; };
 		2C4D911C2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D911B2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift */; };
@@ -397,6 +398,7 @@
 		2C354CFD241D09F4007BCB00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C354D16241D0BA2007BCB00 /* InfrastructureMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfrastructureMocks.swift; sourceTree = "<group>"; };
 		2C354D18241D0BAD007BCB00 /* DomainMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainMocks.swift; sourceTree = "<group>"; };
+		2C354D1A241D10C5007BCB00 /* EpisodeServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeServiceSpec.swift; sourceTree = "<group>"; };
 		2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpisodePlayerModalView+Rx.swift"; sourceTree = "<group>"; };
 		2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowListViewDataSource.swift; sourceTree = "<group>"; };
 		2C4D911B2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BehaviorRelay+ValueAt.swift"; sourceTree = "<group>"; };
@@ -1129,6 +1131,7 @@
 			isa = PBXGroup;
 			children = (
 				2C8FEF4A23B5A3AA007B8D4D /* Repository */,
+				2C354D1A241D10C5007BCB00 /* EpisodeServiceSpec.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -2047,6 +2050,7 @@
 				2C7DA02923B65E74000CD2E4 /* PodcastRepositorySpec.swift in Sources */,
 				2C354CF2241CC746007BCB00 /* URLProtocolMock.swift in Sources */,
 				2CB6E64023B6250800182DA4 /* Channel+DefaultValue.swift in Sources */,
+				2C354D1B241D10C5007BCB00 /* EpisodeServiceSpec.swift in Sources */,
 				2CB6E64723B633EC00182DA4 /* WaitUntil+OnQueue.swift in Sources */,
 				2CB6E63F23B6250800182DA4 /* PlayerConfiguration+DefaultValue.swift in Sources */,
 				2C8FEF4C23B5A3CE007B8D4D /* EpisodeRepositorySpec.swift in Sources */,
