@@ -7,6 +7,7 @@
 //
 
 import Domain
+import RxCocoa
 import RxRelay
 import RxSwift
 
@@ -15,49 +16,112 @@ protocol FeedUrlInputViewProtocol: AnyObject {
     func didFetchPodcastSuccessfully()
 }
 
-class FeedUrlInputViewModel {
+protocol FeedUrlInputViewModelType {
+    var inputs: FeedUrlInputViewModelInputs { get }
+    var outputs: FeedUrlInputViewModelOutputs { get }
+}
+
+protocol FeedUrlInputViewModelInputs {
+    var feedUrl: BehaviorRelay<String> { get }
+
+    var podcastFetched: PublishRelay<Void> { get }
+}
+
+protocol FeedUrlInputViewModelOutputs {
+    var isFeedUrlValid: Driver<Bool> { get }
+
+    var messageDisplayed: Signal<String> { get }
+}
+
+class FeedUrlInputViewModel: FeedUrlInputViewModelType, FeedUrlInputViewModelInputs, FeedUrlInputViewModelOutputs {
+    // MARK: - FeedUrlInputViewModelType
+
+    var inputs: FeedUrlInputViewModelInputs { return self }
+    var outputs: FeedUrlInputViewModelOutputs { return self }
+
+    // MARK: - FeedUrlInputViewModelInputs
+
+    var feedUrl: BehaviorRelay<String>
+    var podcastFetched: PublishRelay<Void>
+
+    // MARK: - FeedUrlInputViewModelOutputs
+
+    var isFeedUrlValid: Driver<Bool>
+    var messageDisplayed: Signal<String>
+
+    // MARK: - Privates
+
+    private let _messageDisplayed: PublishRelay<String> = .init()
+
     private let service: PodcastServiceProtocol
     private let gateway: PodcastGatewayProtocol
-
-    weak var view: FeedUrlInputViewProtocol?
-
     private let disposeBag = DisposeBag()
 
-    private(set) var url = BehaviorRelay<String>(value: "")
-    var isValid: Observable<Bool> {
-        return url.map { url in
-            !url.isEmpty
-        }
-    }
-
-    // MARK: - Initializer
+    // MARK: - Lifecycle
 
     init(service: PodcastServiceProtocol, gateway: PodcastGatewayProtocol) {
+        // MARK: Privates
+
         self.service = service
         self.gateway = gateway
-    }
 
-    // MARK: - Methods
+        // MARK: Inputs
 
-    func fetchPodcast() {
-        guard let url = URL(string: self.url.value) else {
-            view?.showMessage(NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: ""))
-            return
-        }
+        self.feedUrl = .init(value: "")
+        self.podcastFetched = .init()
 
-        gateway.fetch(feed: url)
-            .subscribe { [self] event in
-                switch event {
+        // MARK: Outputs
+
+        self.isFeedUrlValid = self.feedUrl
+            .map { $0.isEmpty == false }
+            .asDriver(onErrorDriveWith: .empty())
+
+        self.messageDisplayed = self._messageDisplayed
+            .asSignal(onErrorSignalWith: .empty())
+
+        // MARK: Binding
+
+        self.podcastFetched
+            .compactMap { [weak self] _ -> URL? in
+                URL(string: self?.feedUrl.value ?? "")
+            }
+            .map { url -> PodcastGatewayCommand in .fetch(url) }
+            .bind(to: self.gateway.command)
+            .disposed(by: self.disposeBag)
+
+        self.gateway.state
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
+            .compactMap { query -> PodcastServiceCommand? in
+                guard case let .content(.some(podcast)) = query else { return nil }
+                return .create(podcast)
+            }
+            .bind(to: self.service.command)
+            .disposed(by: self.disposeBag)
+
+        let fetchResultMessage = self.gateway.state
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
+            .compactMap { query -> String? in
+                switch query {
+                case let .content(.some(podcast)):
+                    return String(format: NSLocalizedString("FeedUrlInputView.success.fetchPodcast", comment: ""), podcast.meta.title)
                 case .error:
-                    self.view?.showMessage(NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: ""))
-                case let .next(podcast):
-                    self.view?.showMessage(String(format: NSLocalizedString("FeedUrlInputView.success.fetchPodcast", comment: ""), podcast.meta.title))
-                    self.service.command.accept(.create(podcast))
-                    // TODO: 成功を検知したい
-                    self.view?.didFetchPodcastSuccessfully()
-                case .completed: break
+                    return NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: "")
+                default:
+                    return nil
                 }
             }
-            .disposed(by: disposeBag)
+
+        let invalidUrlMessage = self.podcastFetched
+            .compactMap { [weak self] _ -> String? in
+                guard let _ = URL(string: self?.feedUrl.value ?? "") else {
+                    return NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: "")
+                }
+                return nil
+            }
+
+        Observable
+            .merge(fetchResultMessage, invalidUrlMessage)
+            .bind(to: self._messageDisplayed)
+            .disposed(by: self.disposeBag)
     }
 }

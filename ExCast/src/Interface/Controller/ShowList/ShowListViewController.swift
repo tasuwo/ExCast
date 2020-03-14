@@ -15,18 +15,19 @@ import UIKit
 
 class ShowListViewController: UIViewController {
     typealias Factory = ViewControllerFactory
+    typealias Dependency = ShowListViewModelType
 
     @IBOutlet var showListView: ShowListView!
     private let dataSourceContainer = ShowListViewDataSourceContainer()
 
     private let factory: Factory
-    private let viewModel: ShowListViewModel
+    private let viewModel: ShowListViewModelType
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - Initializer
+    // MARK: - Lifecycle
 
-    init(factory: Factory, viewModel: ShowListViewModel) {
+    init(factory: Factory, viewModel: ShowListViewModelType) {
         self.factory = factory
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -36,37 +37,14 @@ class ShowListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupNavigationBar()
-
-        viewModel.podcasts
-            .flatMap { query -> Single<[AnimatableSectionModel<String, Podcast>]> in
-                switch query {
-                case let .contents(container):
-                    debugLog("The show list is updated.")
-                    return .just(container)
-                default:
-                    return .never()
-                }
-            }
-            .bind(to: showListView.rx.items(dataSource: dataSourceContainer.dataSource))
-            .disposed(by: disposeBag)
-
-        showListView.rx.itemDeleted
-            .map { $0.row }
-            .bind(onNext: viewModel.remove(at:))
-            .disposed(by: disposeBag)
-        showListView.rx.itemSelected
-            .bind(onNext: didSelectShow(at:))
-            .disposed(by: disposeBag)
-
+        self.bind(to: self.viewModel)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
 
-        viewModel.load()
+        self.viewModel.inputs.podcastsLoaded.accept(())
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -93,11 +71,39 @@ class ShowListViewController: UIViewController {
         navigationController.pushViewController(nextViewController, animated: true)
     }
 
-    private func didSelectShow(at indexPath: IndexPath) {
+    private func presentEpisodes(of podcast: Podcast) {
         guard let navigationController = self.navigationController else { return }
 
-        let podcast = viewModel.podcastsCache.value(at: indexPath)
         let nextViewController = factory.makeEpisodeListViewController(id: podcast.identity, show: podcast.meta)
         navigationController.pushViewController(nextViewController, animated: true)
+    }
+}
+
+extension ShowListViewController {
+    // MARK: - Binding
+
+    func bind(to dependency: Dependency) {
+        // MARK: Outputs
+
+        dependency.outputs.podcasts
+            .skip(1)
+            .drive(self.showListView.rx.items(dataSource: self.dataSourceContainer.dataSource))
+            .disposed(by: self.disposeBag)
+
+        dependency.outputs.episodesViewPresented
+            .emit(onNext: { [weak self] podcast in
+                self?.presentEpisodes(of: podcast)
+            })
+            .disposed(by: self.disposeBag)
+
+        // MARK: Inputs
+
+        self.showListView.rx.itemDeleted.asSignal()
+            .emit(to: dependency.inputs.podcastDeleted)
+            .disposed(by: self.disposeBag)
+
+        self.showListView.rx.itemSelected.asSignal()
+            .emit(to: dependency.inputs.podcastSelected)
+            .disposed(by: self.disposeBag)
     }
 }

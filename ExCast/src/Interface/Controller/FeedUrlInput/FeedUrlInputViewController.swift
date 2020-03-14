@@ -13,17 +13,18 @@ import UIKit
 
 class FeedUrlInputViewController: UIViewController {
     typealias Factory = ViewControllerFactory
+    typealias Dependency = FeedUrlInputViewModelType
 
     @IBOutlet var baseView: FeedUrlInputView!
 
     private let factory: Factory
-    private let viewModel: FeedUrlInputViewModel
+    private let viewModel: FeedUrlInputViewModelType
 
     private var disposeBag = DisposeBag()
 
     // MARK: - Initializer
 
-    init(factory: Factory, viewModel: FeedUrlInputViewModel) {
+    init(factory: Factory, viewModel: FeedUrlInputViewModelType) {
         self.factory = factory
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -38,15 +39,7 @@ class FeedUrlInputViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        baseView.delegate = self
-        baseView.textField.rx.text.orEmpty
-            .bind(to: viewModel.url)
-            .disposed(by: disposeBag)
-
-        viewModel.view = self
-        viewModel.isValid.map { $0 }
-            .bind(to: baseView.button.rx.isEnabled)
-            .disposed(by: disposeBag)
+        self.bind(to: self.viewModel)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -73,10 +66,32 @@ extension FeedUrlInputViewController: FeedUrlInputViewProtocol {
     }
 }
 
-extension FeedUrlInputViewController: FeedUrlInputViewDelegate {
-    // MARK: - FeedUrlInputViewDelegate
+extension FeedUrlInputViewController {
+    // MARK: - Binding
 
-    func didTapSend() {
-        viewModel.fetchPodcast()
+    func bind(to dependency: Dependency) {
+        // MARK: Outputs
+
+        dependency.outputs.isFeedUrlValid
+            .drive(self.baseView.button.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+
+        dependency.outputs.messageDisplayed
+            .emit(onNext: { message in
+                MDCSnackbarManager.show(MDCSnackbarMessage(text: message))
+            })
+            .disposed(by: self.disposeBag)
+
+        // MARK: Inputs
+
+        self.baseView.textField.rx.text
+            .orEmpty
+            .bind(to: dependency.inputs.feedUrl)
+            .disposed(by: self.disposeBag)
+
+        self.baseView.button.rx.tap
+            .asSignal()
+            .emit(to: dependency.inputs.podcastFetched)
+            .disposed(by: self.disposeBag)
     }
 }

@@ -41,19 +41,30 @@ public struct PodcastService: PodcastServiceProtocol {
             }
             .map { result -> PodcastServiceQuery in .content(result) }
 
+        let fetchCommand = self.command
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
+            .compactMap { command -> PodcastGatewayCommand? in
+                switch command {
+                case let .fetch(feedUrl):
+                    return .fetch(feedUrl)
+                default:
+                    return nil
+                }
+            }
+
         let fetchState = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .filter { if case .fetch = $0 { return true } else { return false } }
             .map { _ in PodcastServiceQuery.progress }
 
-        let fetchResultState = command
-            .filter { if case .fetch = $0 { return true } else { return false } }
-            .flatMapLatest { [self] command -> Observable<Podcast> in
-                switch command {
-                case let .fetch(url):
-                    return self.gateway.fetch(feed: url)
+        let fetchResultState = self.gateway.state
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
+            .compactMap { query -> Podcast? in
+                switch query {
+                case let .content(.some(podcast)):
+                    return podcast
                 default:
-                    return Observable.never()
+                    return nil
                 }
             }
             .map { [self] fetchedPodcast in self.repository.update(fetchedPodcast) }
@@ -96,6 +107,10 @@ public struct PodcastService: PodcastServiceProtocol {
             .merge(refreshState, refreshResultState)
             .bind(to: state)
             .disposed(by: disposeBag)
+
+        fetchCommand
+            .bind(to: self.gateway.command)
+            .disposed(by: self.disposeBag)
 
         Observable
             .merge(fetchState, fetchResultState)

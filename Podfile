@@ -9,6 +9,7 @@ abstract_target 'All' do
     pod 'RxSwift',        '~> 5.0.0'
     pod 'RxCocoa',        '~> 5.0.0'
     pod 'RxDataSources',  '~> 4.0'
+
     pod 'SwiftFormat/CLI'
   end
 

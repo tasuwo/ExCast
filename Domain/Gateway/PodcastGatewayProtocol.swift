@@ -6,8 +6,20 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+import RxRelay
 import RxSwift
 
+public enum PodcastGatewayQuery: Equatable {
+    case content(Podcast?)
+    case progress
+    case error
+}
+
+public enum PodcastGatewayCommand {
+    case fetch(URL)
+}
+
 public protocol PodcastGatewayProtocol {
-    func fetch(feed: URL) -> Observable<Podcast>
+    var state: BehaviorRelay<PodcastGatewayQuery> { get }
+    var command: PublishRelay<PodcastGatewayCommand> { get }
 }
