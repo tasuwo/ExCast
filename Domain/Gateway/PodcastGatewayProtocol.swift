@@ -15,7 +15,7 @@ public enum PodcastGatewayQuery: Equatable {
     case error
 }
 
-public enum PodcastGatewayCommand {
+public enum PodcastGatewayCommand: Equatable {
     case fetch(URL)
 }
 

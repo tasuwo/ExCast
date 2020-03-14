@@ -41,6 +41,7 @@ class EpisodeServiceSpec: QuickSpec {
             .makeDefault(id: "id2"),
             .makeDefault(id: "id3"),
         ]
+        let fetchedPodcast: Podcast = .makeDefault(feedUrl: feedUrl, meta: .makeDefault(), episodes: fetchedEpisodes)
 
         beforeEach {
             podcastRepository = PodcastRepositoryProtocolMock()
@@ -138,7 +139,72 @@ class EpisodeServiceSpec: QuickSpec {
         }
 
         describe("fetch") {
-            // TODO:
+            context("取得に成功する") {
+                beforeEach {
+                    episodeRepository.getAllHandler = { url in
+                        expect(url).to(equal(feedUrl))
+
+                        return Observable.of(fetchedEpisodes).asSingle()
+                    }
+                    podcastRepository.updateEpisodesMetaHandler = { podcast in
+                        expect(podcast).to(equal(fetchedPodcast))
+
+                        return Completable.create { observer in
+                            observer(.completed)
+                            return Disposables.create()
+                        }
+                    }
+
+                    scheduler
+                        .createHotObservable([
+                            Recorded.next(100, EpisodeServiceCommand.fetch(feedUrl)),
+                        ])
+                        .bind(to: service.command)
+                        .disposed(by: disposeBag)
+
+                    scheduler
+                        .createHotObservable([
+                            Recorded.next(500, PodcastGatewayQuery.content(fetchedPodcast)),
+                        ])
+                        .bind(to: gateway.state)
+                        .disposed(by: disposeBag)
+                }
+
+                it("progressになった後にcontentが取得できる") {
+                    let episodeServiceObserver = scheduler.createObserver(EpisodeServiceQuery.self)
+                    service.state
+                        .bind(to: episodeServiceObserver)
+                        .disposed(by: disposeBag)
+
+                    let gatewayObserver = scheduler.createObserver(PodcastGatewayCommand.self)
+                    gateway.command
+                        .bind(to: gatewayObserver)
+                        .disposed(by: disposeBag)
+
+                    scheduler.start()
+
+                    expect(episodeServiceObserver.events).to(equal([
+                        Recorded.next(0, .notLoaded),
+                        Recorded.next(100, .progress),
+                    ]))
+
+                    // gatewayにfetchが要求される
+                    expect(gatewayObserver.events.last!.value.element!)
+                        .toEventually(equal(.fetch(feedUrl)))
+
+                    // gatewayからfetch結果を取得する
+                    expect(episodeServiceObserver.events.last!.value.element!)
+                        .toEventually(equal(.content(feedUrl, fetchedEpisodes)))
+
+                    // gatewayからのfetch結果による更新と、全件取得が行われる
+                    expect(podcastRepository.updateEpisodesMetaCallCount).to(equal(1))
+                    expect(episodeRepository.getAllCallCount).to(equal(1))
+                }
+            }
+
+            context("取得に失敗する") {
+                // TODO:
+            }
         }
 
         describe("update") {

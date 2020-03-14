@@ -69,23 +69,12 @@ public class EpisodeService: EpisodeServiceProtocol {
 
         // MARK: Fetch
 
-        let fetchCommand = self.command
-            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .compactMap { command -> PodcastGatewayCommand? in
-                switch command {
-                case let .fetch(feedUrl):
-                    return .fetch(feedUrl)
-                default:
-                    return nil
-                }
-            }
-
         let fetchState = command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
-            .filter { if case .fetch = $0 { return true } else { return false } }
+            .filter { $0.isFetch }
             .map { _ in EpisodeServiceQuery.progress }
 
-        let fetchResultState = self.gateway.state
+        let fetchedState = self.gateway.state
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .compactMap { query -> Podcast? in
                 switch query {
@@ -103,12 +92,21 @@ public class EpisodeService: EpisodeServiceProtocol {
             }
             .map { (id, episodes) -> EpisodeServiceQuery in .content(id, episodes) }
 
-        fetchCommand
+        self.command
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
+            .compactMap { command -> PodcastGatewayCommand? in
+                switch command {
+                case let .fetch(feedUrl):
+                    return .fetch(feedUrl)
+                default:
+                    return nil
+                }
+            }
             .bind(to: self.gateway.command)
             .disposed(by: self.disposeBag)
 
         Observable
-            .merge(fetchState, fetchResultState)
+            .merge(fetchState, fetchedState)
             .bind(to: state)
             .disposed(by: disposeBag)
 
@@ -146,5 +144,9 @@ public class EpisodeService: EpisodeServiceProtocol {
 private extension EpisodeServiceCommand {
     var isRefresh: Bool {
         if case .refresh = self { return true } else { return false }
+    }
+
+    var isFetch: Bool {
+        if case .fetch = self { return true } else { return false }
     }
 }
