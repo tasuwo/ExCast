@@ -27,9 +27,6 @@
                         <constraint firstAttribute="width" constant="150" id="oXj-fK-WI7"/>
                     </constraints>
                     <state key="normal" title="fetch"/>
-                    <connections>
-                        <action selector="didTapButton:" destination="-1" eventType="touchUpInside" id="x5S-m9-B8g"/>
-                    </connections>
                 </button>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6UM-g2-vPK" customClass="MDCTextField">
                     <rect key="frame" x="60" y="164" width="294" height="30"/>

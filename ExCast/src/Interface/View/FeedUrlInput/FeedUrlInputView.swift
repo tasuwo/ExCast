@@ -9,43 +9,35 @@
 import MaterialComponents
 import UIKit
 
-protocol FeedUrlInputViewDelegate: AnyObject {
-    func didTapSend()
-}
-
 class FeedUrlInputView: UIView {
-    weak var delegate: FeedUrlInputViewDelegate?
+    /*
+     * IBOutlets
+     */
 
     @IBOutlet var baseView: UIView!
-
     @IBOutlet var textField: MDCTextField!
-
     @IBOutlet var button: MDCFloatingButton!
 
-    @IBAction func didTapButton(_: Any) {
-        delegate?.didTapSend()
-    }
-
-    // MARK: - Initializers
+    // MARK: - Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        loadFromNib()
-        setupAppearances()
+
+        self.loadFromNib()
+        self.setupAppearances()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        loadFromNib()
-        setupAppearances()
+
+        self.loadFromNib()
+        self.setupAppearances()
     }
 
     // MARK: - Methods
 
     private func loadFromNib() {
-        let bundle = Bundle.main
-
-        bundle.loadNibNamed("FeedUrlInputView", owner: self, options: nil)
+        Bundle.main.loadNibNamed("FeedUrlInputView", owner: self, options: nil)
 
         baseView.frame = bounds
         addSubview(baseView)
@@ -71,13 +63,14 @@ class FeedUrlInputView: UIView {
             self.button.setTitleColor(titleColor, for: .normal)
 
             self.textField.backgroundColor = .systemBackground
-            self.textField.textColor = .white
+            self.textField.textColor = .label
             self.textField.cursorColor = .label
-            self.textField.placeholderLabel.textColor = .label
+            self.textField.placeholderLabel.textColor = .systemGray
         } else {
-            button.setBackgroundColor(.black)
-            button.setTitleColor(.white, for: .normal)
-            textField.backgroundColor = .white
+            self.button.setBackgroundColor(.black)
+            self.button.setTitleColor(.white, for: .normal)
+            self.textField.backgroundColor = .white
+            self.textField.textColor = .black
         }
 
         button.translatesAutoresizingMaskIntoConstraints = false
