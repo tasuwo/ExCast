@@ -15,6 +15,10 @@
 		2C01F326239CCEF300EF009E /* Domain.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C01F316239CCEF300EF009E /* Domain.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2C01F329239CCEF300EF009E /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C01F314239CCEF300EF009E /* Domain.framework */; };
 		2C01F32A239CCEF300EF009E /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2C01F314239CCEF300EF009E /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2C022FE1241E6D290087080F /* ExCastUIKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C022FDF241E6D290087080F /* ExCastUIKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2C022FE4241E6D290087080F /* ExCastUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C022FDD241E6D290087080F /* ExCastUIKit.framework */; };
+		2C022FE5241E6D290087080F /* ExCastUIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2C022FDD241E6D290087080F /* ExCastUIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2C022FF0241E6D5B0087080F /* ExCastUIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C022FEF241E6D5B0087080F /* ExCastUIKitTests.swift */; };
 		2C122DE922CA619E00011558 /* ShowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C122DE822CA619E00011558 /* ShowListViewController.swift */; };
 		2C122DEB22CA6BB300011558 /* ShowListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C122DEA22CA6BB300011558 /* ShowListViewController.xib */; };
 		2C122DED22CBAD4D00011558 /* ShowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C122DEC22CBAD4D00011558 /* ShowCell.xib */; };
@@ -213,6 +217,20 @@
 			remoteGlobalIDString = 2C01F313239CCEF300EF009E;
 			remoteInfo = Domain;
 		};
+		2C022FE2241E6D290087080F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2CA13C4E22C8D7D600CC6072 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C022FDC241E6D290087080F;
+			remoteInfo = ExCastUIKit;
+		};
+		2C022FF2241E6D5B0087080F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2CA13C4E22C8D7D600CC6072 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2CA13C5522C8D7D700CC6072;
+			remoteInfo = ExCast;
+		};
 		2C354CFF241D09F4007BCB00 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2CA13C4E22C8D7D600CC6072 /* Project object */;
@@ -309,6 +327,7 @@
 				2C7DA04523B67F26000CD2E4 /* Common.framework in Embed Frameworks */,
 				2C354D02241D09F4007BCB00 /* SharedTestHelper.framework in Embed Frameworks */,
 				2C01F32A239CCEF300EF009E /* Domain.framework in Embed Frameworks */,
+				2C022FE5241E6D290087080F /* ExCastUIKit.framework in Embed Frameworks */,
 				2C01F308239CCECA00EF009E /* Infrastructure.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -378,6 +397,12 @@
 		2C01F317239CCEF300EF009E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C01F31C239CCEF300EF009E /* DomainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DomainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C01F325239CCEF300EF009E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2C022FDD241E6D290087080F /* ExCastUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExCastUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C022FDF241E6D290087080F /* ExCastUIKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExCastUIKit.h; sourceTree = "<group>"; };
+		2C022FE0241E6D290087080F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2C022FED241E6D5B0087080F /* ExCastUIKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExCastUIKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C022FEF241E6D5B0087080F /* ExCastUIKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExCastUIKitTests.swift; sourceTree = "<group>"; };
+		2C022FF1241E6D5B0087080F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C122DE822CA619E00011558 /* ShowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowListViewController.swift; sourceTree = "<group>"; };
 		2C122DEA22CA6BB300011558 /* ShowListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowListViewController.xib; sourceTree = "<group>"; };
 		2C122DEC22CBAD4D00011558 /* ShowCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowCell.xib; sourceTree = "<group>"; };
@@ -581,6 +606,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2C022FDA241E6D290087080F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C022FEA241E6D5B0087080F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2C354CF7241D09F4007BCB00 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -629,6 +668,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C01F329239CCEF300EF009E /* Domain.framework in Frameworks */,
+				2C022FE4241E6D290087080F /* ExCastUIKit.framework in Frameworks */,
 				2C7DA04423B67F26000CD2E4 /* Common.framework in Frameworks */,
 				2C01F306239CCEC900EF009E /* Infrastructure.framework in Frameworks */,
 				2C354D01241D09F4007BCB00 /* SharedTestHelper.framework in Frameworks */,
@@ -683,6 +723,24 @@
 				2C01F325239CCEF300EF009E /* Info.plist */,
 			);
 			path = DomainTests;
+			sourceTree = "<group>";
+		};
+		2C022FDE241E6D290087080F /* ExCastUIKit */ = {
+			isa = PBXGroup;
+			children = (
+				2C022FDF241E6D290087080F /* ExCastUIKit.h */,
+				2C022FE0241E6D290087080F /* Info.plist */,
+			);
+			path = ExCastUIKit;
+			sourceTree = "<group>";
+		};
+		2C022FEE241E6D5B0087080F /* ExCastUIKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				2C022FEF241E6D5B0087080F /* ExCastUIKitTests.swift */,
+				2C022FF1241E6D5B0087080F /* Info.plist */,
+			);
+			path = ExCastUIKitTests;
 			sourceTree = "<group>";
 		};
 		2C122DE722CA60D600011558 /* ShowList */ = {
@@ -1155,6 +1213,8 @@
 				2CA13C5822C8D7D700CC6072 /* ExCast */,
 				2C6391C022E1995000B5EBE0 /* ExCastTests */,
 				2C354CFB241D09F4007BCB00 /* SharedTestHelper */,
+				2C022FDE241E6D290087080F /* ExCastUIKit */,
+				2C022FEE241E6D5B0087080F /* ExCastUIKitTests */,
 				490B0DF8FD02A7DD13AE2ACB /* Frameworks */,
 				2C01F2F2239CCEC900EF009E /* Infrastructure */,
 				2C01F2FF239CCEC900EF009E /* InfrastructureTests */,
@@ -1177,6 +1237,8 @@
 				2C7DA02F23B67F25000CD2E4 /* Common.framework */,
 				2C7DA03723B67F25000CD2E4 /* CommonTests.xctest */,
 				2C354CFA241D09F4007BCB00 /* SharedTestHelper.framework */,
+				2C022FDD241E6D290087080F /* ExCastUIKit.framework */,
+				2C022FED241E6D5B0087080F /* ExCastUIKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1449,6 +1511,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2C022FD8241E6D290087080F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C022FE1241E6D290087080F /* ExCastUIKit.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2C354CF5241D09F4007BCB00 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1549,6 +1619,42 @@
 			name = DomainTests;
 			productName = DomainTests;
 			productReference = 2C01F31C239CCEF300EF009E /* DomainTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2C022FDC241E6D290087080F /* ExCastUIKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C022FE8241E6D290087080F /* Build configuration list for PBXNativeTarget "ExCastUIKit" */;
+			buildPhases = (
+				2C022FD8241E6D290087080F /* Headers */,
+				2C022FD9241E6D290087080F /* Sources */,
+				2C022FDA241E6D290087080F /* Frameworks */,
+				2C022FDB241E6D290087080F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ExCastUIKit;
+			productName = ExCastUIKit;
+			productReference = 2C022FDD241E6D290087080F /* ExCastUIKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		2C022FEC241E6D5B0087080F /* ExCastUIKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C022FF4241E6D5B0087080F /* Build configuration list for PBXNativeTarget "ExCastUIKitTests" */;
+			buildPhases = (
+				2C022FE9241E6D5B0087080F /* Sources */,
+				2C022FEA241E6D5B0087080F /* Frameworks */,
+				2C022FEB241E6D5B0087080F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2C022FF3241E6D5B0087080F /* PBXTargetDependency */,
+			);
+			name = ExCastUIKitTests;
+			productName = ExCastUIKitTests;
+			productReference = 2C022FED241E6D5B0087080F /* ExCastUIKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		2C354CF9241D09F4007BCB00 /* SharedTestHelper */ = {
@@ -1667,6 +1773,7 @@
 				2C01F328239CCEF300EF009E /* PBXTargetDependency */,
 				2C7DA04323B67F26000CD2E4 /* PBXTargetDependency */,
 				2C354D00241D09F4007BCB00 /* PBXTargetDependency */,
+				2C022FE3241E6D290087080F /* PBXTargetDependency */,
 			);
 			name = ExCast;
 			productName = ExCast;
@@ -1694,6 +1801,13 @@
 						CreatedOnToolsVersion = 11.2;
 					};
 					2C01F31B239CCEF300EF009E = {
+						CreatedOnToolsVersion = 11.2;
+						TestTargetID = 2CA13C5522C8D7D700CC6072;
+					};
+					2C022FDC241E6D290087080F = {
+						CreatedOnToolsVersion = 11.2;
+					};
+					2C022FEC241E6D5B0087080F = {
 						CreatedOnToolsVersion = 11.2;
 						TestTargetID = 2CA13C5522C8D7D700CC6072;
 					};
@@ -1751,6 +1865,8 @@
 				2C7DA02E23B67F25000CD2E4 /* Common */,
 				2C7DA03623B67F25000CD2E4 /* CommonTests */,
 				2C354CF9241D09F4007BCB00 /* SharedTestHelper */,
+				2C022FDC241E6D290087080F /* ExCastUIKit */,
+				2C022FEC241E6D5B0087080F /* ExCastUIKitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1778,6 +1894,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2C01F31A239CCEF300EF009E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C022FDB241E6D290087080F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C022FEB241E6D5B0087080F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2104,6 +2234,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2C022FD9241E6D290087080F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C022FE9241E6D5B0087080F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C022FF0241E6D5B0087080F /* ExCastUIKitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2C354CF6241D09F4007BCB00 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2225,6 +2370,16 @@
 			isa = PBXTargetDependency;
 			target = 2C01F313239CCEF300EF009E /* Domain */;
 			targetProxy = 2C01F327239CCEF300EF009E /* PBXContainerItemProxy */;
+		};
+		2C022FE3241E6D290087080F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2C022FDC241E6D290087080F /* ExCastUIKit */;
+			targetProxy = 2C022FE2241E6D290087080F /* PBXContainerItemProxy */;
+		};
+		2C022FF3241E6D5B0087080F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2CA13C5522C8D7D700CC6072 /* ExCast */;
+			targetProxy = 2C022FF2241E6D5B0087080F /* PBXContainerItemProxy */;
 		};
 		2C354D00241D09F4007BCB00 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2527,6 +2682,106 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCast.DomainTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExCast.app/ExCast";
+			};
+			name = Release;
+		};
+		2C022FE6241E6D290087080F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = RY2377PP7S;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = ExCastUIKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCastUIKit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		2C022FE7241E6D290087080F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = RY2377PP7S;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = ExCastUIKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCastUIKit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		2C022FF5241E6D5B0087080F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = RY2377PP7S;
+				INFOPLIST_FILE = ExCastUIKitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCastUIKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExCast.app/ExCast";
+			};
+			name = Debug;
+		};
+		2C022FF6241E6D5B0087080F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = RY2377PP7S;
+				INFOPLIST_FILE = ExCastUIKitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.tasuwo.ExCastUIKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2990,6 +3245,24 @@
 			buildConfigurations = (
 				2C01F32F239CCEF300EF009E /* Debug */,
 				2C01F330239CCEF300EF009E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2C022FE8241E6D290087080F /* Build configuration list for PBXNativeTarget "ExCastUIKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C022FE6241E6D290087080F /* Debug */,
+				2C022FE7241E6D290087080F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2C022FF4241E6D5B0087080F /* Build configuration list for PBXNativeTarget "ExCastUIKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C022FF5241E6D5B0087080F /* Debug */,
+				2C022FF6241E6D5B0087080F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

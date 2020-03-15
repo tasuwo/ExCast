@@ -2,7 +2,7 @@ TEST_HELPER_TARGET     := SharedTestHelper
 
 SWIFT_FORMAT           := ./Pods/SwiftFormat/CommandLineTool/swiftformat
 SWIFT_FORMAT_CONFIG    := .swiftformat
-FORMAT_TARGETS         := ExCast ExCastTests Domain DomainTests Infrastructure InfrastructureTests Common CommonTests SharedTestHelper
+FORMAT_TARGETS         := ExCast ExCastTests ExCastUIKit ExCastUIKitTests Domain DomainTests Infrastructure InfrastructureTests Common CommonTests SharedTestHelper
 FORMAT_EXCLUDE_TARGETS := Pods
 
 SWIFT_LINT             := ./Pods/SwiftLint/swiftlint

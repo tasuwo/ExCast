@@ -68,6 +68,16 @@
                ReferencedContainer = "container:ExCast.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2C022FEC241E6D5B0087080F"
+               BuildableName = "ExCastUIKitTests.xctest"
+               BlueprintName = "ExCastUIKitTests"
+               ReferencedContainer = "container:ExCast.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
