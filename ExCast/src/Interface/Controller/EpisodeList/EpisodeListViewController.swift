@@ -81,6 +81,7 @@ extension EpisodeListViewController {
 
         Driver
             .zip(dependency.outputs.isLoading, dependency.outputs.isLoading.skip(1))
+            .skip(1)
             .drive(onNext: { [weak self] diff in
                 switch diff {
                 case (false, true):
