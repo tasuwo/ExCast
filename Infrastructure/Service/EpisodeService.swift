@@ -37,12 +37,12 @@ public class EpisodeService: EpisodeServiceProtocol {
 
         // MARK: Refresh
 
-        let refreshState = command
+        let refreshState = self.command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .filter { $0.isRefresh }
             .map { _ in EpisodeServiceQuery.progress }
 
-        command
+        self.command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .filter { $0.isRefresh }
             .compactMap { command -> Podcast.Identity? in
@@ -69,7 +69,7 @@ public class EpisodeService: EpisodeServiceProtocol {
 
         // MARK: Fetch
 
-        let fetchState = command
+        let fetchState = self.command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .filter { $0.isFetch }
             .map { _ in EpisodeServiceQuery.progress }
@@ -77,17 +77,13 @@ public class EpisodeService: EpisodeServiceProtocol {
         let fetchedState = self.gateway.state
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .compactMap { query -> Podcast? in
-                switch query {
-                case let .content(.some(podcast)):
-                    return podcast
-                default:
-                    return nil
-                }
+                guard case let .content(.some(podcast)) = query else { return nil }
+                return podcast
             }
-            .flatMap { [self] fetchedPodcast -> Observable<Podcast.Identity> in
-                self.podcastRepository.updateEpisodesMeta(fetchedPodcast).andThen(.just(fetchedPodcast.identity))
+            .concatMap { [unowned self] podcast -> Single<Podcast.Identity> in
+                self.podcastRepository.updateEpisodesMeta(podcast).andThen(.just(podcast.identity))
             }
-            .flatMapLatest { [unowned self] feedUrl -> Single<(Podcast.Identity, [Episode])> in
+            .concatMap { [unowned self] feedUrl -> Single<(Podcast.Identity, [Episode])> in
                 return self.episodeRepository.getAll(feedUrl).map { (feedUrl, $0) }
             }
             .map { (id, episodes) -> EpisodeServiceQuery in .content(id, episodes) }

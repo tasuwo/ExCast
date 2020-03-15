@@ -109,9 +109,8 @@ class ShowListViewModel: ShowListViewModelType, ShowListViewModelInputs, ShowLis
 
         self.podcastsLoaded
             .subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                self._isLoading.accept(true)
-                self.service.command.accept(.refresh)
+                self?._isLoading.accept(true)
+                self?.service.command.accept(.refresh)
             })
             .disposed(by: self.disposeBag)
 

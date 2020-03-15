@@ -46,12 +46,14 @@ public class PodcastGateway: PodcastGatewayProtocol {
                 guard case let .fetch(feedUrl) = command else { return nil }
                 return feedUrl
             }
-            .concatMap { [unowned self] url in self.fetch(feed: url) }
-            .subscribe { event in
+            .concatMap { [unowned self] url in
+                self.fetch(feed: url).asObservable().materialize()
+            }
+            .subscribe { [unowned self] event in
                 switch event {
-                case let .next(podcast):
+                case let .next(.next(podcast)):
                     self.fetchedState.accept(.content(podcast))
-                case .error:
+                case .next(.error(_)):
                     self.fetchedState.accept(.error)
                 default:
                     break
