@@ -11,6 +11,7 @@ abstract_target 'All' do
     pod 'RxDataSources',  '~> 4.0'
 
     pod 'SwiftFormat/CLI'
+    pod 'SwiftLint'
   end
 
   target 'Domain' do
