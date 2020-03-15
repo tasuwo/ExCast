@@ -1,4 +1,4 @@
-platform :ios, '12.2'
+platform :ios, '13'
 
 abstract_target 'All' do
   use_frameworks!
