@@ -10,13 +10,13 @@ import UIKit
 
 extension UIColor {
     var rgbString: String {
-        var r: CGFloat = -1
-        var g: CGFloat = -1
-        var b: CGFloat = -1
-        getRed(&r, green: &g, blue: &b, alpha: nil)
-        return [r, g, b].reduce("") { res, value in
+        var red: CGFloat = -1
+        var green: CGFloat = -1
+        var blue: CGFloat = -1
+        getRed(&red, green: &green, blue: &blue, alpha: nil)
+        return [red, green, blue].reduce(into: "") { res, value in
             let intval = Int(round(value * 255))
-            return res + (NSString(format: "%02X", intval) as String)
+            return res += (NSString(format: "%02X", intval) as String)
         }
     }
 }

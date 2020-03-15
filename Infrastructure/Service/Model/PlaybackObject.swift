@@ -1,6 +1,8 @@
 // Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
+// swiftlint:disable all
+
 import Domain
 import RealmSwift
 
@@ -15,7 +17,7 @@ extension Playback: Persistable {
 
     func asManagedObject() -> PlaybackObject {
         let obj = PlaybackObject()
-        obj.playbackPositionSec.value = playbackPositionSec
+        obj.playbackPositionSec.value = self.playbackPositionSec
         return obj
     }
 }

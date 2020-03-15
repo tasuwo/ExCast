@@ -9,30 +9,30 @@
 import UIKit
 
 class ShowCell: UITableViewCell {
-    public var artwork: UIImage? {
+    var artwork: UIImage? {
         set {
             showArtwork.image = newValue != nil ? newValue : emptyThumbnail(by: .gray)
         }
         get {
-            return showArtwork.image
+            showArtwork.image
         }
     }
 
-    public var title: String? {
+    var title: String? {
         set {
             showTitle.text = newValue
         }
         get {
-            return showTitle.text
+            showTitle.text
         }
     }
 
-    public var author: String? {
+    var author: String? {
         set {
             showAuthor.text = newValue
         }
         get {
-            return showAuthor.text
+            showAuthor.text
         }
     }
 

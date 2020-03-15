@@ -18,19 +18,21 @@ protocol EpisodePlayerSeekBarContainerDelegate: AnyObject {
 }
 
 class EpisodePlayerSeekBarContainer: UIView {
-    weak var delegate: EpisodePlayerSeekBarContainerDelegate!
+    // MARK: - Properties
 
-    public var duration: Double {
+    weak var delegate: EpisodePlayerSeekBarContainerDelegate?
+
+    var duration: Double {
         set {
             bar.maximumValue = CGFloat(newValue)
             remainingTimeLabel.text = (currentTime - newValue).asTimeString()
         }
         get {
-            return Double(bar.maximumValue)
+            Double(bar.maximumValue)
         }
     }
 
-    public var currentTime: Double {
+    var currentTime: Double {
         set {
             bar.value = CGFloat(newValue)
             currentTimeLabel.text = newValue.asTimeString()
@@ -49,26 +51,6 @@ class EpisodePlayerSeekBarContainer: UIView {
     @IBOutlet var currentTimeLabel: UILabel!
     @IBOutlet var remainingTimeLabel: UILabel!
 
-    // MARK: - IBActions
-
-    @IBAction func onTouchSeekBar(_: Any) {
-        delegate.didStartSeek()
-    }
-
-    @IBAction func onTouchUpInsideSeekbar(_ slider: MDCSlider) {
-        // TODO: Disable seek by single tap.
-        delegate.didChangeSeekValue(to: TimeInterval(slider.value))
-        delegate.didEndSeek()
-    }
-
-    @IBAction func onTouchUpOutsideSeekbar(_: Any) {
-        delegate.didEndSeek()
-    }
-
-    @IBAction func onValueChangedSeekBar(_ slider: MDCSlider) {
-        delegate.didChangeSeekValue(to: TimeInterval(slider.value))
-    }
-
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {
@@ -81,6 +63,26 @@ class EpisodePlayerSeekBarContainer: UIView {
         super.init(coder: aDecoder)
         loadFromNib()
         setupAppearences()
+    }
+
+    // MARK: - IBActions
+
+    @IBAction func onTouchSeekBar(_: Any) {
+        delegate?.didStartSeek()
+    }
+
+    @IBAction func onTouchUpInsideSeekbar(_ slider: MDCSlider) {
+        // TODO: Disable seek by single tap.
+        delegate?.didChangeSeekValue(to: TimeInterval(slider.value))
+        delegate?.didEndSeek()
+    }
+
+    @IBAction func onTouchUpOutsideSeekbar(_: Any) {
+        delegate?.didEndSeek()
+    }
+
+    @IBAction func onValueChangedSeekBar(_ slider: MDCSlider) {
+        delegate?.didChangeSeekValue(to: TimeInterval(slider.value))
     }
 
     // MARK: - Methods

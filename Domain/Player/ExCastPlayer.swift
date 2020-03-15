@@ -14,11 +14,15 @@ private var kAudioPlayerContext: UInt8 = 0
 
 private class DelegateWrapper {
     weak var delegate: ExCastPlayerDelegate?
-    init(_ d: ExCastPlayerDelegate) { delegate = d }
+
+    init(_ delegate: ExCastPlayerDelegate) {
+        self.delegate = delegate
+    }
 }
 
 public class ExCastPlayer: NSObject {
-    private var createdPlayer_: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    private var _isCreatedPlayer: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    // swiftlint:disable:next implicitly_unwrapped_optional
     private var player: AVPlayer!
     private let playerItem: AVPlayerItem
 
@@ -64,6 +68,7 @@ public class ExCastPlayer: NSObject {
 
                     self.createdPlayer.accept(true)
                 }
+
             default:
                 break
                 // TODO:
@@ -81,7 +86,8 @@ public class ExCastPlayer: NSObject {
 
     // MARK: - Private Methods
 
-    @objc private func handleInterruption(notification: Notification) {
+    @objc
+    private func handleInterruption(notification: Notification) {
         guard let userInfo = notification.userInfo,
             let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
             let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
@@ -94,6 +100,7 @@ public class ExCastPlayer: NSObject {
                 $0.delegate?.didChangePlayingState(to: .pause)
                 $0.delegate?.didChangePlaybackRate(to: 0)
             }
+
         case .ended:
             guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
             let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
@@ -122,7 +129,7 @@ public class ExCastPlayer: NSObject {
 
     // MARK: - NSObject (override)
 
-    public override func observeValue(forKeyPath keyPath: String?,
+    override public func observeValue(forKeyPath keyPath: String?,
                                       of object: Any?,
                                       change: [NSKeyValueChangeKey: Any]?,
                                       context: UnsafeMutableRawPointer?) {
@@ -135,7 +142,7 @@ public class ExCastPlayer: NSObject {
             let status: AVPlayerItem.Status
 
             if let statusNumber = change?[.newKey] as? NSNumber {
-                status = AVPlayerItem.Status(rawValue: statusNumber.intValue)!
+                status = AVPlayerItem.Status(rawValue: statusNumber.intValue) ?? .unknown
             } else {
                 status = .unknown
             }
@@ -143,11 +150,14 @@ public class ExCastPlayer: NSObject {
             switch status {
             case .readyToPlay:
                 self.delegates.forEach { $0.delegate?.didPrepare(duration: self.playerItem.duration.seconds) }
+
             case .failed:
                 // TODO:
                 break
+
             case .unknown:
                 break
+
             default:
                 break
             }
@@ -159,7 +169,7 @@ extension ExCastPlayer: ExCastPlayerProtocol {
     // MARK: - ExCastPlayerProtocol
 
     public var createdPlayer: BehaviorRelay<Bool> {
-        return self.createdPlayer_
+        self._isCreatedPlayer
     }
 
     public func play() {

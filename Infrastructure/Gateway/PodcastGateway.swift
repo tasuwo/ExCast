@@ -6,6 +6,9 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+// TODO: リファクタして外す
+// swiftlint:disable all
+
 import Common
 import Domain
 import Foundation
@@ -53,8 +56,10 @@ public class PodcastGateway: PodcastGatewayProtocol {
                 switch event {
                 case let .next(.next(podcast)):
                     self.fetchedState.accept(.content(podcast))
-                case .next(.error(_)):
+
+                case .next(.error):
                     self.fetchedState.accept(.error)
+
                 default:
                     break
                 }
@@ -70,7 +75,7 @@ public class PodcastGateway: PodcastGatewayProtocol {
     // MARK: - Private Methods
 
     private func fetch(feed: URL) -> Single<Podcast> {
-        return Single.create { observer in
+        Single.create { observer in
             let task = self.session.dataTask(with: feed) { [unowned self] data, res, err in
                 if let error = err {
                     observer(.error(error))

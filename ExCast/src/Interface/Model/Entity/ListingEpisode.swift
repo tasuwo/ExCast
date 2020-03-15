@@ -31,15 +31,15 @@ struct ListingEpisode: Equatable {
     }
 
     func startedPlay() -> ListingEpisode {
-        return .init(indexPath: self.indexPath, episode: self.episode, isPlaying: true, currentPlaybackSec: self.currentPlaybackSec)
+        .init(indexPath: self.indexPath, episode: self.episode, isPlaying: true, currentPlaybackSec: self.currentPlaybackSec)
     }
 
     func finishedPlay() -> ListingEpisode {
-        return .init(indexPath: self.indexPath, episode: self.episode, isPlaying: false, currentPlaybackSec: self.currentPlaybackSec)
+        .init(indexPath: self.indexPath, episode: self.episode, isPlaying: false, currentPlaybackSec: self.currentPlaybackSec)
     }
 
     func updated(playbackSec: Double?) -> ListingEpisode {
-        return .init(indexPath: self.indexPath, episode: self.episode, isPlaying: false, currentPlaybackSec: playbackSec)
+        .init(indexPath: self.indexPath, episode: self.episode, isPlaying: false, currentPlaybackSec: playbackSec)
     }
 }
 
@@ -49,6 +49,6 @@ extension ListingEpisode: IdentifiableType {
     typealias Identity = Episode.Identity
 
     var identity: String {
-        return episode.identity
+        episode.identity
     }
 }

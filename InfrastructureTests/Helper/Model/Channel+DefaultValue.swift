@@ -12,7 +12,7 @@ extension Channel {
         artwork: URL = URL(string: "http://example.com")!,
         categories: [String] = [],
         explicit: Bool = false,
-        language: Language = .English,
+        language: Language = .english,
         author: String? = nil,
         site: URL? = nil,
         owner: ChannelOwner? = nil

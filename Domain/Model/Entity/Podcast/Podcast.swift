@@ -40,6 +40,6 @@ extension Podcast: IdentifiableType {
     public typealias Identity = URL
 
     public var identity: URL {
-        return feedUrl
+        feedUrl
     }
 }

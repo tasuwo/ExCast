@@ -6,6 +6,9 @@
 //  Copyright © 2019 Tasuku Tozawa. All rights reserved.
 //
 
+// TODO: リファクタして外す
+// swiftlint:disable all
+
 import AWSSNS
 import Domain
 
@@ -21,7 +24,7 @@ class PushNotificationProviderGateway: PushNotificationProviderGatewayProtocol {
     func register(_ token: Data, context: NotificationContext, completion: @escaping (Result<ProviderKey, PushNotificationProviderGatewayError>) -> Void) {
         guard let jsonData = try? JSONEncoder().encode(context),
             let jsonString = String(data: jsonData, encoding: .utf8) else {
-            completion(Result.failure(.InvalidParameterError))
+            completion(Result.failure(.invalidParameterError))
             return
         }
         let tokenString = token.map { String(format: "%.2hhx", $0) }.joined()
@@ -39,15 +42,16 @@ class PushNotificationProviderGateway: PushNotificationProviderGatewayProtocol {
                 switch (err.domain, err.code) {
                 case (AWSSNSErrorDomain, AWSSNSErrorType.invalidParameter.rawValue):
                     // TODO: contextの不整合が発生したら更新したい
-                    completion(Result.failure(.InternalServerError(err)))
+                    completion(Result.failure(.internalServerError(err)))
+
                 default:
-                    completion(Result.failure(.InternalServerError(err)))
+                    completion(Result.failure(.internalServerError(err)))
                 }
                 return nil
             }
 
             guard let endpointArn = task.result?.endpointArn else {
-                completion(Result.failure(.InvalidResponse))
+                completion(Result.failure(.invalidResponse))
                 return nil
             }
 
@@ -59,7 +63,7 @@ class PushNotificationProviderGateway: PushNotificationProviderGatewayProtocol {
     func update(_ key: ProviderKey, context: NotificationContext, completion: @escaping (Result<Void, PushNotificationProviderGatewayError>) -> Void) {
         guard let jsonData = try? JSONEncoder().encode(context),
             let jsonString = String(data: jsonData, encoding: .utf8) else {
-            completion(Result.failure(.InvalidParameterError))
+            completion(Result.failure(.invalidParameterError))
             return
         }
 
@@ -74,7 +78,7 @@ class PushNotificationProviderGateway: PushNotificationProviderGatewayProtocol {
 
         snsClient.setEndpointAttributes(input) { err in
             if let err = err {
-                completion(.failure(.InternalServerError(err)))
+                completion(.failure(.internalServerError(err)))
                 return
             }
 
@@ -91,7 +95,7 @@ class PushNotificationProviderGateway: PushNotificationProviderGatewayProtocol {
 
         snsClient.deleteEndpoint(input) { err in
             if let err = err {
-                completion(.failure(.InternalServerError(err)))
+                completion(.failure(.internalServerError(err)))
                 return
             }
 

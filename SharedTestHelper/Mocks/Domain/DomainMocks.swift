@@ -133,7 +133,7 @@ public class ExCastPlayerProtocolMock: ExCastPlayerProtocol {
     }
 }
 
-public class ThumbnailDowloaderProtocolMock: ThumbnailDowloaderProtocol {
+public class ThumbnailDownloaderProtocolMock: ThumbnailDownloaderProtocol {
     private var _doneInit = false
 
     public init() { _doneInit = true }

@@ -15,7 +15,7 @@ import RxSwift
 class PlayerControllerViewModel {
     private let show: Show
     private let episode: Episode
-    private var player: ExCastPlayerProtocol!
+    private var player: ExCastPlayerProtocol?
     private let configuration: PlayerConfiguration
     private let remoteCommands: RemoteCommandHandlerProtocol
     private let episodeService: EpisodeServiceProtocol
@@ -49,17 +49,18 @@ class PlayerControllerViewModel {
         self.initialPlaybackSec = playbackSec
 
         self.currentTime
-            .filter { [unowned self] _ in self.preventToSyncTime.value == false }
+            .filter { [weak self] _ in self?.preventToSyncTime.value == false }
             .bind(to: displayCurrentTime)
             .disposed(by: disposeBag)
 
         self.isSliderGrabbed
-            .filter { [unowned self] _ in self.isPrepared.value }
-            .bind(onNext: { [unowned self] grabbed in
+            .filter { [weak self] _ in self?.isPrepared.value ?? false }
+            .bind(onNext: { [weak self] grabbed in
+                guard let self = self else { return }
                 if grabbed {
                     self.preventToSyncTime.accept(true)
                 } else {
-                    self.player.seek(to: self.displayCurrentTime.value) { isSucceeded in
+                    self.player?.seek(to: self.displayCurrentTime.value) { isSucceeded in
                         guard isSucceeded else { return }
                         self.displayCurrentTime.accept(self.currentTime.value)
                         self.preventToSyncTime.accept(false)
@@ -69,7 +70,8 @@ class PlayerControllerViewModel {
             .disposed(by: disposeBag)
 
         self.currentTime
-            .bind(onNext: { [unowned self] time in
+            .bind(onNext: { [weak self] time in
+                guard let self = self else { return }
                 self.episodeService.command.accept(.update(self.episode.identity, .init(playbackPositionSec: Int(time))))
             })
             .disposed(by: disposeBag)
@@ -77,14 +79,18 @@ class PlayerControllerViewModel {
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let self = self else { return }
 
-            self.player = ExCastPlayer(contentUrl: self.episode.meta.enclosure.url,
-                                       playImmediatedly: true,
-                                       // 指定された再生位置から再生を開始する
-                                       initialPlaybackPositionSec: self.initialPlaybackSec ?? 0)
-            self.player.register(delegate: self)
-            self.remoteCommands.register(delegate: self.player)
+            self.player = ExCastPlayer(
+                contentUrl: self.episode.meta.enclosure.url,
+                playImmediatedly: true,
+                // 指定された再生位置から再生を開始する
+                initialPlaybackPositionSec: self.initialPlaybackSec ?? 0
+            )
+            self.player?.register(delegate: self)
+            if let player = self.player {
+                self.remoteCommands.register(delegate: player)
+            }
 
-            self.player.createdPlayer
+            self.player?.createdPlayer
                 .bind(to: self.createdPlayer)
                 .disposed(by: self.disposeBag)
         }
@@ -94,18 +100,18 @@ class PlayerControllerViewModel {
 
     func playback() {
         if isPlaying.value {
-            player.pause()
+            player?.pause()
         } else {
-            player.play()
+            player?.play()
         }
     }
 
     func skipForward() {
-        player.skipForward(duration: configuration.forwardSkipTime) { _ in }
+        player?.skipForward(duration: configuration.forwardSkipTime) { _ in }
     }
 
     func skipBackward() {
-        player.skipBackward(duration: configuration.backwardSkipTime) { _ in }
+        player?.skipBackward(duration: configuration.backwardSkipTime) { _ in }
     }
 }
 
@@ -123,6 +129,7 @@ extension PlayerControllerViewModel: ExCastPlayerDelegate {
         switch state {
         case .playing:
             isPlaying.accept(true)
+
         case .pause, .finish:
             isPlaying.accept(false)
         }

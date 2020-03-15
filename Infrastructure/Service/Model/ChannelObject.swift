@@ -1,6 +1,8 @@
 // Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
+// swiftlint:disable all
+
 import Domain
 import RealmSwift
 
@@ -24,16 +26,16 @@ extension Channel: Persistable {
 
     func asManagedObject() -> ChannelObject {
         let obj = ChannelObject()
-        obj.feedUrl = feedUrl.absoluteString
-        obj.title = title
-        obj.showDescription = showDescription
-        obj.artwork = artwork.absoluteString
-        categories.forEach { obj.categories.append($0) }
-        obj.explicit = explicit
-        obj.language = language.rawValue
-        obj.author = author
-        obj.site = site?.absoluteString
-        obj.owner = owner?.asManagedObject()
+        obj.feedUrl = self.feedUrl.absoluteString
+        obj.title = self.title
+        obj.showDescription = self.showDescription
+        obj.artwork = self.artwork.absoluteString
+        self.categories.forEach { obj.categories.append($0) }
+        obj.explicit = self.explicit
+        obj.language = self.language.rawValue
+        obj.author = self.author
+        obj.site = self.site?.absoluteString
+        obj.owner = self.owner?.asManagedObject()
         return obj
     }
 }

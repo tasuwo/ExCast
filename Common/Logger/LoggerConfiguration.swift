@@ -17,6 +17,7 @@ public struct LoggerConfiguration {
             switch self {
             case .console:
                 return ConsoleDestination()
+
             case .file:
                 return FileDestination()
             }

@@ -14,33 +14,34 @@ public protocol NotificationAction: CaseIterable {
 }
 
 extension NotificationAction {
-    func makeUNNotificationAction() -> UNNotificationAction {
-        return UNNotificationAction(identifier: identifier,
-                                    title: title,
-                                    options: UNNotificationActionOptions(rawValue: 0))
+    static func makeActions() -> [UNNotificationAction] {
+        Self.allCases.map { aCase in aCase.makeUNNotificationAction() }
     }
 
-    static func makeActions() -> [UNNotificationAction] {
-        return Self.allCases.map { `case` in `case`.makeUNNotificationAction() }
+    func makeUNNotificationAction() -> UNNotificationAction {
+        UNNotificationAction(identifier: identifier,
+                             title: title,
+                             options: UNNotificationActionOptions(rawValue: 0))
     }
 }
 
 public enum GeneralNotificationAction: String, NotificationAction {
-    case Accept
-    case Decline
+    case accept
+    case decline
 
     // MARK: - NotificationAction
 
     public var title: String {
         switch self {
-        case .Accept:
+        case .accept:
             return NSLocalizedString("Notification.General.Accept", comment: "")
-        case .Decline:
+
+        case .decline:
             return NSLocalizedString("Notification.General.Decline", comment: "")
         }
     }
 
     public var identifier: String {
-        return rawValue
+        rawValue
     }
 }

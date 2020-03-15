@@ -33,7 +33,7 @@ extension DependencyContainer: ViewControllerFactory {
     // MARK: - ViewControllerFactory
 
     func makeAppRootTabBarController() -> AppRootTabBarController {
-        return AppRootTabBarController(factory: self)
+        AppRootTabBarController(factory: self)
     }
 
     func makeShowListViewController() -> ShowListViewController {
@@ -76,11 +76,11 @@ extension DependencyContainer: ViewModelFactory {
     }
 
     func makePlayerInformationViewModel(id: Podcast.Identity, show: Show, episode: Episode) -> PlayerInformationViewModel {
-        return PlayerInformationViewModel(id: id, show: show, episode: episode)
+        PlayerInformationViewModel(id: id, show: show, episode: episode)
     }
 
     func makePlayingEpisodeViewModel() -> PlayingEpisodeViewModel {
-        return PlayingEpisodeViewModel()
+        PlayingEpisodeViewModel()
     }
 }
 
@@ -88,7 +88,7 @@ extension DependencyContainer: EpisodePlayerModalContainerFactory {
     // MARK: - EpisodePlayerModalPresenterFactory
 
     func makeEpisodePlayerModalContainerView() -> EpisodePlayerModalContainerViewProtocol? {
-        return self.episodePlayerModalContainerView
+        self.episodePlayerModalContainerView
     }
 }
 
@@ -96,6 +96,6 @@ extension DependencyContainer: EpisodePlayerModalBaseViewFactory {
     // MARK: - EpisodePlayerModalBaseViewFactory
 
     func makeEpisodePlayerModalBaseView() -> EpisodePlayerModalBaseViewProtocol? {
-        return self.episodePlayerModalBaseView
+        self.episodePlayerModalBaseView
     }
 }

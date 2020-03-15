@@ -26,11 +26,14 @@ public class NotificationService {
         let options: UNAuthorizationOptions = [.alert, .badge, .sound]
         notificationCenter.getNotificationSettings { setting in
             switch setting.authorizationStatus {
-            case .denied: break
+            case .denied:
+                break
+
             case .authorized, .provisional:
                 DispatchQueue.main.async {
                     UIApplication.shared.registerForRemoteNotifications()
                 }
+
             case .notDetermined:
                 UNUserNotificationCenter.current().requestAuthorization(options: options) { granted, err in
                     if let err = err {
@@ -45,7 +48,9 @@ public class NotificationService {
                         }
                     }
                 }
-            @unknown default: break
+
+            @unknown default:
+                break
             }
         }
     }
@@ -54,14 +59,14 @@ public class NotificationService {
         /*
          let context = self.repository.get()?.context ?? NotificationContext.default()
          self.gateway.register(deviceToken, context: context) { result in
-             switch result {
-             case let .success(key):
-                 let setting = NotificationSetting(key: key, deviceToken: deviceToken, context: context)
-                 try? self.repository.add(setting)
-             case let .failure(err):
-                 // TODO:
-                 Swift.print(err)
-             }
+         switch result {
+         case let .success(key):
+         let setting = NotificationSetting(key: key, deviceToken: deviceToken, context: context)
+         try? self.repository.add(setting)
+         case let .failure(err):
+         // TODO:
+         Swift.print(err)
+         }
          }
          */
     }

@@ -12,7 +12,7 @@ public enum NotificationCategory: String, CaseIterable {
     case GENERAL
 
     var identifier: String {
-        return rawValue
+        rawValue
     }
 
     var actions: [UNNotificationAction] {
@@ -20,6 +20,10 @@ public enum NotificationCategory: String, CaseIterable {
         case .GENERAL:
             return GeneralNotificationAction.makeActions()
         }
+    }
+
+    public static func makeCategories() -> Set<UNNotificationCategory> {
+        Set(Self.allCases.map { aCase in aCase.makeUNNotificationCategory() })
     }
 
     public func makeUNNotificationCategory() -> UNNotificationCategory {
@@ -30,9 +34,5 @@ public enum NotificationCategory: String, CaseIterable {
                                           intentIdentifiers: [],
                                           options: .customDismissAction)
         }
-    }
-
-    public static func makeCategories() -> Set<UNNotificationCategory> {
-        return Set(Self.allCases.map { `case` in `case`.makeUNNotificationCategory() })
     }
 }

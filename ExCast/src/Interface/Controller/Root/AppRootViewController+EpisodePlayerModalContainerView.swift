@@ -27,11 +27,11 @@ extension AppRootViewController: EpisodePlayerModalContainerViewProtocol {
     // MARK: - EpisodePlayerModalPresenterProtocol
 
     var playingEpisode: BehaviorRelay<PlayingEpisode?> {
-        return self.playingEpisodeViewModel.playingEpisode
+        self.playingEpisodeViewModel.playingEpisode
     }
 
     var playerModal: EpisodePlayerModalProtocol? {
-        return self.playerModalViewController
+        self.playerModalViewController
     }
 
     func presentPlayerModal(id: Podcast.Identity, show: Show, episode: Episode, playbackSec: Double?) {
@@ -43,11 +43,13 @@ extension AppRootViewController: EpisodePlayerModalContainerViewProtocol {
             return
         }
 
-        let playerViewController = self.factory.makeEpisodePlayerViewController(id: id,
-                                                                                show: show,
-                                                                                episode: episode,
-                                                                                playbackSec: playbackSec,
-                                                                                playingEpisodeViewModel: self.playingEpisodeViewModel)
+        let playerViewController = self.factory.makeEpisodePlayerViewController(
+            id: id,
+            show: show,
+            episode: episode,
+            playbackSec: playbackSec,
+            playingEpisodeViewModel: self.playingEpisodeViewModel
+        )
         playerViewController.modalPresentationStyle = .formSheet
         playerViewController.modalTransitionStyle = .coverVertical
 

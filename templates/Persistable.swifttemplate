@@ -181,6 +181,7 @@ extension TypeName {
 -%>
 <% for type in types.all.filter({ $0.annotations["model"] != nil }) { -%>
 // sourcery:file:<%= type.name %>Object.swift
+// swiftlint:disable all
 
 import RealmSwift
 import Domain

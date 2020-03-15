@@ -30,7 +30,7 @@ public class EpisodeDetailView: UIView {
             episodeThumbnailView.image = newValue
         }
         get {
-            return episodeThumbnailView.image
+            episodeThumbnailView.image
         }
     }
 
@@ -40,13 +40,13 @@ public class EpisodeDetailView: UIView {
                 episodePubDateLabel.text = ""
                 return
             }
-            episodePubDateLabel.text = type(of: self).dateFormatter.string(from: date)
+            episodePubDateLabel.text = Self.dateFormatter.string(from: date)
         }
         get {
             guard let dateString = self.episodePubDateLabel.text else {
                 return nil
             }
-            return type(of: self).dateFormatter.date(from: dateString)
+            return Self.dateFormatter.date(from: dateString)
         }
     }
 
@@ -55,13 +55,13 @@ public class EpisodeDetailView: UIView {
             episodeTitleLabel.text = newValue
         }
         get {
-            return episodeTitleLabel.text ?? ""
+            episodeTitleLabel.text ?? ""
         }
     }
 
     public var duration: Double {
         set {
-            episodeDurationLabel.text = type(of: self).durationFormatter.string(from: newValue)
+            episodeDurationLabel.text = Self.durationFormatter.string(from: newValue)
         }
         get {
             // TODO:
@@ -71,7 +71,7 @@ public class EpisodeDetailView: UIView {
 
     public var episodeDescription: String {
         set {
-            let fontSize = episodeDescriptionLabel.font!.pointSize
+            let fontSize = episodeDescriptionLabel.font?.pointSize ?? 0
             let color: String = {
                 if #available(iOS 13.0, *) {
                     return UIColor.label.rgbString
@@ -97,7 +97,7 @@ public class EpisodeDetailView: UIView {
             }
         }
         get {
-            return episodeDescriptionLabel.attributedText.string
+            episodeDescriptionLabel.attributedText.string
         }
     }
 

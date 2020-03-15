@@ -43,8 +43,8 @@ final class EpisodeListViewModel: EpisodeListViewModelType, EpisodeListViewModel
 
     // MARK: - EpisodeListViewModelType
 
-    var inputs: EpisodeListViewModelInputs { return self }
-    var outputs: EpisodeListViewModelOutputs { return self }
+    var inputs: EpisodeListViewModelInputs { self }
+    var outputs: EpisodeListViewModelOutputs { self }
 
     // MARK: - EpisodeListViewModelInputs
 
@@ -155,7 +155,7 @@ final class EpisodeListViewModel: EpisodeListViewModelType, EpisodeListViewModel
             .combineLatest(self._episodes, self._playingEpisode)
             .compactMap { [weak self] episodes, playingEpisode -> [Episode.Identity: ListingEpisode]? in
                 guard let self = self else { return nil }
-                return type(of: self).buildListingEpisodes(by: episodes, with: playingEpisode, for: self._listingEpisodes.value)
+                return Self.buildListingEpisodes(by: episodes, with: playingEpisode, for: self._listingEpisodes.value)
             }
             .bind(to: self._listingEpisodes)
             .disposed(by: self.disposeBag)
@@ -168,11 +168,11 @@ final class EpisodeListViewModel: EpisodeListViewModelType, EpisodeListViewModel
                 return self?._listingEpisodes.value.first(where: { $0.value.indexPath == indexPath })?.value
             }
         selectedEpisode
-            .filter { [weak self] e in e.identity == self?._playingEpisode.value?.episode.identity }
+            .filter { [weak self] episode in episode.identity == self?._playingEpisode.value?.episode.identity }
             .bind(to: self._playingEpisodeSelected)
             .disposed(by: self.disposeBag)
         selectedEpisode
-            .filter { [weak self] e in e.identity != self?._playingEpisode.value?.episode.identity }
+            .filter { [weak self] episode in episode.identity != self?._playingEpisode.value?.episode.identity }
             .bind(to: self._newEpisodeSelected)
             .disposed(by: self.disposeBag)
 
@@ -199,24 +199,33 @@ final class EpisodeListViewModel: EpisodeListViewModelType, EpisodeListViewModel
 }
 
 extension EpisodeListViewModel {
-    static func buildListingEpisodes(by episodes: [Episode],
-                                     with playingEpisode: ListingEpisode?,
-                                     for currentEpisodes: [Episode.Identity: ListingEpisode]) -> [Episode.Identity: ListingEpisode] {
-        return episodes.enumerated().map { index, episode -> ListingEpisode in
-            if episode.id == playingEpisode?.identity {
-                return ListingEpisode(indexPath: .init(row: index, section: 0),
-                                      episode: episode,
-                                      isPlaying: true,
-                                      currentPlaybackSec: playingEpisode?.currentPlaybackSec)
-            } else {
-                let playbackSec = currentEpisodes[episode.identity]?.currentPlaybackSec
-                return ListingEpisode(indexPath: .init(row: index, section: 0),
-                                      episode: episode,
-                                      isPlaying: false,
-                                      currentPlaybackSec: playbackSec)
+    static func buildListingEpisodes(
+        by episodes: [Episode],
+        with playingEpisode: ListingEpisode?,
+        for currentEpisodes: [Episode.Identity: ListingEpisode]
+    ) -> [Episode.Identity: ListingEpisode] {
+        episodes
+            .enumerated()
+            .map { index, episode -> ListingEpisode in
+                if episode.id == playingEpisode?.identity {
+                    return ListingEpisode(
+                        indexPath: .init(row: index, section: 0),
+                        episode: episode,
+                        isPlaying: true,
+                        currentPlaybackSec: playingEpisode?.currentPlaybackSec
+                    )
+                } else {
+                    let playbackSec = currentEpisodes[episode.identity]?.currentPlaybackSec
+                    return ListingEpisode(
+                        indexPath: .init(row: index, section: 0),
+                        episode: episode,
+                        isPlaying: false,
+                        currentPlaybackSec: playbackSec
+                    )
+                }
             }
-        }.reduce(into: [Episode.Identity: ListingEpisode]()) { dic, episode in
-            dic[episode.identity] = episode
-        }
+            .reduce(into: [Episode.Identity: ListingEpisode]()) { dic, episode in
+                dic[episode.identity] = episode
+            }
     }
 }

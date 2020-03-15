@@ -36,8 +36,8 @@ class ShowListViewModel: ShowListViewModelType, ShowListViewModelInputs, ShowLis
 
     // MARK: - ShowListViewModelType
 
-    var inputs: ShowListViewModelInputs { return self }
-    var outputs: ShowListViewModelOutputs { return self }
+    var inputs: ShowListViewModelInputs { self }
+    var outputs: ShowListViewModelOutputs { self }
 
     // MARK: - ShowListViewModelInputs
 

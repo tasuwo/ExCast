@@ -14,16 +14,23 @@ import RxSwift
 import UIKit
 
 class ShowListViewController: UIViewController {
+    // MARK: - Type Aliases
+
     typealias Factory = ViewControllerFactory
     typealias Dependency = ShowListViewModelType
 
-    @IBOutlet var showListView: ShowListView!
+    // MARK: - Properties
+
     private let dataSourceContainer = ShowListViewDataSourceContainer()
 
     private let factory: Factory
     private let viewModel: ShowListViewModelType
 
     private let disposeBag = DisposeBag()
+
+    // MARK: - IBOutlets
+
+    @IBOutlet var showListView: ShowListView!
 
     // MARK: - Lifecycle
 
@@ -64,7 +71,8 @@ class ShowListViewController: UIViewController {
         navigationItem.setRightBarButton(item, animated: true)
     }
 
-    @objc private func didTapTabBar() {
+    @objc
+    private func didTapTabBar() {
         guard let navigationController = self.navigationController else { return }
 
         let nextViewController = factory.makeFeedUrlInputViewController()

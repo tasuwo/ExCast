@@ -15,10 +15,13 @@ import RxSwift
 import UIKit
 
 class EpisodeListViewController: UIViewController {
+    // MARK: - Type Aliases
+
     typealias Factory = ViewControllerFactory & EpisodePlayerModalContainerFactory
     typealias Dependency = EpisodeListViewModelType
 
-    @IBOutlet var episodeListView: EpisodeListView!
+    // MARK: - Properties
+
     private lazy var playerModalContainerView = self.factory.makeEpisodePlayerModalContainerView()
 
     private let factory: Factory
@@ -26,6 +29,10 @@ class EpisodeListViewController: UIViewController {
     private let dataSourceContainer = EpisodeListViewDataSourceContainer()
 
     private let disposeBag = DisposeBag()
+
+    // MARK: - IBOutlets
+
+    @IBOutlet var episodeListView: EpisodeListView!
 
     // MARK: - Lifecycle
 
@@ -86,8 +93,10 @@ extension EpisodeListViewController {
                 switch diff {
                 case (false, true):
                     self?.episodeListView.refreshControl?.beginRefreshing()
+
                 case (true, false):
                     self?.episodeListView.refreshControl?.endRefreshing()
+
                 default:
                     break
                 }
@@ -113,11 +122,14 @@ extension EpisodeListViewController {
                 switch diff {
                 case let (.none, .some(current)):
                     self?.episodeListView.showPlayingMarkIcon(at: current.indexPath)
+
                 case let (.some(prev), .some(current)):
                     self?.episodeListView.hidePlayingMarkIcon(at: prev.indexPath)
                     self?.episodeListView.showPlayingMarkIcon(at: current.indexPath)
+
                 case let (.some(prev), .none):
                     self?.episodeListView.hidePlayingMarkIcon(at: prev.indexPath)
+
                 default:
                     break
                 }
@@ -133,10 +145,12 @@ extension EpisodeListViewController {
         dependency.outputs.playerPresented
             .emit(onNext: { [weak self] listingEpisode in
                 guard let self = self else { return }
-                self.playerModalContainerView?.presentPlayerModal(id: self.viewModel.outputs.id,
-                                                                  show: self.viewModel.outputs.show,
-                                                                  episode: listingEpisode.episode,
-                                                                  playbackSec: listingEpisode.displayingPlaybackSec)
+                self.playerModalContainerView?.presentPlayerModal(
+                    id: self.viewModel.outputs.id,
+                    show: self.viewModel.outputs.show,
+                    episode: listingEpisode.episode,
+                    playbackSec: listingEpisode.displayingPlaybackSec
+                )
             })
             .disposed(by: self.disposeBag)
 
@@ -144,21 +158,28 @@ extension EpisodeListViewController {
             .emit(onNext: { [weak self] in
                 guard let self = self,
                     let selectedRow = self.episodeListView.indexPathForSelectedRow else { return }
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.episodeListView.beginUpdates()
-                    self.episodeListView.deselectRow(at: selectedRow, animated: true)
-                    self.episodeListView.endUpdates()
-                }, completion: { _ in })
+                UIView.animate(
+                    withDuration: 0.3,
+                    animations: {
+                        self.episodeListView.beginUpdates()
+                        self.episodeListView.deselectRow(at: selectedRow, animated: true)
+                        self.episodeListView.endUpdates()
+                    },
+                    completion: { _ in }
+                )
             })
             .disposed(by: self.disposeBag)
 
         // MARK: Inputs
 
-        self.episodeListView.rx.itemSelected.asSignal()
+        self.episodeListView.rx.itemSelected
+            .asSignal()
             .emit(to: dependency.inputs.episodeSelected)
             .disposed(by: disposeBag)
 
-        self.episodeListView.refreshControl?.rx.controlEvent(.valueChanged).asSignal()
+        self.episodeListView.refreshControl?.rx
+            .controlEvent(.valueChanged)
+            .asSignal()
             .emit(to: dependency.inputs.episodesFetched)
             .disposed(by: self.disposeBag)
 

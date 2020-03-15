@@ -96,31 +96,36 @@ public class RemoteCommandHandler: NSObject {
         commandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(didChangePlaybackPosition(_:)))
     }
 
-    @objc private func didPlay(_: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
+    @objc
+    private func didPlay(_: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         guard let player = self.player else { return .commandFailed }
         player.play()
         return .success
     }
 
-    @objc private func didPause(_: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
+    @objc
+    private func didPause(_: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         guard let player = self.player else { return .commandFailed }
         player.pause()
         return .success
     }
 
-    @objc private func didSkipForward(_: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
+    @objc
+    private func didSkipForward(_: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         guard let player = self.player else { return .commandFailed }
         player.skipForward(duration: configuration.forwardSkipTime) { _ in }
         return .success
     }
 
-    @objc private func didSkipBackward(_: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
+    @objc
+    private func didSkipBackward(_: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         guard let player = self.player else { return .commandFailed }
         player.skipBackward(duration: configuration.backwardSkipTime) { _ in }
         return .success
     }
 
-    @objc private func didChangePlaybackPosition(_ event: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
+    @objc
+    private func didChangePlaybackPosition(_ event: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         guard let player = self.player,
             let event = event as? MPChangePlaybackPositionCommandEvent else {
             return .commandFailed

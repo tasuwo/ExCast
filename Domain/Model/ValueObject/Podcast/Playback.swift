@@ -23,6 +23,6 @@ public struct Playback: Codable, Equatable {
 
 extension Playback {
     public static func defaultValue() -> Playback {
-        return .init(playbackPositionSec: nil)
+        .init(playbackPositionSec: nil)
     }
 }

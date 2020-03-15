@@ -14,7 +14,7 @@ public enum ThumbnailDownloadError: Error {
 }
 
 /// @mockable
-public protocol ThumbnailDowloaderProtocol {
+public protocol ThumbnailDownloaderProtocol {
     func startDownload(by url: URL, completion: @escaping (Result<UIImage, Error>) -> Void)
     func cancelDownload()
 }

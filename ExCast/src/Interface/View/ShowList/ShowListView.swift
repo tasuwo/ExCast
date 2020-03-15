@@ -27,6 +27,6 @@ class ShowListView: UITableView {
 
     private func loadFromNib() {
         let nib = UINib(nibName: "ShowCell", bundle: nil)
-        register(nib, forCellReuseIdentifier: type(of: self).identifier)
+        register(nib, forCellReuseIdentifier: Self.identifier)
     }
 }

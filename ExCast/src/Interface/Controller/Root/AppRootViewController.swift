@@ -35,6 +35,8 @@ class AppRootViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         displayContentController(rootTabBarController)
     }
 

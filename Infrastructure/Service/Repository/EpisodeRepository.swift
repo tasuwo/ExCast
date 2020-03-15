@@ -29,8 +29,9 @@ public struct EpisodeRepository: EpisodeRepositoryProtocol {
     // MARK: - EpisodeRepositoryProtocol
 
     public func getAll(_ feedUrl: URL) -> Single<[Episode]> {
-        return Single.create { observer in
+        Single.create { observer in
             self.queue.async {
+                // swiftlint:disable:next force_try
                 let realm = try! Realm()
                 guard let podcast = realm.object(ofType: PodcastObject.self, forPrimaryKey: feedUrl.absoluteString) else {
                     observer(.success([]))
@@ -43,8 +44,9 @@ public struct EpisodeRepository: EpisodeRepositoryProtocol {
     }
 
     public func update(_ id: Episode.Identity, playback: Playback?) -> Completable {
-        return Completable.create { observer in
+        Completable.create { observer in
             self.queue.async {
+                // swiftlint:disable:next force_try
                 let realm = try! Realm()
 
                 guard let target = realm.object(ofType: EpisodeObject.self, forPrimaryKey: id) else {
@@ -53,6 +55,7 @@ public struct EpisodeRepository: EpisodeRepositoryProtocol {
                     return
                 }
 
+                // swiftlint:disable:next force_try
                 try! realm.write {
                     target.playback = playback?.asManagedObject()
                     realm.add(target, update: .modified)
@@ -65,8 +68,9 @@ public struct EpisodeRepository: EpisodeRepositoryProtocol {
     }
 
     public func update(_ episode: Episode) -> Completable {
-        return Completable.create { observer in
+        Completable.create { observer in
             self.queue.async {
+                // swiftlint:disable:next force_try
                 let realm = try! Realm()
 
                 guard let target = realm.object(ofType: EpisodeObject.self, forPrimaryKey: episode.id) else {
@@ -75,6 +79,7 @@ public struct EpisodeRepository: EpisodeRepositoryProtocol {
                     return
                 }
 
+                // swiftlint:disable:next force_try
                 try! realm.write {
                     target.meta = episode.meta.asManagedObject()
                     target.playback = episode.playback?.asManagedObject()

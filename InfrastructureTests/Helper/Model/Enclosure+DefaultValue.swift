@@ -8,7 +8,7 @@ extension Enclosure {
     static func makeDefault(
         url: URL = URL(string: "http://example.com")!,
         length: Int? = nil,
-        type: FileFormat = .M4A
+        type: FileFormat = .m4a
     ) -> Self {
         return .init(
             url: url,

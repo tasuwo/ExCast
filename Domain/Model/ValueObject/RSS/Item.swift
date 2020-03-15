@@ -117,7 +117,7 @@ extension Item {
         }()
 
         itemDescription = (node |> "description")?.value
-        duration = type(of: self).parseDuration((node |> "itunes:duration")?.value)
+        duration = Self.parseDuration((node |> "itunes:duration")?.value)
         link = {
             if let link = (node |> "link")?.value {
                 return URL(string: link)
@@ -140,7 +140,7 @@ extension Item {
         guard let durationStr = str else { return nil }
 
         // TODO: 数値変換に失敗した際の処理
-        let parts = durationStr.split(separator: ":").reversed().map { Int($0)! }
+        let parts = durationStr.split(separator: ":").reversed().map { Int($0) ?? 0 }
 
         let duration = parts.enumerated().reduce(0) { prev, val in
             prev + Double(val.element) * NSDecimalNumber(decimal: pow(60, val.offset)).doubleValue

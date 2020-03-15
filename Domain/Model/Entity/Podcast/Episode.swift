@@ -37,6 +37,6 @@ extension Episode: IdentifiableType {
     public typealias Identity = String
 
     public var identity: String {
-        return id
+        id
     }
 }

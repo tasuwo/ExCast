@@ -43,7 +43,7 @@
 		2C354D19241D0BAD007BCB00 /* DomainMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C354D18241D0BAD007BCB00 /* DomainMocks.swift */; };
 		2C354D1B241D10C5007BCB00 /* EpisodeServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C354D1A241D10C5007BCB00 /* EpisodeServiceSpec.swift */; };
 		2C3AAE3323517E6900A78A02 /* EpisodePlayerModalView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */; };
-		2C4D9117234075A100895CD7 /* ShowListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */; };
+		2C4D9117234075A100895CD7 /* ShowListViewDataSourceContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D9116234075A100895CD7 /* ShowListViewDataSourceContainer.swift */; };
 		2C4D911C2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D911B2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift */; };
 		2C4D91662348265A00895CD7 /* EpisodeListViewDataSourceContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4D91652348265A00895CD7 /* EpisodeListViewDataSourceContainer.swift */; };
 		2C55EC232350072D00797963 /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C55EC222350072D00797963 /* Factory.swift */; };
@@ -59,7 +59,7 @@
 		2C5614E3239CD64700A1B06D /* PodcastFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5614DB239CD64600A1B06D /* PodcastFactory.swift */; };
 		2C5614E4239CD64700A1B06D /* Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5614DC239CD64600A1B06D /* Playback.swift */; };
 		2C5614E5239CD64700A1B06D /* PodcastGatewayProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5614DE239CD64600A1B06D /* PodcastGatewayProtocol.swift */; };
-		2C561501239CD64D00A1B06D /* NotificaitonCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5614E9239CD64D00A1B06D /* NotificaitonCategory.swift */; };
+		2C561501239CD64D00A1B06D /* NotificationCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5614E9239CD64D00A1B06D /* NotificationCategory.swift */; };
 		2C561502239CD64D00A1B06D /* NotificationSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5614EA239CD64D00A1B06D /* NotificationSetting.swift */; };
 		2C561503239CD64D00A1B06D /* NotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5614EB239CD64D00A1B06D /* NotificationAction.swift */; };
 		2C561504239CD64D00A1B06D /* NotificationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5614EC239CD64D00A1B06D /* NotificationContext.swift */; };
@@ -160,7 +160,7 @@
 		2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCEC3D922E4847F0055D27A /* EpisodePlayerViewController.swift */; };
 		2CCEC3DC22E485720055D27A /* EpisodePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CCEC3DB22E485720055D27A /* EpisodePlayerViewController.xib */; };
 		2CDF07A422ED7F83002F8F5C /* Double+asTimeString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDF07A322ED7F83002F8F5C /* Double+asTimeString.swift */; };
-		2CDF07A922EE86AE002F8F5C /* EpisdoePlayerSeekBarContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDF07A822EE86AE002F8F5C /* EpisdoePlayerSeekBarContainer.swift */; };
+		2CDF07A922EE86AE002F8F5C /* EpisodePlayerSeekBarContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDF07A822EE86AE002F8F5C /* EpisodePlayerSeekBarContainer.swift */; };
 		2CDF07AC22EE8721002F8F5C /* EpisodePlayerSeekBarContainer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDF07AB22EE8721002F8F5C /* EpisodePlayerSeekBarContainer.xib */; };
 		77334503F3A2944C46513B4B /* Pods_All_Infrastructure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E9AED422EB6A46CA72DB67 /* Pods_All_Infrastructure.framework */; };
 		7F323DC3DF87D549662576C3 /* Pods_All_ExCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4539E7E1E0B8C0619137F8B6 /* Pods_All_ExCast.framework */; };
@@ -400,7 +400,7 @@
 		2C354D18241D0BAD007BCB00 /* DomainMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainMocks.swift; sourceTree = "<group>"; };
 		2C354D1A241D10C5007BCB00 /* EpisodeServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeServiceSpec.swift; sourceTree = "<group>"; };
 		2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpisodePlayerModalView+Rx.swift"; sourceTree = "<group>"; };
-		2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowListViewDataSource.swift; sourceTree = "<group>"; };
+		2C4D9116234075A100895CD7 /* ShowListViewDataSourceContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowListViewDataSourceContainer.swift; sourceTree = "<group>"; };
 		2C4D911B2340C4CE00895CD7 /* BehaviorRelay+ValueAt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BehaviorRelay+ValueAt.swift"; sourceTree = "<group>"; };
 		2C4D91652348265A00895CD7 /* EpisodeListViewDataSourceContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeListViewDataSourceContainer.swift; sourceTree = "<group>"; };
 		2C546C5722FF279F00C1BB83 /* ExCast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExCast.entitlements; sourceTree = "<group>"; };
@@ -419,7 +419,7 @@
 		2C5614DB239CD64600A1B06D /* PodcastFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastFactory.swift; sourceTree = "<group>"; };
 		2C5614DC239CD64600A1B06D /* Playback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Playback.swift; sourceTree = "<group>"; };
 		2C5614DE239CD64600A1B06D /* PodcastGatewayProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastGatewayProtocol.swift; sourceTree = "<group>"; };
-		2C5614E9239CD64D00A1B06D /* NotificaitonCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificaitonCategory.swift; sourceTree = "<group>"; };
+		2C5614E9239CD64D00A1B06D /* NotificationCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCategory.swift; sourceTree = "<group>"; };
 		2C5614EA239CD64D00A1B06D /* NotificationSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSetting.swift; sourceTree = "<group>"; };
 		2C5614EB239CD64D00A1B06D /* NotificationAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationAction.swift; sourceTree = "<group>"; };
 		2C5614EC239CD64D00A1B06D /* NotificationContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationContext.swift; sourceTree = "<group>"; };
@@ -521,7 +521,7 @@
 		2CCEC3D922E4847F0055D27A /* EpisodePlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerViewController.swift; sourceTree = "<group>"; };
 		2CCEC3DB22E485720055D27A /* EpisodePlayerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodePlayerViewController.xib; sourceTree = "<group>"; };
 		2CDF07A322ED7F83002F8F5C /* Double+asTimeString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+asTimeString.swift"; sourceTree = "<group>"; };
-		2CDF07A822EE86AE002F8F5C /* EpisdoePlayerSeekBarContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisdoePlayerSeekBarContainer.swift; sourceTree = "<group>"; };
+		2CDF07A822EE86AE002F8F5C /* EpisodePlayerSeekBarContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePlayerSeekBarContainer.swift; sourceTree = "<group>"; };
 		2CDF07AB22EE8721002F8F5C /* EpisodePlayerSeekBarContainer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodePlayerSeekBarContainer.xib; sourceTree = "<group>"; };
 		3D0C8FCD2428F12355C1ADE3 /* Pods_All_InfrastructureTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_InfrastructureTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4539E7E1E0B8C0619137F8B6 /* Pods_All_ExCast.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_ExCast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -691,7 +691,7 @@
 				2C122DEE22CBAFC300011558 /* ShowCell.swift */,
 				2C122DEC22CBAD4D00011558 /* ShowCell.xib */,
 				2C122DF222CBB42700011558 /* ShowListView.swift */,
-				2C4D9116234075A100895CD7 /* ShowListViewDataSource.swift */,
+				2C4D9116234075A100895CD7 /* ShowListViewDataSourceContainer.swift */,
 			);
 			path = ShowList;
 			sourceTree = "<group>";
@@ -883,7 +883,7 @@
 		2C5614E8239CD64D00A1B06D /* Notification */ = {
 			isa = PBXGroup;
 			children = (
-				2C5614E9239CD64D00A1B06D /* NotificaitonCategory.swift */,
+				2C5614E9239CD64D00A1B06D /* NotificationCategory.swift */,
 				2C5614EB239CD64D00A1B06D /* NotificationAction.swift */,
 				2C5614EC239CD64D00A1B06D /* NotificationContext.swift */,
 				2C5614EA239CD64D00A1B06D /* NotificationSetting.swift */,
@@ -1348,7 +1348,7 @@
 		2CCEC3D022E47CFA0055D27A /* EpisodePlayer */ = {
 			isa = PBXGroup;
 			children = (
-				2CDF07A822EE86AE002F8F5C /* EpisdoePlayerSeekBarContainer.swift */,
+				2CDF07A822EE86AE002F8F5C /* EpisodePlayerSeekBarContainer.swift */,
 				2C3AAE3223517E6900A78A02 /* EpisodePlayerModalView+Rx.swift */,
 				2C8D687F22EB6B2E00CE9660 /* EpisodePlayerModalView.swift */,
 				2C8D688122EB6B3D00CE9660 /* EpisodePlayerModalView.xib */,
@@ -2071,7 +2071,7 @@
 				2C561504239CD64D00A1B06D /* NotificationContext.swift in Sources */,
 				2C561517239CED9800A1B06D /* ThumbnailDownloaderProtocol.swift in Sources */,
 				2C56150E239CD64D00A1B06D /* EpisodeServiceProtocol.swift in Sources */,
-				2C561501239CD64D00A1B06D /* NotificaitonCategory.swift in Sources */,
+				2C561501239CD64D00A1B06D /* NotificationCategory.swift in Sources */,
 				2C5614E3239CD64700A1B06D /* PodcastFactory.swift in Sources */,
 				2C561503239CD64D00A1B06D /* NotificationAction.swift in Sources */,
 				2C561508239CD64D00A1B06D /* Language.swift in Sources */,
@@ -2155,7 +2155,7 @@
 				2CA2E9B822F0A26100A6E3A9 /* EpisodePlayerPlaybackButtons.swift in Sources */,
 				2CA13C8F22C9100B00CC6072 /* FeedUrlInputView.swift in Sources */,
 				2C2BE13A23B8589B00FAF87C /* PlayingEpisode.swift in Sources */,
-				2C4D9117234075A100895CD7 /* ShowListViewDataSource.swift in Sources */,
+				2C4D9117234075A100895CD7 /* ShowListViewDataSourceContainer.swift in Sources */,
 				2CCEC3DA22E4847F0055D27A /* EpisodePlayerViewController.swift in Sources */,
 				2CA2E9C322F3515D00A6E3A9 /* EpisodeDetailViewController.swift in Sources */,
 				2C6391F722E2C28400B5EBE0 /* EpisodeListViewController.swift in Sources */,
@@ -2167,7 +2167,7 @@
 				2C6391FA22E2C30F00B5EBE0 /* EpisodeListViewModel.swift in Sources */,
 				2C6391F222E2BE2600B5EBE0 /* EpisodeCell.swift in Sources */,
 				2C6391D422E1C16900B5EBE0 /* ShowListViewModel.swift in Sources */,
-				2CDF07A922EE86AE002F8F5C /* EpisdoePlayerSeekBarContainer.swift in Sources */,
+				2CDF07A922EE86AE002F8F5C /* EpisodePlayerSeekBarContainer.swift in Sources */,
 				2CA2E9D722F5BAEC00A6E3A9 /* PlayerInformationViewModel.swift in Sources */,
 				2CCEC3D722E484670055D27A /* PlayerControllerViewModel.swift in Sources */,
 				2C6391DA22E1DCAD00B5EBE0 /* FeedUrlInputViewModel.swift in Sources */,

@@ -11,17 +11,17 @@ import Foundation
 /// IOS 639
 /// http://www.loc.gov/standards/iso639-2/php/code_list.php
 public enum Language: String, Codable {
-    case English
-    case Japanese
-    case Chinese
+    case english
+    case japanese
+    case chinese
 
     public var value: String {
         switch self {
-        case .English:
+        case .english:
             return "en"
-        case .Chinese:
+        case .chinese:
             return "zho"
-        case .Japanese:
+        case .japanese:
             return "ja"
         }
     }
@@ -29,11 +29,12 @@ public enum Language: String, Codable {
     public init?(_ string: String) {
         switch string {
         case "en", "eng":
-            self = .English
+            self = .english
         case "ja", "jpn":
-            self = .Japanese
+            self = .japanese
         case "zho", "chi", "zh":
-            self = .Chinese
+            self = .chinese
+
         default:
             return nil
         }

@@ -12,7 +12,7 @@ class XML: NSObject {
     private var rootNode: XmlNode?
     private var activeNode: XmlNode?
 
-    public func parse(_ data: Data) -> Result<XmlNode, Error> {
+    func parse(_ data: Data) -> Result<XmlNode, Error> {
         let parser = XMLParser(data: data)
         parser.delegate = self
 

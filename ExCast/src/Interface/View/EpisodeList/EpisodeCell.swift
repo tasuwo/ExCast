@@ -29,41 +29,41 @@ class EpisodeCell: UITableViewCell {
         return formatter
     }
 
-    public var pubDate: Date? {
+    var pubDate: Date? {
         set {
             guard let date = newValue else {
                 publishDateLabel.text = ""
                 return
             }
-            publishDateLabel.text = type(of: self).dateFormatter.string(from: date)
+            publishDateLabel.text = Self.dateFormatter.string(from: date)
         }
         get {
             guard let dateString = self.publishDateLabel.text else {
                 return nil
             }
-            return type(of: self).dateFormatter.date(from: dateString)
+            return Self.dateFormatter.date(from: dateString)
         }
     }
 
-    public var title: String {
+    var title: String {
         set {
             titleLabel.text = newValue
         }
         get {
-            return titleLabel.text ?? ""
+            titleLabel.text ?? ""
         }
     }
 
-    public var episodeDescription: String? {
+    var episodeDescription: String? {
         set {
             episodeDescriptionLabel.text = newValue
         }
         get {
-            return episodeDescriptionLabel.text
+            episodeDescriptionLabel.text
         }
     }
 
-    public var currentDuration: Double? {
+    var currentDuration: Double? {
         set {
             guard let value = newValue else {
                 self.currentDurationLabel.isHidden = true
@@ -75,7 +75,7 @@ class EpisodeCell: UITableViewCell {
                 self.currentDurationLabel.text = ""
             } else {
                 self.currentDurationLabel.isHidden = false
-                self.currentDurationLabel.text = type(of: self).durationFormatter.string(from: value)
+                self.currentDurationLabel.text = Self.durationFormatter.string(from: value)
             }
         }
         get {
@@ -84,9 +84,9 @@ class EpisodeCell: UITableViewCell {
         }
     }
 
-    public var duration: Double {
+    var duration: Double {
         set {
-            lengthLabel.text = type(of: self).durationFormatter.string(from: newValue)
+            lengthLabel.text = Self.durationFormatter.string(from: newValue)
         }
         get {
             // TODO:
@@ -117,7 +117,7 @@ class EpisodeCell: UITableViewCell {
 
     // MARK: - Methods
 
-    public func setupAppearences() {
+    func setupAppearences() {
         informationButton.setTitle(NSLocalizedString("EpisodeListView.cell.detail", comment: ""), for: .normal)
         playingMarkIconView.image = generatePlayingMark()
         playingMarkIconView.isHidden = true

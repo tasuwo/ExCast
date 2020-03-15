@@ -32,7 +32,7 @@ extension XmlNode: Equatable {
     // MARK: - Equatable
 
     public static func == (lhs: XmlNode, rhs: XmlNode) -> Bool {
-        return lhs.name == rhs.name &&
+        lhs.name == rhs.name &&
             lhs.attributes == rhs.attributes &&
             lhs.value == rhs.value
     }
@@ -46,6 +46,7 @@ precedencegroup XmlNodePrecedence {
 
 infix operator |>: XmlNodePrecedence
 
+// swiftlint:disable:next static_operator
 public func |> (node: XmlNode?, childName: String) -> XmlNode? {
     guard let node = node else { return nil }
     return node.children.first { $0.name == childName }
@@ -53,6 +54,7 @@ public func |> (node: XmlNode?, childName: String) -> XmlNode? {
 
 infix operator ||>: XmlNodePrecedence
 
+// swiftlint:disable:next static_operator
 public func ||> (node: XmlNode?, childName: String) -> [XmlNode]? {
     guard let node = node else { return nil }
     return node.children.filter { $0.name == childName }

@@ -30,11 +30,12 @@ protocol EpisodeDetailViewModelOutputs {
 class EpisodeDetailViewModel: EpisodeDetailViewModelType, EpisodeDetailViewModelInputs, EpisodeDetailViewModelOutputs {
     // MARK: - EpisodeDetailViewModelType
 
-    var inputs: EpisodeDetailViewModelInputs { return self }
-    var outputs: EpisodeDetailViewModelOutputs { return self }
+    var inputs: EpisodeDetailViewModelInputs { self }
+    var outputs: EpisodeDetailViewModelOutputs { self }
 
     // MARK: - EpisodeDetailViewModelInputs
 
+    // swiftlint:disable:next type_contents_order
     func layoutDescription() {
         self._description.accept(episode.meta.itemDescription ?? "")
     }

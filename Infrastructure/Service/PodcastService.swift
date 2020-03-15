@@ -43,6 +43,7 @@ public struct PodcastService: PodcastServiceProtocol {
                 switch command {
                 case .refresh:
                     return self.repository.getAll()
+
                 default:
                     return Single.never()
                 }
@@ -62,6 +63,7 @@ public struct PodcastService: PodcastServiceProtocol {
                 switch command {
                 case let .fetch(feedUrl):
                     return .fetch(feedUrl)
+
                 default:
                     return nil
                 }
@@ -78,6 +80,7 @@ public struct PodcastService: PodcastServiceProtocol {
                 switch query {
                 case let .content(.some(podcast)):
                     return podcast
+
                 default:
                     return nil
                 }
@@ -106,6 +109,7 @@ public struct PodcastService: PodcastServiceProtocol {
                 switch command {
                 case let .create(podcast):
                     return self.repository.add(podcast).andThen(.just(Void()))
+
                 default:
                     return .just(Void())
                 }
@@ -121,6 +125,7 @@ public struct PodcastService: PodcastServiceProtocol {
                 switch command {
                 case let .delete(podcast):
                     return self.repository.remove(podcast).andThen(.just(Void()))
+
                 default:
                     return .just(Void())
                 }

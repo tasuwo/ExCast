@@ -10,7 +10,7 @@ import Domain
 import Foundation
 import UIKit
 
-public class ThumbnailDownloader: ThumbnailDowloaderProtocol {
+public class ThumbnailDownloader: ThumbnailDownloaderProtocol {
     private let size: Int
     private var dataTask: URLSessionDataTask?
 
@@ -20,7 +20,8 @@ public class ThumbnailDownloader: ThumbnailDowloaderProtocol {
 
     public func startDownload(by url: URL, completion: @escaping (Result<UIImage, Error>) -> Void) {
         dataTask = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-            guard let self = self else { fatalError() }
+            guard let self = self else { fatalError("Self is null") }
+
             guard let data = data else {
                 completion(Result.failure(ThumbnailDownloadError.failedToFetchData))
                 return

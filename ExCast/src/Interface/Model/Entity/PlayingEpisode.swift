@@ -16,6 +16,6 @@ struct PlayingEpisode {
     let currentPlaybackSec: Double?
 
     func updated(playbackSec: Double?) -> Self {
-        return .init(id: self.id, episode: self.episode, show: self.show, currentPlaybackSec: playbackSec)
+        .init(id: self.id, episode: self.episode, show: self.show, currentPlaybackSec: playbackSec)
     }
 }

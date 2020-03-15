@@ -1,6 +1,8 @@
 // Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
+// swiftlint:disable all
+
 import Domain
 import RealmSwift
 
@@ -16,8 +18,8 @@ extension PlayerConfiguration: Persistable {
 
     func asManagedObject() -> PlayerConfigurationObject {
         let obj = PlayerConfigurationObject()
-        obj.forwardSkipTime = forwardSkipTime
-        obj.backwardSkipTime = backwardSkipTime
+        obj.forwardSkipTime = self.forwardSkipTime
+        obj.backwardSkipTime = self.backwardSkipTime
         return obj
     }
 }

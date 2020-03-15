@@ -14,29 +14,29 @@ import Foundation
 /// https://help.apple.com/itc/podcasts_connect/#/itcb54353390
 public struct Enclosure: Codable, Equatable {
     public enum FileFormat: String, Codable, Equatable {
-        case M4A
-        case MP3
-        case MOV
-        case MP4
-        case M4V
-        case PDF
+        case m4a
+        case mp3
+        case mov
+        case mp4
+        case m4v
+        case pdf
 
         public static func from(_ string: String) -> FileFormat? {
             switch string {
             case "audio/x-m4a":
-                return .M4A
-            case "audio/mpeg":
-                fallthrough
-            case "audio/mp3":
-                return .MP3
+                return .m4a
+            case "audio/mpeg",
+                 "audio/mp3":
+                return .mp3
             case "video/quicktime":
-                return .MOV
+                return .mov
             case "video/mp4":
-                return .MP4
+                return .mp4
             case "video/x-m4v":
-                return .M4V
+                return .m4v
             case "application/pdf":
-                return .PDF
+                return .pdf
+
             default:
                 return nil
             }
@@ -44,24 +44,29 @@ public struct Enclosure: Codable, Equatable {
     }
 
     public enum ResourceType: String, Codable, Equatable {
-        case AUDIO
-        case VIDEO
-        case APPLICATION
+        case audio
+        case video
+        case application
 
         static func from(format: FileFormat) -> ResourceType {
             switch format {
-            case .M4A:
-                return .AUDIO
-            case .MP3:
-                return .AUDIO
-            case .MOV:
-                return .VIDEO
-            case .MP4:
-                return .VIDEO
-            case .M4V:
-                return .VIDEO
-            case .PDF:
-                return .APPLICATION
+            case .m4a:
+                return .audio
+
+            case .mp3:
+                return .audio
+
+            case .mov:
+                return .video
+
+            case .mp4:
+                return .video
+
+            case .m4v:
+                return .video
+
+            case .pdf:
+                return .application
             }
         }
     }

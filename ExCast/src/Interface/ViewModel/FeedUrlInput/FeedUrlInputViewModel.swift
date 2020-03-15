@@ -36,8 +36,8 @@ protocol FeedUrlInputViewModelOutputs {
 class FeedUrlInputViewModel: FeedUrlInputViewModelType, FeedUrlInputViewModelInputs, FeedUrlInputViewModelOutputs {
     // MARK: - FeedUrlInputViewModelType
 
-    var inputs: FeedUrlInputViewModelInputs { return self }
-    var outputs: FeedUrlInputViewModelOutputs { return self }
+    var inputs: FeedUrlInputViewModelInputs { self }
+    var outputs: FeedUrlInputViewModelOutputs { self }
 
     // MARK: - FeedUrlInputViewModelInputs
 
@@ -104,8 +104,10 @@ class FeedUrlInputViewModel: FeedUrlInputViewModelType, FeedUrlInputViewModelInp
                 switch query {
                 case let .content(.some(podcast)):
                     return String(format: NSLocalizedString("FeedUrlInputView.success.fetchPodcast", comment: ""), podcast.meta.title)
+
                 case .error:
                     return NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: "")
+
                 default:
                     return nil
                 }
@@ -113,7 +115,7 @@ class FeedUrlInputViewModel: FeedUrlInputViewModelType, FeedUrlInputViewModelInp
 
         let invalidUrlMessage = self.podcastFetched
             .compactMap { [weak self] _ -> String? in
-                guard let _ = URL(string: self?.feedUrl.value ?? "") else {
+                guard URL(string: self?.feedUrl.value ?? "") != nil else {
                     return NSLocalizedString("FeedUrlInputView.error.failedToFindPodcast", comment: "")
                 }
                 return nil

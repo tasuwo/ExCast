@@ -1,6 +1,8 @@
 // Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
+// swiftlint:disable all
+
 import Domain
 import RealmSwift
 
@@ -24,16 +26,16 @@ extension Item: Persistable {
 
     func asManagedObject() -> ItemObject {
         let obj = ItemObject()
-        obj.guid = guid
-        obj.guidIsPermaLink.value = guidIsPermaLink
-        obj.title = title
-        obj.subTitle = subTitle
-        obj.enclosure = enclosure.asManagedObject()
-        obj.pubDate = pubDate
-        obj.itemDescription = itemDescription
-        obj.duration.value = duration
-        obj.link = link?.absoluteString
-        obj.artwork = artwork?.absoluteString
+        obj.guid = self.guid
+        obj.guidIsPermaLink.value = self.guidIsPermaLink
+        obj.title = self.title
+        obj.subTitle = self.subTitle
+        obj.enclosure = self.enclosure.asManagedObject()
+        obj.pubDate = self.pubDate
+        obj.itemDescription = self.itemDescription
+        obj.duration.value = self.duration
+        obj.link = self.link?.absoluteString
+        obj.artwork = self.artwork?.absoluteString
         return obj
     }
 }

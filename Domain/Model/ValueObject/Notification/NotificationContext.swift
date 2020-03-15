@@ -10,6 +10,6 @@ public struct NotificationContext: Codable {
     public let lang: String
 
     public static func `default`() -> NotificationContext {
-        return NotificationContext(lang: "ja")
+        NotificationContext(lang: "ja")
     }
 }

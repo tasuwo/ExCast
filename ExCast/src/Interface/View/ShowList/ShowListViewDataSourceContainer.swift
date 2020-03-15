@@ -22,7 +22,10 @@ class ShowListViewDataSourceContainer: NSObject {
         configureCell: { [weak self] _, tableView, indexPath, item in
             guard let self = self else { return UITableViewCell() }
 
-            let cell = tableView.dequeueReusableCell(withIdentifier: ShowListView.identifier, for: indexPath)
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ShowListView.identifier,
+                for: indexPath
+            )
 
             guard let showCell = cell as? ShowCell else {
                 return cell
@@ -36,7 +39,7 @@ class ShowListViewDataSourceContainer: NSObject {
                 return cell
             }
 
-            if let _ = self.thumbnailDownloadersInProgress[indexPath] {
+            if self.thumbnailDownloadersInProgress[indexPath] != nil {
                 showCell.artwork = nil
                 return cell
             }
@@ -50,7 +53,9 @@ class ShowListViewDataSourceContainer: NSObject {
                 case let .success(image):
                     self.thumbnailCache[indexPath] = image
                     showCell.artwork = image
-                    self.thumbnailDownloadersInProgress.removeValue(forKey: indexPath)
+                    self.thumbnailDownloadersInProgress
+                        .removeValue(forKey: indexPath)
+
                 case .failure:
                     break
                 }

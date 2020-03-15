@@ -1,6 +1,8 @@
 // Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
+// swiftlint:disable all
+
 import Domain
 import RealmSwift
 
@@ -17,9 +19,9 @@ extension Episode: Persistable {
 
     func asManagedObject() -> EpisodeObject {
         let obj = EpisodeObject()
-        obj.id = id
-        obj.meta = meta.asManagedObject()
-        obj.playback = playback?.asManagedObject()
+        obj.id = self.id
+        obj.meta = self.meta.asManagedObject()
+        obj.playback = self.playback?.asManagedObject()
         return obj
     }
 }

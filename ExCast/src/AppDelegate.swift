@@ -91,7 +91,7 @@ extension AppDelegate: AWSCredentialsProvider {
     // MARK: - AWSCredentialsProvider
 
     func credentials() -> AWSTask<AWSCredentials> {
-        return AWSTask(result: AWSCredentials(accessKey: keys.awsAccessKey, secretKey: keys.awsSecretKey, sessionKey: nil, expiration: nil))
+        AWSTask(result: AWSCredentials(accessKey: keys.awsAccessKey, secretKey: keys.awsSecretKey, sessionKey: nil, expiration: nil))
     }
 
     func invalidateCachedTemporaryCredentials() {
@@ -111,13 +111,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         // TODO:
         let category = NotificationCategory(rawValue: response.notification.request.content.categoryIdentifier)
         switch (category, response.actionIdentifier) {
-        case (.GENERAL, GeneralNotificationAction.Accept.rawValue):
+        case (.GENERAL, GeneralNotificationAction.accept.rawValue):
             print("Touch accept.")
-        case (.GENERAL, GeneralNotificationAction.Decline.rawValue):
+
+        case (.GENERAL, GeneralNotificationAction.decline.rawValue):
             print("Touch decline.")
         case (_, UNNotificationDefaultActionIdentifier),
              (_, UNNotificationDismissActionIdentifier):
             break
+
         default:
             break
         }

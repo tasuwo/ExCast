@@ -41,12 +41,16 @@ struct PlayerModalViewModel {
                 switch (self.modalState.value, panState) {
                 case (.fullscreen, .ended(length: let l, _)) where l > 300:
                     self.modalState.accept(.mini)
+
                 case let (.fullscreen, .ended(_, velocity: v)) where v > 500:
                     self.modalState.accept(.mini)
+
                 case let (.mini, .ended(length: l, velocity: v)) where l < 0 && v < -500:
                     self.modalState.accept(.fullscreen)
+
                 case let (.mini, .ended(length: l, velocity: v)) where l > 0 && v > 500:
                     self.modalState.accept(.hide)
+
                 default:
                     break
                 }

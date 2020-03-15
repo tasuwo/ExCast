@@ -18,7 +18,9 @@ protocol EpisodePlayerPlaybackButtonsDelegate: AnyObject {
 }
 
 public class EpisodePlayerPlaybackButtons: UIView {
-    weak var delegate: EpisodePlayerPlaybackButtonsDelegate!
+    // MARK: - Properties
+
+    weak var delegate: EpisodePlayerPlaybackButtonsDelegate?
 
     public var isEnabled: Bool {
         set {
@@ -58,20 +60,6 @@ public class EpisodePlayerPlaybackButtons: UIView {
     @IBOutlet var buttonMarginLeftConstraint: NSLayoutConstraint!
     @IBOutlet var buttonMarginRightConstraint: NSLayoutConstraint!
 
-    // MARK: - IBActions
-
-    @IBAction func didTapPlaybackButton(_: Any) {
-        delegate?.didTapPlaybackButton()
-    }
-
-    @IBAction func didTapSkipForwardButton(_: Any) {
-        delegate?.didTapSkipForwardButton()
-    }
-
-    @IBAction func didTapSkipBackwardButton(_: Any) {
-        delegate?.didTapSkipBackwardButton()
-    }
-
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {
@@ -84,6 +72,20 @@ public class EpisodePlayerPlaybackButtons: UIView {
         super.init(coder: aDecoder)
         loadFromNib()
         setupAppearences()
+    }
+
+    // MARK: - IBActions
+
+    @IBAction func didTapPlaybackButton(_: Any) {
+        delegate?.didTapPlaybackButton()
+    }
+
+    @IBAction func didTapSkipForwardButton(_: Any) {
+        delegate?.didTapSkipForwardButton()
+    }
+
+    @IBAction func didTapSkipBackwardButton(_: Any) {
+        delegate?.didTapSkipBackwardButton()
     }
 
     // MARK: - Methods

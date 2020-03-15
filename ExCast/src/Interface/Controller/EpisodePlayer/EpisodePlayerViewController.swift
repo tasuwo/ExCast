@@ -18,18 +18,26 @@ protocol EpisodePlayerModalBaseViewProtocol: AnyObject {
 }
 
 class EpisodePlayerViewController: UIViewController {
+    // MARK: - Type Aliases
+
     typealias Factory = ViewControllerFactory & ViewModelFactory & EpisodePlayerModalBaseViewFactory
 
-    @IBOutlet var modalView: EpisodePlayerModalView!
+    // MARK: - Properties
 
     private let factory: Factory
     private lazy var playerBaseView = self.factory.makeEpisodePlayerModalBaseView()
     private let modalViewModel: PlayerModalViewModel
+    // swiftlint:disable:next implicitly_unwrapped_optional
     private var controllerViewModel: PlayerControllerViewModel!
+    // swiftlint:disable:next implicitly_unwrapped_optional
     private var informationViewModel: PlayerInformationViewModel!
     private weak var playingEpisodeViewModel: PlayingEpisodeViewModel?
 
     private var disposeBag = DisposeBag()
+
+    // MARK: - IBOutlets
+
+    @IBOutlet var modalView: EpisodePlayerModalView!
 
     // MARK: - Lifecycle
 
@@ -56,20 +64,26 @@ class EpisodePlayerViewController: UIViewController {
         modalView.playbackButtons.delegate = self
 
         modalViewModel.modalState
-            .bind(onNext: { [unowned self] state in
+            .bind(onNext: { [weak self] state in
                 switch state {
                 case .fullscreen:
-                    self.modalView.expand()
+                    self?.modalView.expand()
+
                 case .mini:
-                    self.modalView.minimize()
+                    self?.modalView.minimize()
+
                 case .hide:
-                    self.dismissPlayerBaseView()
+                    self?.dismissPlayerBaseView()
+
                 default:
                     break
                 }
             })
             .disposed(by: disposeBag)
-        bindEpisode()
+
+        if let dependency = self.playingEpisodeViewModel {
+            self.bind(to: dependency)
+        }
     }
 
     // MARK: - Methods
@@ -81,24 +95,25 @@ class EpisodePlayerViewController: UIViewController {
         self.informationViewModel = nil
         self.informationViewModel = informationViewModel
 
-        bindEpisode()
+        if let dependency = self.playingEpisodeViewModel {
+            self.bind(to: dependency)
+        }
     }
 
-    private func bindEpisode() {
-        self.playingEpisodeViewModel?.set(id: self.informationViewModel.id,
-                                          episode: self.informationViewModel.episode,
-                                          belongsTo: self.informationViewModel.show,
-                                          playbackSec: self.controllerViewModel.initialPlaybackSec)
+    private func bind(to dependency: PlayingEpisodeViewModel) {
+        dependency.set(id: self.informationViewModel.id,
+                       episode: self.informationViewModel.episode,
+                       belongsTo: self.informationViewModel.show,
+                       playbackSec: self.controllerViewModel.initialPlaybackSec)
         self.controllerViewModel.createdPlayer
             .map { !$0 }
-            .bind(to: self.playingEpisodeViewModel!.isLoading)
+            .bind(to: dependency.isLoading)
             .disposed(by: self.disposeBag)
         self.controllerViewModel.currentTime
-            .compactMap { [weak self] currentTime in
-                guard let self = self else { return nil }
-                return self.playingEpisodeViewModel?.playingEpisode.value?.updated(playbackSec: currentTime)
+            .compactMap { currentTime in
+                dependency.playingEpisode.value?.updated(playbackSec: currentTime)
             }
-            .bind(to: self.playingEpisodeViewModel!.playingEpisode)
+            .bind(to: dependency.playingEpisode)
             .disposed(by: self.disposeBag)
 
         informationViewModel.showTitle

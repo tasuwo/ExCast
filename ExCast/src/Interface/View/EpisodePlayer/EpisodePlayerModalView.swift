@@ -32,7 +32,7 @@ public class EpisodePlayerModalView: UIView {
             showTitleLabel.text = newValue
         }
         get {
-            return showTitleLabel.text ?? ""
+            showTitleLabel.text ?? ""
         }
     }
 
@@ -41,7 +41,7 @@ public class EpisodePlayerModalView: UIView {
             episodeTitleLabel.text = newValue
         }
         get {
-            return episodeTitleLabel.text ?? ""
+            episodeTitleLabel.text ?? ""
         }
     }
 
@@ -50,7 +50,7 @@ public class EpisodePlayerModalView: UIView {
             thumbnailImageView.image = newValue
         }
         get {
-            return thumbnailImageView.image
+            thumbnailImageView.image
         }
     }
 
@@ -59,7 +59,7 @@ public class EpisodePlayerModalView: UIView {
             seekBar.duration = newValue
         }
         get {
-            return seekBar.duration
+            seekBar.duration
         }
     }
 
@@ -68,7 +68,7 @@ public class EpisodePlayerModalView: UIView {
             seekBar.currentTime = newValue
         }
         get {
-            return seekBar.currentTime
+            seekBar.currentTime
         }
     }
 
@@ -77,7 +77,7 @@ public class EpisodePlayerModalView: UIView {
             playbackButtons.isEnabled = newValue
         }
         get {
-            return playbackButtons.isEnabled
+            playbackButtons.isEnabled
         }
     }
 
@@ -86,9 +86,12 @@ public class EpisodePlayerModalView: UIView {
             playbackButtons.isPlaying = newValue
         }
         get {
-            return playbackButtons.isPlaying
+            playbackButtons.isPlaying
         }
     }
+
+    var lastYLocation: CGFloat = 0
+    var distance: CGFloat = 0
 
     // MARK: - IBOutlets
 
@@ -119,53 +122,6 @@ public class EpisodePlayerModalView: UIView {
     @IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
 
-    // MARK: - IBActions
-
-    @IBAction func didTapDismissButton(_: Any) {
-        delegate?.dismissPlayerBaseView()
-    }
-
-    var lastYLocation: CGFloat = 0
-    var distance: CGFloat = 0
-    @IBAction func didPan(_ gestureRecognizer: UIPanGestureRecognizer) {
-        guard let view = gestureRecognizer.view else { return }
-
-        let translation = gestureRecognizer.translation(in: view.superview)
-        let velocity = gestureRecognizer.velocity(in: view.superview)
-
-        switch gestureRecognizer.state {
-        case .began:
-            distance = 0
-            delegate?.didPanned(distance: Float(distance), velocity: Float(velocity.y))
-            lastYLocation = 0
-        case .changed:
-            distance += translation.y - lastYLocation
-            delegate?.didPanned(distance: Float(distance), velocity: Float(velocity.y))
-            lastYLocation = translation.y
-        case .ended:
-            distance += translation.y - lastYLocation
-            delegate?.didEndPanned(distance: Float(distance), velocity: Float(velocity.y))
-            lastYLocation = 0
-        case .possible, .cancelled, .failed:
-            break
-        @unknown default:
-            break
-        }
-    }
-
-    @IBAction func didTap(_ gestureRecognizer: UITapGestureRecognizer) {
-        switch gestureRecognizer.state {
-        case .ended:
-            delegate?.didTap()
-        default:
-            break
-        }
-    }
-
-    @IBAction func didTapMinimizeViewButton(_: Any) {
-        delegate?.didTapMinimizeButton()
-    }
-
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {
@@ -180,6 +136,55 @@ public class EpisodePlayerModalView: UIView {
         loadFromNib()
         setupAppearences()
         setupGestureRecognizer()
+    }
+
+    // MARK: - IBActions
+
+    @IBAction func didTapDismissButton(_: Any) {
+        delegate?.dismissPlayerBaseView()
+    }
+
+    @IBAction func didPan(_ gestureRecognizer: UIPanGestureRecognizer) {
+        guard let view = gestureRecognizer.view else { return }
+
+        let translation = gestureRecognizer.translation(in: view.superview)
+        let velocity = gestureRecognizer.velocity(in: view.superview)
+
+        switch gestureRecognizer.state {
+        case .began:
+            distance = 0
+            delegate?.didPanned(distance: Float(distance), velocity: Float(velocity.y))
+            lastYLocation = 0
+
+        case .changed:
+            distance += translation.y - lastYLocation
+            delegate?.didPanned(distance: Float(distance), velocity: Float(velocity.y))
+            lastYLocation = translation.y
+
+        case .ended:
+            distance += translation.y - lastYLocation
+            delegate?.didEndPanned(distance: Float(distance), velocity: Float(velocity.y))
+            lastYLocation = 0
+
+        case .possible, .cancelled, .failed:
+            break
+        @unknown default:
+            break
+        }
+    }
+
+    @IBAction func didTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        switch gestureRecognizer.state {
+        case .ended:
+            delegate?.didTap()
+
+        default:
+            break
+        }
+    }
+
+    @IBAction func didTapMinimizeViewButton(_: Any) {
+        delegate?.didTapMinimizeButton()
     }
 
     // MARK: - Methods
@@ -224,7 +229,7 @@ extension EpisodePlayerModalView: UIGestureRecognizerDelegate {
     // MARK: - UIGestureRecognizerDelegate
 
     public func gestureRecognizer(_: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        return touch.view is UIButton == false
+        touch.view is UIButton == false
     }
 }
 
@@ -234,39 +239,50 @@ extension EpisodePlayerModalView {
         seekBar.isHidden = true
         playbackButtons.layoutIfNeeded()
 
-        UIView.animate(withDuration: 0.2, animations: { [unowned self] in
-            // Playback Buttons
-            self.playbackButtons.buttonMarginLeftConstraint.constant = 36
-            self.playbackButtons.buttonMarginRightConstraint.constant = 36
-            self.playbackButtons.playbackButtonSizeConstraint.constant = 42
-            self.playbackButtons.playbackButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-            self.playbackButtons.forwardSkipButtonSizeConstraint.constant = 42
-            self.playbackButtons.forwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-            self.playbackButtons.backwardSkipButtonSizeConstraint.constant = 42
-            self.playbackButtons.backwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-            self.playbackButtonsHeightConstraint.constant = 70
-            self.playbackButtonsBottomConstraint.constant = 0
-            self.playbackButtons.layoutIfNeeded()
+        UIView.animate(
+            withDuration: 0.2,
+            animations: { [weak self] in
+                // Playback Buttons
+                self?.playbackButtons
+                    .buttonMarginLeftConstraint.constant = 36
+                self?.playbackButtons
+                    .buttonMarginRightConstraint.constant = 36
+                self?.playbackButtons
+                    .playbackButtonSizeConstraint.constant = 42
+                self?.playbackButtons.playbackButton.imageEdgeInsets =
+                    UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+                self?.playbackButtons
+                    .forwardSkipButtonSizeConstraint.constant = 42
+                self?.playbackButtons.forwardSkipButton.imageEdgeInsets =
+                    UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                self?.playbackButtons
+                    .backwardSkipButtonSizeConstraint.constant = 42
+                self?.playbackButtons.backwardSkipButton.imageEdgeInsets =
+                    UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                self?.playbackButtonsHeightConstraint.constant = 70
+                self?.playbackButtonsBottomConstraint.constant = 0
+                self?.playbackButtons.layoutIfNeeded()
 
-            // Header
-            self.minimizeViewButton.isHidden = true
-            self.showTitleLabel.isHidden = true
-            self.episodeTitleLabel.isHidden = true
+                // Header
+                self?.minimizeViewButton.isHidden = true
+                self?.showTitleLabel.isHidden = true
+                self?.episodeTitleLabel.isHidden = true
 
-            // Thumbnail
-            self.thumbnailImageView.layer.cornerRadius = 0
-            self.thumbnailTopConstraint.constant = 0
-            self.thumbnailLeftConstraint.isActive = false
-            self.thumbnailXConstraint.isActive = false
-            self.thumbnailBottomConstraint.isActive = false
+                // Thumbnail
+                self?.thumbnailImageView.layer.cornerRadius = 0
+                self?.thumbnailTopConstraint.constant = 0
+                self?.thumbnailLeftConstraint.isActive = false
+                self?.thumbnailXConstraint.isActive = false
+                self?.thumbnailBottomConstraint.isActive = false
 
-            // Dismiss Button
-            self.dismissButton.isHidden = false
+                // Dismiss Button
+                self?.dismissButton.isHidden = false
 
-            self.layoutIfNeeded()
+                self?.layoutIfNeeded()
 
-            self.delegate?.minimizePlayerBaseView()
-        }) { _ in
+                self?.delegate?.minimizePlayerBaseView()
+            }
+        ) { _ in
             if #available(iOS 13.0, *) {
                 self.traitCollection.performAsCurrent {
                     self.baseView.backgroundColor = .secondarySystemBackground
@@ -278,44 +294,56 @@ extension EpisodePlayerModalView {
     }
 
     func expand() {
-        UIView.animate(withDuration: 0.2, animations: { [unowned self] in
-            // Playback Buttons
-            self.playbackButtons.buttonMarginLeftConstraint.constant = 24
-            self.playbackButtons.buttonMarginRightConstraint.constant = 24
-            self.playbackButtons.playbackButtonSizeConstraint.constant = 72
-            self.playbackButtons.playbackButton.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-            self.playbackButtons.forwardSkipButtonSizeConstraint.constant = 60
-            self.playbackButtons.forwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-            self.playbackButtons.backwardSkipButtonSizeConstraint.constant = 60
-            self.playbackButtons.backwardSkipButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-            self.playbackButtonsHeightConstraint.constant = 180
-            self.playbackButtonsBottomConstraint.constant = 60
-            self.playbackButtons.layoutIfNeeded()
+        UIView.animate(
+            withDuration: 0.2,
+            animations: { [weak self] in
+                // Playback Buttons
+                self?.playbackButtons
+                    .buttonMarginLeftConstraint.constant = 24
+                self?.playbackButtons
+                    .buttonMarginRightConstraint.constant = 24
+                self?.playbackButtons
+                    .playbackButtonSizeConstraint.constant = 72
+                self?.playbackButtons.playbackButton.imageEdgeInsets =
+                    UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+                self?.playbackButtons
+                    .forwardSkipButtonSizeConstraint.constant = 60
+                self?.playbackButtons
+                    .forwardSkipButton.imageEdgeInsets =
+                    UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+                self?.playbackButtons
+                    .backwardSkipButtonSizeConstraint.constant = 60
+                self?.playbackButtons.backwardSkipButton.imageEdgeInsets =
+                    UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+                self?.playbackButtonsHeightConstraint.constant = 180
+                self?.playbackButtonsBottomConstraint.constant = 60
+                self?.playbackButtons.layoutIfNeeded()
 
-            // Thumbnail
-            self.thumbnailImageView.layer.cornerRadius = 20
-            self.thumbnailTopConstraint.constant = 100
-            self.thumbnailLeftConstraint.isActive = true
-            self.thumbnailXConstraint.isActive = true
-            self.thumbnailBottomConstraint.isActive = true
+                // Thumbnail
+                self?.thumbnailImageView.layer.cornerRadius = 20
+                self?.thumbnailTopConstraint.constant = 100
+                self?.thumbnailLeftConstraint.isActive = true
+                self?.thumbnailXConstraint.isActive = true
+                self?.thumbnailBottomConstraint.isActive = true
 
-            // Dismiss Button
-            self.dismissButton.isHidden = true
+                // Dismiss Button
+                self?.dismissButton.isHidden = true
 
-            self.layoutIfNeeded()
+                self?.layoutIfNeeded()
 
-            self.delegate?.expandPlayerBaseView()
-        }) { _ in
-            // SeekBar
-            self.seekBar.isHidden = false
-            self.playbackButtons.layoutIfNeeded()
+                self?.delegate?.expandPlayerBaseView()
+            }, completion: { _ in
+                // SeekBar
+                self.seekBar.isHidden = false
+                self.playbackButtons.layoutIfNeeded()
 
-            // Header
-            self.minimizeViewButton.isHidden = false
-            self.showTitleLabel.isHidden = false
-            self.episodeTitleLabel.isHidden = false
+                // Header
+                self.minimizeViewButton.isHidden = false
+                self.showTitleLabel.isHidden = false
+                self.episodeTitleLabel.isHidden = false
 
-            self.layoutIfNeeded()
-        }
+                self.layoutIfNeeded()
+            }
+        )
     }
 }

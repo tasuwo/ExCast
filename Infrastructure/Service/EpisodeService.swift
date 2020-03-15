@@ -42,20 +42,24 @@ public class EpisodeService: EpisodeServiceProtocol {
             .filter { $0.isRefresh }
             .map { _ in EpisodeServiceQuery.progress }
 
-        self.command
+        command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .filter { $0.isRefresh }
             .compactMap { command -> Podcast.Identity? in
                 guard case let .refresh(id) = command else { return nil }
                 return id
             }
-            .concatMap { [unowned self] id in self.episodeRepository.getAll(id).map { (id, $0) } }
-            .subscribe { event in
+            .concatMap { [weak self] id in
+                self!.episodeRepository.getAll(id).map { (id, $0) }
+            }
+            .subscribe { [weak self] event in
                 switch event {
                 case let .next((id, episodes)):
-                    self.refreshedState.accept(.content(id, episodes))
+                    self?.refreshedState.accept(.content(id, episodes))
+
                 case .error:
-                    self.refreshedState.accept(.error)
+                    self?.refreshedState.accept(.error)
+
                 default:
                     break
                 }
@@ -80,13 +84,15 @@ public class EpisodeService: EpisodeServiceProtocol {
                 guard case let .content(.some(podcast)) = query else { return nil }
                 return podcast
             }
-            .concatMap { [unowned self] podcast -> Single<Podcast.Identity> in
-                self.podcastRepository.updateEpisodesMeta(podcast).andThen(.just(podcast.identity))
+            .concatMap { [weak self] podcast -> Single<Podcast.Identity> in
+                guard let self = self else { return .never() }
+                return self.podcastRepository.updateEpisodesMeta(podcast).andThen(.just(podcast.identity))
             }
-            .concatMap { [unowned self] feedUrl -> Single<(Podcast.Identity, [Episode])> in
+            .concatMap { [weak self] feedUrl -> Single<(Podcast.Identity, [Episode])> in
+                guard let self = self else { return .never() }
                 return self.episodeRepository.getAll(feedUrl).map { (feedUrl, $0) }
             }
-            .map { (id, episodes) -> EpisodeServiceQuery in .content(id, episodes) }
+            .map { id, episodes -> EpisodeServiceQuery in .content(id, episodes) }
 
         self.command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
@@ -94,6 +100,7 @@ public class EpisodeService: EpisodeServiceProtocol {
                 switch command {
                 case let .fetch(feedUrl):
                     return .fetch(feedUrl)
+
                 default:
                     return nil
                 }
@@ -111,10 +118,13 @@ public class EpisodeService: EpisodeServiceProtocol {
         let updateResultCommand = self.command
             .observeOn(ConcurrentDispatchQueueScheduler(queue: .global()))
             .filter { if case .update = $0 { return true } else { return false } }
-            .flatMap { [unowned self] command -> Observable<Void> in
+            .flatMap { [weak self] command -> Observable<Void> in
+                guard let self = self else { return .just(()) }
+
                 switch command {
                 case let .update(id, playback):
                     return self.episodeRepository.update(id, playback: playback).andThen(.just(Void()))
+
                 default:
                     return .just(Void())
                 }

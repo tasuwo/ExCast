@@ -27,8 +27,9 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
     }
 
     public func getAll() -> Single<[Podcast]> {
-        return Single.create(subscribe: { observer in
+        Single.create(subscribe: { observer in
             self.queue.async {
+                // swiftlint:disable:next force_try
                 let realm = try! Realm()
                 let podcasts = Array(realm.objects(PodcastObject.self)).map { Podcast.make(by: $0) }
                 observer(.success(podcasts))
@@ -38,8 +39,9 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
     }
 
     public func add(_ podcast: Podcast) -> Completable {
-        return Completable.create(subscribe: { observer in
+        Completable.create(subscribe: { observer in
             self.queue.async {
+                // swiftlint:disable:next force_try
                 let realm = try! Realm()
 
                 guard realm.object(ofType: PodcastObject.self, forPrimaryKey: podcast.feedUrl.absoluteString) == nil else {
@@ -48,6 +50,7 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
                     return
                 }
 
+                // swiftlint:disable:next force_try
                 try! realm.write {
                     realm.add(podcast.asManagedObject())
                     observer(.completed)
@@ -58,16 +61,18 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
     }
 
     public func update(_ podcast: Podcast) -> Completable {
-        return Completable.create(subscribe: { observer in
+        Completable.create(subscribe: { observer in
             self.queue.async {
+                // swiftlint:disable:next force_try
                 let realm = try! Realm()
 
-                guard let _ = realm.object(ofType: PodcastObject.self, forPrimaryKey: podcast.feedUrl.absoluteString) else {
+                guard realm.object(ofType: PodcastObject.self, forPrimaryKey: podcast.feedUrl.absoluteString) != nil else {
                     // TODO:
                     observer(.completed)
                     return
                 }
 
+                // swiftlint:disable:next force_try
                 try! realm.write {
                     realm.add(podcast.asManagedObject(), update: .modified)
                     observer(.completed)
@@ -78,8 +83,9 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
     }
 
     public func updateEpisodesMeta(_ podcast: Podcast) -> Completable {
-        return Completable.create(subscribe: { observer in
+        Completable.create(subscribe: { observer in
             self.queue.async {
+                // swiftlint:disable:next force_try
                 let realm = try! Realm()
 
                 guard let storedPodcast = realm.object(ofType: PodcastObject.self, forPrimaryKey: podcast.feedUrl.absoluteString) else {
@@ -88,6 +94,7 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
                     return
                 }
 
+                // swiftlint:disable:next force_try
                 try! realm.write {
                     var removeTargetEpisodeIds: [Episode.Identity] = []
                     for episodeObject in storedPodcast.episodes {
@@ -122,9 +129,11 @@ public struct PodcastRepository: PodcastRepositoryProtocol {
     }
 
     public func remove(_ podcast: Podcast) -> Completable {
-        return Completable.create(subscribe: { observer in
+        Completable.create(subscribe: { observer in
             self.queue.async {
+                // swiftlint:disable:next force_try
                 let realm = try! Realm()
+                // swiftlint:disable:next force_try
                 try! realm.write {
                     guard let target = realm.object(ofType: PodcastObject.self, forPrimaryKey: podcast.feedUrl.absoluteString) else {
                         observer(.completed)

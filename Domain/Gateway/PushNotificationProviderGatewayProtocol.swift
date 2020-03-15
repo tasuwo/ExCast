@@ -9,9 +9,9 @@
 import Foundation
 
 public enum PushNotificationProviderGatewayError: Error {
-    case InvalidParameterError
-    case InvalidResponse
-    case InternalServerError(Error)
+    case invalidParameterError
+    case invalidResponse
+    case internalServerError(Error)
 }
 
 public typealias ProviderKey = String

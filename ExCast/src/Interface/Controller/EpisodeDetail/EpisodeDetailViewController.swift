@@ -11,15 +11,21 @@ import RxSwift
 import UIKit
 
 class EpisodeDetailViewController: UIViewController {
+    // MARK: - Type Aliases
+
     typealias Factory = ViewControllerFactory
     typealias Dependency = EpisodeDetailViewModelType
 
-    @IBOutlet var episodeDetailView: EpisodeDetailView!
+    // MARK: - Properties
 
     private let factory: Factory
     private let viewModel: EpisodeDetailViewModelType
 
     private let disposeBag = DisposeBag()
+
+    // MARK: - IBOutlets
+
+    @IBOutlet var episodeDetailView: EpisodeDetailView!
 
     // MARK: - Lifecycle
 
@@ -32,6 +38,8 @@ class EpisodeDetailViewController: UIViewController {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
